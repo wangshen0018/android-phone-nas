@@ -1,1 +1,105 @@
-IyEvc3lzdGVtL2Jpbi9zaAojIOWwj+aJuemHj+WIpOivu++8muWPquWIpOacgOi/kSBOIOS4quW+heWIpOmhue+8iOm7mOiupCAxMCDkuKrvvIkKIyDkuI3ot5HlrozmlbQganVkZ2Uuc2jvvIjpgqPkvJrliKQgNTQwIOS4qu+8ie+8jOi/memHjOmAkOadoeWIpOaWrQoKQkFTRT0vZGF0YS9tZWRpYS8wL25hc2JhawpJTkJPWD0kQkFTRS9pbmJveApTVD0kQkFTRS9zdGF0ZQpXV1c9L2RhdGEvYWRiL25hc2Jhay93d3cKTE9HRD0vZGF0YS9hZGIvbmFzYmFrL2xvZ3MKQkI9L2RhdGEvYWRiL21hZ2lzay9idXN5Ym94ClZMTT0vZGF0YS9hZGIvbmFzYmFrL2Jpbi92bG1fcnVuLnNoCkxPRz0kTE9HRC9qdWRnZS5sb2cKTElNSVQ9JHsxOi0xMH0KCmxvZygpIHsgZWNobyAiJChkYXRlICcrJVktJW0tJWQgJUg6JU06JVMnKSAkKiIgPj4gIiRMT0ciOyB9CgojIOaLjeaRhOaXpeacn++8iOS4jiBqdWRnZS5zaCDkuIDoh7TvvIkKZmRhdGUoKSB7CiAgQj0kKGJhc2VuYW1lICIkMSIpOyBSPSIiCiAgY2FzZSAiJEIiIGluCiAgICAqMjBbMC05XVswLTldLVswMV1bMC05XS1bMC0zXVswLTldKikgUj0kKHByaW50ZiAnJXMnICIkQiIgfCBzZWQgLW4gJ3MvLipcKDIwWzAtOV1bMC05XS1bMDFdWzAtOV0tWzAtM11bMC05XVwpLiovXDEvcCcgfCBoZWFkIC0xKSA7OwogIGVzYWMKICBbIC16ICIkUiIgXSAmJiBSPSQocHJpbnRmICclcycgIiRCIiB8IHNlZCAtbiAncy8uKlteMC05XVwoMjBbMC05XVswLTldXClcKFswMV1bMC05XVwpXChbMC0zXVswLTldXClfWzAtOV1bMC05XVswLTldWzAtOV1bMC05XVswLTldLiovXDEtXDItXDMvcCcgfCBoZWFkIC0xKQogIFsgLXogIiRSIiBdICYmIFI9JChwcmludGYgJyVzJyAiJEIiIHwgc2VkIC1uICdzL15cKDIwWzAtOV1bMC05XVwpXChbMDFdWzAtOV1cKVwoWzAtM11bMC05XVwpX1swLTldWzAtOV1bMC05XVswLTldWzAtOV1bMC05XS4qL1wxLVwyLVwzL3AnIHwgaGVhZCAtMSkKICBbIC16ICIkUiIgXSAmJiBjYXNlICIkQiIgaW4KICAgICoxWzAtOV1bMC05XVswLTldWzAtOV1bMC05XVswLTldWzAtOV1bMC05XVswLTldWzAtOV1bMC05XVswLTldKikKICAgICAgVFM9JChwcmludGYgJyVzJyAiJEIiIHwgc2VkIC1uICdzLy4qW14wLTldXCgxWzAtOV1cezEyXH1cKVteMC05XS4qL1wxL3AnIHwgaGVhZCAtMSkKICAgICAgWyAtbiAiJFRTIiBdICYmIFI9JCgkQkIgZGF0ZSAtZCAiQCQocHJpbnRmICclcycgIiRUUyIgfCBzZWQgJ3MvLi4uJC8vJykiICslWS0lbS0lZCAyPi9kZXYvbnVsbCkgOzsKICBlc2FjCiAgWyAteiAiJFIiIF0gJiYgUj0kKCRCQiBkYXRlIC1kICJAJCgkQkIgc3RhdCAtYyAlWSAiJDEiIDI+L2Rldi9udWxsIHx8IGVjaG8gMCkiICslWS0lbS0lZCAyPi9kZXYvbnVsbCkKICBbIC16ICIkUiIgXSAmJiBSPSJ1bmtub3duIgogIHByaW50ZiAnJXMnICIkUiIKfQpqZXNjKCkgeyBwcmludGYgJyVzJyAiJDEiIHwgc2VkICdzL1xcL1xcXFwvZzsgcy8iL1xcIi9nJyB8IHRyIC1kICdcclxuXHQnOyB9CgojIOWPluacgOi/keeahCBOIOS4quW+heWIpOmhue+8iOaMieaWh+S7tiBtdGltZSDlgJLluo/vvIkKTElTVD0vZGF0YS9sb2NhbC90bXAvX3RvZG8udHh0CjogPiAiJExJU1QiCmZvciBMIGluICIkU1QiL2xvYy0qLnRzdjsgZG8KICBbIC1zICIkTCIgXSB8fCBjb250aW51ZQogIElEPSQoYmFzZW5hbWUgIiRMIiAudHN2IHwgc2VkICdzL15sb2MtLy8nKQogIFsgLWYgIiRTVC9hbmFseXNpcy8kSUQuanNvbiIgXSAmJiBjb250aW51ZQogIElGUz0nCScgcmVhZCAtciBJRDIgUkVMIFNaIEVYVCA8ICIkTCIKICBTUkM9IiRJTkJPWC8kUkVMIgogIFsgLWYgIiRTUkMiIF0gfHwgY29udGludWUKICBNVD0kKCRCQiBzdGF0IC1jICVZICIkU1JDIiAyPi9kZXYvbnVsbCB8fCBlY2hvIDApCiAgcHJpbnRmICclc1x0JXNcdCVzXHQlc1x0JXNcbicgIiRNVCIgIiRJRCIgIiRSRUwiICIkU1oiICIkRVhUIiA+PiAiJExJU1QiCmRvbmUKClRPVEFMPSQod2MgLWwgPCAiJExJU1QiKQplY2hvICLlvoXliKTmgLvmlbA6ICRUT1RBTO+8jOacrOasoeWkhOeQhuWJjSAkTElNSVQg5LiqIgplY2hvICIiCgpzb3J0IC1ybiAiJExJU1QiIHwgaGVhZCAtJExJTUlUID4gIiRMSVNULm4iCk49MAp3aGlsZSBJRlM9JwknIHJlYWQgLXIgTVQgSUQgUkVMIFNaIEVYVDsgZG8KICBOPSQoKE4rMSkpCiAgU1JDPSIkSU5CT1gvJFJFTCIKICBOQU1FPSQoYmFzZW5hbWUgIiRSRUwiKQogIEZEPSQoZmRhdGUgIiRSRUwiICIkTVQiKQogIGVjaG8gIlskTi8kTElNSVRdICROQU1FIgoKICBUMD0kKGRhdGUgKyVzKQogIENBVD0iIjsgREVTQz0iIjsgTU9ERUw9IiIKICBjYXNlICIkRVhUIiBpbgogICAgbXA0fG1vdnwzZ3B8bTR2KQogICAgICBDQVQ9InZpZGVvIjsgREVTQz0i6KeG6aKR77yM5pyq5YGa55S76Z2i6K+G5YirIjsgTU9ERUw9InJ1bGU6dmlkZW8iCiAgICAgIDs7CiAgICAqKQogICAgICBPVVQ9JChzaCAiJFZMTSIgIiRTUkMiIDI+L2Rldi9udWxsIHwgdHIgLWQgJ1xyJyB8IGdyZXAgLXYgJ15bWzpzcGFjZTpdXSokJyB8IHRhaWwgLTEpCiAgICAgIGlmIFsgLW4gIiRPVVQiIF07IHRoZW4KICAgICAgICBDQVQ9JChwcmludGYgJyVzJyAiJE9VVCIgfCBzZWQgJ3MvfC4qLy8nIHwgdHIgLWQgJyBcdCcpCiAgICAgICAgREVTQz0kKHByaW50ZiAnJXMnICIkT1VUIiB8IHNlZCAncy9eW158XSp8Ly8nIHwgc2VkICdzL15bWzpzcGFjZTpdXSovLzsgcy9bWzpzcGFjZTpdXSokLy8nKQogICAgICAgIE1PREVMPSJtaW5pY3BtLXYiCiAgICAgIGZpCiAgICAgIGNhc2UgIiRDQVQiIGluIHdvcmt8aG9tZXxzY3JlZW5zaG90fG90aGVyKSA7OyAqKSBDQVQ9Im90aGVyIiA7OyBlc2FjCiAgICAgIFsgLXogIiRERVNDIiBdICYmIHsgQ0FUPSJ1bmNsYXNzaWZpZWQiOyBERVNDPSLor4bliKvlpLHotKXvvIzlvoXkurrlt6UiOyB9CiAgICAgIDs7CiAgZXNhYwogIE1TPSQoKCAoJChkYXRlICslcykgLSBUMCkgKiAxMDAwICkpCgogICMg5Yaz5a6aIHN1Z2dlc3QKICBjYXNlICIkQ0FUIiBpbgogICAgd29ya3xob21lKSBTVUc9ImtlZXAiIDs7CiAgICBzY3JlZW5zaG90KSBTVUc9ImRlbCIgOzsKICAgICopIFNVRz0iaG9sZCIgOzsKICBlc2FjCgogICMg5YaZIGFuYWx5c2lzLzxpZD4uanNvbgogIHByaW50ZiAneyJpZCI6IiVzIiwibmFtZSI6IiVzIiwicmVsIjoiJXMiLCJzaXplIjolcywibXRpbWUiOiVzLCJkYXRlIjoiJXMiLCJ0eXBlIjoiJXMiLCJjYXQiOiIlcyIsImRlc2MiOiIlcyIsIm1vZGVsIjoiJXMiLCJzdWdnZXN0IjoiJXMiLCJiYXRjaCI6IiVzIiwibXMiOiVzLCJ0cyI6JXN9XG4nIFwKICAgICIkSUQiICIkKGplc2MgIiROQU1FIikiICIkKGplc2MgIiRSRUwiKSIgIiR7U1o6LTB9IiAiJHtNVDotMH0iICIkRkQiICIke0VYVDotanBnfSIgXAogICAgIiRDQVQiICIkKGplc2MgIiRERVNDIikiICIkTU9ERUwiICIkU1VHIiAiJChkYXRlICslRikiICIkTVMiICIkKGRhdGUgKyVzKSIgXAogICAgPiAiJFNUL2FuYWx5c2lzLyRJRC5qc29uIgoKICAjIOWQjOaXtui/veWKoOWIsCBhbmFseXNpcy5qc29ubO+8iOWuoeiuoe+8iQogIGNhdCAiJFNUL2FuYWx5c2lzLyRJRC5qc29uIiA+PiAiJFNUL2FuYWx5c2lzLmpzb25sIgoKICBlY2hvICIgICAgIOKGkiAkQ0FUIHwgJERFU0MiCiAgbG9nICIgIFskTi8kTElNSVRdICRDQVQgfCAkREVTQyB8ICR7TVN9bXMgfCAkTkFNRSIKZG9uZSA8ICIkTElTVC5uIgoKcm0gLWYgIiRMSVNUIiAiJExJU1QubiIKZWNobyAiIgplY2hvICI9PT0g5a6M5oiQICROIOS4qiA9PT0iCmVjaG8gIuW3suWIpOaAu+aVsDogJChscyAiJFNUIi9hbmFseXNpcy8qLmpzb24gMj4vZGV2L251bGwgfCB3YyAtbCkiCg==
+#!/system/bin/sh
+# 小批量判读：只判最近 N 个待判项（默认 10 个）
+# 不跑完整 judge.sh（那会判 540 个），这里逐条判断
+
+BASE=/data/media/0/nasbak
+INBOX=$BASE/inbox
+ST=$BASE/state
+WWW=/data/adb/nasbak/www
+LOGD=/data/adb/nasbak/logs
+BB=/data/adb/magisk/busybox
+VLM=/data/adb/nasbak/bin/vlm_run.sh
+LOG=$LOGD/judge.log
+LIMIT=${1:-10}
+
+log() { echo "$(date '+%Y-%m-%d %H:%M:%S') $*" >> "$LOG"; }
+
+# 拍摄日期（与 judge.sh 一致）
+fdate() {
+  B=$(basename "$1"); R=""
+  case "$B" in
+    *20[0-9][0-9]-[01][0-9]-[0-3][0-9]*) R=$(printf '%s' "$B" | sed -n 's/.*\(20[0-9][0-9]-[01][0-9]-[0-3][0-9]\).*/\1/p' | head -1) ;;
+  esac
+  [ -z "$R" ] && R=$(printf '%s' "$B" | sed -n 's/.*[^0-9]\(20[0-9][0-9]\)\([01][0-9]\)\([0-3][0-9]\)_[0-9][0-9][0-9][0-9][0-9][0-9].*/\1-\2-\3/p' | head -1)
+  [ -z "$R" ] && R=$(printf '%s' "$B" | sed -n 's/^\(20[0-9][0-9]\)\([01][0-9]\)\([0-3][0-9]\)_[0-9][0-9][0-9][0-9][0-9][0-9].*/\1-\2-\3/p' | head -1)
+  [ -z "$R" ] && case "$B" in
+    *1[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]*)
+      TS=$(printf '%s' "$B" | sed -n 's/.*[^0-9]\(1[0-9]\{12\}\)[^0-9].*/\1/p' | head -1)
+      [ -n "$TS" ] && R=$($BB date -d "@$(printf '%s' "$TS" | sed 's/...$//')" +%Y-%m-%d 2>/dev/null) ;;
+  esac
+  [ -z "$R" ] && R=$($BB date -d "@$($BB stat -c %Y "$1" 2>/dev/null || echo 0)" +%Y-%m-%d 2>/dev/null)
+  [ -z "$R" ] && R="unknown"
+  printf '%s' "$R"
+}
+jesc() { printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g' | tr -d '\r\n\t'; }
+
+# 取最近的 N 个待判项（按文件 mtime 倒序）
+LIST=/data/local/tmp/_todo.txt
+: > "$LIST"
+for L in "$ST"/loc-*.tsv; do
+  [ -s "$L" ] || continue
+  ID=$(basename "$L" .tsv | sed 's/^loc-//')
+  [ -f "$ST/analysis/$ID.json" ] && continue
+  IFS='	' read -r ID2 REL SZ EXT < "$L"
+  SRC="$INBOX/$REL"
+  [ -f "$SRC" ] || continue
+  MT=$($BB stat -c %Y "$SRC" 2>/dev/null || echo 0)
+  printf '%s\t%s\t%s\t%s\t%s\n' "$MT" "$ID" "$REL" "$SZ" "$EXT" >> "$LIST"
+done
+
+TOTAL=$(wc -l < "$LIST")
+echo "待判总数: $TOTAL，本次处理前 $LIMIT 个"
+echo ""
+
+sort -rn "$LIST" | head -$LIMIT > "$LIST.n"
+N=0
+while IFS='	' read -r MT ID REL SZ EXT; do
+  N=$((N+1))
+  SRC="$INBOX/$REL"
+  NAME=$(basename "$REL")
+  FD=$(fdate "$REL" "$MT")
+  echo "[$N/$LIMIT] $NAME"
+
+  T0=$(date +%s)
+  CAT=""; DESC=""; MODEL=""
+  case "$EXT" in
+    mp4|mov|3gp|m4v)
+      CAT="video"; DESC="视频，未做画面识别"; MODEL="rule:video"
+      ;;
+    *)
+      OUT=$(sh "$VLM" "$SRC" 2>/dev/null | tr -d '\r' | grep -v '^[[:space:]]*$' | tail -1)
+      if [ -n "$OUT" ]; then
+        CAT=$(printf '%s' "$OUT" | sed 's/|.*//' | tr -d ' \t')
+        DESC=$(printf '%s' "$OUT" | sed 's/^[^|]*|//' | sed 's/^[[:space:]]*//; s/[[:space:]]*$//')
+        MODEL="minicpm-v"
+      fi
+      case "$CAT" in work|home|screenshot|other) ;; *) CAT="other" ;; esac
+      [ -z "$DESC" ] && { CAT="unclassified"; DESC="识别失败，待人工"; }
+      ;;
+  esac
+  MS=$(( ($(date +%s) - T0) * 1000 ))
+
+  # 决定 suggest
+  case "$CAT" in
+    work|home) SUG="keep" ;;
+    screenshot) SUG="del" ;;
+    *) SUG="hold" ;;
+  esac
+
+  # 写 analysis/<id>.json
+  printf '{"id":"%s","name":"%s","rel":"%s","size":%s,"mtime":%s,"date":"%s","type":"%s","cat":"%s","desc":"%s","model":"%s","suggest":"%s","batch":"%s","ms":%s,"ts":%s}\n' \
+    "$ID" "$(jesc "$NAME")" "$(jesc "$REL")" "${SZ:-0}" "${MT:-0}" "$FD" "${EXT:-jpg}" \
+    "$CAT" "$(jesc "$DESC")" "$MODEL" "$SUG" "$(date +%F)" "$MS" "$(date +%s)" \
+    > "$ST/analysis/$ID.json"
+
+  # 同时追加到 analysis.jsonl（审计）
+  cat "$ST/analysis/$ID.json" >> "$ST/analysis.jsonl"
+
+  echo "     → $CAT | $DESC"
+  log "  [$N/$LIMIT] $CAT | $DESC | ${MS}ms | $NAME"
+done < "$LIST.n"
+
+rm -f "$LIST" "$LIST.n"
+echo ""
+echo "=== 完成 $N 个 ==="
+echo "已判总数: $(ls "$ST"/analysis/*.json 2>/dev/null | wc -l)"

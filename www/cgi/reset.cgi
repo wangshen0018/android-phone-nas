@@ -1,1 +1,19 @@
-IyEvc3lzdGVtL2Jpbi9zaAojIHJlc2V0LmNnaSDigJQg5q2j5byP546v5aKD54mI77ya5Y+q5riF5Yik5a6a5LiO5Zue5omn77yM6K6p5b2T5aSp5Y+v5Lul6YeN5YikCiMKIyDkuI7mtYvor5XmspnnrrHniYjnmoTlhbPplK7ljLrliKvvvJoKIyAgIOe7neS4jeWIoOmZpCBpbmJveCAvIGFyY2hpdmUgLyBldmVudHMg4oCU4oCUIOmCo+S6m+aYr+ecn+Wunui1hOS6p+OAggojICAg6YeN5Yik5Y+q5b2x5ZON44CM5b6F5Yqe5YiX6KGo44CN55qE5Yik5pat54q25oCB77yM56OB55uY5LiK55qE5paH5Lu25LiN5Yqo44CCCkRBVEE9L2RhdGEvbWVkaWEvMC9uYXNiYWsvc3RhdGUKcHJpbnRmICdDb250ZW50LVR5cGU6IGFwcGxpY2F0aW9uL2pzb25cclxuQ2FjaGUtQ29udHJvbDogbm8tc3RvcmVcclxuXHJcbicKCmlmIFsgIiRSRVFVRVNUX01FVEhPRCIgIT0gIlBPU1QiIF07IHRoZW4gZWNobyAneyJvayI6ZmFsc2UsImVyciI6IlBPU1Qgb25seSJ9JzsgZXhpdCAwOyBmaQoKRDE9JCh3YyAtbCA8ICIkREFUQS9kZWNpc2lvbnMuanNvbmwiIDI+L2Rldi9udWxsIHwgdHIgLWQgJyAnKQpSMT0kKHdjIC1sIDwgIiREQVRBL3JlY2VpcHRzLmpzb25sIiAyPi9kZXYvbnVsbCB8IHRyIC1kICcgJykKCjogPiAiJERBVEEvZGVjaXNpb25zLmpzb25sIgo6ID4gIiREQVRBL3JlY2VpcHRzLmpzb25sIgoKcHJpbnRmICd7Im9rIjp0cnVlLCJjbGVhcmVkX2RlY2lzaW9ucyI6JXMsImNsZWFyZWRfcmVjZWlwdHMiOiVzLCJub3RlIjoi5LuF5riF5Yik5a6a77yM5paH5Lu25LiO5LqL5Lu25pyq5YqoIn1cbicgXAogICIke0QxOi0wfSIgIiR7UjE6LTB9Igo=
+#!/system/bin/sh
+# reset.cgi — 正式环境版：只清判定与回执，让当天可以重判
+#
+# 与测试沙箱版的关键区别：
+#   绝不删除 inbox / archive / events —— 那些是真实资产。
+#   重判只影响「待办列表」的判断状态，磁盘上的文件不动。
+DATA=/data/media/0/nasbak/state
+printf 'Content-Type: application/json\r\nCache-Control: no-store\r\n\r\n'
+
+if [ "$REQUEST_METHOD" != "POST" ]; then echo '{"ok":false,"err":"POST only"}'; exit 0; fi
+
+D1=$(wc -l < "$DATA/decisions.jsonl" 2>/dev/null | tr -d ' ')
+R1=$(wc -l < "$DATA/receipts.jsonl" 2>/dev/null | tr -d ' ')
+
+: > "$DATA/decisions.jsonl"
+: > "$DATA/receipts.jsonl"
+
+printf '{"ok":true,"cleared_decisions":%s,"cleared_receipts":%s,"note":"仅清判定，文件与事件未动"}\n' \
+  "${D1:-0}" "${R1:-0}"

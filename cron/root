@@ -1,1 +1,4 @@
-Ki81ICogKiAqICogc2ggL2RhdGEvYWRiL3Nydi9kYXRhL2ZpeGFkYi1ydW4uc2gKMCAzICogKiAqIHNoIC9kYXRhL2xvY2FsL3RtcC9neXAvZ3lwLWJhY2t1cC5zaAowIDEyICogKiAqIHNoIC9kYXRhL2xvY2FsL3RtcC9neXAvZ3lwLWJhY2t1cC5zaAoqLzIgKiAqICogKiBzaCAvZGF0YS9hZGIvbmFzYmFrL2Jpbi9zdGF0dXMtY29sbGVjdC5zaAo=
+*/5 * * * * sh /data/adb/srv/data/fixadb-run.sh
+0 3 * * * sh /data/local/tmp/gyp/gyp-backup.sh
+0 12 * * * sh /data/local/tmp/gyp/gyp-backup.sh
+*/2 * * * * sh /data/adb/nasbak/bin/status-collect.sh

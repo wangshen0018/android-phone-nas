@@ -1,1 +1,86 @@
-IyEvc3lzdGVtL2Jpbi9zaAojIENHSTog6L2s5Y+RIFlUU++8iOeUteW9seS4k+eUqO+8jOWumOaWuSBKU09OIEFQSe+8iQojIOWFpeWPgjogcT3lhbPplK7or43vvIjliY3nq6/lt7LlgZogVVJMIOe8luegge+8jOi/memHjOWOn+agt+aLvOi/myBVUkzvvIkKIyDlh7rlj4I6IFlUUyDljp/lp4sgSlNPTu+8iHsuLi5977yJ77yb5aSx6LSl5pe26L+U5ZueIHsic3RhdHVzIjoiZXJyb3IiLCJkYXRhIjp7Im1vdmllcyI6W119fQojCiMg5Z+f5ZCN5Zue6YCA77yaWVRTIOWumOaWuSAyMDI2LTA0LTEwIOi1t+aKiiBBUEkgYmFzZSDov4HliLAgbW92aWVzLWFwaS5hY2NlbC5sae+8jAojIOaXp+Wfn+WQjSB5dHMuZ2cg55uu5YmN5LuN5Zyo5pyN5Yqh77yI5a6e5rWLIDIuNSDnp5Lov5Tlm57vvInjgILov5nnsbvnq5nmjaLln5/lkI3popHnuYHvvIzkuI3noaznvJbnoIHljZXln5/lkI3jgIIKCnByaW50ZiAnQ29udGVudC1UeXBlOiBhcHBsaWNhdGlvbi9qc29uXHJcbicKcHJpbnRmICdDYWNoZS1Db250cm9sOiBuby1zdG9yZVxyXG4nCnByaW50ZiAnWC1Db250ZW50LVR5cGUtT3B0aW9uczogbm9zbmlmZlxyXG4nCnByaW50ZiAnXHJcbicKCkNVUkw9JChjb21tYW5kIC12IGN1cmwgMj4vZGV2L251bGwpClsgLXogIiRDVVJMIiBdICYmIENVUkw9L3N5c3RlbS9iaW4vY3VybAoKZm9yIF9sIGluIC9kYXRhL2FkYi9zcnYvbWFnbmV0L3Byb3h5LWxpYi5zaCAvZGF0YS9hZGIvbWFnbmV0L3Byb3h5LWxpYi5zaDsgZG8KICBbIC1mICIkX2wiIF0gJiYgeyAuICIkX2wiOyBicmVhazsgfQpkb25lCgpxPSIke1FVRVJZX1NUUklOR30iCmNhc2UgIiRxIiBpbgogIHE9KikgcT0iJHtxI3E9fSIgOzsKICAqKSAgIHE9IiIgOzsKZXNhYwpxPSIke3ElJSYqfSIKCiMgcSDmmK8gVVJMIOe8lueggeeahO+8jOebtOaOpeaLvOi/myBxdWVyeV90ZXJtIOato+Wlve+8iOWQjOS4gOe8lueggeWxgu+8ie+8jOS4jeiDveWcqOi/memHjOino+eggeOAggojIOS9huWIpOepuuW/hemhu+ino+eggeWQjuWIpO+8muWunua1iyBxPSUyMCAvIHE9KyAvIHE9JTA5IOi/meexu+e6r+epuueZvei+k+WFpe+8jFlUUyDkvJrov5Tlm54KIyDmlbTnq5nliJfooajvvIhtb3ZpZV9jb3VudCA3ODEyOe+8ie+8jOWJjeerr+WwseS8muaYvuekuuS4gOWghuS4juWFs+mUruivjeaXoOWFs+eahOadoeebruOAggpxY2hrPSQocHJpbnRmICclcycgIiRxIiB8IHNlZCAncy8lMjAvL2c7IHMvJTA5Ly9nOyBzLyUwW2FBZERdLy9nOyBzLysvIC9nJyB8IHRyIC1kICcgXHQnKQppZiBbIC16ICIkcWNoayIgXTsgdGhlbgogIGVjaG8gJ3sic3RhdHVzIjoiZXJyb3IiLCJkYXRhIjp7Im1vdmllcyI6W119fScKICBleGl0IDAKZmkKClVBPSdNb3ppbGxhLzUuMCAoTGludXg7IEFuZHJvaWQgMTM7IDxERVZJQ0VfTU9ERUw+KSBBcHBsZVdlYktpdC81MzcuMzYgKEtIVE1MLCBsaWtlIEdlY2tvKSBDaHJvbWUvMTIwLjAgTW9iaWxlIFNhZmFyaS81MzcuMzYnCgojIOWujOaVtOS4lOaIkOWKn+eahCBKU09OIOaJjeeul+WPr+eUqO+8mummluWtl+espiB7IOOAgeacq+Wtl+espiB9IOOAgeWQq+eyvuehrueahCAic3RhdHVzIjoib2siCiMg77yI5LiN6IO95Y+q6YCa6YWN5Yy56YWNIG9r77yM5qCH6aKY5oiWIHN0YXR1c19tZXNzYWdlIOmHjOWHuueOsCBPSyDkvJror6/liKTvvIkKZ29vZF9qc29uKCkgewogIGNhc2UgIiQxIiBpbiBceyopIDs7ICopIHJldHVybiAxIDs7IGVzYWMKICBbICIkKHByaW50ZiAnJXMnICIkMSIgfCB0YWlsIC1jIDEpIiA9ICJ9IiBdIHx8IHJldHVybiAxCiAgcHJpbnRmICclcycgIiQxIiB8IGdyZXAgLXEgJyJzdGF0dXMiOiJvayInIHx8IHJldHVybiAxCiAgcmV0dXJuIDAKfQoKdHJ5X2Jhc2UoKSB7CiAgIyAkMT3ln5/lkI0gJDI96aKd5aSWIGN1cmwg5Y+C5pWw77yI5Luj55CG5byA5YWz77yM5Y+v5Li656m677yJJDM96LaF5pe256eS5pWwCiAgUj0kKCIkQ1VSTCIgLXNMIC0tbWF4LXRpbWUgIiQzIiAkMiAtQSAiJFVBIiBcCiAgICAiaHR0cHM6Ly8kMS9hcGkvdjIvbGlzdF9tb3ZpZXMuanNvbj9xdWVyeV90ZXJtPSR7cX0mbGltaXQ9MjAiIDI+L2Rldi9udWxsKQogIGlmIGdvb2RfanNvbiAiJFIiOyB0aGVuCiAgICBwcmludGYgJyVzJyAiJFIiCiAgICByZXR1cm4gMAogIGZpCiAgcmV0dXJuIDEKfQoKIyDkuI4gc2VhcmNoLmNnaSDnm7jlj43vvJoqKuebtOi/nuS8mOWFiO+8jOS7o+eQhuWFnOW6lSoq44CCCiMg5Zug5Li6IFlUUyDnmoTlm73lhoXnm7Tov57mnKzmnaXlsLHmmK/lpb3nmoTvvIjlrp7mtYsgMS41fjIuNSDnp5LjgIHku47mnKrlpLHotKXvvInvvIwKIyDlhYjotbDku6PnkIblj43ogIznmb3lpJrkuIDot7Plu7bov5/vvJvku6PnkIblj6rlnKjnm7Tov57kuKTkuKrln5/lkI3pg73kuI3pgJrml7bmiY3mtL7kuIrnlKjlnLrjgIIKIwojIOS7o+eQhuatu+S6oeS5n+S4jeS8muaLlue0r+i/memHjO+8mnVybHRlc3Qg5oiQ5ZGY5YWo5q275pe2IHNpbmctYm94IOeri+WNs+aLkue7nei/nuaOpQojIO+8iOWunua1iyBjb25uZWN0aW9uIHJlZnVzZWTjgIHmr6vnp5LnuqfvvInvvIzkuI3mmK/mhaLmhaLotoXml7bjgIIKIyDml7bluo/pooTnrpfvvJrnm7Tov57kuKTot7PlkIQgNiDnp5LvvIhZVFMg5a6e5rWLIDEuNX4yLjUg56eS5bCx5Zue77yMNiDnp5Llvojlrr3vvInvvIwKIyDku6PnkIbkuKTot7PlkIQgOCDnp5LjgILmnIDlnY8gNis2KzgrOD0yOCDnp5LvvIzkuI4gc2VhcmNoLmNnaSDlkIzlj6PlvoTvvJsKIyDliY3nq68gc3JjWVRTIOebuOW6lOS7jiAyMCDnp5LmlL7lrr3liLAgMzAg56eS77yM5ZCm5YiZ5ZCO56uv6L+Y5rKh6LeR5a6M5YmN56uv5YWI5pS+5byD44CCCk9VVD0iIgpmb3IgYmFzZSBpbiB5dHMuZ2cgbW92aWVzLWFwaS5hY2NlbC5saTsgZG8KICBPVVQ9JCh0cnlfYmFzZSAiJGJhc2UiICIiIDYpICYmIGJyZWFrCiAgT1VUPSIiCmRvbmUKaWYgWyAteiAiJE9VVCIgXSAmJiBbIC1uICIkUFJPWFlfT1BUIiBdOyB0aGVuCiAgZm9yIGJhc2UgaW4geXRzLmdnIG1vdmllcy1hcGkuYWNjZWwubGk7IGRvCiAgICBPVVQ9JCh0cnlfYmFzZSAiJGJhc2UiICIkUFJPWFlfT1BUIiA4KSAmJiBicmVhawogICAgT1VUPSIiCiAgZG9uZQpmaQoKaWYgWyAteiAiJE9VVCIgXTsgdGhlbgogIGVjaG8gJ3sic3RhdHVzIjoiZXJyb3IiLCJkYXRhIjp7Im1vdmllcyI6W119fScKICBleGl0IDAKZmkKCnByaW50ZiAnJXMnICIkT1VUIgpleGl0IDA=
+#!/system/bin/sh
+# CGI: 转发 YTS（电影专用，官方 JSON API）
+# 入参: q=关键词（前端已做 URL 编码，这里原样拼进 URL）
+# 出参: YTS 原始 JSON（{...}）；失败时返回 {"status":"error","data":{"movies":[]}}
+#
+# 域名回退：YTS 官方 2026-04-10 起把 API base 迁到 movies-api.accel.li，
+# 旧域名 yts.gg 目前仍在服务（实测 2.5 秒返回）。这类站换域名频繁，不硬编码单域名。
+
+printf 'Content-Type: application/json\r\n'
+printf 'Cache-Control: no-store\r\n'
+printf 'X-Content-Type-Options: nosniff\r\n'
+printf '\r\n'
+
+CURL=$(command -v curl 2>/dev/null)
+[ -z "$CURL" ] && CURL=/system/bin/curl
+
+for _l in /data/adb/srv/magnet/proxy-lib.sh /data/adb/magnet/proxy-lib.sh; do
+  [ -f "$_l" ] && { . "$_l"; break; }
+done
+
+q="${QUERY_STRING}"
+case "$q" in
+  q=*) q="${q#q=}" ;;
+  *)   q="" ;;
+esac
+q="${q%%&*}"
+
+# q 是 URL 编码的，直接拼进 query_term 正好（同一编码层），不能在这里解码。
+# 但判空必须解码后判：实测 q=%20 / q=+ / q=%09 这类纯空白输入，YTS 会返回
+# 整站列表（movie_count 78129），前端就会显示一堆与关键词无关的条目。
+qchk=$(printf '%s' "$q" | sed 's/%20//g; s/%09//g; s/%0[aAdD]//g; s/+/ /g' | tr -d ' \t')
+if [ -z "$qchk" ]; then
+  echo '{"status":"error","data":{"movies":[]}}'
+  exit 0
+fi
+
+UA='Mozilla/5.0 (Linux; Android 13; <DEVICE_MODEL>) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Mobile Safari/537.36'
+
+# 完整且成功的 JSON 才算可用：首字符 { 、末字符 } 、含精确的 "status":"ok"
+# （不能只通配匹配 ok，标题或 status_message 里出现 OK 会误判）
+good_json() {
+  case "$1" in \{*) ;; *) return 1 ;; esac
+  [ "$(printf '%s' "$1" | tail -c 1)" = "}" ] || return 1
+  printf '%s' "$1" | grep -q '"status":"ok"' || return 1
+  return 0
+}
+
+try_base() {
+  # $1=域名 $2=额外 curl 参数（代理开关，可为空）$3=超时秒数
+  R=$("$CURL" -sL --max-time "$3" $2 -A "$UA" \
+    "https://$1/api/v2/list_movies.json?query_term=${q}&limit=20" 2>/dev/null)
+  if good_json "$R"; then
+    printf '%s' "$R"
+    return 0
+  fi
+  return 1
+}
+
+# 与 search.cgi 相反：**直连优先，代理兜底**。
+# 因为 YTS 的国内直连本来就是好的（实测 1.5~2.5 秒、从未失败），
+# 先走代理反而白多一跳延迟；代理只在直连两个域名都不通时才派上用场。
+#
+# 代理死亡也不会拖累这里：urltest 成员全死时 sing-box 立即拒绝连接
+# （实测 connection refused、毫秒级），不是慢慢超时。
+# 时序预算：直连两跳各 6 秒（YTS 实测 1.5~2.5 秒就回，6 秒很宽），
+# 代理两跳各 8 秒。最坏 6+6+8+8=28 秒，与 search.cgi 同口径；
+# 前端 srcYTS 相应从 20 秒放宽到 30 秒，否则后端还没跑完前端先放弃。
+OUT=""
+for base in yts.gg movies-api.accel.li; do
+  OUT=$(try_base "$base" "" 6) && break
+  OUT=""
+done
+if [ -z "$OUT" ] && [ -n "$PROXY_OPT" ]; then
+  for base in yts.gg movies-api.accel.li; do
+    OUT=$(try_base "$base" "$PROXY_OPT" 8) && break
+    OUT=""
+  done
+fi
+
+if [ -z "$OUT" ]; then
+  echo '{"status":"error","data":{"movies":[]}}'
+  exit 0
+fi
+
+printf '%s' "$OUT"
+exit 0

@@ -1,1 +1,19 @@
-IyEvc3lzdGVtL2Jpbi9zaAojIHN0YXR1cy5jZ2kg4oCUIOWPquivu+eKtuaAgee8k+WtmO+8jOS4jeWBmuS7u+S9lemHjea0uwpwcmludGYgJ0NvbnRlbnQtVHlwZTogYXBwbGljYXRpb24vanNvblxyXG5DYWNoZS1Db250cm9sOiBuby1zdG9yZVxyXG5cclxuJwpDQUNIRT0vZGF0YS9tZWRpYS8wL25hc2Jhay9zdGF0ZS9zdGF0dXMtY2FjaGUuanNvbgoKaWYgWyAhIC1mICIkQ0FDSEUiIF07IHRoZW4KICBlY2hvICd7Im9rIjpmYWxzZSwiZXJyIjoi5pqC5peg54q25oCB57yT5a2Y77yM6K+3562J5b6F6YeH6ZuG6ISa5pys6L+Q6KGMIiwic2VydmljZXMiOltdLCJmaWxlcyI6e30sImp1ZGdlIjp7fSwiY2F0cyI6e30sIm1vZGVscyI6e30sImRpc2siOnt9LCJsZWRnZXIiOnt9LCJldmVudHMiOjB9JwogIGV4aXQgMApmaQoKQUdFPSQoKCAkKGRhdGUgKyVzKSAtICQoc3RhdCAtYyAlWSAiJENBQ0hFIiAyPi9kZXYvbnVsbCB8fCBlY2hvIDApICkpCgojIOe8k+WtmOagvOW8jzogeyJ0cyI6Li4uLCJzZXJ2aWNlcyI6Wy4uLl0sImZpbGVzIjp7Li4ufSwuLi59CiMg55u05o6l6L+U5Zue57yT5a2Y5YaF5a6577yM5oqKIHRzIOabv+aNouaIkCBhZ2VTZWMKQk9EWT0kKHRyIC1kICdcclxuJyA8ICIkQ0FDSEUiIDI+L2Rldi9udWxsKQojIOWOu+aOieW8gOWktOeahCB7InRzIjrmlbDlrZcsICDlvpfliLDliankvZnpg6jliIYKUkVTVD0kKHByaW50ZiAnJXMnICIkQk9EWSIgfCBzZWQgJ3MvXnsidHMiOlswLTldKiwvLycpCnByaW50ZiAneyJvayI6dHJ1ZSwiYWdlU2VjIjolcywnICIkQUdFIgpwcmludGYgJyVzXG4nICIkUkVTVCI=
+#!/system/bin/sh
+# status.cgi — 只读状态缓存，不做任何重活
+printf 'Content-Type: application/json\r\nCache-Control: no-store\r\n\r\n'
+CACHE=/data/media/0/nasbak/state/status-cache.json
+
+if [ ! -f "$CACHE" ]; then
+  echo '{"ok":false,"err":"暂无状态缓存，请等待采集脚本运行","services":[],"files":{},"judge":{},"cats":{},"models":{},"disk":{},"ledger":{},"events":0}'
+  exit 0
+fi
+
+AGE=$(( $(date +%s) - $(stat -c %Y "$CACHE" 2>/dev/null || echo 0) ))
+
+# 缓存格式: {"ts":...,"services":[...],"files":{...},...}
+# 直接返回缓存内容，把 ts 替换成 ageSec
+BODY=$(tr -d '\r\n' < "$CACHE" 2>/dev/null)
+# 去掉开头的 {"ts":数字,  得到剩余部分
+REST=$(printf '%s' "$BODY" | sed 's/^{"ts":[0-9]*,//')
+printf '{"ok":true,"ageSec":%s,' "$AGE"
+printf '%s\n' "$REST"

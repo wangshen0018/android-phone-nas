@@ -1,1 +1,113 @@
-IyEvc3lzdGVtL2Jpbi9zaAojIG1vdmUtYnktZGF0ZS5zaCDigJQg5oqKIGluYm94IOWQhOadpea6kOebruW9lemHjOeahOaWsOaWh+S7tuaMieOAjOaLjeaRhOaXpeacn+OAjeenu+WFpSBpbmJveC885ouN5pGE5pel5pyfPi8KIwojIOiuvuiuoe+8iOeUqOaItyAyMDI2LTExLTAxLzAyIOehruiupO+8ie+8mgojICAgwrcgSzgwIOWPquaKiuaWh+S7tuWhnui/myBpbmJveCDnmoTlm7rlrprmnaXmupDlrZDnm67lvZXvvIzkuI3mjInml6XmnJ/lu7rlpLkKIyAgIMK3IOaMieaLjeaRhOaXpeacn+WIhuebruW9leWcqCBLNDAg56uv5YGa77yI5bCx5piv6L+Z5Liq6ISa5pys77yJCiMgICDCtyBLODAg5Y+q5Lyg44CM5LiK5qyh5aSH5Lu95ZCO5paw5aKe44CN55qE5paH5Lu277yI5oyJIG10aW1lIOaXtumXtOeql++8ie+8jOa6kOebruW9leiiq+a4heepuuS5n+S4jeS8mumHjeS8oAojCiMg5Y+w6LSm77ya5q+P5Liq5paH5Lu26K6wIHJlY3bvvIhLODDihpJpbmJveOadpea6kOebruW9le+8iSsgbXZkYXRl77yI4oaS5pel5pyf55uu5b2V77yJL2R1cO+8iOKGkl9kdXBfYmFja3Vw77yJCiMKIyDnlKjms5U6IHNoIG1vdmUtYnktZGF0ZS5zaCAgICAgICAgICAg5bmy6LeRCiMgICAgICAgc2ggbW92ZS1ieS1kYXRlLnNoIC0tYXBwbHkgICDnnJ/mraPnp7vliqjlubborrDlj7DotKYKCkJBU0U9L2RhdGEvbWVkaWEvMC9uYXNiYWsKSU5CT1g9JEJBU0UvaW5ib3gKRFVQQks9JElOQk9YL19kdXBfYmFja3VwCkJCPS9kYXRhL2FkYi9tYWdpc2svYnVzeWJveApMT0c9JEJBU0Uvc3RhdGUvbW92ZS1ieS1kYXRlLmxvZwpBUFBMWT0wClsgIiR7MTotfSIgPSAiLS1hcHBseSIgXSAmJiBBUFBMWT0xCgouIC9kYXRhL2FkYi9uYXNiYWsvYmluL2xpYi1sZWRnZXIuc2gKbWtkaXIgLXAgIiRCQVNFL3N0YXRlIiAyPi9kZXYvbnVsbApsb2coKSB7IGVjaG8gIiQoZGF0ZSAnKyVZLSVtLSVkICVIOiVNOiVTJykgJCoiID4+ICIkTE9HIjsgfQoKZmRhdGUoKSB7CiAgQj0kKGJhc2VuYW1lICIkMSIpOyBNUj0iIgogIGNhc2UgIiRCIiBpbgogICAgKjIwWzAtOV1bMC05XS1bMDFdWzAtOV0tWzAtM11bMC05XSopIE1SPSQocHJpbnRmICclcycgIiRCIiB8IHNlZCAtbiAncy8uKlwoMjBbMC05XVswLTldLVswMV1bMC05XS1bMC0zXVswLTldXCkuKi9cMS9wJyB8IGhlYWQgLTEpOzsKICBlc2FjCiAgWyAteiAiJE1SIiBdICYmIGNhc2UgIiRCIiBpbgogICAgKjIwWzAtOV1bMC05XVswMV1bMC05XVswLTNdWzAtOV1fKikgTVI9JChwcmludGYgJyVzJyAiJEIiIHwgc2VkIC1uICdzLy4qXCgyMFswLTldWzAtOV1cKVwoWzAxXVswLTldXClcKFswLTNdWzAtOV1cKV8uKi9cMS1cMi1cMy9wJyB8IGhlYWQgLTEpOzsKICBlc2FjCiAgWyAteiAiJE1SIiBdICYmIGNhc2UgIiRCIiBpbgogICAgKjIwWzAtOV1bMC05XV9bMDFdWzAtOV1fWzAtM11bMC05XSopIE1SPSQocHJpbnRmICclcycgIiRCIiB8IHNlZCAtbiAncy8uKlwoMjBbMC05XVswLTldXClfXChbMDFdWzAtOV1cKV9cKFswLTNdWzAtOV1cKV8uKi9cMS1cMi1cMy9wJyB8IGhlYWQgLTEpOzsKICBlc2FjCiAgWyAteiAiJE1SIiBdICYmIGNhc2UgIiRCIiBpbgogICAgKjFbMC05XVswLTldWzAtOV1bMC05XVswLTldWzAtOV1bMC05XVswLTldWzAtOV1bMC05XVswLTldWzAtOV0qKQogICAgICBUUz0kKHByaW50ZiAnJXMnICIkQiIgfCBzZWQgLW4gJ3MvLipbXjAtOV1cKDFbMC05XVx7MTJcfVwpW14wLTldLiovXDEvcCcgfCBoZWFkIC0xKQogICAgICBbIC1uICIkVFMiIF0gJiYgTVI9JCgkQkIgZGF0ZSAtZCAiQCQocHJpbnRmICclcycgIiRUUyIgfCBzZWQgJ3MvLi4uJC8vJykiICslWS0lbS0lZCAyPi9kZXYvbnVsbCk7OwogIGVzYWMKICBbIC16ICIkTVIiIF0gJiYgTVI9JCgkQkIgZGF0ZSAtZCAiQCQyIiArJVktJW0tJWQgMj4vZGV2L251bGwpCiAgcHJpbnRmICclcycgIiRNUiIKfQoKbG9nICI9PT0g5byA5aeLIChhcHBseT0kQVBQTFkpID09PSIKTU9WRUQ9MDsgRFVQTj0wOyBGQUlMTj0wOyBTS0lQTj0wCgpmb3IgU1JDIGluIENhbWVyYSBDYW1TY2FubmVyIHNjYW5uZXIgZmFtaWx5LWtpZCBpZC1jYXJkOyBkbwogIEQ9IiRJTkJPWC8kU1JDIgogIFsgLWQgIiREIiBdIHx8IGNvbnRpbnVlCiAgZm9yIEYgaW4gIiREIi8qOyBkbwogICAgWyAtZiAiJEYiIF0gfHwgY29udGludWUKICAgIEI9JChiYXNlbmFtZSAiJEYiKQogICAgY2FzZSAiJEIiIGluIC50cmFzaGVkLSp8LnBlbmRpbmctKnwubm9tZWRpYXwqLnRtcCkgY29udGludWUgOzsgZXNhYwogICAgUz0kKHN0YXQgLWMgJXMgIiRGIiAyPi9kZXYvbnVsbCkKICAgIFsgLXogIiRTIiBdIHx8IFsgIiRTIiA9ICIwIiBdICYmIGNvbnRpbnVlCiAgICBNVD0kKHN0YXQgLWMgJVkgIiRGIiAyPi9kZXYvbnVsbCk7IFsgLXogIiRNVCIgXSAmJiBNVD0kKGRhdGUgKyVzKQogICAgREQ9JChmZGF0ZSAiJEYiICIkTVQiKQogICAgWyAteiAiJEREIiBdICYmIHsgZWNobyAiU0tJUCjml6Dml6XmnJ8pOiAkQiI7IFNLSVBOPSQoKFNLSVBOKzEpKTsgY29udGludWU7IH0KICAgIERTVD0iJElOQk9YLyRERC8kQiIKCiAgICAjIC0tLS0g6KGlIHJlY3Yg6K6w5b2V77yaSzgwIOS4iuS8oOWIsCBpbmJveC885p2l5rqQPiAtLS0tCiAgICBpZiBbICIkQVBQTFkiID0gIjEiIF07IHRoZW4KICAgICAgUkVMU1JDPSJpbmJveC8kU1JDLyRCIgogICAgICBJRD0kKHByaW50ZiAnJXM6JXMnICJLODA6JFNSQy8kQiIgIiRTIiB8ICIkQkIiIHNoYTI1NnN1bSB8IGN1dCAtYzEtMTYpCiAgICAgICMg5ZCMIGlkIOW3suaciSByZWN2IOiusOW9leWwsei3s+i/h++8jOmBv+WFjemHjeWkjeiGqOiDgAogICAgICBpZiAhIGdyZXAgLUZxICJcImlkXCI6XCIkSURcIiIgIiRMRURHRVIiIDI+L2Rldi9udWxsOyB0aGVuCiAgICAgICAgbGVkZ2VyX2FkZCAiJElEIiAiJEIiICIkUyIgInJlY3YiICJLODAvJFNSQyIgIiRSRUxTUkMiICJLODAg5Zue5a625aSH5Lu95LiK5LygIgogICAgICBmaQogICAgZmkKCiAgICBpZiBbIC1lICIkRFNUIiBdOyB0aGVuCiAgICAgIFMyPSQoc3RhdCAtYyAlcyAiJERTVCIgMj4vZGV2L251bGwpCiAgICAgIGlmIFsgIiRTIiA9ICIkUzIiIF07IHRoZW4KICAgICAgICBNMT0kKCIkQkIiIG1kNXN1bSAiJEYiIDI+L2Rldi9udWxsIHwgY3V0IC1kJyAnIC1mMSkKICAgICAgICBNMj0kKCIkQkIiIG1kNXN1bSAiJERTVCIgMj4vZGV2L251bGwgfCBjdXQgLWQnICcgLWYxKQogICAgICAgIGlmIFsgLW4gIiRNMSIgXSAmJiBbICIkTTEiID0gIiRNMiIgXTsgdGhlbgogICAgICAgICAgZWNobyAiRFVQLWlkZW50aWNhbDogJFNSQy8kQiAo5bey5ZyoICRERC8pIgogICAgICAgICAgaWYgWyAiJEFQUExZIiA9ICIxIiBdOyB0aGVuCiAgICAgICAgICAgIG1rZGlyIC1wICIkRFVQQksvJFNSQyIgMj4vZGV2L251bGwKICAgICAgICAgICAgbXYgLWYgIiRGIiAiJERVUEJLLyRTUkMvJEIiIDI+L2Rldi9udWxsCiAgICAgICAgICAgIElEPSQocHJpbnRmICclczolcycgIks4MDokU1JDLyRCIiAiJFMiIHwgIiRCQiIgc2hhMjU2c3VtIHwgY3V0IC1jMS0xNikKICAgICAgICAgICAgbGVkZ2VyX2FkZCAiJElEIiAiJEIiICIkUyIgImR1cCIgImluYm94LyRTUkMvJEIiICJpbmJveC9fZHVwX2JhY2t1cC8kU1JDLyRCIiAi5LiOICRERC8g5YaF5ZCM5paH5Lu26YeN5aSN77yMbWQ1IOS4gOiHtCIKICAgICAgICAgIGZpCiAgICAgICAgICBEVVBOPSQoKERVUE4rMSkpOyBjb250aW51ZQogICAgICAgIGZpCiAgICAgIGZpCiAgICAgIE49MQogICAgICB3aGlsZSBbIC1lICIkSU5CT1gvJERELyR7QiUuKn1fJE4uJHtCIyMqLn0iIF07IGRvIE49JCgoTisxKSk7IFsgJE4gLWd0IDUwIF0gJiYgYnJlYWs7IGRvbmUKICAgICAgRFNUPSIkSU5CT1gvJERELyR7QiUuKn1fJE4uJHtCIyMqLn0iCiAgICBmaQoKICAgIGlmIFsgIiRBUFBMWSIgPSAiMSIgXTsgdGhlbgogICAgICBta2RpciAtcCAiJElOQk9YLyRERCIgMj4vZGV2L251bGwKICAgICAgaWYgbXYgLWYgIiRGIiAiJERTVCIgMj4vZGV2L251bGw7IHRoZW4KICAgICAgICBSRUxEU1Q9JChwcmludGYgJyVzJyAiJERTVCIgfCBzZWQgInMjXiRJTkJPWC8jIyIpCiAgICAgICAgSUQ9JChwcmludGYgJyVzOiVzJyAiSzgwOiRTUkMvJEIiICIkUyIgfCAiJEJCIiBzaGEyNTZzdW0gfCBjdXQgLWMxLTE2KQogICAgICAgIGxlZGdlcl9hZGQgIiRJRCIgIiRCIiAiJFMiICJtdmRhdGUiICJpbmJveC8kU1JDLyRCIiAiJFJFTERTVCIgIuaMieaLjeaRhOaXpeacnyAkREQg5b2S5L2NIgogICAgICAgIGxvZyAiTU9WRUQgJFNSQy8kQiAtPiAkUkVMRFNUIgogICAgICAgIE1PVkVEPSQoKE1PVkVEKzEpKQogICAgICBlbHNlCiAgICAgICAgbG9nICJGQUlMICAkU1JDLyRCIjsgZWNobyAiRkFJTCAgJEYiOyBGQUlMTj0kKChGQUlMTisxKSkKICAgICAgZmkKICAgIGVsc2UKICAgICAgZWNobyAiUExBTiAgJFNSQy8kQiAtPiAkREQvIgogICAgZmkKICBkb25lCmRvbmUKCmxlZGdlcl9yb3RhdGUgMj4vZGV2L251bGwKbG9nICI9PT0g5a6M5oiQOiBtb3ZlZD0kTU9WRUQgZHVwPSREVVBOIGZhaWw9JEZBSUxOIHNraXA9JFNLSVBOID09PSIKZWNobyAibW92ZWQ9JE1PVkVEIGR1cD0kRFVQTiBmYWlsPSRGQUlMTiBza2lwPSRTS0lQTiI=
+#!/system/bin/sh
+# move-by-date.sh — 把 inbox 各来源目录里的新文件按「拍摄日期」移入 inbox/<拍摄日期>/
+#
+# 设计（用户 2026-11-01/02 确认）：
+#   · K80 只把文件塞进 inbox 的固定来源子目录，不按日期建夹
+#   · 按拍摄日期分目录在 K40 端做（就是这个脚本）
+#   · K80 只传「上次备份后新增」的文件（按 mtime 时间窗），源目录被清空也不会重传
+#
+# 台账：每个文件记 recv（K80→inbox来源目录）+ mvdate（→日期目录）/dup（→_dup_backup）
+#
+# 用法: sh move-by-date.sh           干跑
+#       sh move-by-date.sh --apply   真正移动并记台账
+
+BASE=/data/media/0/nasbak
+INBOX=$BASE/inbox
+DUPBK=$INBOX/_dup_backup
+BB=/data/adb/magisk/busybox
+LOG=$BASE/state/move-by-date.log
+APPLY=0
+[ "${1:-}" = "--apply" ] && APPLY=1
+
+. /data/adb/nasbak/bin/lib-ledger.sh
+mkdir -p "$BASE/state" 2>/dev/null
+log() { echo "$(date '+%Y-%m-%d %H:%M:%S') $*" >> "$LOG"; }
+
+fdate() {
+  B=$(basename "$1"); MR=""
+  case "$B" in
+    *20[0-9][0-9]-[01][0-9]-[0-3][0-9]*) MR=$(printf '%s' "$B" | sed -n 's/.*\(20[0-9][0-9]-[01][0-9]-[0-3][0-9]\).*/\1/p' | head -1);;
+  esac
+  [ -z "$MR" ] && case "$B" in
+    *20[0-9][0-9][01][0-9][0-3][0-9]_*) MR=$(printf '%s' "$B" | sed -n 's/.*\(20[0-9][0-9]\)\([01][0-9]\)\([0-3][0-9]\)_.*/\1-\2-\3/p' | head -1);;
+  esac
+  [ -z "$MR" ] && case "$B" in
+    *20[0-9][0-9]_[01][0-9]_[0-3][0-9]*) MR=$(printf '%s' "$B" | sed -n 's/.*\(20[0-9][0-9]\)_\([01][0-9]\)_\([0-3][0-9]\)_.*/\1-\2-\3/p' | head -1);;
+  esac
+  [ -z "$MR" ] && case "$B" in
+    *1[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]*)
+      TS=$(printf '%s' "$B" | sed -n 's/.*[^0-9]\(1[0-9]\{12\}\)[^0-9].*/\1/p' | head -1)
+      [ -n "$TS" ] && MR=$($BB date -d "@$(printf '%s' "$TS" | sed 's/...$//')" +%Y-%m-%d 2>/dev/null);;
+  esac
+  [ -z "$MR" ] && MR=$($BB date -d "@$2" +%Y-%m-%d 2>/dev/null)
+  printf '%s' "$MR"
+}
+
+log "=== 开始 (apply=$APPLY) ==="
+MOVED=0; DUPN=0; FAILN=0; SKIPN=0
+
+for SRC in Camera CamScanner scanner family-kid id-card; do
+  D="$INBOX/$SRC"
+  [ -d "$D" ] || continue
+  for F in "$D"/*; do
+    [ -f "$F" ] || continue
+    B=$(basename "$F")
+    case "$B" in .trashed-*|.pending-*|.nomedia|*.tmp) continue ;; esac
+    S=$(stat -c %s "$F" 2>/dev/null)
+    [ -z "$S" ] || [ "$S" = "0" ] && continue
+    MT=$(stat -c %Y "$F" 2>/dev/null); [ -z "$MT" ] && MT=$(date +%s)
+    DD=$(fdate "$F" "$MT")
+    [ -z "$DD" ] && { echo "SKIP(无日期): $B"; SKIPN=$((SKIPN+1)); continue; }
+    DST="$INBOX/$DD/$B"
+
+    # ---- 补 recv 记录：K80 上传到 inbox/<来源> ----
+    if [ "$APPLY" = "1" ]; then
+      RELSRC="inbox/$SRC/$B"
+      ID=$(printf '%s:%s' "K80:$SRC/$B" "$S" | "$BB" sha256sum | cut -c1-16)
+      # 同 id 已有 recv 记录就跳过，避免重复膨胀
+      if ! grep -Fq "\"id\":\"$ID\"" "$LEDGER" 2>/dev/null; then
+        ledger_add "$ID" "$B" "$S" "recv" "K80/$SRC" "$RELSRC" "K80 回家备份上传"
+      fi
+    fi
+
+    if [ -e "$DST" ]; then
+      S2=$(stat -c %s "$DST" 2>/dev/null)
+      if [ "$S" = "$S2" ]; then
+        M1=$("$BB" md5sum "$F" 2>/dev/null | cut -d' ' -f1)
+        M2=$("$BB" md5sum "$DST" 2>/dev/null | cut -d' ' -f1)
+        if [ -n "$M1" ] && [ "$M1" = "$M2" ]; then
+          echo "DUP-identical: $SRC/$B (已在 $DD/)"
+          if [ "$APPLY" = "1" ]; then
+            mkdir -p "$DUPBK/$SRC" 2>/dev/null
+            mv -f "$F" "$DUPBK/$SRC/$B" 2>/dev/null
+            ID=$(printf '%s:%s' "K80:$SRC/$B" "$S" | "$BB" sha256sum | cut -c1-16)
+            ledger_add "$ID" "$B" "$S" "dup" "inbox/$SRC/$B" "inbox/_dup_backup/$SRC/$B" "与 $DD/ 内同文件重复，md5 一致"
+          fi
+          DUPN=$((DUPN+1)); continue
+        fi
+      fi
+      N=1
+      while [ -e "$INBOX/$DD/${B%.*}_$N.${B##*.}" ]; do N=$((N+1)); [ $N -gt 50 ] && break; done
+      DST="$INBOX/$DD/${B%.*}_$N.${B##*.}"
+    fi
+
+    if [ "$APPLY" = "1" ]; then
+      mkdir -p "$INBOX/$DD" 2>/dev/null
+      if mv -f "$F" "$DST" 2>/dev/null; then
+        RELDST=$(printf '%s' "$DST" | sed "s#^$INBOX/##")
+        ID=$(printf '%s:%s' "K80:$SRC/$B" "$S" | "$BB" sha256sum | cut -c1-16)
+        ledger_add "$ID" "$B" "$S" "mvdate" "inbox/$SRC/$B" "$RELDST" "按拍摄日期 $DD 归位"
+        log "MOVED $SRC/$B -> $RELDST"
+        MOVED=$((MOVED+1))
+      else
+        log "FAIL  $SRC/$B"; echo "FAIL  $F"; FAILN=$((FAILN+1))
+      fi
+    else
+      echo "PLAN  $SRC/$B -> $DD/"
+    fi
+  done
+done
+
+ledger_rotate 2>/dev/null
+log "=== 完成: moved=$MOVED dup=$DUPN fail=$FAILN skip=$SKIPN ==="
+echo "moved=$MOVED dup=$DUPN fail=$FAILN skip=$SKIPN"

@@ -1,1 +1,30 @@
-IyEvc3lzdGVtL2Jpbi9zaAojIHByb2JlLmNnaSDigJQg5o6i5rWL6KeG6aKR57yW56CB77yM5L6b6aG16Z2i5Yaz5a6aIuiDveWQpuWwseWcsOaSreaUviIKIyDnlKjms5U6IC9jZ2kvcHJvYmUuY2dpP2lkPTwxNuS9jWhleD4mZXh0PW1wNApwcmludGYgJ0NvbnRlbnQtVHlwZTogYXBwbGljYXRpb24vanNvblxyXG5DYWNoZS1Db250cm9sOiBuby1zdG9yZVxyXG5cclxuJwpNRURJQT0vZGF0YS9hZGIvbmFzYmFrL3d3dy9tZWRpYQoKUT0ke1FVRVJZX1NUUklORzotfQpJRD0kKHByaW50ZiAnJXMnICIkUSIgfCBzZWQgLW4gJ3MvLippZD1cKFswLTlhLWZdXHsxNlx9XCkuKi9cMS9wJykKRVhUPSQocHJpbnRmICclcycgIiRRIiB8IHNlZCAtbiAncy8uKmV4dD1cKFthLXpBLVowLTldKlwpLiovXDEvcCcgfCB0ciAnQS1aJyAnYS16JykKY2FzZSAiJEVYVCIgaW4gbXA0fG1vdnwzZ3B8bTR2KSA7OyAqKSBFWFQ9bXA0IDs7IGVzYWMKCkY9IiRNRURJQS8kSUQuJEVYVCIKaWYgWyAteiAiJElEIiBdIHx8IFsgISAtZiAiJEYiIF07IHRoZW4KICBlY2hvICd7Im9rIjpmYWxzZSwiZXJyIjoibm90IGZvdW5kIn0nOyBleGl0IDAKZmkKClNaPSQoc3RhdCAtYyAlcyAiJEYiIDI+L2Rldi9udWxsKQojIG1vb3Yg5pei5Y+v6IO95Zyo5paH5Lu25aS05Lmf5Y+v6IO95Zyo5paH5Lu25bC+77yM5aS0IDY0S0IgKyDlsL4gM01CIOS4gOi1t+aJqwojIO+8iOWwviAzTUIg5piv5Zug5Li66YOo5YiG5py65Z6L55qEIG1vb3Yg56a75paH5Lu25pyr5bC+5pyJIDFNQiDku6XkuIrnmoTot53nprvvvIkKVEFHUz0kKCB7IGhlYWQgLWMgNjU1MzYgIiRGIjsgdGFpbCAtYyAzMTQ1NzI4ICIkRiI7IH0gMj4vZGV2L251bGwgfCBncmVwIC1hb0UgJ2h2YzF8aGV2MXxhdmMxfGF2MDF8dnAwOScgfCBoZWFkIC01ICkKCkNPREVDPSJ1bmtub3duIgpjYXNlICIkVEFHUyIgaW4KICAqaHZjMSp8KmhldjEqKSBDT0RFQz0iaGV2YyIgOzsKICAqYXZjMSopICAgICAgICBDT0RFQz0iYXZjIiAgOzsKICAqYXYwMSopICAgICAgICBDT0RFQz0iYXYxIiAgOzsKICAqdnAwOSopICAgICAgICBDT0RFQz0idnA5IiAgOzsKZXNhYwoKcHJpbnRmICd7Im9rIjp0cnVlLCJjb2RlYyI6IiVzIiwic2l6ZSI6JXN9XG4nICIkQ09ERUMiICIke1NaOi0wfSIK
+#!/system/bin/sh
+# probe.cgi — 探测视频编码，供页面决定"能否就地播放"
+# 用法: /cgi/probe.cgi?id=<16位hex>&ext=mp4
+printf 'Content-Type: application/json\r\nCache-Control: no-store\r\n\r\n'
+MEDIA=/data/adb/nasbak/www/media
+
+Q=${QUERY_STRING:-}
+ID=$(printf '%s' "$Q" | sed -n 's/.*id=\([0-9a-f]\{16\}\).*/\1/p')
+EXT=$(printf '%s' "$Q" | sed -n 's/.*ext=\([a-zA-Z0-9]*\).*/\1/p' | tr 'A-Z' 'a-z')
+case "$EXT" in mp4|mov|3gp|m4v) ;; *) EXT=mp4 ;; esac
+
+F="$MEDIA/$ID.$EXT"
+if [ -z "$ID" ] || [ ! -f "$F" ]; then
+  echo '{"ok":false,"err":"not found"}'; exit 0
+fi
+
+SZ=$(stat -c %s "$F" 2>/dev/null)
+# moov 既可能在文件头也可能在文件尾，头 64KB + 尾 3MB 一起扫
+# （尾 3MB 是因为部分机型的 moov 离文件末尾有 1MB 以上的距离）
+TAGS=$( { head -c 65536 "$F"; tail -c 3145728 "$F"; } 2>/dev/null | grep -aoE 'hvc1|hev1|avc1|av01|vp09' | head -5 )
+
+CODEC="unknown"
+case "$TAGS" in
+  *hvc1*|*hev1*) CODEC="hevc" ;;
+  *avc1*)        CODEC="avc"  ;;
+  *av01*)        CODEC="av1"  ;;
+  *vp09*)        CODEC="vp9"  ;;
+esac
+
+printf '{"ok":true,"codec":"%s","size":%s}\n' "$CODEC" "${SZ:-0}"

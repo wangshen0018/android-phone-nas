@@ -1,1 +1,286 @@
-IyEvc3lzdGVtL2Jpbi9zaAojIGFyY2hpdmUuY2dpIOKAlCDlt7LlrZjmoaPnrqHnkIbmjqXlj6MKIwojIOWKqOS9nO+8iFBPU1Qg5oiWIEdFVCDlnYflj6/vvIzpgJrov4cgYWN0aW9uIOWPguaVsOWMuuWIhu+8ie+8mgojICAgbGlzdCAgICAgICAgICAgICAgICAgICAgICDliJflh7rmiYDmnInkuovku7blpLnkuI7mlofku7YKIyAgIHJlbmFtZSAgICAgICAgICAgICAgICAgICAg6YeN5ZG95ZCN5LqL5Lu25aS577yI5ZCM5q2lIGV2ZW50cy5qc29ubCDnmoQgZm9sZGVyIC8gc3RhcnRfZGF0ZSAvIGV2ZW50X2lk77yJCiMgICByZW5hbWVmaWxlICAgICAgICAgICAgICAgIOmHjeWRveWQjeWNleS4quaWh+S7tgojICAgbW92ZSAgICAgICAgICAgICAgICAgICAgICDmiormlofku7bnp7vliLDlj6bkuIDkuKrkuovku7blpLkKIyAgIGRlbGV0ZSAgICAgICAgICAgICAgICAgICAg5Yig6Zmk5paH5Lu277yI56e75YiwIF/lvoXliKAg5Zue5pS25Yy677yM5LiN55yf5Yig77yJCiMgICBuZXdldmVudCAgICAgICAgICAgICAgICAgIOaWsOW7uuS6i+S7tuWkuQojCiMg5omA5pyJ56e75YqoL+mHjeWRveWQjemDveWGmeWPsOi0piBzdGF0ZS9sZWRnZXIuanNvbmwKCkRBVEE9L2RhdGEvbWVkaWEvMC9uYXNiYWsvc3RhdGUKQVJDPS9kYXRhL21lZGlhLzAvbmFzYmFrL2FyY2hpdmUKVFJBU0g9L2RhdGEvbWVkaWEvMC9uYXNiYWsvX+W+heWIoApCQj0vZGF0YS9hZGIvbWFnaXNrL2J1c3lib3gKCi4gL2RhdGEvYWRiL25hc2Jhay9iaW4vbGliLWxlZGdlci5zaCAyPi9kZXYvbnVsbAoKcHJpbnRmICdDb250ZW50LVR5cGU6IGFwcGxpY2F0aW9uL2pzb25cclxuQ2FjaGUtQ29udHJvbDogbm8tc3RvcmVcclxuXHJcbicKCiMg6Kej5p6Q5Y+C5pWw77yaUE9TVCDnlKggYm9kee+8jEdFVCDnlKggUVVFUllfU1RSSU5HClFTPSIke1FVRVJZX1NUUklORzotfSIKQk9EWT0iIgppZiBbICIkUkVRVUVTVF9NRVRIT0QiID0gIlBPU1QiIF07IHRoZW4KICBMRU49JHtDT05URU5UX0xFTkdUSDotMH0KICBjYXNlICIkTEVOIiBpbiAnJ3wqWyEwLTldKikgTEVOPTAgOzsgZXNhYwogIFsgIiRMRU4iIC1ndCA2NTUzNiBdICYmIExFTj02NTUzNgogIEJPRFk9JChoZWFkIC1jICIkTEVOIiAyPi9kZXYvbnVsbCkKICBRUz0iJEJPRFkiCmZpCgojIOWPluWPguaVsOWAvO+8iOWFvOWuuSBKU09OIOS4jiBhPWImYz1kIOS4pOenjeagvOW8j++8iQpnZXRwKCkgewogIF9rPSIkMSIKICAjIEpTT04g5b2i5byPICJrZXkiOiJ2YWx1ZSIKICBfdj0kKHByaW50ZiAnJXMnICIkUVMiIHwgc2VkIC1uICdzLy4qIiciJF9rIiciOiJcKFteIl0qXCkiLiovXDEvcCcgfCBoZWFkIC0xKQogIGlmIFsgLXogIiRfdiIgXTsgdGhlbgogICAgIyDooajljZXlvaLlvI8ga2V5PXZhbHVlCiAgICBfdj0kKHByaW50ZiAnJXMnICIkUVMiIHwgdHIgJyYnICdcbicgfCBzZWQgLW4gInMvXiRfaz0vL3AiIHwgaGVhZCAtMSkKICAgICMgVVJMIOino+egge+8iCVYWCDlkowgK++8iQogICAgX3Y9JChwcmludGYgJyVzJyAiJF92IiB8IHNlZCAncy8rLyAvZycpCiAgZmkKICB1cmxkZWMgIiRfdiIKfQoKIyBVUkwg6Kej56CB77yaJVhYIC0+IOWtl+espu+8iOeUqCBwcmludGYg55qEIFx4Tk4g6L2s5LmJ6YCQ5a2X6IqC6L+Y5Y6f77yJCnVybGRlYygpIHsKICBfcz0iJDEiCiAgY2FzZSAiJF9zIiBpbiAqJSopIDs7ICopIHByaW50ZiAnJXMnICIkX3MiOyByZXR1cm4gMCA7OyBlc2FjCiAgX291dD0iIgogIHdoaWxlIDo7IGRvCiAgICBjYXNlICIkX3MiIGluCiAgICAgIColWzAtOWEtZkEtRl1bMC05YS1mQS1GXSopCiAgICAgICAgX3ByZT0iJHtfcyUlXCUqfSIKICAgICAgICBfcj0iJHtfcyMqXCV9IgogICAgICAgIF9oeD0kKHByaW50ZiAnJXMnICIkX3IiIHwgY3V0IC1jMS0yKQogICAgICAgIF9jaD0kKHByaW50ZiAiXFx4JF9oeCIgMj4vZGV2L251bGwpCiAgICAgICAgX291dD0iJF9vdXQkX3ByZSRfY2giCiAgICAgICAgX3M9JChwcmludGYgJyVzJyAiJF9yIiB8IGN1dCAtYzMtKQogICAgICAgIDs7CiAgICAgICopIF9vdXQ9IiRfb3V0JF9zIjsgYnJlYWsgOzsKICAgIGVzYWMKICBkb25lCiAgcHJpbnRmICclcycgIiRfb3V0Igp9CgojIOS6i+S7tuihjOWumuS9je+8iGJ1c3lib3ggc2VkIOWvuSBVVEYtOCDkuK3mlofnmoQgLiog5Yy56YWN5LiN5Y+v6Z2g77yM5pS555SoIGdyZXAgLUYg5YWI5a6a5L2N6KGM77yJCmV2bGluZSgpIHsgZ3JlcCAtRiAiXCJmb2xkZXJcIjpcIiQxXCIiICIkREFUQS9ldmVudHMuanNvbmwiIDI+L2Rldi9udWxsIHwgaGVhZCAtMTsgfQpldmZpZWxkKCkgeyBldmxpbmUgIiQxIiB8IHNlZCAtbiAicy8uKlwiJDJcIjpcIlwoW15cIl0qXClcIi4qL1wxL3AiOyB9CmV2eW0oKSB7IF9mPSQoZXZmaWVsZCAiJDEiIGZvbGRlcik7IHByaW50ZiAnJXMnICIkX2YiIHwgY3V0IC1jMS03OyB9CgojIEpTT04g6L2s5LmJCmplc2MoKSB7IHByaW50ZiAnJXMnICIkMSIgfCBzZWQgJ3MvXFwvXFxcXC9nOyBzLyIvXFwiL2cnIHwgdHIgLWQgJ1xyXG5cdCc7IH0KCkFDVE49JChnZXRwIGFjdGlvbikKCmNhc2UgIiRBQ1ROIiBpbgoKIyAtLS0tLS0tLS0tIOWIl+ihqCAtLS0tLS0tLS0tCmxpc3QpCiAgcHJpbnRmICd7Im9rIjp0cnVlLCJldmVudHMiOlsnCiAgRklSU1Q9MQogIGlmIFsgLWYgIiREQVRBL2V2ZW50cy5qc29ubCIgXTsgdGhlbgogICAgd2hpbGUgSUZTPSByZWFkIC1yIGxuOyBkbwogICAgICBbIC16ICIkbG4iIF0gJiYgY29udGludWUKICAgICAgRj0kKHByaW50ZiAnJXMnICIkbG4iIHwgc2VkIC1uICdzLy4qImZvbGRlciI6IlwoW14iXSpcKSIuKi9cMS9wJykKICAgICAgWyAteiAiJEYiIF0gJiYgY29udGludWUKICAgICAgWU09JChwcmludGYgJyVzJyAiJEYiIHwgY3V0IC1jMS03KQogICAgICBEPSIkQVJDLyRZTS8kRiIKICAgICAgWyAtZCAiJEQiIF0gfHwgY29udGludWUKICAgICAgTj0kKGZpbmQgIiREIiAtbWF4ZGVwdGggMSAtdHlwZSBmIDI+L2Rldi9udWxsIHwgd2MgLWwgfCB0ciAtZCAnICcpCiAgICAgIFNaPSQoJEJCIGR1IC1zYiAiJEQiIDI+L2Rldi9udWxsIHwgYXdrICd7cHJpbnQgJDF9JykKICAgICAgWyAteiAiJFNaIiBdICYmIFNaPTAKICAgICAgWyAiJEZJUlNUIiA9ICIxIiBdIHx8IHByaW50ZiAnLCcKICAgICAgcHJpbnRmICd7ImZvbGRlciI6IiVzIiwieW0iOiIlcyIsImNvdW50Ijolcywic2l6ZSI6JXMsIm1ldGEiOiVzfScgXAogICAgICAgICIkKGplc2MgIiRGIikiICIkWU0iICIkTiIgIiRTWiIgIiRsbiIKICAgICAgRklSU1Q9MAogICAgZG9uZSA8ICIkREFUQS9ldmVudHMuanNvbmwiCiAgZmkKICBwcmludGYgJ10sInRyYXNoIjonCiAgaWYgWyAtZCAiJFRSQVNIIiBdOyB0aGVuCiAgICBUTj0kKGZpbmQgIiRUUkFTSCIgLXR5cGUgZiAyPi9kZXYvbnVsbCB8IHdjIC1sIHwgdHIgLWQgJyAnKQogICAgVFM9JCgkQkIgZHUgLXNiICIkVFJBU0giIDI+L2Rldi9udWxsIHwgYXdrICd7cHJpbnQgJDF9Jyk7IFsgLXogIiRUUyIgXSAmJiBUUz0wCiAgICBwcmludGYgJ3siY291bnQiOiVzLCJzaXplIjolc30nICIkVE4iICIkVFMiCiAgZWxzZQogICAgcHJpbnRmICd7ImNvdW50IjowLCJzaXplIjowfScKICBmaQogIHByaW50ZiAnfVxuJwogIDs7CgojIC0tLS0tLS0tLS0g5LqL5Lu25aS55YaF5paH5Lu25YiX6KGoIC0tLS0tLS0tLS0KZmlsZXMpCiAgRj0kKGdldHAgZm9sZGVyKQogIGNhc2UgIiRGIiBpbiAnJ3wqLyopIGVjaG8gJ3sib2siOmZhbHNlLCJlcnIiOiJiYWQgZm9sZGVyIn0nOyBleGl0IDAgOzsgZXNhYwogICMg5LuOIGV2ZW50cy5qc29ubCDmib7lr7nlupTmnIjku70KICBZTT0kKGV2eW0gIiRGIikKICBbIC16ICIkWU0iIF0gJiYgeyBlY2hvICd7Im9rIjpmYWxzZSwiZXJyIjoiZXZlbnQgbm90IGZvdW5kIn0nOyBleGl0IDA7IH0KICBEPSIkQVJDLyRZTS8kRiIKICBbIC1kICIkRCIgXSB8fCB7IGVjaG8gJ3sib2siOmZhbHNlLCJlcnIiOiJmb2xkZXIgbm90IGV4aXN0cyJ9JzsgZXhpdCAwOyB9CiAgcHJpbnRmICd7Im9rIjp0cnVlLCJmb2xkZXIiOiIlcyIsImZpbGVzIjpbJyAiJEYiCiAgRklSU1Q9MQogIFdXTURJUj0vZGF0YS9hZGIvbmFzYmFrL3d3dy9tZWRpYQogIG1rZGlyIC1wICIkV1dNRElSIiAyPi9kZXYvbnVsbAogIGZvciBmcCBpbiAiJEQiLyo7IGRvCiAgICBbIC1mICIkZnAiIF0gfHwgY29udGludWUKICAgIE49JChiYXNlbmFtZSAiJGZwIikKICAgIFM9JChzdGF0IC1jICVzICIkZnAiIDI+L2Rldi9udWxsKTsgWyAteiAiJFMiIF0gJiYgUz0wCiAgICBFPSQocHJpbnRmICclcycgIiR7TiMjKi59IiB8IHRyICdBLVonICdhLXonKQogICAgIyDkuLror6Xmlofku7blh4blpIfkuIDkuKrlqpLkvZPnoazpk77mjqXvvIjmjIkg5LqL5Lu25aS555u45a+56Lev5b6EOuWkp+WwjyDnlJ/miJDnoa7lrpogaWTvvIkKICAgIE1JRD0kKHByaW50ZiAnJXM6JXMnICIkWU0vJEYvJE4iICIkUyIgfCAkQkIgc2hhMjU2c3VtIDI+L2Rldi9udWxsIHwgY3V0IC1jMS0xNikKICAgIGlmIFsgISAtZiAiJFdXTURJUi8kTUlELiRFIiBdOyB0aGVuCiAgICAgIGxuIC1mICIkZnAiICIkV1dNRElSLyRNSUQuJEUiIDI+L2Rldi9udWxsIHx8IGNwIC1mICIkZnAiICIkV1dNRElSLyRNSUQuJEUiIDI+L2Rldi9udWxsCiAgICBmaQogICAgWyAiJEZJUlNUIiA9ICIxIiBdIHx8IHByaW50ZiAnLCcKICAgIHByaW50ZiAneyJuYW1lIjoiJXMiLCJzaXplIjolcywiZXh0IjoiJXMiLCJtaWQiOiIlcyJ9JyAiJChqZXNjICIkTiIpIiAiJFMiICIkRSIgIiRNSUQiCiAgICBGSVJTVD0wCiAgZG9uZQogIHByaW50ZiAnXX1cbicKICA7OwoKIyAtLS0tLS0tLS0tIOmHjeWRveWQjeS6i+S7tuWkuSAtLS0tLS0tLS0tCnJlbmFtZSkKICBPTEQ9JChnZXRwIGZvbGRlcik7IE5FV0Y9JChnZXRwIG5ld25hbWUpCiAgY2FzZSAiJE9MRCIgaW4gJyd8Ki8qKSBlY2hvICd7Im9rIjpmYWxzZSwiZXJyIjoiYmFkIGZvbGRlciJ9JzsgZXhpdCAwIDs7IGVzYWMKICBORVdGPSQocHJpbnRmICclcycgIiRORVdGIiB8IHNlZCAnc0BbL1xcOio/Ijw+fF1AQGcnIHwgdHIgLWQgJ1xyXG5cdCcpCiAgWyAteiAiJE5FV0YiIF0gJiYgeyBlY2hvICd7Im9rIjpmYWxzZSwiZXJyIjoiZW1wdHkgbmFtZSJ9JzsgZXhpdCAwOyB9CiAgWU09JChldnltICIkT0xEIikKICBbIC16ICIkWU0iIF0gJiYgeyBlY2hvICd7Im9rIjpmYWxzZSwiZXJyIjoiZXZlbnQgbm90IGZvdW5kIn0nOyBleGl0IDA7IH0KICBTUkM9IiRBUkMvJFlNLyRPTEQiOyBEU1Q9IiRBUkMvJFlNLyRORVdGIgogIFsgLWQgIiRTUkMiIF0gfHwgeyBlY2hvICd7Im9rIjpmYWxzZSwiZXJyIjoic3JjIG1pc3NpbmcifSc7IGV4aXQgMDsgfQogIFsgLWUgIiREU1QiIF0gJiYgeyBlY2hvICd7Im9rIjpmYWxzZSwiZXJyIjoidGFyZ2V0IGV4aXN0cyJ9JzsgZXhpdCAwOyB9CiAgY3AgIiREQVRBL2V2ZW50cy5qc29ubCIgIiREQVRBL2V2ZW50cy5qc29ubC5iYWstcmVuYW1lLSQoZGF0ZSArJVklbSVkJUglTSVTKSIgMj4vZGV2L251bGwKICBpZiBtdiAiJFNSQyIgIiREU1QiIDI+L2Rldi9udWxsOyB0aGVuCiAgICAjIOabtOaWsCBldmVudHMuanNvbmwg55qEIGZvbGRlcu+8iOS7peWPiuS7juaWsOWQjeino+aekOWHuueahOaXpeacny/liIbnsbsv5Li76aKY77yJCiAgICBEPSQocHJpbnRmICclcycgIiRORVdGIiB8IHNlZCAtbiAncy9eXCgyMFswLTldWzAtOV0tWzAxXVswLTldLVswLTNdWzAtOV1cKS4qL1wxL3AnKQogICAgU0w9JChwcmludGYgJyVzJyAiJE5FV0YiIHwgc2VkIC1uICdzL14yMFswLTldWzAtOV0tWzAxXVswLTldLVswLTNdWzAtOV1fXChbYS16XSpcKV8uKi9cMS9wJykKICAgIFRQPSQocHJpbnRmICclcycgIiRORVdGIiB8IHNlZCAtbiAncy9eMjBbMC05XVswLTldLVswMV1bMC05XS1bMC0zXVswLTldX1thLXpdKl9cKC4qXCkvXDEvcCcpCiAgICBbIC16ICIkU0wiIF0gJiYgU0w9JChzZWQgLW4gInMvLipcImZvbGRlclwiOlwiJE9MRFwiLipcInNsdWdcIjpcIlwoW15cIl0qXClcIi4qL1wxL3AiICIkREFUQS9ldmVudHMuanNvbmwiIHwgaGVhZCAtMSkKICAgIFsgLXogIiRUUCIgXSAmJiBUUD0kKHNlZCAtbiAicy8uKlwiZm9sZGVyXCI6XCIkT0xEXCIuKlwidG9waWNcIjpcIlwoW15cIl0qXClcIi4qL1wxL3AiICIkREFUQS9ldmVudHMuanNvbmwiIHwgaGVhZCAtMSkKICAgIE5FV0w9JChzZWQgLW4gInMvLipcImZvbGRlclwiOlwiJE9MRFwiLiovJi9wIiAiJERBVEEvZXZlbnRzLmpzb25sIiB8IGhlYWQgLTEpCiAgICAjIOeUqCBzZWQg5bCx5Zyw5pu/5o2i6K+l6KGM5LiJ5Liq5a2X5q61CiAgICBUTVBMPSIkREFUQS9ldmVudHMuanNvbmwudG1wIgogICAgOiA+ICIkVE1QTCIKICAgIHdoaWxlIElGUz0gcmVhZCAtciBsbjsgZG8KICAgICAgY2FzZSAiJGxuIiBpbgogICAgICAgICoiXCJmb2xkZXJcIjpcIiRPTERcIiIqKQogICAgICAgICAgbmY9JChwcmludGYgJyVzJyAiJGxuIiB8IHNlZCAic3xcImZvbGRlclwiOlwiJE9MRFwifFwiZm9sZGVyXCI6XCIkTkVXRlwifCIpCiAgICAgICAgICBbIC1uICIkRCIgXSAmJiBuZj0kKHByaW50ZiAnJXMnICIkbmYiIHwgc2VkICJzfFwic3RhcnRfZGF0ZVwiOlwiW15cIl0qXCJ8XCJzdGFydF9kYXRlXCI6XCIkRFwifCIpCiAgICAgICAgICBbIC1uICIkU0wiIF0gJiYgbmY9JChwcmludGYgJyVzJyAiJG5mIiB8IHNlZCAic3xcInNsdWdcIjpcIlteXCJdKlwifFwic2x1Z1wiOlwiJFNMXCJ8IikKICAgICAgICAgIHByaW50ZiAnJXNcbicgIiRuZiIgPj4gIiRUTVBMIgogICAgICAgICAgOzsKICAgICAgICAqKSBwcmludGYgJyVzXG4nICIkbG4iID4+ICIkVE1QTCIgOzsKICAgICAgZXNhYwogICAgZG9uZSA8ICIkREFUQS9ldmVudHMuanNvbmwiCiAgICBtdiAtZiAiJFRNUEwiICIkREFUQS9ldmVudHMuanNvbmwiCiAgICBsZWRnZXJfYWRkICIiICIkTkVXRiIgMCAiYXJjLXJlbmFtZSIgImFyY2hpdmUvJFlNLyRPTEQiICJhcmNoaXZlLyRZTS8kTkVXRiIgIuS6i+S7tuWkuemHjeWRveWQjSIgMj4vZGV2L251bGwKICAgIHByaW50ZiAneyJvayI6dHJ1ZSwiZm9sZGVyIjoiJXMiLCJ5bSI6IiVzIn1cbicgIiQoamVzYyAiJE5FV0YiKSIgIiRZTSIKICBlbHNlCiAgICBlY2hvICd7Im9rIjpmYWxzZSwiZXJyIjoibXYgZmFpbGVkIn0nCiAgZmkKICA7OwoKIyAtLS0tLS0tLS0tIOmHjeWRveWQjeWNleS4quaWh+S7tiAtLS0tLS0tLS0tCnJlbmFtZWZpbGUpCiAgRj0kKGdldHAgZm9sZGVyKTsgT0xETj0kKGdldHAgZmlsZSk7IE5FV049JChnZXRwIG5ld25hbWUpCiAgY2FzZSAiJEYiIGluICcnfCovKikgZWNobyAneyJvayI6ZmFsc2UsImVyciI6ImJhZCBmb2xkZXIifSc7IGV4aXQgMCA7OyBlc2FjCiAgY2FzZSAiJE9MRE4iIGluICcnfCovKikgZWNobyAneyJvayI6ZmFsc2UsImVyciI6ImJhZCBmaWxlIn0nOyBleGl0IDAgOzsgZXNhYwogIE5FV049JChwcmludGYgJyVzJyAiJE5FV04iIHwgc2VkICdzQFsvXFw6Kj8iPD58XUBAZycgfCB0ciAtZCAnXHJcblx0JykKICBbIC16ICIkTkVXTiIgXSAmJiB7IGVjaG8gJ3sib2siOmZhbHNlLCJlcnIiOiJlbXB0eSBuYW1lIn0nOyBleGl0IDA7IH0KICBZTT0kKGV2eW0gIiRGIikKICBEPSIkQVJDLyRZTS8kRiIKICBTUkM9IiRELyRPTEROIjsgRFNUPSIkRC8kTkVXTiIKICBbIC1mICIkU1JDIiBdIHx8IHsgZWNobyAneyJvayI6ZmFsc2UsImVyciI6ImZpbGUgbWlzc2luZyJ9JzsgZXhpdCAwOyB9CiAgWyAtZSAiJERTVCIgXSAmJiB7IGVjaG8gJ3sib2siOmZhbHNlLCJlcnIiOiJ0YXJnZXQgZXhpc3RzIn0nOyBleGl0IDA7IH0KICBpZiBtdiAiJFNSQyIgIiREU1QiIDI+L2Rldi9udWxsOyB0aGVuCiAgICBTPSQoc3RhdCAtYyAlcyAiJERTVCIgMj4vZGV2L251bGwpCiAgICBsZWRnZXJfYWRkICIiICIkTkVXTiIgIiRTIiAiYXJjLXJlbmFtZWZpbGUiICJhcmNoaXZlLyRZTS8kRi8kT0xETiIgImFyY2hpdmUvJFlNLyRGLyRORVdOIiAi5paH5Lu26YeN5ZG95ZCNIiAyPi9kZXYvbnVsbAogICAgcHJpbnRmICd7Im9rIjp0cnVlLCJuYW1lIjoiJXMifVxuJyAiJChqZXNjICIkTkVXTiIpIgogIGVsc2UKICAgIGVjaG8gJ3sib2siOmZhbHNlLCJlcnIiOiJtdiBmYWlsZWQifScKICBmaQogIDs7CgojIC0tLS0tLS0tLS0g5Yig6Zmk77yI56e75Yiw5Zue5pS25Yy677yJIC0tLS0tLS0tLS0KZGVsZXRlKQogIEY9JChnZXRwIGZvbGRlcik7IEZJTEVTPSQoZ2V0cCBmaWxlcykKICBZTT0kKGV2eW0gIiRGIikKICBbIC16ICIkWU0iIF0gJiYgeyBlY2hvICd7Im9rIjpmYWxzZSwiZXJyIjoiZXZlbnQgbm90IGZvdW5kIn0nOyBleGl0IDA7IH0KICBEPSIkQVJDLyRZTS8kRiIKICBbIC1kICIkRCIgXSB8fCB7IGVjaG8gJ3sib2siOmZhbHNlLCJlcnIiOiJmb2xkZXIgbWlzc2luZyJ9JzsgZXhpdCAwOyB9CiAgVEQ9IiRUUkFTSC8kKGRhdGUgKyVZJW0lZCkvJEYiCiAgbWtkaXIgLXAgIiRURCIgMj4vZGV2L251bGwKICBOPTAKICBwcmludGYgJyVzXG4nICIkRklMRVMiIHwgdHIgJywnICdcbicgfCB3aGlsZSBJRlM9IHJlYWQgLXIgbjsgZG8KICAgIFsgLXogIiRuIiBdICYmIGNvbnRpbnVlCiAgICBjYXNlICIkbiIgaW4gKi8qKSBjb250aW51ZSA7OyBlc2FjCiAgICBpZiBbIC1mICIkRC8kbiIgXSAmJiBtdiAtZiAiJEQvJG4iICIkVEQvJG4iIDI+L2Rldi9udWxsOyB0aGVuCiAgICAgIFM9JChzdGF0IC1jICVzICIkVEQvJG4iIDI+L2Rldi9udWxsKQogICAgICBsZWRnZXJfYWRkICIiICIkbiIgIiRTIiAiYXJjLXRyYXNoIiAiYXJjaGl2ZS8kWU0vJEYvJG4iICIkKHByaW50ZiAnJXMnICIkVEQvJG4iIHwgc2VkICdzfC9kYXRhL21lZGlhLzAvbmFzYmFrL3x8JykiICLlvZLmoaPlhoXliKDpmaTvvIznp7vlhaXlm57mlLbljLoiIDI+L2Rldi9udWxsCiAgICBmaQogIGRvbmUKICAjIOe7n+iuoeWJqeS9mQogIExFRlQ9JChmaW5kICIkRCIgLW1heGRlcHRoIDEgLXR5cGUgZiAyPi9kZXYvbnVsbCB8IHdjIC1sIHwgdHIgLWQgJyAnKQogIHByaW50ZiAneyJvayI6dHJ1ZSwibGVmdCI6JXN9XG4nICIkTEVGVCIKICA7OwoKIyAtLS0tLS0tLS0tIOenu+WKqOaWh+S7tuWIsOWFtuS7luS6i+S7tiAtLS0tLS0tLS0tCm1vdmUpCiAgRlJPTT0kKGdldHAgZnJvbSk7IFRPPSQoZ2V0cCB0byk7IEZJTEVTPSQoZ2V0cCBmaWxlcykKICBjYXNlICIkRlJPTSIgaW4gJyd8Ki8qKSBlY2hvICd7Im9rIjpmYWxzZSwiZXJyIjoiYmFkIGZyb20ifSc7IGV4aXQgMCA7OyBlc2FjCiAgY2FzZSAiJFRPIiBpbiAnJ3wqLyopIGVjaG8gJ3sib2siOmZhbHNlLCJlcnIiOiJiYWQgdG8ifSc7IGV4aXQgMCA7OyBlc2FjCiAgWU0xPSQoZXZ5bSAiJEZST00iKQogIFlNMj0kKGV2eW0gIiRUTyIpCiAgWyAteiAiJFlNMSIgXSAmJiB7IGVjaG8gJ3sib2siOmZhbHNlLCJlcnIiOiJmcm9tIG5vdCBmb3VuZCJ9JzsgZXhpdCAwOyB9CiAgWyAteiAiJFlNMiIgXSAmJiB7IGVjaG8gJ3sib2siOmZhbHNlLCJlcnIiOiJ0byBub3QgZm91bmQifSc7IGV4aXQgMDsgfQogIEQxPSIkQVJDLyRZTTEvJEZST00iOyBEMj0iJEFSQy8kWU0yLyRUTyIKICBbIC1kICIkRDIiIF0gfHwgeyBlY2hvICd7Im9rIjpmYWxzZSwiZXJyIjoidG8gZm9sZGVyIG1pc3NpbmcifSc7IGV4aXQgMDsgfQogIE09MDsgU0s9MDsgRVI9MAogIHByaW50ZiAnJXNcbicgIiRGSUxFUyIgfCB0ciAnLCcgJ1xuJyA+IC9kYXRhL2xvY2FsL3RtcC9fbXYubGlzdAogIHdoaWxlIElGUz0gcmVhZCAtciBuOyBkbwogICAgWyAteiAiJG4iIF0gJiYgY29udGludWUKICAgIGNhc2UgIiRuIiBpbiAqLyopIGNvbnRpbnVlIDs7IGVzYWMKICAgIFsgLWYgIiREMS8kbiIgXSB8fCB7IEVSPSQoKEVSKzEpKTsgY29udGludWU7IH0KICAgIGlmIFsgLWUgIiREMi8kbiIgXTsgdGhlbiBTSz0kKChTSysxKSk7IGNvbnRpbnVlOyBmaQogICAgaWYgbXYgLWYgIiREMS8kbiIgIiREMi8kbiIgMj4vZGV2L251bGw7IHRoZW4KICAgICAgTT0kKChNKzEpKQogICAgICBsZWRnZXJfYWRkICIiICIkbiIgMCAiYXJjLW1vdmUiICJhcmNoaXZlLyRZTTEvJEZST00vJG4iICJhcmNoaXZlLyRZTTIvJFRPLyRuIiAi6Leo5LqL5Lu256e75YqoIiAyPi9kZXYvbnVsbAogICAgZWxzZSBFUj0kKChFUisxKSk7IGZpCiAgZG9uZSA8IC9kYXRhL2xvY2FsL3RtcC9fbXYubGlzdAogIHJtIC1mIC9kYXRhL2xvY2FsL3RtcC9fbXYubGlzdAogIHByaW50ZiAneyJvayI6dHJ1ZSwibW92ZWQiOiVzLCJza2lwIjolcywiZXJyIjolc31cbicgIiRNIiAiJFNLIiAiJEVSIgogIDs7CgojIC0tLS0tLS0tLS0g5paw5bu65LqL5Lu25aS5IC0tLS0tLS0tLS0KbmV3ZXZlbnQpCiAgRERBVEU9JChnZXRwIGRhdGUpOyBTTFVHPSQoZ2V0cCBzbHVnKTsgVE9QSUM9JChnZXRwIHRvcGljKQogIGNhc2UgIiREREFURSIgaW4gMjBbMC05XVswLTldLVswMV1bMC05XS1bMC0zXVswLTldKSA7OyAqKSBlY2hvICd7Im9rIjpmYWxzZSwiZXJyIjoiYmFkIGRhdGUifSc7IGV4aXQgMCA7OyBlc2FjCiAgY2FzZSAiJFNMVUciIGluIHdvcmt8aG9tZXxzY3JlZW5zaG90fHZpZGVvfG90aGVyKSA7OyAqKSBTTFVHPSJvdGhlciIgOzsgZXNhYwogIFRPUElDPSQocHJpbnRmICclcycgIiRUT1BJQyIgfCBzZWQgJ3NAWy9cXDoqPyI8PnxdQEBnJyB8IHRyIC1kICdcclxuXHQnIHwgY3V0IC1jMS0yMCkKICBbIC16ICIkVE9QSUMiIF0gJiYgVE9QSUM9IuacquWRveWQjSIKICBZTT0kKHByaW50ZiAnJXMnICIkRERBVEUiIHwgY3V0IC1jMS03KQogIEJBU0U9IiR7RERBVEV9XyR7U0xVR31fJHtUT1BJQ30iCiAgRk9MREVSPSIkQkFTRSI7IFNFUT0xCiAgd2hpbGUgWyAtZCAiJEFSQy8kWU0vJEZPTERFUiIgXSB8fCBncmVwIC1xRiAiXCJmb2xkZXJcIjpcIiRGT0xERVJcIiIgIiREQVRBL2V2ZW50cy5qc29ubCIgMj4vZGV2L251bGw7IGRvCiAgICBTRVE9JCgoU0VRKzEpKTsgRk9MREVSPSIke0JBU0V9XyR7U0VRfSIKICAgIFsgIiRTRVEiIC1ndCAzMCBdICYmIGJyZWFrCiAgZG9uZQogIEQ4PSQocHJpbnRmICclcycgIiREREFURSIgfCB0ciAtZCAnLScpCiAgTj0xCiAgd2hpbGUgZ3JlcCAtcUYgIlwiZXZlbnRfaWRcIjpcImV2LSREOC0kKHByaW50ZiAnJTAyZCcgIiROIilcIiIgIiREQVRBL2V2ZW50cy5qc29ubCIgMj4vZGV2L251bGw7IGRvCiAgICBOPSQoKE4rMSkpOyBbICIkTiIgLWd0IDk5IF0gJiYgYnJlYWsKICBkb25lCiAgRVZJRD0iZXYtJEQ4LSQocHJpbnRmICclMDJkJyAiJE4iKSIKICBta2RpciAtcCAiJEFSQy8kWU0vJEZPTERFUiIgMj4vZGV2L251bGwKICBwcmludGYgJ3siZXZlbnRfaWQiOiIlcyIsInN0YXJ0X2RhdGUiOiIlcyIsInNsdWciOiIlcyIsInRvcGljIjoiJXMiLCJmb2xkZXIiOiIlcyIsInN0YXR1cyI6Im9wZW4iLCJjb3VudHMiOnsiaSI6MCwidiI6MH0sInRzIjolc31cbicgXAogICAgIiRFVklEIiAiJEREQVRFIiAiJFNMVUciICIkVE9QSUMiICIkRk9MREVSIiAiJChkYXRlICslcykiID4+ICIkREFUQS9ldmVudHMuanNvbmwiCiAgbGVkZ2VyX2FkZCAiIiAiJEZPTERFUiIgMCAiYXJjLW5ld2V2ZW50IiAiIiAiYXJjaGl2ZS8kWU0vJEZPTERFUiIgIuaWsOW7uuS6i+S7tuWkuSIgMj4vZGV2L251bGwKICBwcmludGYgJ3sib2siOnRydWUsImZvbGRlciI6IiVzIiwiZXZlbnRfaWQiOiIlcyIsInltIjoiJXMifVxuJyAiJChqZXNjICIkRk9MREVSIikiICIkRVZJRCIgIiRZTSIKICA7OwoKKikKICBlY2hvICd7Im9rIjpmYWxzZSwiZXJyIjoidW5rbm93biBhY3Rpb24ifScKICA7Owplc2Fj
+#!/system/bin/sh
+# archive.cgi — 已存档管理接口
+#
+# 动作（POST 或 GET 均可，通过 action 参数区分）：
+#   list                      列出所有事件夹与文件
+#   rename                    重命名事件夹（同步 events.jsonl 的 folder / start_date / event_id）
+#   renamefile                重命名单个文件
+#   move                      把文件移到另一个事件夹
+#   delete                    删除文件（移到 _待删 回收区，不真删）
+#   newevent                  新建事件夹
+#
+# 所有移动/重命名都写台账 state/ledger.jsonl
+
+DATA=/data/media/0/nasbak/state
+ARC=/data/media/0/nasbak/archive
+TRASH=/data/media/0/nasbak/_待删
+BB=/data/adb/magisk/busybox
+
+. /data/adb/nasbak/bin/lib-ledger.sh 2>/dev/null
+
+printf 'Content-Type: application/json\r\nCache-Control: no-store\r\n\r\n'
+
+# 解析参数：POST 用 body，GET 用 QUERY_STRING
+QS="${QUERY_STRING:-}"
+BODY=""
+if [ "$REQUEST_METHOD" = "POST" ]; then
+  LEN=${CONTENT_LENGTH:-0}
+  case "$LEN" in ''|*[!0-9]*) LEN=0 ;; esac
+  [ "$LEN" -gt 65536 ] && LEN=65536
+  BODY=$(head -c "$LEN" 2>/dev/null)
+  QS="$BODY"
+fi
+
+# 取参数值（兼容 JSON 与 a=b&c=d 两种格式）
+getp() {
+  _k="$1"
+  # JSON 形式 "key":"value"
+  _v=$(printf '%s' "$QS" | sed -n 's/.*"'"$_k"'":"\([^"]*\)".*/\1/p' | head -1)
+  if [ -z "$_v" ]; then
+    # 表单形式 key=value
+    _v=$(printf '%s' "$QS" | tr '&' '\n' | sed -n "s/^$_k=//p" | head -1)
+    # URL 解码（%XX 和 +）
+    _v=$(printf '%s' "$_v" | sed 's/+/ /g')
+  fi
+  urldec "$_v"
+}
+
+# URL 解码：%XX -> 字符（用 printf 的 \xNN 转义逐字节还原）
+urldec() {
+  _s="$1"
+  case "$_s" in *%*) ;; *) printf '%s' "$_s"; return 0 ;; esac
+  _out=""
+  while :; do
+    case "$_s" in
+      *%[0-9a-fA-F][0-9a-fA-F]*)
+        _pre="${_s%%\%*}"
+        _r="${_s#*\%}"
+        _hx=$(printf '%s' "$_r" | cut -c1-2)
+        _ch=$(printf "\\x$_hx" 2>/dev/null)
+        _out="$_out$_pre$_ch"
+        _s=$(printf '%s' "$_r" | cut -c3-)
+        ;;
+      *) _out="$_out$_s"; break ;;
+    esac
+  done
+  printf '%s' "$_out"
+}
+
+# 事件行定位（busybox sed 对 UTF-8 中文的 .* 匹配不可靠，改用 grep -F 先定位行）
+evline() { grep -F "\"folder\":\"$1\"" "$DATA/events.jsonl" 2>/dev/null | head -1; }
+evfield() { evline "$1" | sed -n "s/.*\"$2\":\"\([^\"]*\)\".*/\1/p"; }
+evym() { _f=$(evfield "$1" folder); printf '%s' "$_f" | cut -c1-7; }
+
+# JSON 转义
+jesc() { printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g' | tr -d '\r\n\t'; }
+
+ACTN=$(getp action)
+
+case "$ACTN" in
+
+# ---------- 列表 ----------
+list)
+  printf '{"ok":true,"events":['
+  FIRST=1
+  if [ -f "$DATA/events.jsonl" ]; then
+    while IFS= read -r ln; do
+      [ -z "$ln" ] && continue
+      F=$(printf '%s' "$ln" | sed -n 's/.*"folder":"\([^"]*\)".*/\1/p')
+      [ -z "$F" ] && continue
+      YM=$(printf '%s' "$F" | cut -c1-7)
+      D="$ARC/$YM/$F"
+      [ -d "$D" ] || continue
+      N=$(find "$D" -maxdepth 1 -type f 2>/dev/null | wc -l | tr -d ' ')
+      SZ=$($BB du -sb "$D" 2>/dev/null | awk '{print $1}')
+      [ -z "$SZ" ] && SZ=0
+      [ "$FIRST" = "1" ] || printf ','
+      printf '{"folder":"%s","ym":"%s","count":%s,"size":%s,"meta":%s}' \
+        "$(jesc "$F")" "$YM" "$N" "$SZ" "$ln"
+      FIRST=0
+    done < "$DATA/events.jsonl"
+  fi
+  printf '],"trash":'
+  if [ -d "$TRASH" ]; then
+    TN=$(find "$TRASH" -type f 2>/dev/null | wc -l | tr -d ' ')
+    TS=$($BB du -sb "$TRASH" 2>/dev/null | awk '{print $1}'); [ -z "$TS" ] && TS=0
+    printf '{"count":%s,"size":%s}' "$TN" "$TS"
+  else
+    printf '{"count":0,"size":0}'
+  fi
+  printf '}\n'
+  ;;
+
+# ---------- 事件夹内文件列表 ----------
+files)
+  F=$(getp folder)
+  case "$F" in ''|*/*) echo '{"ok":false,"err":"bad folder"}'; exit 0 ;; esac
+  # 从 events.jsonl 找对应月份
+  YM=$(evym "$F")
+  [ -z "$YM" ] && { echo '{"ok":false,"err":"event not found"}'; exit 0; }
+  D="$ARC/$YM/$F"
+  [ -d "$D" ] || { echo '{"ok":false,"err":"folder not exists"}'; exit 0; }
+  printf '{"ok":true,"folder":"%s","files":[' "$F"
+  FIRST=1
+  WWMDIR=/data/adb/nasbak/www/media
+  mkdir -p "$WWMDIR" 2>/dev/null
+  for fp in "$D"/*; do
+    [ -f "$fp" ] || continue
+    N=$(basename "$fp")
+    S=$(stat -c %s "$fp" 2>/dev/null); [ -z "$S" ] && S=0
+    E=$(printf '%s' "${N##*.}" | tr 'A-Z' 'a-z')
+    # 为该文件准备一个媒体硬链接（按 事件夹相对路径:大小 生成确定 id）
+    MID=$(printf '%s:%s' "$YM/$F/$N" "$S" | $BB sha256sum 2>/dev/null | cut -c1-16)
+    if [ ! -f "$WWMDIR/$MID.$E" ]; then
+      ln -f "$fp" "$WWMDIR/$MID.$E" 2>/dev/null || cp -f "$fp" "$WWMDIR/$MID.$E" 2>/dev/null
+    fi
+    [ "$FIRST" = "1" ] || printf ','
+    printf '{"name":"%s","size":%s,"ext":"%s","mid":"%s"}' "$(jesc "$N")" "$S" "$E" "$MID"
+    FIRST=0
+  done
+  printf ']}\n'
+  ;;
+
+# ---------- 重命名事件夹 ----------
+rename)
+  OLD=$(getp folder); NEWF=$(getp newname)
+  case "$OLD" in ''|*/*) echo '{"ok":false,"err":"bad folder"}'; exit 0 ;; esac
+  NEWF=$(printf '%s' "$NEWF" | sed 's@[/\\:*?"<>|]@@g' | tr -d '\r\n\t')
+  [ -z "$NEWF" ] && { echo '{"ok":false,"err":"empty name"}'; exit 0; }
+  YM=$(evym "$OLD")
+  [ -z "$YM" ] && { echo '{"ok":false,"err":"event not found"}'; exit 0; }
+  SRC="$ARC/$YM/$OLD"; DST="$ARC/$YM/$NEWF"
+  [ -d "$SRC" ] || { echo '{"ok":false,"err":"src missing"}'; exit 0; }
+  [ -e "$DST" ] && { echo '{"ok":false,"err":"target exists"}'; exit 0; }
+  cp "$DATA/events.jsonl" "$DATA/events.jsonl.bak-rename-$(date +%Y%m%d%H%M%S)" 2>/dev/null
+  if mv "$SRC" "$DST" 2>/dev/null; then
+    # 更新 events.jsonl 的 folder（以及从新名解析出的日期/分类/主题）
+    D=$(printf '%s' "$NEWF" | sed -n 's/^\(20[0-9][0-9]-[01][0-9]-[0-3][0-9]\).*/\1/p')
+    SL=$(printf '%s' "$NEWF" | sed -n 's/^20[0-9][0-9]-[01][0-9]-[0-3][0-9]_\([a-z]*\)_.*/\1/p')
+    TP=$(printf '%s' "$NEWF" | sed -n 's/^20[0-9][0-9]-[01][0-9]-[0-3][0-9]_[a-z]*_\(.*\)/\1/p')
+    [ -z "$SL" ] && SL=$(sed -n "s/.*\"folder\":\"$OLD\".*\"slug\":\"\([^\"]*\)\".*/\1/p" "$DATA/events.jsonl" | head -1)
+    [ -z "$TP" ] && TP=$(sed -n "s/.*\"folder\":\"$OLD\".*\"topic\":\"\([^\"]*\)\".*/\1/p" "$DATA/events.jsonl" | head -1)
+    NEWL=$(sed -n "s/.*\"folder\":\"$OLD\".*/&/p" "$DATA/events.jsonl" | head -1)
+    # 用 sed 就地替换该行三个字段
+    TMPL="$DATA/events.jsonl.tmp"
+    : > "$TMPL"
+    while IFS= read -r ln; do
+      case "$ln" in
+        *"\"folder\":\"$OLD\""*)
+          nf=$(printf '%s' "$ln" | sed "s|\"folder\":\"$OLD\"|\"folder\":\"$NEWF\"|")
+          [ -n "$D" ] && nf=$(printf '%s' "$nf" | sed "s|\"start_date\":\"[^\"]*\"|\"start_date\":\"$D\"|")
+          [ -n "$SL" ] && nf=$(printf '%s' "$nf" | sed "s|\"slug\":\"[^\"]*\"|\"slug\":\"$SL\"|")
+          printf '%s\n' "$nf" >> "$TMPL"
+          ;;
+        *) printf '%s\n' "$ln" >> "$TMPL" ;;
+      esac
+    done < "$DATA/events.jsonl"
+    mv -f "$TMPL" "$DATA/events.jsonl"
+    ledger_add "" "$NEWF" 0 "arc-rename" "archive/$YM/$OLD" "archive/$YM/$NEWF" "事件夹重命名" 2>/dev/null
+    printf '{"ok":true,"folder":"%s","ym":"%s"}\n' "$(jesc "$NEWF")" "$YM"
+  else
+    echo '{"ok":false,"err":"mv failed"}'
+  fi
+  ;;
+
+# ---------- 重命名单个文件 ----------
+renamefile)
+  F=$(getp folder); OLDN=$(getp file); NEWN=$(getp newname)
+  case "$F" in ''|*/*) echo '{"ok":false,"err":"bad folder"}'; exit 0 ;; esac
+  case "$OLDN" in ''|*/*) echo '{"ok":false,"err":"bad file"}'; exit 0 ;; esac
+  NEWN=$(printf '%s' "$NEWN" | sed 's@[/\\:*?"<>|]@@g' | tr -d '\r\n\t')
+  [ -z "$NEWN" ] && { echo '{"ok":false,"err":"empty name"}'; exit 0; }
+  YM=$(evym "$F")
+  D="$ARC/$YM/$F"
+  SRC="$D/$OLDN"; DST="$D/$NEWN"
+  [ -f "$SRC" ] || { echo '{"ok":false,"err":"file missing"}'; exit 0; }
+  [ -e "$DST" ] && { echo '{"ok":false,"err":"target exists"}'; exit 0; }
+  if mv "$SRC" "$DST" 2>/dev/null; then
+    S=$(stat -c %s "$DST" 2>/dev/null)
+    ledger_add "" "$NEWN" "$S" "arc-renamefile" "archive/$YM/$F/$OLDN" "archive/$YM/$F/$NEWN" "文件重命名" 2>/dev/null
+    printf '{"ok":true,"name":"%s"}\n' "$(jesc "$NEWN")"
+  else
+    echo '{"ok":false,"err":"mv failed"}'
+  fi
+  ;;
+
+# ---------- 删除（移到回收区） ----------
+delete)
+  F=$(getp folder); FILES=$(getp files)
+  YM=$(evym "$F")
+  [ -z "$YM" ] && { echo '{"ok":false,"err":"event not found"}'; exit 0; }
+  D="$ARC/$YM/$F"
+  [ -d "$D" ] || { echo '{"ok":false,"err":"folder missing"}'; exit 0; }
+  TD="$TRASH/$(date +%Y%m%d)/$F"
+  mkdir -p "$TD" 2>/dev/null
+  N=0
+  printf '%s\n' "$FILES" | tr ',' '\n' | while IFS= read -r n; do
+    [ -z "$n" ] && continue
+    case "$n" in */*) continue ;; esac
+    if [ -f "$D/$n" ] && mv -f "$D/$n" "$TD/$n" 2>/dev/null; then
+      S=$(stat -c %s "$TD/$n" 2>/dev/null)
+      ledger_add "" "$n" "$S" "arc-trash" "archive/$YM/$F/$n" "$(printf '%s' "$TD/$n" | sed 's|/data/media/0/nasbak/||')" "归档内删除，移入回收区" 2>/dev/null
+    fi
+  done
+  # 统计剩余
+  LEFT=$(find "$D" -maxdepth 1 -type f 2>/dev/null | wc -l | tr -d ' ')
+  printf '{"ok":true,"left":%s}\n' "$LEFT"
+  ;;
+
+# ---------- 移动文件到其他事件 ----------
+move)
+  FROM=$(getp from); TO=$(getp to); FILES=$(getp files)
+  case "$FROM" in ''|*/*) echo '{"ok":false,"err":"bad from"}'; exit 0 ;; esac
+  case "$TO" in ''|*/*) echo '{"ok":false,"err":"bad to"}'; exit 0 ;; esac
+  YM1=$(evym "$FROM")
+  YM2=$(evym "$TO")
+  [ -z "$YM1" ] && { echo '{"ok":false,"err":"from not found"}'; exit 0; }
+  [ -z "$YM2" ] && { echo '{"ok":false,"err":"to not found"}'; exit 0; }
+  D1="$ARC/$YM1/$FROM"; D2="$ARC/$YM2/$TO"
+  [ -d "$D2" ] || { echo '{"ok":false,"err":"to folder missing"}'; exit 0; }
+  M=0; SK=0; ER=0
+  printf '%s\n' "$FILES" | tr ',' '\n' > /data/local/tmp/_mv.list
+  while IFS= read -r n; do
+    [ -z "$n" ] && continue
+    case "$n" in */*) continue ;; esac
+    [ -f "$D1/$n" ] || { ER=$((ER+1)); continue; }
+    if [ -e "$D2/$n" ]; then SK=$((SK+1)); continue; fi
+    if mv -f "$D1/$n" "$D2/$n" 2>/dev/null; then
+      M=$((M+1))
+      ledger_add "" "$n" 0 "arc-move" "archive/$YM1/$FROM/$n" "archive/$YM2/$TO/$n" "跨事件移动" 2>/dev/null
+    else ER=$((ER+1)); fi
+  done < /data/local/tmp/_mv.list
+  rm -f /data/local/tmp/_mv.list
+  printf '{"ok":true,"moved":%s,"skip":%s,"err":%s}\n' "$M" "$SK" "$ER"
+  ;;
+
+# ---------- 新建事件夹 ----------
+newevent)
+  DDATE=$(getp date); SLUG=$(getp slug); TOPIC=$(getp topic)
+  case "$DDATE" in 20[0-9][0-9]-[01][0-9]-[0-3][0-9]) ;; *) echo '{"ok":false,"err":"bad date"}'; exit 0 ;; esac
+  case "$SLUG" in work|home|screenshot|video|other) ;; *) SLUG="other" ;; esac
+  TOPIC=$(printf '%s' "$TOPIC" | sed 's@[/\\:*?"<>|]@@g' | tr -d '\r\n\t' | cut -c1-20)
+  [ -z "$TOPIC" ] && TOPIC="未命名"
+  YM=$(printf '%s' "$DDATE" | cut -c1-7)
+  BASE="${DDATE}_${SLUG}_${TOPIC}"
+  FOLDER="$BASE"; SEQ=1
+  while [ -d "$ARC/$YM/$FOLDER" ] || grep -qF "\"folder\":\"$FOLDER\"" "$DATA/events.jsonl" 2>/dev/null; do
+    SEQ=$((SEQ+1)); FOLDER="${BASE}_${SEQ}"
+    [ "$SEQ" -gt 30 ] && break
+  done
+  D8=$(printf '%s' "$DDATE" | tr -d '-')
+  N=1
+  while grep -qF "\"event_id\":\"ev-$D8-$(printf '%02d' "$N")\"" "$DATA/events.jsonl" 2>/dev/null; do
+    N=$((N+1)); [ "$N" -gt 99 ] && break
+  done
+  EVID="ev-$D8-$(printf '%02d' "$N")"
+  mkdir -p "$ARC/$YM/$FOLDER" 2>/dev/null
+  printf '{"event_id":"%s","start_date":"%s","slug":"%s","topic":"%s","folder":"%s","status":"open","counts":{"i":0,"v":0},"ts":%s}\n' \
+    "$EVID" "$DDATE" "$SLUG" "$TOPIC" "$FOLDER" "$(date +%s)" >> "$DATA/events.jsonl"
+  ledger_add "" "$FOLDER" 0 "arc-newevent" "" "archive/$YM/$FOLDER" "新建事件夹" 2>/dev/null
+  printf '{"ok":true,"folder":"%s","event_id":"%s","ym":"%s"}\n' "$(jesc "$FOLDER")" "$EVID" "$YM"
+  ;;
+
+*)
+  echo '{"ok":false,"err":"unknown action"}'
+  ;;
+esac

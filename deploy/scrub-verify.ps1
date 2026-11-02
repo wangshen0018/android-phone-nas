@@ -1,1 +1,66 @@
-IyDlhazlvIDniYjmrovnlZnlrqHorqEKIwojIOS4iuS8oOWIsOWFrOW8gOS7k+W6k+WJjeW/hemhu+WFiOi3kei/meS4qu+8jOS7u+S9leWRveS4remDveaYr+azhOmcsuOAggojIOmAgOWHuueggSAxID0g5pyJ5q6L55WZ77yM5LiN6IO95Y+R5biD44CCCgpbQ21kbGV0QmluZGluZygpXQpwYXJhbShbc3RyaW5nXSREaXIgPSAiRTpcRFNIXHJlcG9ccHVibGljIikKCiRFcnJvckFjdGlvblByZWZlcmVuY2UgPSAnU3RvcCcKJERpciA9IChSZXNvbHZlLVBhdGggJERpcikuUGF0aAoKIyDnu53lr7nkuI3lhYHorrjlh7rnjrDlnKjlhazlvIDniYjph4znmoTkuJzopb8KJEZvcmJpZGRlbiA9IEAoCiAgICBAeyBOYW1lID0gJ+engeaciSBJUCc7ICAgICAgICBSZSA9ICcxOTJcLjE2OFwuXGQrXC5cZCsnOyAgICAgICAgICAgICAgICAgU2V2ID0gJ0hJR0gnIH0sCiAgICBAeyBOYW1lID0gJ1RhaWxzY2FsZSBJUCc7ICAgUmUgPSAnMTAwXC42NFwuXGQrXC5cZCsnOyAgICAgICAgICAgICAgICAgIFNldiA9ICdISUdIJyB9LAogICAgQHsgTmFtZSA9ICdSUEMg5a+G6ZKlJzsgICAgICAgUmUgPSAnazQwc3J2JzsgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFNldiA9ICdISUdIJyB9LAogICAgQHsgTmFtZSA9ICforr7lpIflnovlj7cnOyAgICAgICBSZSA9ICdNMjAxMksxMUFDfDI0MTIyUktDN0MnOyAgICAgICAgICAgICAgU2V2ID0gJ01JRCcgIH0sCiAgICBAeyBOYW1lID0gJ+S4quS6uuensOiwkyc7ICAgICAgIFJlID0gJ+WEv+WtkHzlpbPlhL986ICB5amGfOiAgeWFrCc7ICAgICAgICAgICAgICAgICAgU2V2ID0gJ0hJR0gnIH0sCiAgICBAeyBOYW1lID0gJ+ivgeS7tuWQjSc7ICAgICAgICAgUmUgPSAn6Lqr5Lu96K+BfOe7k+WpmuivgXzmr5XkuJror4F85oi35Y+j5pysJzsgICAgICAgICAgU2V2ID0gJ0hJR0gnIH0sCiAgICBAeyBOYW1lID0gJ+ecn+WunuS6i+S7tuS4u+mimCc7ICAgUmUgPSAn55yB5rC05Yip5Y6FfOaxh+ays3zkuLTmsoLmsLTmgLsnOyAgICAgICAgICAgICAgICBTZXYgPSAnTUlEJyAgfSwKICAgIEB7IE5hbWUgPSAn55yf5a6e6LSm5Y+3JzsgICAgICAgUmUgPSAnd2FuZ3NoZW4nOyAgICAgICAgICAgICAgICAgICAgICAgICAgICBTZXYgPSAnSElHSCcgfSwKICAgIEB7IE5hbWUgPSAn55yf5a6e6YKu566xJzsgICAgICAgUmUgPSAnW0EtWmEtejAtOS5fJSstXStAW0EtWmEtejAtOS4tXStcLltBLVphLXpdezIsfSc7IFNldiA9ICdNSUQnIH0sCiAgICBAeyBOYW1lID0gJ+aJi+acuuWPtyc7ICAgICAgICAgUmUgPSAnXGIxWzMtOV1cZHs5fVxiJzsgICAgICAgICAgICAgICAgICAgICBTZXYgPSAnSElHSCcgfSwKICAgIEB7IE5hbWUgPSAnV2luZG93cyDnlKjmiLfnm67lvZUnOyBSZSA9ICdDOlxcVXNlcnNcXFteXFxcc10rJzsgICAgICAgICAgICAgICBTZXYgPSAnSElHSCcgfSwKICAgIEB7IE5hbWUgPSAnQVBJIEtleSDnibnlvoEnOyAgIFJlID0gJ3NrLVtBLVphLXowLTldezIwLH18Z2l0aFtBLVphLXowLTlfXXsyMCx9JzsgU2V2ID0gJ0hJR0gnIH0sCiAgICBAeyBOYW1lID0gJ1RhaWxzY2FsZSDln5/lkI0nOyBSZSA9ICdcLnRzXC5uZXR8XC50YWlsc2NhbGVcLm5ldCc7ICAgICAgICAgIFNldiA9ICdNSUQnICB9LAogICAgQHsgTmFtZSA9ICdyY2xvbmUg6YWN572u6Lev5b6EJzsgUmUgPSAnL2RhdGEvbG9jYWwvdG1wL2d5cC9yY2xvbmVcLmNvbmYnOyAgICAgU2V2ID0gJ01JRCcgIH0KKQoKJFRleHRFeHQgPSBAKCcuc2gnLCcuY2dpJywnLmh0bWwnLCcubWQnLCcuY29uZicsJy5wczEnLCcuanNvbicsJy50eHQnLCcueW1sJykKJGZpbGVzID0gR2V0LUNoaWxkSXRlbSAkRGlyIC1SZWN1cnNlIC1GaWxlIHwgV2hlcmUtT2JqZWN0IHsKICAgICRyZWwgPSAkXy5GdWxsTmFtZS5TdWJzdHJpbmcoJERpci5MZW5ndGggKyAxKSAtcmVwbGFjZSAnXFwnLCcvJwogICAgJHJlbCAtbm90bGlrZSAnLmdpdC8qJyAtYW5kICRyZWwgLW5vdGxpa2UgJ2RlcGxveS9zY3J1Yi0qJwp9CgpXcml0ZS1Ib3N0ICI9PT4g5a6h6K6hICQoJGZpbGVzLkNvdW50KSDkuKrmlofku7YiIEN5YW4KJGhpdHMgPSAwCgpmb3JlYWNoICgkcnVsZSBpbiAkRm9yYmlkZGVuKSB7CiAgICAkZm91bmQgPSBAKCkKICAgIGZvcmVhY2ggKCRmIGluICRmaWxlcykgewogICAgICAgIGlmICgkVGV4dEV4dCAtbm90Y29udGFpbnMgJGYuRXh0ZW5zaW9uIC1hbmQgJGYuTmFtZSAtbm90aW4gJ3Jvb3QnLCcuZ2l0aWdub3JlJywnLmdpdGF0dHJpYnV0ZXMnKSB7IGNvbnRpbnVlIH0KICAgICAgICAkdHh0ID0gW1N5c3RlbS5JTy5GaWxlXTo6UmVhZEFsbFRleHQoJGYuRnVsbE5hbWUpCiAgICAgICAgJG1zID0gW3JlZ2V4XTo6TWF0Y2hlcygkdHh0LCAkcnVsZS5SZSkKICAgICAgICBpZiAoJG1zLkNvdW50IC1ndCAwKSB7CiAgICAgICAgICAgICRyZWwgPSAkZi5GdWxsTmFtZS5TdWJzdHJpbmcoJERpci5MZW5ndGggKyAxKQogICAgICAgICAgICAkdmFscyA9ICgkbXMgfCBGb3JFYWNoLU9iamVjdCB7ICRfLlZhbHVlIH0gfCBTZWxlY3QtT2JqZWN0IC1VbmlxdWUpIC1qb2luICcsICcKICAgICAgICAgICAgaWYgKCR2YWxzLkxlbmd0aCAtZ3QgNzApIHsgJHZhbHMgPSAkdmFscy5TdWJzdHJpbmcoMCw3MCkgKyAnLi4uJyB9CiAgICAgICAgICAgICRmb3VuZCArPSAiICAgICAgJHJlbCAgeCQoJG1zLkNvdW50KSAgWyR2YWxzXSIKICAgICAgICB9CiAgICB9CiAgICBpZiAoJGZvdW5kLkNvdW50IC1ndCAwKSB7CiAgICAgICAgJGhpdHMgKz0gJGZvdW5kLkNvdW50CiAgICAgICAgV3JpdGUtSG9zdCAiWyQoJHJ1bGUuU2V2KV0gJCgkcnVsZS5OYW1lKSIgUmVkCiAgICAgICAgJGZvdW5kIHwgRm9yRWFjaC1PYmplY3QgeyBXcml0ZS1Ib3N0ICRfIERhcmtZZWxsb3cgfQogICAgfQp9CgpXcml0ZS1Ib3N0ICIiCmlmICgkaGl0cyAtZXEgMCkgewogICAgV3JpdGUtSG9zdCAiPT0+IOmAmui/h++8mumbtuaui+eVme+8jOWPr+S7peWPkeW4gyIgR3JlZW4KICAgIGV4aXQgMAp9IGVsc2UgewogICAgV3JpdGUtSG9zdCAiPT0+IOWksei0pe+8miRoaXRzIOWkhOaui+eVme+8jOemgeatouWPkeW4gyIgUmVkCiAgICBleGl0IDEKfQo=
+# 公开版残留审计
+#
+# 上传到公开仓库前必须先跑这个，任何命中都是泄露。
+# 退出码 1 = 有残留，不能发布。
+
+[CmdletBinding()]
+param([string]$Dir = "E:\DSH\repo\public")
+
+$ErrorActionPreference = 'Stop'
+$Dir = (Resolve-Path $Dir).Path
+
+# 绝对不允许出现在公开版里的东西
+$Forbidden = @(
+    @{ Name = '私有 IP';        Re = '192\.168\.\d+\.\d+';                 Sev = 'HIGH' },
+    @{ Name = 'Tailscale IP';   Re = '100\.64\.\d+\.\d+';                  Sev = 'HIGH' },
+    @{ Name = 'RPC 密钥';       Re = 'k40srv';                             Sev = 'HIGH' },
+    @{ Name = '设备型号';       Re = 'M2012K11AC|24122RKC7C';              Sev = 'MID'  },
+    @{ Name = '个人称谓';       Re = '儿子|女儿|老婆|老公';                  Sev = 'HIGH' },
+    @{ Name = '证件名';         Re = '身份证|结婚证|毕业证|户口本';          Sev = 'HIGH' },
+    @{ Name = '真实事件主题';   Re = '省水利厅|汇河|临沂水总';                Sev = 'MID'  },
+    @{ Name = '真实账号';       Re = 'wangshen';                            Sev = 'HIGH' },
+    @{ Name = '真实邮箱';       Re = '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}'; Sev = 'MID' },
+    @{ Name = '手机号';         Re = '\b1[3-9]\d{9}\b';                     Sev = 'HIGH' },
+    @{ Name = 'Windows 用户目录'; Re = 'C:\\Users\\[^\\\s]+';               Sev = 'HIGH' },
+    @{ Name = 'API Key 特征';   Re = 'sk-[A-Za-z0-9]{20,}|gith[A-Za-z0-9_]{20,}'; Sev = 'HIGH' },
+    @{ Name = 'Tailscale 域名'; Re = '\.ts\.net|\.tailscale\.net';          Sev = 'MID'  },
+    @{ Name = 'rclone 配置路径'; Re = '/data/local/tmp/gyp/rclone\.conf';     Sev = 'MID'  }
+)
+
+$TextExt = @('.sh','.cgi','.html','.md','.conf','.ps1','.json','.txt','.yml')
+$files = Get-ChildItem $Dir -Recurse -File | Where-Object {
+    $rel = $_.FullName.Substring($Dir.Length + 1) -replace '\\','/'
+    $rel -notlike '.git/*' -and $rel -notlike 'deploy/scrub-*'
+}
+
+Write-Host "==> 审计 $($files.Count) 个文件" Cyan
+$hits = 0
+
+foreach ($rule in $Forbidden) {
+    $found = @()
+    foreach ($f in $files) {
+        if ($TextExt -notcontains $f.Extension -and $f.Name -notin 'root','.gitignore','.gitattributes') { continue }
+        $txt = [System.IO.File]::ReadAllText($f.FullName)
+        $ms = [regex]::Matches($txt, $rule.Re)
+        if ($ms.Count -gt 0) {
+            $rel = $f.FullName.Substring($Dir.Length + 1)
+            $vals = ($ms | ForEach-Object { $_.Value } | Select-Object -Unique) -join ', '
+            if ($vals.Length -gt 70) { $vals = $vals.Substring(0,70) + '...' }
+            $found += "      $rel  x$($ms.Count)  [$vals]"
+        }
+    }
+    if ($found.Count -gt 0) {
+        $hits += $found.Count
+        Write-Host "[$($rule.Sev)] $($rule.Name)" Red
+        $found | ForEach-Object { Write-Host $_ DarkYellow }
+    }
+}
+
+Write-Host ""
+if ($hits -eq 0) {
+    Write-Host "==> 通过：零残留，可以发布" Green
+    exit 0
+} else {
+    Write-Host "==> 失败：$hits 处残留，禁止发布" Red
+    exit 1
+}

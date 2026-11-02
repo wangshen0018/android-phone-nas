@@ -1,1 +1,65 @@
-IyEvc3lzdGVtL2Jpbi9zaAojIENHSTog5oqK56OB5Yqb5o6o57uZ5pys5py6IGFyaWEyIFJQQwojIOWFpeWPgjogaD1pbmZvX2hhc2jvvIgzMiDmiJYgNDAg5L2N5Y2B5YWt6L+b5Yi277yJCiMg5Ye65Y+COiBhcmlhMiDnmoTljp/lp4sgSlNPTlJQQyDlk43lupTvvJvlj4LmlbDkuI3lkIjms5Xml7bov5Tlm54geyJlcnJvciI6Ii4uLiJ9CiMKIyBycGMtc2VjcmV0IC8g56uv5Y+j6YO95LuOIGFyaWEyIOmFjee9ruaWh+S7tumHjOivu++8jOS4jei/m+WJjeerr+mhtemdou+8iOingSBsaWIvYXJpYTIuc2jvvInjgIIKCnByaW50ZiAnQ29udGVudC1UeXBlOiBhcHBsaWNhdGlvbi9qc29uXHJcbicKcHJpbnRmICdDYWNoZS1Db250cm9sOiBuby1zdG9yZVxyXG4nCnByaW50ZiAnWC1Db250ZW50LVR5cGUtT3B0aW9uczogbm9zbmlmZlxyXG4nCnByaW50ZiAnXHJcbicKClNFTEZfRElSPSQoY2QgIiQoZGlybmFtZSAiJDAiKSIgMj4vZGV2L251bGwgJiYgcHdkKQppZiBbIC1mICIkU0VMRl9ESVIvLi4vLi4vbGliL2FyaWEyLnNoIiBdOyB0aGVuCiAgLiAiJFNFTEZfRElSLy4uLy4uL2xpYi9hcmlhMi5zaCIKZWxzZQogIGVjaG8gJ3siZXJyb3IiOiJsaWIvYXJpYTIuc2ggbm90IGZvdW5kLCByZWRlcGxveSBuZWVkZWQifScKICBleGl0IDAKZmkKCmg9IiR7UVVFUllfU1RSSU5HfSIKY2FzZSAiJGgiIGluCiAgaD0qKSBoPSIke2gjaD19IiA7OwogICopICAgaD0iIiA7Owplc2FjCmg9IiR7aCUlJip9IgoKaWYgWyAteiAiJGgiIF07IHRoZW4KICBlY2hvICd7ImVycm9yIjoibWlzc2luZyBoYXNoIn0nCiAgZXhpdCAwCmZpCgojIOWPquaOpeWPl+WNgeWFrei/m+WItu+8jOmVv+W6piAzMiDmiJYgNDDvvIzlhbbkvZnkuIDlvovmi5Lnu50KY2FzZSAiJGgiIGluCiAgKlshMC05YS1mQS1GXSopCiAgICBlY2hvICd7ImVycm9yIjoiYmFkIGhhc2gifScKICAgIGV4aXQgMAogICAgOzsKZXNhYwoKSExFTj0keyNofQppZiBbICIkSExFTiIgLW5lIDMyIF0gJiYgWyAiJEhMRU4iIC1uZSA0MCBdOyB0aGVuCiAgZWNobyAneyJlcnJvciI6ImJhZCBoYXNoIGxlbmd0aCJ9JwogIGV4aXQgMApmaQoKT1VUPSQoYXJpYTJfcnBjICJhcmlhMi5hZGRVcmkiICJbW1wibWFnbmV0Oj94dD11cm46YnRpaDoke2h9XCJdXSIpCgppZiBbIC16ICIkT1VUIiBdOyB0aGVuCiAgaWYgWyAteiAiJE1HX0NPTkYiIF07IHRoZW4KICAgIGVjaG8gJ3siZXJyb3IiOiJhcmlhMiBjb25maWcgbm90IGZvdW5kIn0nCiAgZWxzZQogICAgZWNobyAie1wiZXJyb3JcIjpcImFyaWEyIHJwYyBubyByZXNwb25zZSBvbiBwb3J0ICR7TUdfUE9SVH1cIn0iCiAgZmkKICBleGl0IDAKZmkKCiMgY3VybCDlnKjmn5DkupvnvZHnu5znjq/looPkuIvkvJrlkJDlh7rpnZ4gSlNPTiDnmoTplJnor6/mlofmnKzvvIzkuI3og73nm7TmjqXpgI/kvKDnu5nliY3nq68KaWYgaXNfanNvbl9vYmplY3QgIiRPVVQiOyB0aGVuCiAgcHJpbnRmICclcycgIiRPVVQiCmVsc2UKICBlY2hvICd7ImVycm9yIjoiYXJpYTIgcnBjIGZhaWxlZCwgY2hlY2sgcnBjIHBvcnQgYW5kIGFyaWEyIHNlcnZpY2UifScKZmkKCmV4aXQgMAo=
+#!/system/bin/sh
+# CGI: 把磁力推给本机 aria2 RPC
+# 入参: h=info_hash（32 或 40 位十六进制）
+# 出参: aria2 的原始 JSONRPC 响应；参数不合法时返回 {"error":"..."}
+#
+# rpc-secret / 端口都从 aria2 配置文件里读，不进前端页面（见 lib/aria2.sh）。
+
+printf 'Content-Type: application/json\r\n'
+printf 'Cache-Control: no-store\r\n'
+printf 'X-Content-Type-Options: nosniff\r\n'
+printf '\r\n'
+
+SELF_DIR=$(cd "$(dirname "$0")" 2>/dev/null && pwd)
+if [ -f "$SELF_DIR/../../lib/aria2.sh" ]; then
+  . "$SELF_DIR/../../lib/aria2.sh"
+else
+  echo '{"error":"lib/aria2.sh not found, redeploy needed"}'
+  exit 0
+fi
+
+h="${QUERY_STRING}"
+case "$h" in
+  h=*) h="${h#h=}" ;;
+  *)   h="" ;;
+esac
+h="${h%%&*}"
+
+if [ -z "$h" ]; then
+  echo '{"error":"missing hash"}'
+  exit 0
+fi
+
+# 只接受十六进制，长度 32 或 40，其余一律拒绝
+case "$h" in
+  *[!0-9a-fA-F]*)
+    echo '{"error":"bad hash"}'
+    exit 0
+    ;;
+esac
+
+HLEN=${#h}
+if [ "$HLEN" -ne 32 ] && [ "$HLEN" -ne 40 ]; then
+  echo '{"error":"bad hash length"}'
+  exit 0
+fi
+
+OUT=$(aria2_rpc "aria2.addUri" "[[\"magnet:?xt=urn:btih:${h}\"]]")
+
+if [ -z "$OUT" ]; then
+  if [ -z "$MG_CONF" ]; then
+    echo '{"error":"aria2 config not found"}'
+  else
+    echo "{\"error\":\"aria2 rpc no response on port ${MG_PORT}\"}"
+  fi
+  exit 0
+fi
+
+# curl 在某些网络环境下会吐出非 JSON 的错误文本，不能直接透传给前端
+if is_json_object "$OUT"; then
+  printf '%s' "$OUT"
+else
+  echo '{"error":"aria2 rpc failed, check rpc port and aria2 service"}'
+fi
+
+exit 0

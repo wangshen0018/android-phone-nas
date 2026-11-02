@@ -1,1 +1,116 @@
-IyDnlKggR2l0SHViIEdpdCBEYXRhIEFQSSDmibnph4/kuIrkvKDmlbTkuKrnm67lvZUKIwojIOS4uuS7gOS5iOS4jeeUqCBnaXQgcHVzaO+8mgojICAg5pys5py6IGdpdGh1Yi5jb206NDQzIOiiq+e9kee7nOW5suaJsO+8jFdhdHQg5Y+N5Luj5a+5IGdpdCDnmoQgUE9TVCDpgJrpgZPkuI3pgJrvvIhwdXNoIOS8muWNoeatu++8ieOAggojICAg5L2GIGFwaS5naXRodWIuY29tIOeos+WumuWPr+eUqO+8jOaJgOS7pei1sCBSRVNUIEFQSeOAggojCiMg5Li65LuA5LmI55SoIEdpdCBEYXRhIEFQSSDogIzkuI3mmK8gQ29udGVudHMgQVBJ77yaCiMgICBDb250ZW50cyBBUEkg5piv44CM5LiA5Liq5paH5Lu25LiA5qyh5o+Q5Lqk44CN77yMNDgg5Liq5paH5Lu2ID0gNDgg5qyh5o+Q5Lqk77yM5b6I6ISP44CCCiMgICBHaXQgRGF0YSBBUEkg5Y+v5Lul5YWI5bu6IGJsb2LjgIHlu7ogdHJlZeOAgeW7uiBjb21taXTvvIzkuIDmrKHmjqjkuIrljrvjgIIKIwojIOeUqOazle+8mgojICAgJGVudjpHSF9QQVQgPSAiLi4uIgojICAgLlxkZXBsb3lccHVzaC1hcGkucHMxIC1SZXBvICI8eW91ci1hY2NvdW50Pi9rNDAtZmFtaWx5LW5hcyIgLURpciAiRTpcRFNIXHJlcG9ccHJpdmF0ZSIKCltDbWRsZXRCaW5kaW5nKCldCnBhcmFtKAogICAgW1BhcmFtZXRlcihNYW5kYXRvcnk9JHRydWUpXVtzdHJpbmddJFJlcG8sCiAgICBbUGFyYW1ldGVyKE1hbmRhdG9yeT0kdHJ1ZSldW3N0cmluZ10kRGlyLAogICAgW3N0cmluZ10kQnJhbmNoID0gIm1haW4iLAogICAgW3N0cmluZ10kTWVzc2FnZSA9ICJzeW5jIGZyb20gbG9jYWwiLAogICAgW3N0cmluZ10kUGF0ID0gJGVudjpHSF9QQVQKKQoKJEVycm9yQWN0aW9uUHJlZmVyZW5jZSA9ICdTdG9wJwppZiAoLW5vdCAkUGF0KSB7IHRocm93ICLnvLrlsJEgUEFU77ya6K6+572uIGAkZW52OkdIX1BBVCDmiJbkvKAgLVBhdCIgfQoKJEFwaSA9ICJodHRwczovL2FwaS5naXRodWIuY29tL3JlcG9zLyRSZXBvIgokSCA9IEB7CiAgICBBdXRob3JpemF0aW9uID0gIkJlYXJlciAkUGF0IgogICAgQWNjZXB0ICAgICAgICA9ICJhcHBsaWNhdGlvbi92bmQuZ2l0aHViK2pzb24iCiAgICAiVXNlci1BZ2VudCIgID0gIms0MC1kZXBsb3kiCn0KCmZ1bmN0aW9uIENhbGwoJE1ldGhvZCwgJFVyaSwgJEJvZHkpIHsKICAgICRwID0gQHsgVXJpID0gJFVyaTsgSGVhZGVycyA9ICRIOyBNZXRob2QgPSAkTWV0aG9kOyBUaW1lb3V0U2VjID0gNDUgfQogICAgaWYgKCRCb2R5KSB7ICRwLkJvZHkgPSAoJEJvZHkgfCBDb252ZXJ0VG8tSnNvbiAtRGVwdGggMjAgLUNvbXByZXNzKTsgJHAuQ29udGVudFR5cGUgPSAiYXBwbGljYXRpb24vanNvbiIgfQogICAgZm9yICgkaSA9IDA7ICRpIC1sdCAzOyAkaSsrKSB7CiAgICAgICAgdHJ5IHsgcmV0dXJuIEludm9rZS1SZXN0TWV0aG9kIEBwIH0KICAgICAgICBjYXRjaCB7CiAgICAgICAgICAgIGlmICgkaSAtZXEgMikgeyB0aHJvdyB9CiAgICAgICAgICAgIFN0YXJ0LVNsZWVwIC1TZWNvbmRzICgyICogKCRpICsgMSkpCiAgICAgICAgfQogICAgfQp9CgojIC0tLS0tLS0tLS0gMS4g546w5pyJ5YiG5pSv5aS0IC0tLS0tLS0tLS0KV3JpdGUtSG9zdCAiPT0+IOivu+WPliAkQnJhbmNoIOW9k+WJjSBIRUFEIiBDeWFuCiRyZWYgPSAkbnVsbAp0cnkgeyAkcmVmID0gQ2FsbCBHRVQgIiRBcGkvZ2l0L3JlZi9oZWFkcy8kQnJhbmNoIiAiIiB9IGNhdGNoIHsgV3JpdGUtSG9zdCAiICAgIOWIhuaUr+WwmuS4jeWtmOWcqO+8jOWwhuWIneWni+WMliIgWWVsbG93IH0KCiRwYXJlbnRTaGEgPSAkbnVsbAokYmFzZVRyZWVTaGEgPSAkbnVsbAppZiAoJHJlZikgewogICAgJHBhcmVudFNoYSA9ICRyZWYub2JqZWN0LnNoYQogICAgJHBjID0gQ2FsbCBHRVQgIiRBcGkvZ2l0L2NvbW1pdHMvJHBhcmVudFNoYSIgIiIKICAgICRiYXNlVHJlZVNoYSA9ICRwYy50cmVlLnNoYQogICAgV3JpdGUtSG9zdCAiICAgIOeItuaPkOS6pCAkKCRwYXJlbnRTaGEuU3Vic3RyaW5nKDAsNykpIgp9CgojIC0tLS0tLS0tLS0gMi4g5pS26ZuG5paH5Lu2IC0tLS0tLS0tLS0KJERpciA9IChSZXNvbHZlLVBhdGggJERpcikuUGF0aAokZ2l0RGlyID0gSm9pbi1QYXRoICREaXIgIi5naXQiCiRmaWxlcyA9IEdldC1DaGlsZEl0ZW0gJERpciAtUmVjdXJzZSAtRmlsZSB8IFdoZXJlLU9iamVjdCB7ICRfLkZ1bGxOYW1lIC1ub3RsaWtlICIqJGdpdERpcioiIH0KV3JpdGUtSG9zdCAiPT0+IOW+heS4iuS8oCAkKCRmaWxlcy5Db3VudCkg5Liq5paH5Lu2IiBDeWFuCgojIC0tLS0tLS0tLS0gMy4g5bu6IGJsb2IgLS0tLS0tLS0tLQokdHJlZSA9IEAoKQpmb3JlYWNoICgkZiBpbiAkZmlsZXMpIHsKICAgICRyZWwgPSAkZi5GdWxsTmFtZS5TdWJzdHJpbmcoJERpci5MZW5ndGggKyAxKSAtcmVwbGFjZSAnXFwnLCcvJwogICAgIyDmlofmnKzmlofku7bnu5/kuIDovawgTEbvvIhBbmRyb2lkIHNoIOmBhyBDUkxGIOS8mueCuO+8iQogICAgJGlzVGV4dCA9ICRmLkV4dGVuc2lvbiAtaW4gJy5zaCcsJy5jZ2knLCcuaHRtbCcsJy5tZCcsJy5jb25mJywnLnBzMScsJy5naXRpZ25vcmUnLCcuZ2l0YXR0cmlidXRlcycgLW9yICRmLk5hbWUgLWluICdyb290JywnLmdpdGlnbm9yZScsJy5naXRhdHRyaWJ1dGVzJwogICAgaWYgKCRpc1RleHQpIHsKICAgICAgICAkdHh0ID0gW1N5c3RlbS5JTy5GaWxlXTo6UmVhZEFsbFRleHQoJGYuRnVsbE5hbWUpCiAgICAgICAgJHR4dCA9ICR0eHQgLXJlcGxhY2UgImByYG4iLCAiYG4iCiAgICAgICAgJGNvbnRlbnQgPSBbQ29udmVydF06OlRvQmFzZTY0U3RyaW5nKFtUZXh0LkVuY29kaW5nXTo6VVRGOC5HZXRCeXRlcygkdHh0KSkKICAgICAgICAkZW5jID0gInV0Zi04IgogICAgfSBlbHNlIHsKICAgICAgICAkY29udGVudCA9IFtDb252ZXJ0XTo6VG9CYXNlNjRTdHJpbmcoW1N5c3RlbS5JTy5GaWxlXTo6UmVhZEFsbEJ5dGVzKCRmLkZ1bGxOYW1lKSkKICAgICAgICAkZW5jID0gImJhc2U2NCIKICAgIH0KCiAgICAkYmxvYiA9IENhbGwgUE9TVCAiJEFwaS9naXQvYmxvYnMiIEB7IGNvbnRlbnQgPSAkY29udGVudDsgZW5jb2RpbmcgPSAkZW5jIH0KICAgICR0cmVlICs9IEB7IHBhdGggPSAkcmVsOyBtb2RlID0gIjEwMDY0NCI7IHR5cGUgPSAiYmxvYiI7IHNoYSA9ICRibG9iLnNoYSB9Cn0KCiMgQ0dJIOmcgOimgeWPr+aJp+ihjOS9je+8iDEwMDc1Ne+8ie+8jOWQpuWImSBodHRwZCDlj6/og73mi5Lnu53miafooYwKJGNnaXMgPSAkZmlsZXMgfCBXaGVyZS1PYmplY3QgeyAkXy5FeHRlbnNpb24gLWVxICcuY2dpJyAtb3IgJF8uRXh0ZW5zaW9uIC1lcSAnLnNoJyB9CmZvcmVhY2ggKCR0IGluICR0cmVlKSB7CiAgICBpZiAoJHQucGF0aCAtbWF0Y2ggJ1wuKGNnaXxzaCkkJyAtb3IgJHQucGF0aCAtZXEgJ2Nyb24vcm9vdCcpIHsgJHQubW9kZSA9ICIxMDA3NTUiIH0KfQoKIyAtLS0tLS0tLS0tIDQuIOW7uiB0cmVlIC0tLS0tLS0tLS0KV3JpdGUtSG9zdCAiPT0+IOW7uiB0cmVlIiBDeWFuCiR0cmVlQm9keSA9IEB7IHRyZWUgPSAkdHJlZSB9CmlmICgkYmFzZVRyZWVTaGEpIHsgJHRyZWVCb2R5LmJhc2VfdHJlZSA9ICRiYXNlVHJlZVNoYSB9CiRuZXdUcmVlID0gQ2FsbCBQT1NUICIkQXBpL2dpdC90cmVlcyIgJHRyZWVCb2R5CgojIC0tLS0tLS0tLS0gNS4g5bu6IGNvbW1pdCAtLS0tLS0tLS0tCldyaXRlLUhvc3QgIj09PiDlu7ogY29tbWl0IiBDeWFuCiRjb21taXRCb2R5ID0gQHsgbWVzc2FnZSA9ICRNZXNzYWdlOyB0cmVlID0gJG5ld1RyZWUuc2hhIH0KaWYgKCRwYXJlbnRTaGEpIHsgJGNvbW1pdEJvZHkucGFyZW50cyA9IEAoJHBhcmVudFNoYSkgfQokbmV3Q29tbWl0ID0gQ2FsbCBQT1NUICIkQXBpL2dpdC9jb21taXRzIiAkY29tbWl0Qm9keQoKIyAtLS0tLS0tLS0tIDYuIOabtOaWsOWIhuaUryAtLS0tLS0tLS0tCldyaXRlLUhvc3QgIj09PiDmm7TmlrAgJEJyYW5jaCIgQ3lhbgokcmVmQm9keSA9IEB7IHNoYSA9ICRuZXdDb21taXQuc2hhOyBmb3JjZSA9ICRmYWxzZSB9CmlmICgkcmVmKSB7CiAgICBDYWxsIFBBVENIICIkQXBpL2dpdC9yZWZzL2hlYWRzLyRCcmFuY2giICRyZWZCb2R5IHwgT3V0LU51bGwKfSBlbHNlIHsKICAgIENhbGwgUE9TVCAiJEFwaS9naXQvcmVmcyIgQHsgcmVmID0gInJlZnMvaGVhZHMvJEJyYW5jaCI7IHNoYSA9ICRuZXdDb21taXQuc2hhIH0gfCBPdXQtTnVsbAp9CgpXcml0ZS1Ib3N0ICIiCldyaXRlLUhvc3QgIuWujOaIkO+8miRSZXBvIEAgJEJyYW5jaCIgR3JlZW4KV3JpdGUtSG9zdCAiICDmj5DkuqQgJCgkbmV3Q29tbWl0LnNoYS5TdWJzdHJpbmcoMCw3KSkgIOaWh+S7tiAkKCRmaWxlcy5Db3VudCkg5LiqIgpXcml0ZS1Ib3N0ICIgIGh0dHBzOi8vZ2l0aHViLmNvbS8kUmVwbyIK
+# 用 GitHub Git Data API 批量上传整个目录
+#
+# 为什么不用 git push：
+#   本机 github.com:443 被网络干扰，Watt 反代对 git 的 POST 通道不通（push 会卡死）。
+#   但 api.github.com 稳定可用，所以走 REST API。
+#
+# 为什么用 Git Data API 而不是 Contents API：
+#   Contents API 是「一个文件一次提交」，48 个文件 = 48 次提交，很脏。
+#   Git Data API 可以先建 blob、建 tree、建 commit，一次推上去。
+#
+# 用法：
+#   $env:GH_PAT = "..."
+#   .\deploy\push-api.ps1 -Repo "<your-account>/k40-family-nas" -Dir "E:\DSH\repo\private"
+
+[CmdletBinding()]
+param(
+    [Parameter(Mandatory=$true)][string]$Repo,
+    [Parameter(Mandatory=$true)][string]$Dir,
+    [string]$Branch = "main",
+    [string]$Message = "sync from local",
+    [string]$Pat = $env:GH_PAT
+)
+
+$ErrorActionPreference = 'Stop'
+if (-not $Pat) { throw "缺少 PAT：设置 `$env:GH_PAT 或传 -Pat" }
+
+$Api = "https://api.github.com/repos/$Repo"
+$H = @{
+    Authorization = "Bearer $Pat"
+    Accept        = "application/vnd.github+json"
+    "User-Agent"  = "k40-deploy"
+}
+
+function Call($Method, $Uri, $Body) {
+    $p = @{ Uri = $Uri; Headers = $H; Method = $Method; TimeoutSec = 45 }
+    if ($Body) { $p.Body = ($Body | ConvertTo-Json -Depth 20 -Compress); $p.ContentType = "application/json" }
+    for ($i = 0; $i -lt 3; $i++) {
+        try { return Invoke-RestMethod @p }
+        catch {
+            if ($i -eq 2) { throw }
+            Start-Sleep -Seconds (2 * ($i + 1))
+        }
+    }
+}
+
+# ---------- 1. 现有分支头 ----------
+Write-Host "==> 读取 $Branch 当前 HEAD" Cyan
+$ref = $null
+try { $ref = Call GET "$Api/git/ref/heads/$Branch" "" } catch { Write-Host "    分支尚不存在，将初始化" Yellow }
+
+$parentSha = $null
+$baseTreeSha = $null
+if ($ref) {
+    $parentSha = $ref.object.sha
+    $pc = Call GET "$Api/git/commits/$parentSha" ""
+    $baseTreeSha = $pc.tree.sha
+    Write-Host "    父提交 $($parentSha.Substring(0,7))"
+}
+
+# ---------- 2. 收集文件 ----------
+$Dir = (Resolve-Path $Dir).Path
+$gitDir = Join-Path $Dir ".git"
+$files = Get-ChildItem $Dir -Recurse -File | Where-Object { $_.FullName -notlike "*$gitDir*" }
+Write-Host "==> 待上传 $($files.Count) 个文件" Cyan
+
+# ---------- 3. 建 blob ----------
+$tree = @()
+foreach ($f in $files) {
+    $rel = $f.FullName.Substring($Dir.Length + 1) -replace '\\','/'
+    # 文本文件统一转 LF（Android sh 遇 CRLF 会炸）
+    $isText = $f.Extension -in '.sh','.cgi','.html','.md','.conf','.ps1','.gitignore','.gitattributes' -or $f.Name -in 'root','.gitignore','.gitattributes'
+    if ($isText) {
+        $txt = [System.IO.File]::ReadAllText($f.FullName)
+        $txt = $txt -replace "`r`n", "`n"
+        $content = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($txt))
+        $enc = "utf-8"
+    } else {
+        $content = [Convert]::ToBase64String([System.IO.File]::ReadAllBytes($f.FullName))
+        $enc = "base64"
+    }
+
+    $blob = Call POST "$Api/git/blobs" @{ content = $content; encoding = $enc }
+    $tree += @{ path = $rel; mode = "100644"; type = "blob"; sha = $blob.sha }
+}
+
+# CGI 需要可执行位（100755），否则 httpd 可能拒绝执行
+$cgis = $files | Where-Object { $_.Extension -eq '.cgi' -or $_.Extension -eq '.sh' }
+foreach ($t in $tree) {
+    if ($t.path -match '\.(cgi|sh)$' -or $t.path -eq 'cron/root') { $t.mode = "100755" }
+}
+
+# ---------- 4. 建 tree ----------
+Write-Host "==> 建 tree" Cyan
+$treeBody = @{ tree = $tree }
+if ($baseTreeSha) { $treeBody.base_tree = $baseTreeSha }
+$newTree = Call POST "$Api/git/trees" $treeBody
+
+# ---------- 5. 建 commit ----------
+Write-Host "==> 建 commit" Cyan
+$commitBody = @{ message = $Message; tree = $newTree.sha }
+if ($parentSha) { $commitBody.parents = @($parentSha) }
+$newCommit = Call POST "$Api/git/commits" $commitBody
+
+# ---------- 6. 更新分支 ----------
+Write-Host "==> 更新 $Branch" Cyan
+$refBody = @{ sha = $newCommit.sha; force = $false }
+if ($ref) {
+    Call PATCH "$Api/git/refs/heads/$Branch" $refBody | Out-Null
+} else {
+    Call POST "$Api/git/refs" @{ ref = "refs/heads/$Branch"; sha = $newCommit.sha } | Out-Null
+}
+
+Write-Host ""
+Write-Host "完成：$Repo @ $Branch" Green
+Write-Host "  提交 $($newCommit.sha.Substring(0,7))  文件 $($files.Count) 个"
+Write-Host "  https://github.com/$Repo"

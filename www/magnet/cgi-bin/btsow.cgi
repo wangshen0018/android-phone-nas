@@ -1,1 +1,48 @@
-IyEvc3lzdGVtL2Jpbi9zaAojIENHSTog6L2s5Y+RIGJ0c293IOaQnOe0ou+8iOWOn+agt+i/lOWbniBKU09O77yM5a2X5q616Kej5p6Q5Lqk57uZ5YmN56uv77yJCiMg5YWl5Y+COiBQT1NUIOato+aWh+S4uiBVVEYtOCDljp/mloflhbPplK7or43vvIjliY3nq6/nlKggdGV4dC9wbGFpbiDlj5HvvIkKIyDlh7rlj4I6IGJ0c293IOWOn+WniyBKU09O77yb5aSx6LSl5pe26L+U5ZueIHsiY29kZSI6MjAwLCJkYXRhIjpbXX0KCnByaW50ZiAnQ29udGVudC1UeXBlOiBhcHBsaWNhdGlvbi9qc29uXHJcbicKcHJpbnRmICdDYWNoZS1Db250cm9sOiBuby1zdG9yZVxyXG4nCnByaW50ZiAnWC1Db250ZW50LVR5cGUtT3B0aW9uczogbm9zbmlmZlxyXG4nCnByaW50ZiAnXHJcbicKCkNVUkw9JChjb21tYW5kIC12IGN1cmwgMj4vZGV2L251bGwpClsgLXogIiRDVVJMIiBdICYmIENVUkw9L3N5c3RlbS9iaW4vY3VybAoKIyDms6jmhI/vvJrov5nkuKrmupAqKuaVheaEj+S4jeaOpeS7o+eQhioq44CCYnRzb3cg5a6e5rWL5Zu95YaF55u06L+eIDF+MiDnp5LkuJTku47mnKrlpLHotKXvvIwKIyDnu5XliLDlooPlpJboioLngrnkuI3lj6/og73mm7Tlv6vvvIzov5jlpJrkuIDlsYLoioLngrnmlYXpmpzpo47pmanjgIIKIyDku6PnkIblj6rnu5kgYXBpYmF5IC8gWVRTIOi/meexu+iiq+WimeaIlumjmOW/veeahOermeeUqO+8iOingSBzZWFyY2guY2dp44CBeXRzLmNnae+8ieOAggoKUT0kKGNhdCkKIyDkuKLmjonmjaLooYwv5Yi26KGoL+epuuWtl+iKgu+8jOmBv+WFjeaKiiBKU09OIOaLvOWdjwpRPSQocHJpbnRmICclcycgIiRRIiB8IHRyIC1kICdcMDAwXHJcblx0JykKIyDmjpDmjonpppblsL7nqbrmoLzvvJpidHNvdyDmlLbliLDnuq/nqbrmoLzkvJrov5Tlm57mlbTnq5nmnIDmlrDliJfooajvvIzlv4XpobvlvZPnqbrmkJzntKLlpITnkIYKUT0kKHByaW50ZiAnJXMnICIkUSIgfCBzZWQgJ3MvXltbOnNwYWNlOl1dKi8vOyBzL1tbOnNwYWNlOl1dKiQvLycpCiMg6ZmQ6ZW/IDIwMCDlrZfoioLvvIzpmLLmraLlvILluLjovpPlhaUKUT0kKHByaW50ZiAnJXMnICIkUSIgfCBjdXQgLWMxLTIwMCkKCmlmIFsgLXogIiRRIiBdOyB0aGVuCiAgZWNobyAneyJjb2RlIjoyMDAsImRhdGEiOltdfScKICBleGl0IDAKZmkKCiMg6L2s5LmJ5Y+N5pac5p2g5LiO5Y+M5byV5Y+377ya6aG65bqP5b+F6aG75piv5YWI5Y+N5pac5p2g44CB5ZCO5byV5Y+3ClE9JChwcmludGYgJyVzJyAiJFEiIHwgc2VkICdzL1xcL1xcXFwvZzsgcy8iL1xcIi9nJykKCk9VVD0kKCIkQ1VSTCIgLXMgLS1tYXgtdGltZSAxNSBcCiAgLUEgJ01vemlsbGEvNS4wIChMaW51eDsgQW5kcm9pZCAxMzsgPERFVklDRV9NT0RFTD4pIEFwcGxlV2ViS2l0LzUzNy4zNiAoS0hUTUwsIGxpa2UgR2Vja28pIENocm9tZS8xMjAuMCBNb2JpbGUgU2FmYXJpLzUzNy4zNicgXAogIC1YIFBPU1QgXAogIC1IICdDb250ZW50LVR5cGU6IGFwcGxpY2F0aW9uL2pzb24nIFwKICAtSCAnUmVmZXJlcjogaHR0cHM6Ly9idHNvdy5saXZlLycgXAogIC1kICJbe1wic2VhcmNoXCI6XCIke1F9XCJ9LDMwLDFdIiBcCiAgJ2h0dHBzOi8vYnRzb3cubGl2ZS9idHMvZGF0YS9hcGkvc2VhcmNoJyAyPi9kZXYvbnVsbCkKCiMgY3VybCDotoXml7bkvJrov5Tlm57ljYrmiKrlhoXlrrnvvIzmoKHpqozpppblsL7mmK/kuI3mmK/lrozmlbTnmoQgey4uLn3vvIzlkKbliJnliY3nq68gSlNPTi5wYXJzZSDkvJrmiqXplJkKY2FzZSAiJE9VVCIgaW4KICBceypcfSkgcHJpbnRmICclcycgIiRPVVQiIDs7CiAgKikgICAgIGVjaG8gJ3siY29kZSI6MjAwLCJkYXRhIjpbXX0nIDs7CmVzYWMKCmV4aXQgMAo=
+#!/system/bin/sh
+# CGI: 转发 btsow 搜索（原样返回 JSON，字段解析交给前端）
+# 入参: POST 正文为 UTF-8 原文关键词（前端用 text/plain 发）
+# 出参: btsow 原始 JSON；失败时返回 {"code":200,"data":[]}
+
+printf 'Content-Type: application/json\r\n'
+printf 'Cache-Control: no-store\r\n'
+printf 'X-Content-Type-Options: nosniff\r\n'
+printf '\r\n'
+
+CURL=$(command -v curl 2>/dev/null)
+[ -z "$CURL" ] && CURL=/system/bin/curl
+
+# 注意：这个源**故意不接代理**。btsow 实测国内直连 1~2 秒且从未失败，
+# 绕到境外节点不可能更快，还多一层节点故障风险。
+# 代理只给 apibay / YTS 这类被墙或飘忽的站用（见 search.cgi、yts.cgi）。
+
+Q=$(cat)
+# 丢掉换行/制表/空字节，避免把 JSON 拼坏
+Q=$(printf '%s' "$Q" | tr -d '\000\r\n\t')
+# 掐掉首尾空格：btsow 收到纯空格会返回整站最新列表，必须当空搜索处理
+Q=$(printf '%s' "$Q" | sed 's/^[[:space:]]*//; s/[[:space:]]*$//')
+# 限长 200 字节，防止异常输入
+Q=$(printf '%s' "$Q" | cut -c1-200)
+
+if [ -z "$Q" ]; then
+  echo '{"code":200,"data":[]}'
+  exit 0
+fi
+
+# 转义反斜杠与双引号：顺序必须是先反斜杠、后引号
+Q=$(printf '%s' "$Q" | sed 's/\\/\\\\/g; s/"/\\"/g')
+
+OUT=$("$CURL" -s --max-time 15 \
+  -A 'Mozilla/5.0 (Linux; Android 13; <DEVICE_MODEL>) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Mobile Safari/537.36' \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  -H 'Referer: https://btsow.live/' \
+  -d "[{\"search\":\"${Q}\"},30,1]" \
+  'https://btsow.live/bts/data/api/search' 2>/dev/null)
+
+# curl 超时会返回半截内容，校验首尾是不是完整的 {...}，否则前端 JSON.parse 会报错
+case "$OUT" in
+  \{*\}) printf '%s' "$OUT" ;;
+  *)     echo '{"code":200,"data":[]}' ;;
+esac
+
+exit 0

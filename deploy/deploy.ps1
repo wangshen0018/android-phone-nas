@@ -1,1 +1,239 @@
-IyDpg6jnvbLliLAgSzQwCiMKIyDnlKjms5XvvJoKIyAgICRlbnY6QURCX0RFVklDRSA9ICI8SzQwX0xBTl9JUD46NTU1NSIKIyAgIC5cZGVwbG95XGRlcGxveS5wczEgICAgICAgICAgICAgICMg5YWo6YeP6YOo572yCiMgICAuXGRlcGxveVxkZXBsb3kucHMxIC1Pbmx5IHd3dyAgICAjIOWPqumDqOe9suafkOS4quebruW9lQojCiMg5Li65LuA5LmI5LiN6IO955u05o6lIGFkYiBwdXNoIOWIsCAvZGF0YS9hZGLvvJoKIyAgIC9kYXRhL2FkYiDmmK8gcm9vdCDmiYDmnInjgIHmnYPpmZAgNzAw77yMYWRiIHB1c2gg5LyaIFBlcm1pc3Npb24gZGVuaWVk44CCCiMgICDlv4XpobvlhYjmjqjliLAgL2RhdGEvbG9jYWwvdG1w77yM5YaN55SoIHN1IC1jIOWkjeWItuWIsOS9jeOAggoKW0NtZGxldEJpbmRpbmcoKV0KcGFyYW0oCiAgICBbc3RyaW5nXSREZXZpY2UgID0gJGVudjpBREJfREVWSUNFLAogICAgW3N0cmluZ10kT25seSAgICA9ICIiLAogICAgW3N3aXRjaF0kTm9SZXN0YXJ0CikKCiRFcnJvckFjdGlvblByZWZlcmVuY2UgPSAnU3RvcCcKJFJlcG8gPSBTcGxpdC1QYXRoIC1QYXJlbnQgJFBTU2NyaXB0Um9vdAoKaWYgKC1ub3QgJERldmljZSkgeyAkRGV2aWNlID0gIjxLNDBfTEFOX0lQPjo1NTU1IiB9CgpmdW5jdGlvbiBTYXkoJG0sICRjID0gJ0dyYXknKSB7IFdyaXRlLUhvc3QgJG0gLUZvcmVncm91bmRDb2xvciAkYyB9CmZ1bmN0aW9uIERpZSgkbSkgeyBXcml0ZS1Ib3N0ICJFUlJPUjogJG0iIC1Gb3JlZ3JvdW5kQ29sb3IgUmVkOyBleGl0IDEgfQoKIyAtLS0tLS0tLS0tIOi/numAmuaApyAtLS0tLS0tLS0tClNheSAiPT0+IOajgOafpeiuvuWkhyAkRGV2aWNlIiBDeWFuCiRkZXZzID0gJiBhZGIgZGV2aWNlcyB8IFNlbGVjdC1TdHJpbmcgJERldmljZQppZiAoLW5vdCAkZGV2cykgeyBEaWUgIuiuvuWkh+acqui/nuaOpeOAguWFiCBhZGIgY29ubmVjdCAkRGV2aWNlIiB9CiRvayA9ICYgYWRiIC1zICREZXZpY2Ugc2hlbGwgInN1IC1jICdlY2hvIFJPT1RfT0snIiAyPiYxCmlmICgkb2sgLW5vdG1hdGNoICdST09UX09LJykgeyBEaWUgInN1IOS4jeWPr+eUqO+8jOmcgOimgSBNYWdpc2sgcm9vdCIgfQpTYXkgIiAgICByb290IOWPr+eUqCIKCiMgLS0tLS0tLS0tLSDmmKDlsITooaggLS0tLS0tLS0tLQokTWFwID0gW29yZGVyZWRdQHsKICAnYmluJyAgICAgICAgPSAnL2RhdGEvYWRiL25hc2Jhay9iaW4nCiAgJ3d3dycgICAgICAgID0gJy9kYXRhL2FkYi9uYXNiYWsvd3d3JwogICdodHRwZC5jb25mJyA9ICcvZGF0YS9hZGIvbmFzYmFrL2h0dHBkLmNvbmYnCiAgJ3NydicgICAgICAgID0gJy9kYXRhL2FkYi9zcnYnCiAgJ3NlcnZpY2UuZCcgID0gJy9kYXRhL2FkYi9zZXJ2aWNlLmQnCiAgJ2Nyb24nICAgICAgID0gJy9kYXRhL2FkYi9tb2R1bGVzL0dHQVRfMTAwMDcvY3JvbmQnCiAgJ2d5cCcgICAgICAgID0gJy9kYXRhL2xvY2FsL3RtcC9neXAnCn0KCiMgc3J2IOS4i+aWh+S7tueahOecn+WunuiQveeCue+8iOa6kOaWh+S7tuWQjSAtPiDnm67moIfnu53lr7not6/lvoTvvIkKJFNydk1hcCA9IFtvcmRlcmVkXUB7CiAgJ2FyaWEyLmNvbmYnICAgICAgID0gJy9kYXRhL2FkYi9zcnYvYXJpYTIuY29uZicKICAnYXJpYTIuc2gnICAgICAgICAgPSAnL2RhdGEvYWRiL3Nydi9tYWduZXQvbGliL2FyaWEyLnNoJwogICdwcm94eS1saWIuc2gnICAgICA9ICcvZGF0YS9hZGIvc3J2L21hZ25ldC9wcm94eS1saWIuc2gnCiAgJ21hZ25ldC1odHRwZC5jb25mJz0gJy9kYXRhL2FkYi9zcnYvbWFnbmV0L2h0dHBkLmNvbmYnCn0KCiMgd3d3IOS4i+mcgOimgeS/neaMgeWPr+aJp+ihjOeahCBDR0kKJENnaURpcnMgPSBAKCd3d3cvY2dpJywgJ3d3dy9tYWduZXQvY2dpLWJpbicpCgojIC0tLS0tLS0tLS0g5riF55CG6L+c56uv5pqC5a2YIC0tLS0tLS0tLS0KU2F5ICI9PT4g5YeG5aSH6L+c56uv5pqC5a2Y5Yy6IiBDeWFuCiYgYWRiIC1zICREZXZpY2Ugc2hlbGwgInJtIC1yZiAvZGF0YS9sb2NhbC90bXAvc3RhZ2UiIHwgT3V0LU51bGwKJiBhZGIgLXMgJERldmljZSBzaGVsbCAibWtkaXIgLXAgL2RhdGEvbG9jYWwvdG1wL3N0YWdlIiB8IE91dC1OdWxsCgojIC0tLS0tLS0tLS0g5o6o6YCBIC0tLS0tLS0tLS0KJHRhcmdldHMgPSBpZiAoJE9ubHkpIHsgQCgkT25seSkgfSBlbHNlIHsgJE1hcC5LZXlzIH0KU2F5ICI9PT4g5o6o6YCBICgkKCR0YXJnZXRzIC1qb2luICcsICcpKSIgQ3lhbgoKJHB1c2hlZCA9IDAKZm9yZWFjaCAoJHQgaW4gJHRhcmdldHMpIHsKICAgIGlmICgkdCAtZXEgJ3NydicpIHsKICAgICAgICBmb3JlYWNoICgkZiBpbiAkU3J2TWFwLktleXMpIHsKICAgICAgICAgICAgJHNyY0ZpbGUgPSBKb2luLVBhdGggJFJlcG8gInNydi8kZiIKICAgICAgICAgICAgaWYgKC1ub3QgKFRlc3QtUGF0aCAkc3JjRmlsZSkpIHsgU2F5ICIgICAgc2tpcCBzcnYvJGYiIFllbGxvdzsgY29udGludWUgfQogICAgICAgICAgICAmIGFkYiAtcyAkRGV2aWNlIHB1c2ggJHNyY0ZpbGUgIi9kYXRhL2xvY2FsL3RtcC9zdGFnZS9zcnZfJGYiIDI+JjEgfCBPdXQtTnVsbAogICAgICAgICAgICAkcHVzaGVkKysKICAgICAgICB9CiAgICAgICAgY29udGludWUKICAgIH0KICAgIGlmICgkdCAtZXEgJ2h0dHBkLmNvbmYnKSB7CiAgICAgICAgJHNyY0ZpbGUgPSBKb2luLVBhdGggJFJlcG8gImh0dHBkLmNvbmYiCiAgICAgICAgJiBhZGIgLXMgJERldmljZSBwdXNoICRzcmNGaWxlICIvZGF0YS9sb2NhbC90bXAvc3RhZ2UvaHR0cGQuY29uZiIgMj4mMSB8IE91dC1OdWxsCiAgICAgICAgJHB1c2hlZCsrOyBjb250aW51ZQogICAgfQogICAgaWYgKCR0IC1lcSAnY3JvbicpIHsKICAgICAgICAmIGFkYiAtcyAkRGV2aWNlIHB1c2ggKEpvaW4tUGF0aCAkUmVwbyAiY3Jvbi9yb290IikgIi9kYXRhL2xvY2FsL3RtcC9zdGFnZS9jcm9uX3Jvb3QiIDI+JjEgfCBPdXQtTnVsbAogICAgICAgICRwdXNoZWQrKzsgY29udGludWUKICAgIH0KCiAgICAkc3JjRGlyID0gSm9pbi1QYXRoICRSZXBvICR0CiAgICBpZiAoLW5vdCAoVGVzdC1QYXRoICRzcmNEaXIpKSB7IFNheSAiICAgIHNraXAgJHTvvIjnm67lvZXkuI3lrZjlnKjvvIkiIFllbGxvdzsgY29udGludWUgfQogICAgJGZpbGVzID0gR2V0LUNoaWxkSXRlbSAkc3JjRGlyIC1SZWN1cnNlIC1GaWxlCiAgICAkbiA9IDAKICAgIGZvcmVhY2ggKCRmIGluICRmaWxlcykgewogICAgICAgICRyZWwgPSAkZi5GdWxsTmFtZS5TdWJzdHJpbmcoJHNyY0Rpci5MZW5ndGggKyAxKSAtcmVwbGFjZSAnXFwnLCcvJwogICAgICAgICRzdGFnZU5hbWUgPSAoJHQgLXJlcGxhY2UgJy8nLCdfJykgKyAiX18iICsgKCRyZWwgLXJlcGxhY2UgJy8nLCdfXycpCiAgICAgICAgJiBhZGIgLXMgJERldmljZSBwdXNoICRmLkZ1bGxOYW1lICIvZGF0YS9sb2NhbC90bXAvc3RhZ2UvJHN0YWdlTmFtZSIgMj4mMSB8IE91dC1OdWxsCiAgICAgICAgJG4rKwogICAgfQogICAgU2F5ICgiICAgIHswLC0xMn0gezEsM30g5Liq5paH5Lu2IiAtZiAkdCwgJG4pCiAgICAkcHVzaGVkICs9ICRuCn0KU2F5ICIgICAg5YWx5o6o6YCBICRwdXNoZWQg5Liq5paH5Lu2IgoKIyAtLS0tLS0tLS0tIOi/nOerr+WuieijhSAtLS0tLS0tLS0tClNheSAiPT0+IOi/nOerr+WuieijhSIgQ3lhbgokaW5zdGFsbCA9IEAnCiMhL3N5c3RlbS9iaW4vc2gKc2V0IC1lClNUPS9kYXRhL2xvY2FsL3RtcC9zdGFnZQoKcGxhY2UoKSB7ICAgIyBwbGFjZSA8c3RhZ2VmaWxlPiA8ZGVzdGRpcj4gPGRlc3RuYW1lPiA8ZmFsbGJhY2s+CiAgbG9jYWwgc3JjPSIkMSIgZGlyPSIkMiIgbmFtZT0iJDMiCiAgbWtkaXIgLXAgIiRkaXIiIDI+L2Rldi9udWxsCiAgaWYgY3AgLWYgIiRzcmMiICIkZGlyLyRuYW1lIiAyPi9kZXYvbnVsbDsgdGhlbiByZXR1cm4gMDsgZmkKICBbIC1uICIkNCIgXSAmJiBjcCAtZiAiJHNyYyIgIiQ0IiAyPi9kZXYvbnVsbCAmJiByZXR1cm4gMAogIHJldHVybiAxCn0KCiMgLS0tIGJpbiAtLS0KZm9yIGYgaW4gJFNUL2Jpbl9fKi5zaDsgZG8KICBbIC1mICIkZiIgXSB8fCBjb250aW51ZQogIG49JChiYXNlbmFtZSAiJGYiIHwgc2VkICdzL15iaW5fXy8vJykKICBjcCAtZiAiJGYiICIvZGF0YS9hZGIvbmFzYmFrL2Jpbi8kbiIKZG9uZQpjaG1vZCA3NTUgL2RhdGEvYWRiL25hc2Jhay9iaW4vKi5zaCAyPi9kZXYvbnVsbAoKIyAtLS0gd3d3IOmhtuWxgiBodG1sIC0tLQpmb3IgZiBpbiAkU1Qvd3d3X18qLmh0bWw7IGRvCiAgWyAtZiAiJGYiIF0gfHwgY29udGludWUKICBuPSQoYmFzZW5hbWUgIiRmIiB8IHNlZCAncy9ed3d3X18vLycpCiAgY2FzZSAiJG4iIGluIG1hZ25ldF9fKikgY29udGludWU7OyBlc2FjCiAgY3AgLWYgIiRmIiAiL2RhdGEvYWRiL25hc2Jhay93d3cvJG4iCmRvbmUKCiMgLS0tIHd3dy9jZ2kgLS0tCm1rZGlyIC1wIC9kYXRhL2FkYi9uYXNiYWsvd3d3L2NnaSAvZGF0YS9hZGIvbmFzYmFrL3d3dy9tYWduZXQvY2dpLWJpbgpmb3IgZiBpbiAkU1Qvd3d3X19jZ2lfXyouY2dpOyBkbwogIFsgLWYgIiRmIiBdIHx8IGNvbnRpbnVlCiAgbj0kKGJhc2VuYW1lICIkZiIgfCBzZWQgJ3MvXnd3d19fY2dpX18vLycpCiAgY3AgLWYgIiRmIiAiL2RhdGEvYWRiL25hc2Jhay93d3cvY2dpLyRuIgpkb25lCmNobW9kIDc1NSAvZGF0YS9hZGIvbmFzYmFrL3d3dy9jZ2kvKi5jZ2kgMj4vZGV2L251bGwKCiMgLS0tIHd3dy9tYWduZXQgLS0tCmZvciBmIGluICRTVC93d3dfX21hZ25ldF9faW5kZXguaHRtbDsgZG8KICBbIC1mICIkZiIgXSAmJiBjcCAtZiAiJGYiIC9kYXRhL2FkYi9uYXNiYWsvd3d3L21hZ25ldC9pbmRleC5odG1sCmRvbmUKZm9yIGYgaW4gJFNUL3d3d19fbWFnbmV0X19jZ2ktYmluX18qLmNnaTsgZG8KICBbIC1mICIkZiIgXSB8fCBjb250aW51ZQogIG49JChiYXNlbmFtZSAiJGYiIHwgc2VkICdzL153d3dfX21hZ25ldF9fY2dpLWJpbl9fLy8nKQogIGNwIC1mICIkZiIgIi9kYXRhL2FkYi9uYXNiYWsvd3d3L21hZ25ldC9jZ2ktYmluLyRuIgpkb25lCmNobW9kIDc1NSAvZGF0YS9hZGIvbmFzYmFrL3d3dy9tYWduZXQvY2dpLWJpbi8qLmNnaSAyPi9kZXYvbnVsbApjaG1vZCA2NDQgL2RhdGEvYWRiL25hc2Jhay93d3cvKi5odG1sIC9kYXRhL2FkYi9uYXNiYWsvd3d3L21hZ25ldC9pbmRleC5odG1sIDI+L2Rldi9udWxsCgojIC0tLSBodHRwZC5jb25mIC0tLQpbIC1mICRTVC9odHRwZC5jb25mIF0gJiYgY3AgLWYgJFNUL2h0dHBkLmNvbmYgL2RhdGEvYWRiL25hc2Jhay9odHRwZC5jb25mCgojIC0tLSBzcnYgLS0tCm1rZGlyIC1wIC9kYXRhL2FkYi9zcnYvbWFnbmV0L2xpYgpbIC1mICRTVC9zcnZfYXJpYTIuY29uZiBdICAgICAgICAmJiBjcCAtZiAkU1Qvc3J2X2FyaWEyLmNvbmYgL2RhdGEvYWRiL3Nydi9hcmlhMi5jb25mClsgLWYgJFNUL3Nydl9hcmlhMi5zaCBdICAgICAgICAgICYmIGNwIC1mICRTVC9zcnZfYXJpYTIuc2ggL2RhdGEvYWRiL3Nydi9tYWduZXQvbGliL2FyaWEyLnNoClsgLWYgJFNUL3Nydl9wcm94eS1saWIuc2ggXSAgICAgICYmIGNwIC1mICRTVC9zcnZfcHJveHktbGliLnNoIC9kYXRhL2FkYi9zcnYvbWFnbmV0L3Byb3h5LWxpYi5zaApbIC1mICRTVC9zcnZfbWFnbmV0LWh0dHBkLmNvbmYgXSAmJiBjcCAtZiAkU1Qvc3J2X21hZ25ldC1odHRwZC5jb25mIC9kYXRhL2FkYi9zcnYvbWFnbmV0L2h0dHBkLmNvbmYKCiMgLS0tIHNlcnZpY2UuZCAtLS0KZm9yIGYgaW4gJFNUL3NlcnZpY2UuZF9fKi5zaDsgZG8KICBbIC1mICIkZiIgXSB8fCBjb250aW51ZQogIG49JChiYXNlbmFtZSAiJGYiIHwgc2VkICdzL15zZXJ2aWNlLmRfXy8vJykKICBjcCAtZiAiJGYiICIvZGF0YS9hZGIvc2VydmljZS5kLyRuIgpkb25lCmNobW9kIDc1NSAvZGF0YS9hZGIvc2VydmljZS5kLyouc2ggMj4vZGV2L251bGwKCiMgLS0tIGNyb24gLS0tClsgLWYgJFNUL2Nyb25fcm9vdCBdICYmIGNwIC1mICRTVC9jcm9uX3Jvb3QgL2RhdGEvYWRiL21vZHVsZXMvR0dBVF8xMDAwNy9jcm9uZC9yb290CgojIC0tLSBneXAgLS0tCmZvciBmIGluICRTVC9neXBfXyouc2g7IGRvCiAgWyAtZiAiJGYiIF0gfHwgY29udGludWUKICBuPSQoYmFzZW5hbWUgIiRmIiB8IHNlZCAncy9eZ3lwX18vLycpCiAgY3AgLWYgIiRmIiAiL2RhdGEvbG9jYWwvdG1wL2d5cC8kbiIKZG9uZQpjaG1vZCA3NTUgL2RhdGEvbG9jYWwvdG1wL2d5cC8qLnNoIDI+L2Rldi9udWxsCgplY2hvIElOU1RBTExfRE9ORQonQAokaW5zdGFsbCB8IE91dC1GaWxlIC1GaWxlUGF0aCAiJGVudjpURU1QXGs0MF9pbnN0YWxsLnNoIiAtRW5jb2RpbmcgVVRGOCAtTm9OZXdsaW5lCiYgYWRiIC1zICREZXZpY2UgcHVzaCAiJGVudjpURU1QXGs0MF9pbnN0YWxsLnNoIiAiL2RhdGEvbG9jYWwvdG1wL2s0MF9pbnN0YWxsLnNoIiAyPiYxIHwgT3V0LU51bGwKJiBhZGIgLXMgJERldmljZSBzaGVsbCAic3UgLWMgJ3NoIC9kYXRhL2xvY2FsL3RtcC9rNDBfaW5zdGFsbC5zaCciCgojIC0tLS0tLS0tLS0g6YeN5ZCv5pyN5YqhIC0tLS0tLS0tLS0KaWYgKC1ub3QgJE5vUmVzdGFydCkgewogICAgU2F5ICI9PT4g6YeN5ZCv5pyN5YqhIiBDeWFuCiAgICAkcmVzdGFydCA9IEAnCiMhL3N5c3RlbS9iaW4vc2gKQkI9L2RhdGEvYWRiL21hZ2lzay9idXN5Ym94CkNPTkY9L2RhdGEvYWRiL25hc2Jhay9odHRwZC5jb25mCldXVz0vZGF0YS9hZGIvbmFzYmFrL3d3dwoKIyBodHRwZCA4MDgz77ya5p2A5o6J5pen5a6e5L6L5YaN6LW377yM5ZCm5YiZ5pS5IGh0bWwg5LiN5Lya55Sf5pWI77yIaHR0cGQg5peg57yT5a2Y5L2G5L+d5oyB6L+e5o6l77yJCnBpZG9mIGh0dHBkID4vZGV2L251bGwgMj4mMSAmJiBmb3IgcCBpbiAkKHBpZG9mIGh0dHBkKTsgZG8KICB0ciAnXDAnICcgJyA8IC9wcm9jLyRwL2NtZGxpbmUgMj4vZGV2L251bGwgfCBncmVwIC1xICc4MDgzJyAmJiBraWxsICIkcCIKZG9uZQpzbGVlcCAxCiRCQiBodHRwZCAtcCA4MDgzIC1oICIkV1dXIiAtYyAiJENPTkYiCgojIGNyb25k77ya5b+F6aG75YWI5p2A5YaN55SoIEdHQVRfMTAwMDcg6Ieq5bim55qEIGJ1c3lib3gg5ZCv5YqoCiMg55u05o6l5pWyIGNyb25kIOS8miBub3QgZm91bmTvvIzogIzkuJTml6fov5vnqIvmrovnlZnkvJrorqnlrprml7bku7vliqHlhajpg6jlpLHmlYgKZm9yIHAgaW4gL3Byb2MvWzAtOV0qL2NtZGxpbmU7IGRvCiAgYz0kKHRyICdcMCcgJyAnIDwgIiRwIiAyPi9kZXYvbnVsbCkKICBjYXNlICIkYyIgaW4gKmNyb25kKikga2lsbCAkKGJhc2VuYW1lICIkKGRpcm5hbWUgIiRwIikiKSAyPi9kZXYvbnVsbCA7OyBlc2FjCmRvbmUKc2xlZXAgMQovZGF0YS9hZGIvbW9kdWxlcy9HR0FUXzEwMDA3L2J1c3lib3gvY3JvbmQgLWMgL2RhdGEvYWRiL21vZHVsZXMvR0dBVF8xMDAwNy9jcm9uZAoKIyBkYWVtb27vvJrlv4Xpobsgc2V0c2lkIOiEseemu+W9k+WJjeS8muivne+8jOaZrumAmiBub2h1cCAmIOS8mumajyBzdSAtYyDnmoQgc2hlbGwg5LiA6LW35q27CmZvciBwIGluIC9wcm9jL1swLTldKi9jbWRsaW5lOyBkbwogIGM9JCh0ciAnXDAnICcgJyA8ICIkcCIgMj4vZGV2L251bGwpCiAgY2FzZSAiJGMiIGluICpuYXNiYWsvYmluL2RhZW1vbi5zaCopIGtpbGwgJChiYXNlbmFtZSAiJChkaXJuYW1lICIkcCIpIikgMj4vZGV2L251bGwgOzsgZXNhYwpkb25lCnNsZWVwIDEKcm0gLWYgL2RhdGEvYWRiL25hc2Jhay9kYWVtb24ucGlkCnNldHNpZCBub2h1cCBzaCAvZGF0YS9hZGIvbmFzYmFrL2Jpbi9kYWVtb24uc2ggPj4gL2RhdGEvYWRiL25hc2Jhay9sb2dzL2RhZW1vbi5sb2cgMj4mMSA8IC9kZXYvbnVsbCAmCnNsZWVwIDMKZm9yIGQgaW4gL3Byb2MvWzAtOV0qOyBkbwogIGM9JCh0ciAnXDAnICcgJyA8ICIkZC9jbWRsaW5lIiAyPi9kZXYvbnVsbCkKICBjYXNlICIkYyIgaW4gKm5hc2Jhay9iaW4vZGFlbW9uLnNoKikgYmFzZW5hbWUgIiRkIiA+IC9kYXRhL2FkYi9uYXNiYWsvZGFlbW9uLnBpZCA7OyBlc2FjCmRvbmUKCnNoIC9kYXRhL2FkYi9uYXNiYWsvYmluL3N0YXR1cy1jb2xsZWN0LnNoCmVjaG8gUkVTVEFSVF9ET05FCidACiAgICAkcmVzdGFydCB8IE91dC1GaWxlIC1GaWxlUGF0aCAiJGVudjpURU1QXGs0MF9yZXN0YXJ0LnNoIiAtRW5jb2RpbmcgVVRGOCAtTm9OZXdsaW5lCiAgICAmIGFkYiAtcyAkRGV2aWNlIHB1c2ggIiRlbnY6VEVNUFxrNDBfcmVzdGFydC5zaCIgIi9kYXRhL2xvY2FsL3RtcC9rNDBfcmVzdGFydC5zaCIgMj4mMSB8IE91dC1OdWxsCiAgICAmIGFkYiAtcyAkRGV2aWNlIHNoZWxsICJzdSAtYyAnc2ggL2RhdGEvbG9jYWwvdG1wL2s0MF9yZXN0YXJ0LnNoJyIKfQoKU2F5ICI9PT4g6aqM6K+BIiBDeWFuCiYgYWRiIC1zICREZXZpY2Ugc2hlbGwgImZvciB1IGluICcnIGp1ZGdlLmh0bWwgYXJjaGl2ZS5odG1sIG5ldHdvcmsuaHRtbCBzdGF0cy5odG1sIG1hZ25ldC8gYXJpYW5nLyBhcmlhbmctc2V0dXAuaHRtbDsgZG8gcHJpbnRmICcgIC8lLTE4cyAnIGAkdTsgY3VybCAtcyAtbSA2IC1vIC9kZXYvbnVsbCAtdyAnJXtodHRwX2NvZGV9XG4nIGh0dHA6Ly8xMjcuMC4wLjE6ODA4My9gJHU7IGRvbmUiCgpTYXkgIuWujOaIkOOAgiIgR3JlZW4K
+# 部署到 K40
+#
+# 用法：
+#   $env:ADB_DEVICE = "<K40_LAN_IP>:5555"
+#   .\deploy\deploy.ps1              # 全量部署
+#   .\deploy\deploy.ps1 -Only www    # 只部署某个目录
+#
+# 为什么不能直接 adb push 到 /data/adb：
+#   /data/adb 是 root 所有、权限 700，adb push 会 Permission denied。
+#   必须先推到 /data/local/tmp，再用 su -c 复制到位。
+
+[CmdletBinding()]
+param(
+    [string]$Device  = $env:ADB_DEVICE,
+    [string]$Only    = "",
+    [switch]$NoRestart
+)
+
+$ErrorActionPreference = 'Stop'
+$Repo = Split-Path -Parent $PSScriptRoot
+
+if (-not $Device) { $Device = "<K40_LAN_IP>:5555" }
+
+function Say($m, $c = 'Gray') { Write-Host $m -ForegroundColor $c }
+function Die($m) { Write-Host "ERROR: $m" -ForegroundColor Red; exit 1 }
+
+# ---------- 连通性 ----------
+Say "==> 检查设备 $Device" Cyan
+$devs = & adb devices | Select-String $Device
+if (-not $devs) { Die "设备未连接。先 adb connect $Device" }
+$ok = & adb -s $Device shell "su -c 'echo ROOT_OK'" 2>&1
+if ($ok -notmatch 'ROOT_OK') { Die "su 不可用，需要 Magisk root" }
+Say "    root 可用"
+
+# ---------- 映射表 ----------
+$Map = [ordered]@{
+  'bin'        = '/data/adb/nasbak/bin'
+  'www'        = '/data/adb/nasbak/www'
+  'httpd.conf' = '/data/adb/nasbak/httpd.conf'
+  'srv'        = '/data/adb/srv'
+  'service.d'  = '/data/adb/service.d'
+  'cron'       = '/data/adb/modules/GGAT_10007/crond'
+  'gyp'        = '/data/local/tmp/gyp'
+}
+
+# srv 下文件的真实落点（源文件名 -> 目标绝对路径）
+$SrvMap = [ordered]@{
+  'aria2.conf'       = '/data/adb/srv/aria2.conf'
+  'aria2.sh'         = '/data/adb/srv/magnet/lib/aria2.sh'
+  'proxy-lib.sh'     = '/data/adb/srv/magnet/proxy-lib.sh'
+  'magnet-httpd.conf'= '/data/adb/srv/magnet/httpd.conf'
+}
+
+# www 下需要保持可执行的 CGI
+$CgiDirs = @('www/cgi', 'www/magnet/cgi-bin')
+
+# ---------- 清理远端暂存 ----------
+Say "==> 准备远端暂存区" Cyan
+& adb -s $Device shell "rm -rf /data/local/tmp/stage" | Out-Null
+& adb -s $Device shell "mkdir -p /data/local/tmp/stage" | Out-Null
+
+# ---------- 推送 ----------
+$targets = if ($Only) { @($Only) } else { $Map.Keys }
+Say "==> 推送 ($($targets -join ', '))" Cyan
+
+$pushed = 0
+foreach ($t in $targets) {
+    if ($t -eq 'srv') {
+        foreach ($f in $SrvMap.Keys) {
+            $srcFile = Join-Path $Repo "srv/$f"
+            if (-not (Test-Path $srcFile)) { Say "    skip srv/$f" Yellow; continue }
+            & adb -s $Device push $srcFile "/data/local/tmp/stage/srv_$f" 2>&1 | Out-Null
+            $pushed++
+        }
+        continue
+    }
+    if ($t -eq 'httpd.conf') {
+        $srcFile = Join-Path $Repo "httpd.conf"
+        & adb -s $Device push $srcFile "/data/local/tmp/stage/httpd.conf" 2>&1 | Out-Null
+        $pushed++; continue
+    }
+    if ($t -eq 'cron') {
+        & adb -s $Device push (Join-Path $Repo "cron/root") "/data/local/tmp/stage/cron_root" 2>&1 | Out-Null
+        $pushed++; continue
+    }
+
+    $srcDir = Join-Path $Repo $t
+    if (-not (Test-Path $srcDir)) { Say "    skip $t（目录不存在）" Yellow; continue }
+    $files = Get-ChildItem $srcDir -Recurse -File
+    $n = 0
+    foreach ($f in $files) {
+        $rel = $f.FullName.Substring($srcDir.Length + 1) -replace '\\','/'
+        $stageName = ($t -replace '/','_') + "__" + ($rel -replace '/','__')
+        & adb -s $Device push $f.FullName "/data/local/tmp/stage/$stageName" 2>&1 | Out-Null
+        $n++
+    }
+    Say ("    {0,-12} {1,3} 个文件" -f $t, $n)
+    $pushed += $n
+}
+Say "    共推送 $pushed 个文件"
+
+# ---------- 远端安装 ----------
+Say "==> 远端安装" Cyan
+$install = @'
+#!/system/bin/sh
+set -e
+ST=/data/local/tmp/stage
+
+place() {   # place <stagefile> <destdir> <destname> <fallback>
+  local src="$1" dir="$2" name="$3"
+  mkdir -p "$dir" 2>/dev/null
+  if cp -f "$src" "$dir/$name" 2>/dev/null; then return 0; fi
+  [ -n "$4" ] && cp -f "$src" "$4" 2>/dev/null && return 0
+  return 1
+}
+
+# --- bin ---
+for f in $ST/bin__*.sh; do
+  [ -f "$f" ] || continue
+  n=$(basename "$f" | sed 's/^bin__//')
+  cp -f "$f" "/data/adb/nasbak/bin/$n"
+done
+chmod 755 /data/adb/nasbak/bin/*.sh 2>/dev/null
+
+# --- www 顶层 html ---
+for f in $ST/www__*.html; do
+  [ -f "$f" ] || continue
+  n=$(basename "$f" | sed 's/^www__//')
+  case "$n" in magnet__*) continue;; esac
+  cp -f "$f" "/data/adb/nasbak/www/$n"
+done
+
+# --- www/cgi ---
+mkdir -p /data/adb/nasbak/www/cgi /data/adb/nasbak/www/magnet/cgi-bin
+for f in $ST/www__cgi__*.cgi; do
+  [ -f "$f" ] || continue
+  n=$(basename "$f" | sed 's/^www__cgi__//')
+  cp -f "$f" "/data/adb/nasbak/www/cgi/$n"
+done
+chmod 755 /data/adb/nasbak/www/cgi/*.cgi 2>/dev/null
+
+# --- www/magnet ---
+for f in $ST/www__magnet__index.html; do
+  [ -f "$f" ] && cp -f "$f" /data/adb/nasbak/www/magnet/index.html
+done
+for f in $ST/www__magnet__cgi-bin__*.cgi; do
+  [ -f "$f" ] || continue
+  n=$(basename "$f" | sed 's/^www__magnet__cgi-bin__//')
+  cp -f "$f" "/data/adb/nasbak/www/magnet/cgi-bin/$n"
+done
+chmod 755 /data/adb/nasbak/www/magnet/cgi-bin/*.cgi 2>/dev/null
+chmod 644 /data/adb/nasbak/www/*.html /data/adb/nasbak/www/magnet/index.html 2>/dev/null
+
+# --- httpd.conf ---
+[ -f $ST/httpd.conf ] && cp -f $ST/httpd.conf /data/adb/nasbak/httpd.conf
+
+# --- srv ---
+mkdir -p /data/adb/srv/magnet/lib
+[ -f $ST/srv_aria2.conf ]        && cp -f $ST/srv_aria2.conf /data/adb/srv/aria2.conf
+[ -f $ST/srv_aria2.sh ]          && cp -f $ST/srv_aria2.sh /data/adb/srv/magnet/lib/aria2.sh
+[ -f $ST/srv_proxy-lib.sh ]      && cp -f $ST/srv_proxy-lib.sh /data/adb/srv/magnet/proxy-lib.sh
+[ -f $ST/srv_magnet-httpd.conf ] && cp -f $ST/srv_magnet-httpd.conf /data/adb/srv/magnet/httpd.conf
+
+# --- service.d ---
+for f in $ST/service.d__*.sh; do
+  [ -f "$f" ] || continue
+  n=$(basename "$f" | sed 's/^service.d__//')
+  cp -f "$f" "/data/adb/service.d/$n"
+done
+chmod 755 /data/adb/service.d/*.sh 2>/dev/null
+
+# --- cron ---
+[ -f $ST/cron_root ] && cp -f $ST/cron_root /data/adb/modules/GGAT_10007/crond/root
+
+# --- gyp ---
+for f in $ST/gyp__*.sh; do
+  [ -f "$f" ] || continue
+  n=$(basename "$f" | sed 's/^gyp__//')
+  cp -f "$f" "/data/local/tmp/gyp/$n"
+done
+chmod 755 /data/local/tmp/gyp/*.sh 2>/dev/null
+
+echo INSTALL_DONE
+'@
+$install | Out-File -FilePath "$env:TEMP\k40_install.sh" -Encoding UTF8 -NoNewline
+& adb -s $Device push "$env:TEMP\k40_install.sh" "/data/local/tmp/k40_install.sh" 2>&1 | Out-Null
+& adb -s $Device shell "su -c 'sh /data/local/tmp/k40_install.sh'"
+
+# ---------- 重启服务 ----------
+if (-not $NoRestart) {
+    Say "==> 重启服务" Cyan
+    $restart = @'
+#!/system/bin/sh
+BB=/data/adb/magisk/busybox
+CONF=/data/adb/nasbak/httpd.conf
+WWW=/data/adb/nasbak/www
+
+# httpd 8083：杀掉旧实例再起，否则改 html 不会生效（httpd 无缓存但保持连接）
+pidof httpd >/dev/null 2>&1 && for p in $(pidof httpd); do
+  tr '\0' ' ' < /proc/$p/cmdline 2>/dev/null | grep -q '8083' && kill "$p"
+done
+sleep 1
+$BB httpd -p 8083 -h "$WWW" -c "$CONF"
+
+# crond：必须先杀再用 GGAT_10007 自带的 busybox 启动
+# 直接敲 crond 会 not found，而且旧进程残留会让定时任务全部失效
+for p in /proc/[0-9]*/cmdline; do
+  c=$(tr '\0' ' ' < "$p" 2>/dev/null)
+  case "$c" in *crond*) kill $(basename "$(dirname "$p")") 2>/dev/null ;; esac
+done
+sleep 1
+/data/adb/modules/GGAT_10007/busybox/crond -c /data/adb/modules/GGAT_10007/crond
+
+# daemon：必须 setsid 脱离当前会话，普通 nohup & 会随 su -c 的 shell 一起死
+for p in /proc/[0-9]*/cmdline; do
+  c=$(tr '\0' ' ' < "$p" 2>/dev/null)
+  case "$c" in *nasbak/bin/daemon.sh*) kill $(basename "$(dirname "$p")") 2>/dev/null ;; esac
+done
+sleep 1
+rm -f /data/adb/nasbak/daemon.pid
+setsid nohup sh /data/adb/nasbak/bin/daemon.sh >> /data/adb/nasbak/logs/daemon.log 2>&1 < /dev/null &
+sleep 3
+for d in /proc/[0-9]*; do
+  c=$(tr '\0' ' ' < "$d/cmdline" 2>/dev/null)
+  case "$c" in *nasbak/bin/daemon.sh*) basename "$d" > /data/adb/nasbak/daemon.pid ;; esac
+done
+
+sh /data/adb/nasbak/bin/status-collect.sh
+echo RESTART_DONE
+'@
+    $restart | Out-File -FilePath "$env:TEMP\k40_restart.sh" -Encoding UTF8 -NoNewline
+    & adb -s $Device push "$env:TEMP\k40_restart.sh" "/data/local/tmp/k40_restart.sh" 2>&1 | Out-Null
+    & adb -s $Device shell "su -c 'sh /data/local/tmp/k40_restart.sh'"
+}
+
+Say "==> 验证" Cyan
+& adb -s $Device shell "for u in '' judge.html archive.html network.html stats.html magnet/ ariang/ ariang-setup.html; do printf '  /%-18s ' `$u; curl -s -m 6 -o /dev/null -w '%{http_code}\n' http://127.0.0.1:8083/`$u; done"
+
+Say "完成。" Green

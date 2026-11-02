@@ -1,1 +1,162 @@
-IyEvc3lzdGVtL2Jpbi9zaAojIHN0YXR1cy1jb2xsZWN0LnNoIOKAlCDlkI7lj7Dph4fpm4bns7vnu5/nirbmgIHvvIzlhpnlhaXnvJPlrZggSlNPTgojIOeUsSBkYWVtb24g5oiWIGNyb25kIOWRqOacn+iwg+eUqO+8jENHSSDlj6ror7vnvJPlrZjvvIjpgb/lhY0gQ0dJIOmHjOWBmumHjea0u+WvvOiHtCBodHRwZCDotoXml7bvvIkKCkRBVEE9L2RhdGEvbWVkaWEvMC9uYXNiYWsvc3RhdGUKQkFTRT0vZGF0YS9tZWRpYS8wL25hc2JhawpJTkJPWD0kQkFTRS9pbmJveApBUkM9JEJBU0UvYXJjaGl2ZQpCQj0vZGF0YS9hZGIvbWFnaXNrL2J1c3lib3gKT1VUPSREQVRBL3N0YXR1cy1jYWNoZS5qc29uClRNUD0kT1VULnRtcAoKcG9ydF9vcGVuKCkgeyB0aW1lb3V0IDIgJEJCIG5jIC16IDEyNy4wLjAuMSAiJDEiIDI+L2Rldi9udWxsOyB9CgpqZXNjKCkgeyBwcmludGYgJyVzJyAiJDEiIHwgc2VkICdzL1xcL1xcXFwvZzsgcy8iL1xcIi9nJyB8IHRyIC1kICdcclxuXHQnOyB9Cgp7CiAgcHJpbnRmICd7InRzIjolcywnICIkKGRhdGUgKyVzKSIKCiAgIyAtLS0tIOacjeWKoeeKtuaAgSAtLS0tCiAgcHJpbnRmICcic2VydmljZXMiOlsnCiAgRj0xCiAgIyBodHRwZCA4MDgz77ya6L+b56iL5qOA5rWLKOacrOiEmuacrOmdniBDR0nvvIzpgY3ljoYgL3Byb2Mg5a6J5YWoKQogIEZPVU5EPSIiCiAgZm9yIHAgaW4gL3Byb2MvWzAtOV0qL2NtZGxpbmU7IGRvCiAgICBjPSQodHIgJ1wwJyAnICcgPCAiJHAiIDI+L2Rldi9udWxsKQogICAgY2FzZSAiJGMiIGluICoiaHR0cGQgLXAgODA4MyIqKSBGT1VORD0xOyBicmVhazs7IGVzYWMKICBkb25lIDI+L2Rldi9udWxsCiAgaWYgWyAtbiAiJEZPVU5EIiBdOyB0aGVuIFM9dHJ1ZTsgRD0i55uR5ZCsIDgwODMiOyBlbHNlIFM9ZmFsc2U7IEQ9IuacquebkeWQrCI7IGZpCiAgcHJpbnRmICd7Im5hbWUiOiLliKTlrprpobUgaHR0cGQiLCJvayI6JXMsImRldGFpbCI6IiVzIn0nICIkUyIgIiQoamVzYyAiJEQiKSI7IEY9MAoKICBpZiBwb3J0X29wZW4gNTI0NDsgdGhlbiBTPXRydWU7IEQ9IuebkeWQrCA1MjQ0IMK3IFdlYkRBViAvZGF2IjsgZWxzZSBTPWZhbHNlOyBEPSLmnKrnm5HlkKwiOyBmaQogIHByaW50ZiAnLHsibmFtZSI6ImFsaXN0Iiwib2siOiVzLCJkZXRhaWwiOiIlcyJ9JyAiJFMiICIkKGplc2MgIiREIikiCgogIGlmIHBvcnRfb3BlbiA2ODAwOyB0aGVuIFM9dHJ1ZTsgRD0i55uR5ZCsIDY4MDAiOyBlbHNlIFM9ZmFsc2U7IEQ9IuacquebkeWQrCI7IGZpCiAgcHJpbnRmICcseyJuYW1lIjoiYXJpYTIiLCJvayI6JXMsImRldGFpbCI6IiVzIn0nICIkUyIgIiQoamVzYyAiJEQiKSIKCiAgaWYgcG9ydF9vcGVuIDU1NTU7IHRoZW4gUz10cnVlOyBEPSLnm5HlkKwgNTU1NSI7IGVsc2UgUz1mYWxzZTsgRD0i5pyq55uR5ZCsIjsgZmkKICBwcmludGYgJyx7Im5hbWUiOiJhZGIg5peg57q/6LCD6K+VIiwib2siOiVzLCJkZXRhaWwiOiIlcyJ9JyAiJFMiICIkKGplc2MgIiREIikiCgogICMgY3JvbmQKICBDUk9OUD0iIgogIGZvciBwIGluIC9wcm9jL1swLTldKi9jbWRsaW5lOyBkbyBjPSQodHIgJ1wwJyAnICcgPCAiJHAiIDI+L2Rldi9udWxsKTsgY2FzZSAiJGMiIGluICpjcm9uZCopIENST05QPSIkYyI7OyBlc2FjOyBkb25lIDI+L2Rldi9udWxsCiAgaWYgWyAtbiAiJENST05QIiBdOyB0aGVuCiAgICBTPXRydWUKICAgIFRBU0tTPSQoJEJCIGNyb250YWIgLWMgL2RhdGEvYWRiL21vZHVsZXMvR0dBVF8xMDAwNy9jcm9uZCAtbCAyPi9kZXYvbnVsbCB8IGdyZXAgLXZjICdeIycpCiAgICBEPSLov5DooYzkuK0gwrcgJFRBU0tTIOS4quS7u+WKoSIKICBlbHNlIFM9ZmFsc2U7IEQ9Iuacqui/kOihjCI7IGZpCiAgcHJpbnRmICcseyJuYW1lIjoiY3JvbmQg5a6a5pe25Lu75YqhIiwib2siOiVzLCJkZXRhaWwiOiIlcyJ9JyAiJFMiICIkKGplc2MgIiREIikiCgogICMgZGFlbW9uCiAgRFBJRD0kKGNhdCAvZGF0YS9hZGIvbmFzYmFrL2RhZW1vbi5waWQgMj4vZGV2L251bGwgfCB0ciAtZCAnIFxyXG4nKQogIGlmIFsgLW4gIiREUElEIiBdICYmIFsgLWQgIi9wcm9jLyREUElEIiBdOyB0aGVuIFM9dHJ1ZTsgRD0i6L+Q6KGM5LitIMK3IHBpZCAkRFBJRCI7IGVsc2UgUz1mYWxzZTsgRD0i5pyq6L+Q6KGMIjsgZmkKICBwcmludGYgJyx7Im5hbWUiOiLliKTlrprosIPluqYgZGFlbW9uIiwib2siOiVzLCJkZXRhaWwiOiIlcyJ9JyAiJFMiICIkKGplc2MgIiREIikiCgogICMgdGFpbHNjYWxlCiAgaWYgWyAtUyAvZGF0YS9hZGIvdGFpbHNjYWxlL3J1bi90YWlsc2NhbGVkLnNvY2sgXSAyPi9kZXYvbnVsbDsgdGhlbiBTPXRydWU7IEQ9InRhaWxzY2FsZWQg6L+Q6KGM5LitIjsgZWxzZSBTPWZhbHNlOyBEPSLmnKrov5DooYwiOyBmaQogIHByaW50ZiAnLHsibmFtZSI6InRhaWxzY2FsZSIsIm9rIjolcywiZGV0YWlsIjoiJXMifScgIiRTIiAiJChqZXNjICIkRCIpIgoKICAjIOeUteaxoOS/neaKpAogIGlmIFsgLWYgL2RhdGEvYWRiL3Nydi9iYXR0Z3VhcmQucGlkIF0gJiYgWyAtZCAiL3Byb2MvJChjYXQgL2RhdGEvYWRiL3Nydi9iYXR0Z3VhcmQucGlkIDI+L2Rldi9udWxsIHwgdHIgLWQgJyBcclxuJykiIF07IHRoZW4KICAgIFM9dHJ1ZTsgRD0i6L+Q6KGM5LitIjsgZWxzZSBTPWZhbHNlOyBEPSLmnKrov5DooYwiOyBmaQogIHByaW50ZiAnLHsibmFtZSI6IueUteaxoOS/neaKpCIsIm9rIjolcywiZGV0YWlsIjoiJXMifScgIiRTIiAiJChqZXNjICIkRCIpIgoKICAjIOWFiem4reS6keebmOWQjOatpQogIEdZUF9MT0c9L2RhdGEvbG9jYWwvdG1wL2d5cC9neXAubG9nCiAgaWYgWyAtZiAiJEdZUF9MT0ciIF07IHRoZW4KICAgIExBU1Q9JCh0YWlsIC0xICIkR1lQX0xPRyIgMj4vZGV2L251bGwgfCBjdXQgLWMxLTE5KQogICAgRD0i5pyA6L+R5ZCM5q2lICRMQVNUIgogIGVsc2UgRD0i5peg6K6w5b2VIjsgZmkKICBTPXRydWUKICBwcmludGYgJyx7Im5hbWUiOiLkupHnm5jlkIzmraUiLCJvayI6JXMsImRldGFpbCI6IiVzIn0nICIkUyIgIiQoamVzYyAiJEQiKSIKCiAgIyDno4HlipvmkJzntKLvvJrkuI7liKTlrprpobXlhbHnlKggODA4MyBodHRwZO+8jOajgOafpeWtkOebruW9leaYr+WQpuW3sumDqOe9sgogIGlmIFsgLWYgL2RhdGEvYWRiL25hc2Jhay93d3cvbWFnbmV0L2luZGV4Lmh0bWwgXTsgdGhlbgogICAgUz10cnVlOyBEPSLlkIzmupAgL21hZ25ldC8gwrcg5LiOIDgwODMg5YWx55SoIgogIGVsc2UgUz1mYWxzZTsgRD0i5pyq6YOo572yIjsgZmkKICBwcmludGYgJyx7Im5hbWUiOiLno4HlipvmkJzntKIiLCJvayI6JXMsImRldGFpbCI6IiVzIn0nICIkUyIgIiQoamVzYyAiJEQiKSIKCiAgIyBBcmlhTmcg5LiL6L29566h55CG77ya6Z2Z5oCB6aG1ICsg5L6d6LWWIDY4MDAgUlBDCiAgaWYgWyAtZiAvZGF0YS9hZGIvbmFzYmFrL3d3dy9hcmlhbmcvaW5kZXguaHRtbCBdOyB0aGVuCiAgICBpZiBwb3J0X29wZW4gNjgwMDsgdGhlbiBTPXRydWU7IEQ9IumhtemdouWwsee7qiDCtyBSUEMgNjgwMCDlj6/ov54iOyBlbHNlIFM9ZmFsc2U7IEQ9IumhtemdouWwsee7qiDCtyBSUEMg5pyq6L+eIjsgZmkKICBlbHNlIFM9ZmFsc2U7IEQ9IuacqumDqOe9siI7IGZpCiAgcHJpbnRmICcseyJuYW1lIjoi5LiL6L29566h55CGIEFyaWFOZyIsIm9rIjolcywiZGV0YWlsIjoiJXMifScgIiRTIiAiJChqZXNjICIkRCIpIgogIHByaW50ZiAnXSwnCgogICMgLS0tLSDlrZjlgqjnu5/orqEgLS0tLQogIElOX049JChmaW5kICIkSU5CT1giIC10eXBlIGYgISAtcGF0aCAiKi9fZHVwX2JhY2t1cC8qIiAyPi9kZXYvbnVsbCB8IHdjIC1sIHwgdHIgLWQgJyAnKQogIEFSQ19OPSQoZmluZCAiJEFSQyIgLXR5cGUgZiAyPi9kZXYvbnVsbCB8IHdjIC1sIHwgdHIgLWQgJyAnKQogIERVUF9OPSQoZmluZCAiJElOQk9YL19kdXBfYmFja3VwIiAtdHlwZSBmIDI+L2Rldi9udWxsIHwgd2MgLWwgfCB0ciAtZCAnICcpCiAgVFJBU0hfTj0kKGZpbmQgIiRCQVNFL1/lvoXliKAiIC10eXBlIGYgMj4vZGV2L251bGwgfCB3YyAtbCB8IHRyIC1kICcgJykKICBJTl9TPSQoJEJCIGR1IC1zYiAiJElOQk9YIiAyPi9kZXYvbnVsbCB8IGF3ayAne3ByaW50ICQxfScpOyBbIC16ICIkSU5fUyIgXSAmJiBJTl9TPTAKICBEVVBfUz0kKCRCQiBkdSAtc2IgIiRJTkJPWC9fZHVwX2JhY2t1cCIgMj4vZGV2L251bGwgfCBhd2sgJ3twcmludCAkMX0nKTsgWyAteiAiJERVUF9TIiBdICYmIERVUF9TPTAKICBBUkNfUz0kKCRCQiBkdSAtc2IgIiRBUkMiIDI+L2Rldi9udWxsIHwgYXdrICd7cHJpbnQgJDF9Jyk7IFsgLXogIiRBUkNfUyIgXSAmJiBBUkNfUz0wCgogIHByaW50ZiAnImZpbGVzIjp7ImluYm94TiI6JXMsImluYm94UyI6JXMsImFyY2hpdmVOIjolcywiYXJjaGl2ZVMiOiVzLCJkdXBOIjolcywiZHVwUyI6JXMsInRyYXNoTiI6JXN9LCcgXAogICAgIiRJTl9OIiAiJElOX1MiICIkQVJDX04iICIkQVJDX1MiICIkRFVQX04iICIkRFVQX1MiICIkVFJBU0hfTiIKCiAgIyAtLS0tIOWIpOivu+i/m+W6piAtLS0tCiAgIyBkb25lID0gYW5hbHlzaXMg6K6w5b2V5pWw77ybcGVuZGluZyA9IOW+heWIpOmYn+WIl+ihjOaVsO+8iOS4jeWGjemBjeWOhiBsb2MtKi50c3bvvIwKICAjIOmCo+S4quWPo+W+hOS8muaKiuW3suWHuumYn+eahOWOhuWPsuaWh+S7tueul+aIkCLlvoXliKQi77yM5a+86Ie06L+b5bqm5rC46L+c5YGc5ZyoIDg0OO+8iQogIERPTkU9JChscyAiJERBVEEvYW5hbHlzaXMiIDI+L2Rldi9udWxsIHwgZ3JlcCAtYyAnXC5qc29uJCcpCiAgUEVORD0wCiAgWyAtZiAiJERBVEEvcGVuZGluZy5xdWV1ZSIgXSAmJiBQRU5EPSQod2MgLWwgPCAiJERBVEEvcGVuZGluZy5xdWV1ZSIgMj4vZGV2L251bGwgfCB0ciAtZCAnICcpCiAgcHJpbnRmICcianVkZ2UiOnsiZG9uZSI6JXMsInBlbmRpbmciOiVzfSwnICIke0RPTkU6LTB9IiAiJHtQRU5EOi0wfSIKCiAgIyAtLS0tIOWIhuexu+WIhuW4gyAtLS0tCiAgcHJpbnRmICciY2F0cyI6eycKICBGPTEKICBmb3IgYyBpbiB3b3JrIGhvbWUgc2NyZWVuc2hvdCB2aWRlbyBvdGhlciB1bmNsYXNzaWZpZWQ7IGRvCiAgICBuPSQoZ3JlcCAtYyAiXCJjYXRcIjpcIiRjXCIiICIkREFUQS9hbmFseXNpcy5qc29ubCIgMj4vZGV2L251bGwgfCB0ciAtZCAnICcpCiAgICBbICIkRiIgPSAiMSIgXSB8fCBwcmludGYgJywnCiAgICBwcmludGYgJyIlcyI6JXMnICIkYyIgIiR7bjotMH0iOyBGPTAKICBkb25lCiAgcHJpbnRmICd9LCcKCiAgIyAtLS0tIOaooeWei+e7n+iuoSAtLS0tCiAgcHJpbnRmICcibW9kZWxzIjp7JwogIEY9MQogIGZvciBtIGluIHpoaXB1IHZpZGVvIHJ1bGUgY2lyY3VpdDsgZG8KICAgIGNhc2UgIiRtIiBpbgogICAgICB6aGlwdSkgIG49JChncmVwIC1jICcibW9kZWwiOiJtaW5pY3BtLXYvemhpcHUnICIkREFUQS9hbmFseXNpcy5qc29ubCIgMj4vZGV2L251bGwgfCB0ciAtZCAnICcpOzsKICAgICAgdmlkZW8pICBuPSQoZ3JlcCAtYyAnIm1vZGVsIjoicnVsZTp2aWRlbyInICIkREFUQS9hbmFseXNpcy5qc29ubCIgMj4vZGV2L251bGwgfCB0ciAtZCAnICcpOzsKICAgICAgcnVsZSkgICBuPSQoZ3JlcCAtYyAnIm1vZGVsIjoibWluaWNwbS12IicgIiREQVRBL2FuYWx5c2lzLmpzb25sIiAyPi9kZXYvbnVsbCB8IHRyIC1kICcgJyk7OwogICAgICBjaXJjdWl0KSBuPSQoZ3JlcCAtYyAnIm1vZGVsIjoiY2lyY3VpdC1icmVhayInICIkREFUQS9hbmFseXNpcy5qc29ubCIgMj4vZGV2L251bGwgfCB0ciAtZCAnICcpOzsKICAgIGVzYWMKICAgIFsgIiRGIiA9ICIxIiBdIHx8IHByaW50ZiAnLCcKICAgIHByaW50ZiAnIiVzIjolcycgIiRtIiAiJHtuOi0wfSI7IEY9MAogIGRvbmUKICBwcmludGYgJ30sJwoKICAjIC0tLS0g56OB55uYIC0tLS0KICAjIGJ1c3lib3ggZGYg6L6T5Ye65Y2V5L2N5pivIDFLLWJsb2Nr77yI5LiN5piv5a2X6IqC77yJ77yb5YmN56uvIGZtdEIoKSDmjInlrZfoioLmjaLnrpfvvIwKICAjIOebtOaOpeS8oOS8muWvvOiHtCAyMjVHIOaYvuekuuaIkCAwLjJH44CC6L+Z6YeM5LiA5b6L5o2i566X5oiQ5a2X6IqC5YaN5LiK5oql44CCCiAgIyDms6jmhI/vvJpta3NoIOeahCAkKCggKSkg5pivIDMyIOS9jeacieespuWPt++8jDIyNUcqMTAyNCDkvJrmuqLlh7rplJnls7DvvIwKICAjIOW/hemhu+S6pOe7mSBhd2sg55qE5Y+M57K+5bqm5YGa5LmY5rOV77yIMl41MyDku6XlhoXnsr7noa7vvInjgIIKICBERj0kKCRCQiBkZiAtayAvZGF0YS9tZWRpYS8wIDI+L2Rldi9udWxsIHwgdGFpbCAtMSkKICBUT1RCPSQocHJpbnRmICclcycgIiRERiIgfCBhd2sgJ3twcmludGYgIiUuMGYiLCAkMioxMDI0fScpCiAgVVNFREI9JChwcmludGYgJyVzJyAiJERGIiB8IGF3ayAne3ByaW50ZiAiJS4wZiIsICQzKjEwMjR9JykKICBBVkFJTEI9JChwcmludGYgJyVzJyAiJERGIiB8IGF3ayAne3ByaW50ZiAiJS4wZiIsICQ0KjEwMjR9JykKICBwcmludGYgJyJkaXNrIjp7InRvdGFsIjolcywidXNlZCI6JXMsImF2YWlsIjolcywidW5pdCI6ImJ5dGVzIn0sJyAiJHtUT1RCOi0wfSIgIiR7VVNFREI6LTB9IiAiJHtBVkFJTEI6LTB9IgoKICAjIC0tLS0g5Y+w6LSmIC0tLS0KICBMRUQ9JERBVEEvbGVkZ2VyLmpzb25sCiAgcHJpbnRmICcibGVkZ2VyIjp7InJlY3YiOiVzLCJtdmRhdGUiOiVzLCJhcmMiOiVzLCJkdXAiOiVzfSwnIFwKICAgICIkKGdyZXAgLWMgJyJhY3QiOiJyZWN2IicgIiRMRUQiIDI+L2Rldi9udWxsIHwgdHIgLWQgJyAnIHx8IGVjaG8gMCkiIFwKICAgICIkKGdyZXAgLWMgJyJhY3QiOiJtdmRhdGUiJyAiJExFRCIgMj4vZGV2L251bGwgfCB0ciAtZCAnICcgfHwgZWNobyAwKSIgXAogICAgIiQoZ3JlcCAtYyAnImFjdCI6ImFyYyInICIkTEVEIiAyPi9kZXYvbnVsbCB8IHRyIC1kICcgJyB8fCBlY2hvIDApIiBcCiAgICAiJChncmVwIC1jICciYWN0IjoiZHVwIicgIiRMRUQiIDI+L2Rldi9udWxsIHwgdHIgLWQgJyAnIHx8IGVjaG8gMCkiCgogIEVWX049JCh3YyAtbCA8ICIkREFUQS9ldmVudHMuanNvbmwiIDI+L2Rldi9udWxsIHwgdHIgLWQgJyAnKQogIHByaW50ZiAnImV2ZW50cyI6JXN9JyAiJHtFVl9OOi0wfSIKfSA+ICIkVE1QIiAyPi9kZXYvbnVsbAoKIyDmoKHpqowgSlNPTiDlrozmlbTmgKflho3okL3lnLAKaWYgWyAtcyAiJFRNUCIgXSAmJiBbICIkKHRhaWwgLWMgMSAiJFRNUCIpIiA9ICJ9IiBdOyB0aGVuCiAgbXYgLWYgIiRUTVAiICIkT1VUIgogIGVjaG8gIiQoZGF0ZSAnKyVGICVUJykg54q25oCB5bey5pu05pawICQod2MgLWMgPCAiJE9VVCIpIOWtl+iKgiIgPj4gL2RhdGEvYWRiL25hc2Jhay9sb2dzL3N0YXR1cy1jb2xsZWN0LmxvZwplbHNlCiAgZWNobyAiJChkYXRlICcrJUYgJVQnKSDph4fpm4blpLHotKUoSlNPTuS4jeWujOaVtCkiID4+IC9kYXRhL2FkYi9uYXNiYWsvbG9ncy9zdGF0dXMtY29sbGVjdC5sb2cKICBybSAtZiAiJFRNUCIKZmk=
+#!/system/bin/sh
+# status-collect.sh — 后台采集系统状态，写入缓存 JSON
+# 由 daemon 或 crond 周期调用，CGI 只读缓存（避免 CGI 里做重活导致 httpd 超时）
+
+DATA=/data/media/0/nasbak/state
+BASE=/data/media/0/nasbak
+INBOX=$BASE/inbox
+ARC=$BASE/archive
+BB=/data/adb/magisk/busybox
+OUT=$DATA/status-cache.json
+TMP=$OUT.tmp
+
+port_open() { timeout 2 $BB nc -z 127.0.0.1 "$1" 2>/dev/null; }
+
+jesc() { printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g' | tr -d '\r\n\t'; }
+
+{
+  printf '{"ts":%s,' "$(date +%s)"
+
+  # ---- 服务状态 ----
+  printf '"services":['
+  F=1
+  # httpd 8083：进程检测(本脚本非 CGI，遍历 /proc 安全)
+  FOUND=""
+  for p in /proc/[0-9]*/cmdline; do
+    c=$(tr '\0' ' ' < "$p" 2>/dev/null)
+    case "$c" in *"httpd -p 8083"*) FOUND=1; break;; esac
+  done 2>/dev/null
+  if [ -n "$FOUND" ]; then S=true; D="监听 8083"; else S=false; D="未监听"; fi
+  printf '{"name":"判定页 httpd","ok":%s,"detail":"%s"}' "$S" "$(jesc "$D")"; F=0
+
+  if port_open 5244; then S=true; D="监听 5244 · WebDAV /dav"; else S=false; D="未监听"; fi
+  printf ',{"name":"alist","ok":%s,"detail":"%s"}' "$S" "$(jesc "$D")"
+
+  if port_open 6800; then S=true; D="监听 6800"; else S=false; D="未监听"; fi
+  printf ',{"name":"aria2","ok":%s,"detail":"%s"}' "$S" "$(jesc "$D")"
+
+  if port_open 5555; then S=true; D="监听 5555"; else S=false; D="未监听"; fi
+  printf ',{"name":"adb 无线调试","ok":%s,"detail":"%s"}' "$S" "$(jesc "$D")"
+
+  # crond
+  CRONP=""
+  for p in /proc/[0-9]*/cmdline; do c=$(tr '\0' ' ' < "$p" 2>/dev/null); case "$c" in *crond*) CRONP="$c";; esac; done 2>/dev/null
+  if [ -n "$CRONP" ]; then
+    S=true
+    TASKS=$($BB crontab -c /data/adb/modules/GGAT_10007/crond -l 2>/dev/null | grep -vc '^#')
+    D="运行中 · $TASKS 个任务"
+  else S=false; D="未运行"; fi
+  printf ',{"name":"crond 定时任务","ok":%s,"detail":"%s"}' "$S" "$(jesc "$D")"
+
+  # daemon
+  DPID=$(cat /data/adb/nasbak/daemon.pid 2>/dev/null | tr -d ' \r\n')
+  if [ -n "$DPID" ] && [ -d "/proc/$DPID" ]; then S=true; D="运行中 · pid $DPID"; else S=false; D="未运行"; fi
+  printf ',{"name":"判定调度 daemon","ok":%s,"detail":"%s"}' "$S" "$(jesc "$D")"
+
+  # tailscale
+  if [ -S /data/adb/tailscale/run/tailscaled.sock ] 2>/dev/null; then S=true; D="tailscaled 运行中"; else S=false; D="未运行"; fi
+  printf ',{"name":"tailscale","ok":%s,"detail":"%s"}' "$S" "$(jesc "$D")"
+
+  # 电池保护
+  if [ -f /data/adb/srv/battguard.pid ] && [ -d "/proc/$(cat /data/adb/srv/battguard.pid 2>/dev/null | tr -d ' \r\n')" ]; then
+    S=true; D="运行中"; else S=false; D="未运行"; fi
+  printf ',{"name":"电池保护","ok":%s,"detail":"%s"}' "$S" "$(jesc "$D")"
+
+  # 光鸭云盘同步
+  GYP_LOG=/data/local/tmp/gyp/gyp.log
+  if [ -f "$GYP_LOG" ]; then
+    LAST=$(tail -1 "$GYP_LOG" 2>/dev/null | cut -c1-19)
+    D="最近同步 $LAST"
+  else D="无记录"; fi
+  S=true
+  printf ',{"name":"云盘同步","ok":%s,"detail":"%s"}' "$S" "$(jesc "$D")"
+
+  # 磁力搜索：与判定页共用 8083 httpd，检查子目录是否已部署
+  if [ -f /data/adb/nasbak/www/magnet/index.html ]; then
+    S=true; D="同源 /magnet/ · 与 8083 共用"
+  else S=false; D="未部署"; fi
+  printf ',{"name":"磁力搜索","ok":%s,"detail":"%s"}' "$S" "$(jesc "$D")"
+
+  # AriaNg 下载管理：静态页 + 依赖 6800 RPC
+  if [ -f /data/adb/nasbak/www/ariang/index.html ]; then
+    if port_open 6800; then S=true; D="页面就绪 · RPC 6800 可连"; else S=false; D="页面就绪 · RPC 未连"; fi
+  else S=false; D="未部署"; fi
+  printf ',{"name":"下载管理 AriaNg","ok":%s,"detail":"%s"}' "$S" "$(jesc "$D")"
+  printf '],'
+
+  # ---- 存储统计 ----
+  IN_N=$(find "$INBOX" -type f ! -path "*/_dup_backup/*" 2>/dev/null | wc -l | tr -d ' ')
+  ARC_N=$(find "$ARC" -type f 2>/dev/null | wc -l | tr -d ' ')
+  DUP_N=$(find "$INBOX/_dup_backup" -type f 2>/dev/null | wc -l | tr -d ' ')
+  TRASH_N=$(find "$BASE/_待删" -type f 2>/dev/null | wc -l | tr -d ' ')
+  IN_S=$($BB du -sb "$INBOX" 2>/dev/null | awk '{print $1}'); [ -z "$IN_S" ] && IN_S=0
+  DUP_S=$($BB du -sb "$INBOX/_dup_backup" 2>/dev/null | awk '{print $1}'); [ -z "$DUP_S" ] && DUP_S=0
+  ARC_S=$($BB du -sb "$ARC" 2>/dev/null | awk '{print $1}'); [ -z "$ARC_S" ] && ARC_S=0
+
+  printf '"files":{"inboxN":%s,"inboxS":%s,"archiveN":%s,"archiveS":%s,"dupN":%s,"dupS":%s,"trashN":%s},' \
+    "$IN_N" "$IN_S" "$ARC_N" "$ARC_S" "$DUP_N" "$DUP_S" "$TRASH_N"
+
+  # ---- 判读进度 ----
+  # done = analysis 记录数；pending = 待判队列行数（不再遍历 loc-*.tsv，
+  # 那个口径会把已出队的历史文件算成"待判"，导致进度永远停在 848）
+  DONE=$(ls "$DATA/analysis" 2>/dev/null | grep -c '\.json$')
+  PEND=0
+  [ -f "$DATA/pending.queue" ] && PEND=$(wc -l < "$DATA/pending.queue" 2>/dev/null | tr -d ' ')
+  printf '"judge":{"done":%s,"pending":%s},' "${DONE:-0}" "${PEND:-0}"
+
+  # ---- 分类分布 ----
+  printf '"cats":{'
+  F=1
+  for c in work home screenshot video other unclassified; do
+    n=$(grep -c "\"cat\":\"$c\"" "$DATA/analysis.jsonl" 2>/dev/null | tr -d ' ')
+    [ "$F" = "1" ] || printf ','
+    printf '"%s":%s' "$c" "${n:-0}"; F=0
+  done
+  printf '},'
+
+  # ---- 模型统计 ----
+  printf '"models":{'
+  F=1
+  for m in zhipu video rule circuit; do
+    case "$m" in
+      zhipu)  n=$(grep -c '"model":"minicpm-v/zhipu' "$DATA/analysis.jsonl" 2>/dev/null | tr -d ' ');;
+      video)  n=$(grep -c '"model":"rule:video"' "$DATA/analysis.jsonl" 2>/dev/null | tr -d ' ');;
+      rule)   n=$(grep -c '"model":"minicpm-v"' "$DATA/analysis.jsonl" 2>/dev/null | tr -d ' ');;
+      circuit) n=$(grep -c '"model":"circuit-break"' "$DATA/analysis.jsonl" 2>/dev/null | tr -d ' ');;
+    esac
+    [ "$F" = "1" ] || printf ','
+    printf '"%s":%s' "$m" "${n:-0}"; F=0
+  done
+  printf '},'
+
+  # ---- 磁盘 ----
+  # busybox df 输出单位是 1K-block（不是字节）；前端 fmtB() 按字节换算，
+  # 直接传会导致 225G 显示成 0.2G。这里一律换算成字节再上报。
+  # 注意：mksh 的 $(( )) 是 32 位有符号，225G*1024 会溢出错峰，
+  # 必须交给 awk 的双精度做乘法（2^53 以内精确）。
+  DF=$($BB df -k /data/media/0 2>/dev/null | tail -1)
+  TOTB=$(printf '%s' "$DF" | awk '{printf "%.0f", $2*1024}')
+  USEDB=$(printf '%s' "$DF" | awk '{printf "%.0f", $3*1024}')
+  AVAILB=$(printf '%s' "$DF" | awk '{printf "%.0f", $4*1024}')
+  printf '"disk":{"total":%s,"used":%s,"avail":%s,"unit":"bytes"},' "${TOTB:-0}" "${USEDB:-0}" "${AVAILB:-0}"
+
+  # ---- 台账 ----
+  LED=$DATA/ledger.jsonl
+  printf '"ledger":{"recv":%s,"mvdate":%s,"arc":%s,"dup":%s},' \
+    "$(grep -c '"act":"recv"' "$LED" 2>/dev/null | tr -d ' ' || echo 0)" \
+    "$(grep -c '"act":"mvdate"' "$LED" 2>/dev/null | tr -d ' ' || echo 0)" \
+    "$(grep -c '"act":"arc"' "$LED" 2>/dev/null | tr -d ' ' || echo 0)" \
+    "$(grep -c '"act":"dup"' "$LED" 2>/dev/null | tr -d ' ' || echo 0)"
+
+  EV_N=$(wc -l < "$DATA/events.jsonl" 2>/dev/null | tr -d ' ')
+  printf '"events":%s}' "${EV_N:-0}"
+} > "$TMP" 2>/dev/null
+
+# 校验 JSON 完整性再落地
+if [ -s "$TMP" ] && [ "$(tail -c 1 "$TMP")" = "}" ]; then
+  mv -f "$TMP" "$OUT"
+  echo "$(date '+%F %T') 状态已更新 $(wc -c < "$OUT") 字节" >> /data/adb/nasbak/logs/status-collect.log
+else
+  echo "$(date '+%F %T') 采集失败(JSON不完整)" >> /data/adb/nasbak/logs/status-collect.log
+  rm -f "$TMP"
+fi

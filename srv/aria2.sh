@@ -1,1 +1,72 @@
-IyEvc3lzdGVtL2Jpbi9zaAojIOWFrOWFseW6k++8muWumuS9jSBjdXJs44CB6K+7IGFyaWEyIOmFjee9ruOAgeiwgyBKU09OLVJQQ+OAggojCiMg5pS+5ZyoIHdlYiDmoLnnm67lvZXvvIh3d3fvvInkuYvlpJbvvIxodHRwZCDorr/pl67kuI3liLDvvIzkuI3kvJrooqvlvZPpnZnmgIHmlofku7bor7vlh7rlhoXlrrnjgIIKIyDnlLEgYWRkLmNnaSAvIGxpc3QuY2dpIOmAmui/hyAkU0VMRl9ESVIvLi4vLi4vbGliL2FyaWEyLnNoIOW8leeUqOOAggojCiMg5Yqg6L295ZCO5Y+v55u05o6l5L2/55So77yaCiMgICAkTUdfQ1VSTCAgICAgY3VybCDot6/lvoQKIyAgICRNR19DT05GICAgICBhcmlhMiDphY3nva7mlofku7bot6/lvoTvvIjlj6/og73kuLrnqbrvvIkKIyAgICRNR19TRUNSRVQgICBycGMtc2VjcmV077yI5Y+v6IO95Li656m677yM6KGo56S65rKh6K6+5a+G6ZKl77yJCiMgICAkTUdfUE9SVCAgICAgcnBjIOerr+WPo++8jOm7mOiupCA2ODAwCiMgICBhcmlhMl9ycGMgPG1ldGhvZD4gPHBhcmFtcy1qc29uPiAgIOiHquWKqOihpSB0b2tlbu+8jOi+k+WHuuWOn+WniyBKU09OCgpNR19DVVJMPSQoY29tbWFuZCAtdiBjdXJsIDI+L2Rldi9udWxsKQpbIC16ICIkTUdfQ1VSTCIgXSAmJiBNR19DVVJMPS9zeXN0ZW0vYmluL2N1cmwKCiMg5om+IGFyaWEyIOmFjee9ruaWh+S7tu+8muS8mOWFiCBBUklBMl9DT05GIOeOr+Wig+WPmOmHj++8jOWFtuasoeW4uOingei3r+W+hApNR19DT05GPSIiCmZvciBjIGluICIkQVJJQTJfQ09ORiIgXAogICAgICAgICAvZGF0YS9hZGIvc3J2L2FyaWEyLmNvbmYgXAogICAgICAgICAvZGF0YS9hZGIvYXJpYTIvYXJpYTIuY29uZiBcCiAgICAgICAgIC9kYXRhL2FkYi9tb2R1bGVzL2FyaWEyL2FyaWEyLmNvbmYgXAogICAgICAgICAvc2RjYXJkL2FyaWEyL2FyaWEyLmNvbmYgXAogICAgICAgICAiJEhPTUUvLmFyaWEyL2FyaWEyLmNvbmYiOyBkbwogIGlmIFsgLW4gIiRjIiBdICYmIFsgLWYgIiRjIiBdOyB0aGVuCiAgICBNR19DT05GPSIkYyIKICAgIGJyZWFrCiAgZmkKZG9uZQoKTUdfU0VDUkVUPSIiCk1HX1BPUlQ9IjY4MDAiCmlmIFsgLW4gIiRNR19DT05GIiBdOyB0aGVuCiAgTUdfU0VDUkVUPSQoc2VkIC1uICdzL15bWzpzcGFjZTpdXSpycGMtc2VjcmV0W1s6c3BhY2U6XV0qPVtbOnNwYWNlOl1dKi8vcCcgIiRNR19DT05GIiB8IHRyIC1kICdcclxuJykKICBfbWdwPSQoc2VkIC1uICdzL15bWzpzcGFjZTpdXSpycGMtbGlzdGVuLXBvcnRbWzpzcGFjZTpdXSo9W1s6c3BhY2U6XV0qLy9wJyAiJE1HX0NPTkYiIHwgdHIgLWQgJ1xyXG4nKQogIFsgLW4gIiRfbWdwIiBdICYmIE1HX1BPUlQ9IiRfbWdwIgpmaQoKIyBhcmlhMl9ycGMgPG1ldGhvZD4gPHBhcmFtcy1qc29uPgojIHBhcmFtcyDmmK/kuI3lkKsgdG9rZW4g55qE5a6M5pW0IEpTT04g5pWw57uE77yM5L6L5aaCICdbW1wibWFnbmV0Oj94dD11cm46YnRpaDp4eHhcIl1dJwojIOmFjeS6hiBycGMtc2VjcmV0IOaXtuiHquWKqOaKiiAidG9rZW46eHh4IiDmj5LliLDmlbDnu4TmnIDliY3pnaLigJTigJTkuI3phY3lr4bpkqXml7bnu53kuI3og73luKbvvIwKIyDlkKbliJkgYXJpYTIg55u05o6l6Ym05p2D5aSx6LSl44CCCmFyaWEyX3JwYygpIHsKICBfbT0iJDEiCiAgX3A9IiQyIgogIGNhc2UgIiRfcCIgaW4KICAgIFxbKikgOiA7OwogICAgKikgICBfcD0nW10nIDs7CiAgZXNhYwoKICBpZiBbIC1uICIkTUdfU0VDUkVUIiBdOyB0aGVuCiAgICBfaW5uZXI9JChwcmludGYgJyVzJyAiJF9wIiB8IHNlZCAncy9eXFsvLzsgcy9cXSQvLycpCiAgICBpZiBbIC16ICIkX2lubmVyIiBdOyB0aGVuCiAgICAgIF9wPSJbXCJ0b2tlbjoke01HX1NFQ1JFVH1cIl0iCiAgICBlbHNlCiAgICAgIF9wPSJbXCJ0b2tlbjoke01HX1NFQ1JFVH1cIiwke19pbm5lcn1dIgogICAgZmkKICBmaQoKICBwcmludGYgJyVzJyAiJCgiJE1HX0NVUkwiIC1zIC0tbWF4LXRpbWUgOCBcCiAgICAtSCAnQ29udGVudC1UeXBlOiBhcHBsaWNhdGlvbi9qc29uJyBcCiAgICAtZCAie1wianNvbnJwY1wiOlwiMi4wXCIsXCJpZFwiOlwibWFncGllXCIsXCJtZXRob2RcIjpcIiR7X219XCIsXCJwYXJhbXNcIjoke19wfX0iIFwKICAgICJodHRwOi8vMTI3LjAuMC4xOiR7TUdfUE9SVH0vanNvbnJwYyIgMj4vZGV2L251bGwpIgp9CgojIGlzX2pzb25fb2JqZWN0IDxzdHJpbmc+77ya5piv5LiN5piv5LiA5Liq5a6M5pW055qEIHsuLi59IOWTjeW6lAppc19qc29uX29iamVjdCgpIHsKICBjYXNlICIkMSIgaW4KICAgIFx7Klx9KSByZXR1cm4gMCA7OwogICAgKikgICAgIHJldHVybiAxIDs7CiAgZXNhYwp9Cg==
+#!/system/bin/sh
+# 公共库：定位 curl、读 aria2 配置、调 JSON-RPC。
+#
+# 放在 web 根目录（www）之外，httpd 访问不到，不会被当静态文件读出内容。
+# 由 add.cgi / list.cgi 通过 $SELF_DIR/../../lib/aria2.sh 引用。
+#
+# 加载后可直接使用：
+#   $MG_CURL     curl 路径
+#   $MG_CONF     aria2 配置文件路径（可能为空）
+#   $MG_SECRET   rpc-secret（可能为空，表示没设密钥）
+#   $MG_PORT     rpc 端口，默认 6800
+#   aria2_rpc <method> <params-json>   自动补 token，输出原始 JSON
+
+MG_CURL=$(command -v curl 2>/dev/null)
+[ -z "$MG_CURL" ] && MG_CURL=/system/bin/curl
+
+# 找 aria2 配置文件：优先 ARIA2_CONF 环境变量，其次常见路径
+MG_CONF=""
+for c in "$ARIA2_CONF" \
+         /data/adb/srv/aria2.conf \
+         /data/adb/aria2/aria2.conf \
+         /data/adb/modules/aria2/aria2.conf \
+         /sdcard/aria2/aria2.conf \
+         "$HOME/.aria2/aria2.conf"; do
+  if [ -n "$c" ] && [ -f "$c" ]; then
+    MG_CONF="$c"
+    break
+  fi
+done
+
+MG_SECRET=""
+MG_PORT="6800"
+if [ -n "$MG_CONF" ]; then
+  MG_SECRET=$(sed -n 's/^[[:space:]]*rpc-secret[[:space:]]*=[[:space:]]*//p' "$MG_CONF" | tr -d '\r\n')
+  _mgp=$(sed -n 's/^[[:space:]]*rpc-listen-port[[:space:]]*=[[:space:]]*//p' "$MG_CONF" | tr -d '\r\n')
+  [ -n "$_mgp" ] && MG_PORT="$_mgp"
+fi
+
+# aria2_rpc <method> <params-json>
+# params 是不含 token 的完整 JSON 数组，例如 '[[\"magnet:?xt=urn:btih:xxx\"]]'
+# 配了 rpc-secret 时自动把 "token:xxx" 插到数组最前面——不配密钥时绝不能带，
+# 否则 aria2 直接鉴权失败。
+aria2_rpc() {
+  _m="$1"
+  _p="$2"
+  case "$_p" in
+    \[*) : ;;
+    *)   _p='[]' ;;
+  esac
+
+  if [ -n "$MG_SECRET" ]; then
+    _inner=$(printf '%s' "$_p" | sed 's/^\[//; s/\]$//')
+    if [ -z "$_inner" ]; then
+      _p="[\"token:${MG_SECRET}\"]"
+    else
+      _p="[\"token:${MG_SECRET}\",${_inner}]"
+    fi
+  fi
+
+  printf '%s' "$("$MG_CURL" -s --max-time 8 \
+    -H 'Content-Type: application/json' \
+    -d "{\"jsonrpc\":\"2.0\",\"id\":\"magpie\",\"method\":\"${_m}\",\"params\":${_p}}" \
+    "http://127.0.0.1:${MG_PORT}/jsonrpc" 2>/dev/null)"
+}
+
+# is_json_object <string>：是不是一个完整的 {...} 响应
+is_json_object() {
+  case "$1" in
+    \{*\}) return 0 ;;
+    *)     return 1 ;;
+  esac
+}

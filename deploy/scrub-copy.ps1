@@ -1,1 +1,88 @@
-IyDku47np4HmnInniYjnlJ/miJDlhazlvIDniYjvvIjohLHmlY/lpI3liLbvvIkKIwojIOeUqOazle+8mgojICAgLlxkZXBsb3lcc2NydWItY29weS5wczEgLVNyYyAiRTpcRFNIXHJlcG9ccHJpdmF0ZSIgLURzdCAiRTpcRFNIXHJlcG9ccHVibGljIgojCiMg5YGa5LiJ5Lu25LqL77yaCiMgICAxKSDmjIkgJEV4Y2x1ZGVQYXRocyDot7Pov4fkuI3og73lhazlvIDnmoTmlofku7YKIyAgIDIpIOaMiSAkU2NydWJSdWxlcyDmm7/mjaLmlY/mhJ/lrZfnrKbkuLIKIyAgIDMpIOe7n+S4gOi9rCBMRiDmjaLooYzvvIhBbmRyb2lkIHNoIOmBhyBDUkxGIOS8mueCuO+8iQoKW0NtZGxldEJpbmRpbmcoKV0KcGFyYW0oCiAgICBbc3RyaW5nXSRTcmMgPSAiRTpcRFNIXHJlcG9ccHJpdmF0ZSIsCiAgICBbc3RyaW5nXSREc3QgPSAiRTpcRFNIXHJlcG9ccHVibGljIgopCgokRXJyb3JBY3Rpb25QcmVmZXJlbmNlID0gJ1N0b3AnCi4gIiRQU1NjcmlwdFJvb3Rcc2NydWItcnVsZXMucHMxIgoKJFNyYyA9IChSZXNvbHZlLVBhdGggJFNyYykuUGF0aAojIOi+k+WHuuebruW9leS4jeiDveaYr+WQjOS4gOS4qu+8jOmBv+WFjeiHquW3seimhuebluiHquW3sQppZiAoKFJlc29sdmUtUGF0aCAkRHN0IC1FcnJvckFjdGlvbiBTaWxlbnRseUNvbnRpbnVlKS5QYXRoIC1lcSAkU3JjKSB7CiAgICB0aHJvdyAi55uu5qCH55uu5b2V5LiN6IO9562J5LqO5rqQ55uu5b2VIgp9CgojIOS/neeVmSBkZXBsb3kg55uu5b2V6YeM5bey5YaZ5aW955qE6ISa5pys5pys6LqrCiRzZWxmRGlyID0gJFBTU2NyaXB0Um9vdAoKZnVuY3Rpb24gSXNFeGNsdWRlZCgkcmVsKSB7CiAgICBmb3JlYWNoICgkcCBpbiAkRXhjbHVkZVBhdGhzKSB7IGlmICgkcmVsIC1lcSAkcCAtb3IgJHJlbCAtbGlrZSAiJHAvKiIpIHsgcmV0dXJuICR0cnVlIH0gfQogICAgaWYgKCRyZWwgLWxpa2UgJy5naXQvKicpIHsgcmV0dXJuICR0cnVlIH0KICAgIGlmICgkcmVsIC1saWtlICdkZXBsb3kvc2NydWItKicpIHsgcmV0dXJuICR0cnVlIH0KICAgIHJldHVybiAkZmFsc2UKfQoKJGNvcGllZCA9IDA7ICRza2lwcGVkID0gMDsgJGNoYW5nZWQgPSAwCiRzdGF0cyA9IEB7fQoKR2V0LUNoaWxkSXRlbSAkU3JjIC1SZWN1cnNlIC1GaWxlIHwgRm9yRWFjaC1PYmplY3QgewogICAgJHJlbCA9ICRfLkZ1bGxOYW1lLlN1YnN0cmluZygkU3JjLkxlbmd0aCArIDEpIC1yZXBsYWNlICdcXCcsJy8nCgogICAgaWYgKElzRXhjbHVkZWQgJHJlbCkgewogICAgICAgIFdyaXRlLUhvc3QgIiAg6Lez6L+HKOaOkumZpCkgJHJlbCIgWWVsbG93CiAgICAgICAgJHNraXBwZWQrKwogICAgICAgIHJldHVybgogICAgfQoKICAgICRkZXN0ID0gSm9pbi1QYXRoICREc3QgJHJlbAogICAgTmV3LUl0ZW0gLUl0ZW1UeXBlIERpcmVjdG9yeSAtRm9yY2UgLVBhdGggKFNwbGl0LVBhdGggLVBhcmVudCAkZGVzdCkgfCBPdXQtTnVsbAoKICAgICRleHQgPSAkXy5FeHRlbnNpb24KICAgICRpc1RleHQgPSAkVGV4dEV4dGVuc2lvbnMgLWNvbnRhaW5zICRleHQgLW9yICRfLk5hbWUgLWluICdyb290JywnLmdpdGlnbm9yZScsJy5naXRhdHRyaWJ1dGVzJwoKICAgIGlmICgtbm90ICRpc1RleHQpIHsKICAgICAgICBDb3B5LUl0ZW0gJF8uRnVsbE5hbWUgJGRlc3QgLUZvcmNlCiAgICAgICAgJGNvcGllZCsrCiAgICAgICAgcmV0dXJuCiAgICB9CgogICAgJHR4dCA9IFtTeXN0ZW0uSU8uRmlsZV06OlJlYWRBbGxUZXh0KCRfLkZ1bGxOYW1lKQogICAgJG9yaWcgPSAkdHh0CgogICAgZm9yZWFjaCAoJHIgaW4gJFNjcnViUnVsZXMpIHsKICAgICAgICBpZiAoJHR4dC5Db250YWlucygkci5Gcm9tKSkgewogICAgICAgICAgICAkbiA9IChbcmVnZXhdOjpNYXRjaGVzKCR0eHQsIFtyZWdleF06OkVzY2FwZSgkci5Gcm9tKSkpLkNvdW50CiAgICAgICAgICAgICR0eHQgPSAkdHh0LlJlcGxhY2UoJHIuRnJvbSwgJHIuVG8pCiAgICAgICAgICAgICRrZXkgPSAiJCgkci5Gcm9tKSAtPiAkKCRyLlRvKSIKICAgICAgICAgICAgaWYgKC1ub3QgJHN0YXRzLkNvbnRhaW5zS2V5KCRrZXkpKSB7ICRzdGF0c1ska2V5XSA9IDAgfQogICAgICAgICAgICAkc3RhdHNbJGtleV0gKz0gJG4KICAgICAgICB9CiAgICB9CgogICAgaWYgKCR0eHQgLW5lICRvcmlnKSB7ICRjaGFuZ2VkKysgfQoKICAgICMg57uf5LiAIExGCiAgICAkdHh0ID0gJHR4dCAtcmVwbGFjZSAiYHJgbiIsICJgbiIKICAgIFtTeXN0ZW0uSU8uRmlsZV06OldyaXRlQWxsVGV4dCgkZGVzdCwgJHR4dCwgKE5ldy1PYmplY3QgU3lzdGVtLlRleHQuVVRGOEVuY29kaW5nKCRmYWxzZSkpKQogICAgJGNvcGllZCsrCn0KCldyaXRlLUhvc3QgIiIKV3JpdGUtSG9zdCAiPT0+IOWkjeWItiAkY29waWVkIOS4quaWh+S7tu+8jOi3s+i/hyAkc2tpcHBlZCDkuKrvvIzmlLnliqggJGNoYW5nZWQg5LiqIiBDeWFuCmlmICgkc3RhdHMuQ291bnQpIHsKICAgIFdyaXRlLUhvc3QgIj09PiDmm7/mjaLnu5/orqEiIEN5YW4KICAgICRzdGF0cy5HZXRFbnVtZXJhdG9yKCkgfCBTb3J0LU9iamVjdCBWYWx1ZSAtRGVzY2VuZGluZyB8IEZvckVhY2gtT2JqZWN0IHsKICAgICAgICBXcml0ZS1Ib3N0ICgiICAgezAsLTQyfSB4ezF9IiAtZiAkXy5LZXksICRfLlZhbHVlKQogICAgfQp9Cg==
+# 从私有版生成公开版（脱敏复制）
+#
+# 用法：
+#   .\deploy\scrub-copy.ps1 -Src "E:\DSH\repo\private" -Dst "E:\DSH\repo\public"
+#
+# 做三件事：
+#   1) 按 $ExcludePaths 跳过不能公开的文件
+#   2) 按 $ScrubRules 替换敏感字符串
+#   3) 统一转 LF 换行（Android sh 遇 CRLF 会炸）
+
+[CmdletBinding()]
+param(
+    [string]$Src = "E:\DSH\repo\private",
+    [string]$Dst = "E:\DSH\repo\public"
+)
+
+$ErrorActionPreference = 'Stop'
+. "$PSScriptRoot\scrub-rules.ps1"
+
+$Src = (Resolve-Path $Src).Path
+# 输出目录不能是同一个，避免自己覆盖自己
+if ((Resolve-Path $Dst -ErrorAction SilentlyContinue).Path -eq $Src) {
+    throw "目标目录不能等于源目录"
+}
+
+# 保留 deploy 目录里已写好的脚本本身
+$selfDir = $PSScriptRoot
+
+function IsExcluded($rel) {
+    foreach ($p in $ExcludePaths) { if ($rel -eq $p -or $rel -like "$p/*") { return $true } }
+    if ($rel -like '.git/*') { return $true }
+    if ($rel -like 'deploy/scrub-*') { return $true }
+    return $false
+}
+
+$copied = 0; $skipped = 0; $changed = 0
+$stats = @{}
+
+Get-ChildItem $Src -Recurse -File | ForEach-Object {
+    $rel = $_.FullName.Substring($Src.Length + 1) -replace '\\','/'
+
+    if (IsExcluded $rel) {
+        Write-Host "  跳过(排除) $rel" Yellow
+        $skipped++
+        return
+    }
+
+    $dest = Join-Path $Dst $rel
+    New-Item -ItemType Directory -Force -Path (Split-Path -Parent $dest) | Out-Null
+
+    $ext = $_.Extension
+    $isText = $TextExtensions -contains $ext -or $_.Name -in 'root','.gitignore','.gitattributes'
+
+    if (-not $isText) {
+        Copy-Item $_.FullName $dest -Force
+        $copied++
+        return
+    }
+
+    $txt = [System.IO.File]::ReadAllText($_.FullName)
+    $orig = $txt
+
+    foreach ($r in $ScrubRules) {
+        if ($txt.Contains($r.From)) {
+            $n = ([regex]::Matches($txt, [regex]::Escape($r.From))).Count
+            $txt = $txt.Replace($r.From, $r.To)
+            $key = "$($r.From) -> $($r.To)"
+            if (-not $stats.ContainsKey($key)) { $stats[$key] = 0 }
+            $stats[$key] += $n
+        }
+    }
+
+    if ($txt -ne $orig) { $changed++ }
+
+    # 统一 LF
+    $txt = $txt -replace "`r`n", "`n"
+    [System.IO.File]::WriteAllText($dest, $txt, (New-Object System.Text.UTF8Encoding($false)))
+    $copied++
+}
+
+Write-Host ""
+Write-Host "==> 复制 $copied 个文件，跳过 $skipped 个，改动 $changed 个" Cyan
+if ($stats.Count) {
+    Write-Host "==> 替换统计" Cyan
+    $stats.GetEnumerator() | Sort-Object Value -Descending | ForEach-Object {
+        Write-Host ("   {0,-42} x{1}" -f $_.Key, $_.Value)
+    }
+}

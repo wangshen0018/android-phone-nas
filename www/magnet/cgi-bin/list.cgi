@@ -1,1 +1,48 @@
-IyEvc3lzdGVtL2Jpbi9zaAojIENHSTog5p+lIGFyaWEyIOW9k+WJjeS4i+i9veaDheWGte+8jOS+m+mhtemdouW6lemDqOi/m+W6puadoeS9v+eUqAojIOWFpeWPgjog5pegCiMg5Ye65Y+COiB7ImFjdGl2ZSI6e2FyaWEy5Y6f5aeL5ZON5bqUfSwid2FpdGluZyI6ey4uLn0sInN0b3BwZWQiOnsuLi59fQojCiMg5Li65LuA5LmI5Y6f5qC36L2s5Y+RIGFyaWEyIOeahOWTjeW6lOiAjOS4jeWcqOi/memHjOino+aekO+8mgojICAgc2gg6YeM5ouG5bWM5aWXIEpTT04g5Y+q6IO955SoIHNlZO+8jOWtl+auteS4gOWkmuWwseiEhuOAguWJjeerr+eahCBKU09OLnBhcnNlIOacrOadpeWwseS8muino+aekO+8jAojICAg6L+Z6YeM5Y+q5YGa5LiJ5Lu25LqL4oCU4oCU6KGl6b2QIHRva2Vu44CB5ou85o6l5oiQ5LiA5Liq5ZCI5rOVIEpTT07jgIHlpLHotKXml7bpmY3nuqfmiJDnqbrmlbDnu4TjgIIKIwojIOWtl+auteWPquWPlumcgOimgeeahOWHoOS4qu+8jOmBv+WFjeWkp+S7u+WKoeeahCBmaWxlcyDliJfooajmiorlk43lupTmkpHliLDlh6Dnmb4gS0LjgIIKCnByaW50ZiAnQ29udGVudC1UeXBlOiBhcHBsaWNhdGlvbi9qc29uXHJcbicKcHJpbnRmICdDYWNoZS1Db250cm9sOiBuby1zdG9yZVxyXG4nCnByaW50ZiAnWC1Db250ZW50LVR5cGUtT3B0aW9uczogbm9zbmlmZlxyXG4nCnByaW50ZiAnXHJcbicKClNFTEZfRElSPSQoY2QgIiQoZGlybmFtZSAiJDAiKSIgMj4vZGV2L251bGwgJiYgcHdkKQppZiBbIC1mICIkU0VMRl9ESVIvLi4vLi4vbGliL2FyaWEyLnNoIiBdOyB0aGVuCiAgLiAiJFNFTEZfRElSLy4uLy4uL2xpYi9hcmlhMi5zaCIKZWxzZQogIGVjaG8gJ3siZXJyb3IiOiJsaWIvYXJpYTIuc2ggbm90IGZvdW5kLCByZWRlcGxveSBuZWVkZWQifScKICBleGl0IDAKZmkKCiMg6YCa55So55qE5Lu75Yqh5a2X5q6144CCYml0dG9ycmVudCDph4zluKYgaW5mby5uYW1l77yI56eN5a2Q6YeM5YaZ55qE5ZCN5a2X77yM5q+U5paH5Lu25ZCN6Z2g6LCx77yJ77ybCiMgZmlsZXMg6YeM55qEIHBhdGgg5b2T5YWc5bqV77ybdG90YWxMZW5ndGgvY29tcGxldGVkTGVuZ3RoIOeUqOadpeeul+i/m+W6puOAggpLRVlTPSdbImdpZCIsInN0YXR1cyIsInRvdGFsTGVuZ3RoIiwiY29tcGxldGVkTGVuZ3RoIiwiZG93bmxvYWRTcGVlZCIsImVycm9yQ29kZSIsImZpbGVzIiwiYml0dG9ycmVudCJdJwoKIyDnrKzkuIDkuKror7fmsYLlhbzkvZzlrZjmtLvmjqLmtYvvvJphcmlhMiDmsqHotbfml7bnq4vliLvov5Tlm57vvIzkuI3lho3or5XlkI7pnaLkuKTkuKrvvIjlkKbliJnopoHnrYnkuInkuKrotoXml7bvvIkKQUNUPSQoYXJpYTJfcnBjICJhcmlhMi50ZWxsQWN0aXZlIiAiWyR7S0VZU31dIikKaWYgWyAteiAiJEFDVCIgXSB8fCAhIGlzX2pzb25fb2JqZWN0ICIkQUNUIjsgdGhlbgogIGlmIFsgLXogIiRNR19DT05GIiBdOyB0aGVuCiAgICBlY2hvICd7ImVycm9yIjoiYXJpYTIgY29uZmlnIG5vdCBmb3VuZCJ9JwogIGVsc2UKICAgIGVjaG8gIntcImVycm9yXCI6XCJhcmlhMiBycGMgbm8gcmVzcG9uc2Ugb24gcG9ydCAke01HX1BPUlR9XCJ9IgogIGZpCiAgZXhpdCAwCmZpCgojIOi/meS4pOS4quWksei0peWwsemZjee6p+aIkOepuuWIl+ihqO+8jOS4jeW9seWTjeaVtOS9k+i/lOWbnu+8iOS4i+i9vei/m+W6pue8uuetieW+hemYn+WIl+S5n+iDveeUqO+8iQpXQUk9JChhcmlhMl9ycGMgImFyaWEyLnRlbGxXYWl0aW5nIiAiWzAsMzAsJHtLRVlTfV0iKQppc19qc29uX29iamVjdCAiJFdBSSIgfHwgV0FJPSd7InJlc3VsdCI6W119JwoKU1RQPSQoYXJpYTJfcnBjICJhcmlhMi50ZWxsU3RvcHBlZCIgIlswLDIwLCR7S0VZU31dIikKaXNfanNvbl9vYmplY3QgIiRTVFAiIHx8IFNUUD0neyJyZXN1bHQiOltdfScKCnByaW50ZiAneyJhY3RpdmUiOiVzLCJ3YWl0aW5nIjolcywic3RvcHBlZCI6JXN9JyAiJEFDVCIgIiRXQUkiICIkU1RQIgpleGl0IDAK
+#!/system/bin/sh
+# CGI: 查 aria2 当前下载情况，供页面底部进度条使用
+# 入参: 无
+# 出参: {"active":{aria2原始响应},"waiting":{...},"stopped":{...}}
+#
+# 为什么原样转发 aria2 的响应而不在这里解析：
+#   sh 里拆嵌套 JSON 只能用 sed，字段一多就脆。前端的 JSON.parse 本来就会解析，
+#   这里只做三件事——补齐 token、拼接成一个合法 JSON、失败时降级成空数组。
+#
+# 字段只取需要的几个，避免大任务的 files 列表把响应撑到几百 KB。
+
+printf 'Content-Type: application/json\r\n'
+printf 'Cache-Control: no-store\r\n'
+printf 'X-Content-Type-Options: nosniff\r\n'
+printf '\r\n'
+
+SELF_DIR=$(cd "$(dirname "$0")" 2>/dev/null && pwd)
+if [ -f "$SELF_DIR/../../lib/aria2.sh" ]; then
+  . "$SELF_DIR/../../lib/aria2.sh"
+else
+  echo '{"error":"lib/aria2.sh not found, redeploy needed"}'
+  exit 0
+fi
+
+# 通用的任务字段。bittorrent 里带 info.name（种子里写的名字，比文件名靠谱）；
+# files 里的 path 当兜底；totalLength/completedLength 用来算进度。
+KEYS='["gid","status","totalLength","completedLength","downloadSpeed","errorCode","files","bittorrent"]'
+
+# 第一个请求兼作存活探测：aria2 没起时立刻返回，不再试后面两个（否则要等三个超时）
+ACT=$(aria2_rpc "aria2.tellActive" "[${KEYS}]")
+if [ -z "$ACT" ] || ! is_json_object "$ACT"; then
+  if [ -z "$MG_CONF" ]; then
+    echo '{"error":"aria2 config not found"}'
+  else
+    echo "{\"error\":\"aria2 rpc no response on port ${MG_PORT}\"}"
+  fi
+  exit 0
+fi
+
+# 这两个失败就降级成空列表，不影响整体返回（下载进度缺等待队列也能用）
+WAI=$(aria2_rpc "aria2.tellWaiting" "[0,30,${KEYS}]")
+is_json_object "$WAI" || WAI='{"result":[]}'
+
+STP=$(aria2_rpc "aria2.tellStopped" "[0,20,${KEYS}]")
+is_json_object "$STP" || STP='{"result":[]}'
+
+printf '{"active":%s,"waiting":%s,"stopped":%s}' "$ACT" "$WAI" "$STP"
+exit 0

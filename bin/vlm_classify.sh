@@ -1,1 +1,106 @@
-IyEvc3lzdGVtL2Jpbi9zaAojIHZsbV9jbGFzc2lmeS5zaCB2OSAtIE1vZGVsQmVzdCDkuLvlipsoTWluaUNQTS1WLTQuNy0zNUItQTNCKSArIOaZuuiwseWFnOW6lQojCiMg5L6b5bqU5ZWG5LyY5YWI57qnOgojICAgMS4gTW9kZWxCZXN0IE1pbmlDUE0tVi00LjctMzVCLUEzQiAgKOacgOS8mOi0qOmHjywg5a6e5rWL5peg6ZmQ5rWBLCB+MXMpCiMgICAyLiBNb2RlbEJlc3QgTWluaUNQTS1WLTQuNy0xQiAgICAgICAo6L276YeP5YWc5bqVKQojICAgMy4g5pm66LCxIGdsbS00LjZ2LWZsYXNoICAgICAgICAgICAgICAo5pyA5ZCO5YWc5bqVLCDnuqYzMyXmiJDlip/njocpCktFWV9NQj0vZGF0YS9hZGIvc3J2L2RhdGEvbW9kZWxiZXN0LmtleQpLRVlfWlA9L2RhdGEvYWRiL3Nydi9kYXRhL3poaXB1LmtleQpBUElfTUI9aHR0cHM6Ly9hcGkubW9kZWxiZXN0LmNuL3YxL2NoYXQvY29tcGxldGlvbnMKQVBJX1pQPWh0dHBzOi8vb3Blbi5iaWdtb2RlbC5jbi9hcGkvcGFhcy92NC9jaGF0L2NvbXBsZXRpb25zCk1BWFNaPTUyNDI4ODAKCkY9IiQxIgpbIC1mICIkRiIgXSB8fCB7IGVjaG8gIm90aGVyfOaWh+S7tuS4jeWtmOWcqCI7IGV4aXQgMTsgfQpTWj0kKHN0YXQgLWMgJXMgIiRGIikKWyAiJFNaIiAtZ3QgIiRNQVhTWiIgXSAmJiB7IGVjaG8gIm90aGVyfOi/h+Wkp+i3s+i/hyI7IGV4aXQgMTsgfQpLTUI9JChjYXQgIiRLRVlfTUIiIDI+L2Rldi9udWxsKQpLWlA9JChjYXQgIiRLRVlfWlAiIDI+L2Rldi9udWxsKQpbIC16ICIkS01CIiBdICYmIFsgLXogIiRLWlAiIF0gJiYgeyBlY2hvICJvdGhlcnzml6Dlj6/nlKhLZXkiOyBleGl0IDE7IH0KCkI2NEY9L2RhdGEvbG9jYWwvdG1wL192OS5iNjQKUkVRRj0vZGF0YS9sb2NhbC90bXAvX3Y5Lmpzb24KYmFzZTY0IC13MCAiJEYiID4gIiRCNjRGIiAyPi9kZXYvbnVsbCB8fCB7IGVjaG8gIm90aGVyfGI2NOWksei0pSI7IGV4aXQgMTsgfQoKIyAtLS0tLS0tLS0tIE1vZGVsQmVzdCDosIPnlKggLS0tLS0tLS0tLQptYl9jYWxsKCkgewogIE09IiQxIjsgUD0iJDIiOyBNVD0iJDMiCiAgewogICAgcHJpbnRmICd7Im1vZGVsIjoiJXMiLCJtYXhfdG9rZW5zIjolcywidGVtcGVyYXR1cmUiOjAsIm1lc3NhZ2VzIjpbeyJyb2xlIjoidXNlciIsImNvbnRlbnQiOlt7InR5cGUiOiJpbWFnZV91cmwiLCJpbWFnZV91cmwiOnsidXJsIjoiZGF0YTppbWFnZS9qcGVnO2Jhc2U2NCwnICIkTSIgIiRNVCIKICAgIGNhdCAiJEI2NEYiCiAgICBwcmludGYgJyJ9fSx7InR5cGUiOiJ0ZXh0IiwidGV4dCI6IiVzIn1dfV19JyAiJFAiCiAgfSA+ICIkUkVRRiIKICBjdXJsIC1zIC1tIDQ1IC1YIFBPU1QgIiRBUElfTUIiIC1IICJBdXRob3JpemF0aW9uOiBCZWFyZXIgJEtNQiIgXAogICAgLUggIkNvbnRlbnQtVHlwZTogYXBwbGljYXRpb24vanNvbiIgLS1kYXRhLWJpbmFyeSBAIiRSRVFGIiAyPi9kZXYvbnVsbAp9CgojIC0tLS0tLS0tLS0g5pm66LCx6LCD55SoIC0tLS0tLS0tLS0KenBfY2FsbCgpIHsKICBQPSIkMSI7IE1UPSIkMiIKICB7CiAgICBwcmludGYgJ3sibW9kZWwiOiJnbG0tNC42di1mbGFzaCIsInRoaW5raW5nIjp7InR5cGUiOiJkaXNhYmxlZCJ9LCJtYXhfdG9rZW5zIjolcywidGVtcGVyYXR1cmUiOjAsIm1lc3NhZ2VzIjpbeyJyb2xlIjoidXNlciIsImNvbnRlbnQiOlt7InR5cGUiOiJpbWFnZV91cmwiLCJpbWFnZV91cmwiOnsidXJsIjoiJyAiJE1UIgogICAgY2F0ICIkQjY0RiIKICAgIHByaW50ZiAnIn19LHsidHlwZSI6InRleHQiLCJ0ZXh0IjoiJXMifV19XX0nICIkUCIKICB9ID4gIiRSRVFGIgogIGN1cmwgLXMgLW0gNDUgLVggUE9TVCAiJEFQSV9aUCIgLUggIkF1dGhvcml6YXRpb246IEJlYXJlciAkS1pQIiBcCiAgICAtSCAiQ29udGVudC1UeXBlOiBhcHBsaWNhdGlvbi9qc29uIiAtLWRhdGEtYmluYXJ5IEAiJFJFUUYiIDI+L2Rldi9udWxsCn0KCmdldF9jKCkgeyBlY2hvICIkMSIgfCBzZWQgLW4gJ3MvLioiY29udGVudCI6IlwoW14iXSpcKSIuKi9cMS9wJyB8IGhlYWQgLTE7IH0KCiMgPT09PT09PT09PT09IOexu+WIq+WIpOWumiA9PT09PT09PT09PT0KUFJPTVBUX0NBVD0i5Yik5pat6L+Z5byg54Wn54mH5bGe5LqO5ZOq5LiA57G744CC5Y+q6L6T5Ye65LiA5Liq5aSn5YaZ5a2X5q+N77yM5LiN6KaB5Lu75L2V5YW25LuW5YaF5a65OiBBPeW3peWcsOaWveW3pSBCPeWutuW6reeUn+a0uyBDPeaJi+acuuaIquWbviBEPeWFtuS7liIKQ0FUX0w9IiIKCiMgMSkgTW9kZWxCZXN0IDQuNy0zNUIKaWYgWyAtbiAiJEtNQiIgXTsgdGhlbgogIFI9JChtYl9jYWxsICJNaW5pQ1BNLVYtNC43LTM1Qi1BM0IiICIkUFJPTVBUX0NBVCIgNSkKICBDPSQoZ2V0X2MgIiRSIik7IFsgLW4gIiRDIiBdICYmIENBVF9MPSQoZWNobyAiJEMiIHwgdHIgLWQgJyBcclxuXHQnIHwgY3V0IC1jMSB8IHRyICdhLXonICdBLVonKQpmaQojIDIpIE1vZGVsQmVzdCA0LjctMUIKaWYgWyAteiAiJENBVF9MIiBdICYmIFsgLW4gIiRLTUIiIF07IHRoZW4KICBSPSQobWJfY2FsbCAiTWluaUNQTS1WLTQuNy0xQiIgIiRQUk9NUFRfQ0FUIiA1KQogIEM9JChnZXRfYyAiJFIiKTsgWyAtbiAiJEMiIF0gJiYgQ0FUX0w9JChlY2hvICIkQyIgfCB0ciAtZCAnIFxyXG5cdCcgfCBjdXQgLWMxIHwgdHIgJ2EteicgJ0EtWicpCmZpCiMgMykg5pm66LCxKOmHjeivlTLmrKEpCmlmIFsgLXogIiRDQVRfTCIgXSAmJiBbIC1uICIkS1pQIiBdOyB0aGVuCiAgZm9yIGkgaW4gMSAyOyBkbwogICAgUj0kKHpwX2NhbGwgIiRQUk9NUFRfQ0FUIiA1KQogICAgQz0kKGdldF9jICIkUiIpOyBpZiBbIC1uICIkQyIgXTsgdGhlbiBDQVRfTD0kKGVjaG8gIiRDIiB8IHRyIC1kICcgXHJcblx0JyB8IGN1dCAtYzEgfCB0ciAnYS16JyAnQS1aJyk7IGJyZWFrOyBmaQogICAgc2xlZXAgMgogIGRvbmUKZmkKCiMgPT09PT09PT09PT09IOaPj+i/sCA9PT09PT09PT09PT0KUFJPTVBUX0RFU0M9IueUqDE15a2X5Lul5YaF5Lit5paH5o+P6L+w6L+Z5byg54Wn54mH55qE55S76Z2i5YaF5a6544CC5Y+q6L6T5Ye65o+P6L+w5pys6Lqr44CCIgpERVNDPSIiCmlmIFsgLW4gIiRLTUIiIF07IHRoZW4KICBSPSQobWJfY2FsbCAiTWluaUNQTS1WLTQuNy0zNUItQTNCIiAiJFBST01QVF9ERVNDIiA0MCkKICBERVNDPSQoZ2V0X2MgIiRSIikKZmkKaWYgWyAteiAiJERFU0MiIF0gJiYgWyAtbiAiJEtNQiIgXTsgdGhlbgogIFI9JChtYl9jYWxsICJNaW5pQ1BNLVYtNC43LTFCIiAiJFBST01QVF9ERVNDIiA0MCkKICBERVNDPSQoZ2V0X2MgIiRSIikKZmkKaWYgWyAteiAiJERFU0MiIF0gJiYgWyAtbiAiJEtaUCIgXTsgdGhlbgogIFI9JCh6cF9jYWxsICIkUFJPTVBUX0RFU0MiIDQwKQogIERFU0M9JChnZXRfYyAiJFIiKQpmaQoKcm0gLWYgIiRCNjRGIiAiJFJFUUYiClsgLXogIiRDQVRfTCIgXSAmJiB7IGVjaG8gIm90aGVyfOexu+WIq+ivhuWIq+Wksei0pSI7IGV4aXQgMTsgfQoKQ0FUPSJvdGhlciIKY2FzZSAiJENBVF9MIiBpbgogIEEpIENBVD0id29yayIgOzsKICBCKSBDQVQ9ImhvbWUiIDs7CiAgQykgQ0FUPSJzY3JlZW5zaG90IiA7OwogIEQpIENBVD0ib3RoZXIiIDs7CmVzYWMKCkRFU0M9JChlY2hvICIkREVTQyIgfCBzZWQgJ3MvLio8XC90aGluaz4vLzsgcy88W14+XSo+Ly9nJyB8IHRyICdcblxyJyAnICAnIHwgdHIgLXMgJyAnIHwgY3V0IC1jMS00MCkKWyAteiAiJERFU0MiIF0gJiYgREVTQz0iKOaXoOaPj+i/sCkiCgplY2hvICIkQ0FUfCRERVNDIgpleGl0IDAK
+#!/system/bin/sh
+# vlm_classify.sh v9 - ModelBest 主力(MiniCPM-V-4.7-35B-A3B) + 智谱兜底
+#
+# 供应商优先级:
+#   1. ModelBest MiniCPM-V-4.7-35B-A3B  (最优质量, 实测无限流, ~1s)
+#   2. ModelBest MiniCPM-V-4.7-1B       (轻量兜底)
+#   3. 智谱 glm-4.6v-flash              (最后兜底, 约33%成功率)
+KEY_MB=/data/adb/srv/data/modelbest.key
+KEY_ZP=/data/adb/srv/data/zhipu.key
+API_MB=https://api.modelbest.cn/v1/chat/completions
+API_ZP=https://open.bigmodel.cn/api/paas/v4/chat/completions
+MAXSZ=5242880
+
+F="$1"
+[ -f "$F" ] || { echo "other|文件不存在"; exit 1; }
+SZ=$(stat -c %s "$F")
+[ "$SZ" -gt "$MAXSZ" ] && { echo "other|过大跳过"; exit 1; }
+KMB=$(cat "$KEY_MB" 2>/dev/null)
+KZP=$(cat "$KEY_ZP" 2>/dev/null)
+[ -z "$KMB" ] && [ -z "$KZP" ] && { echo "other|无可用Key"; exit 1; }
+
+B64F=/data/local/tmp/_v9.b64
+REQF=/data/local/tmp/_v9.json
+base64 -w0 "$F" > "$B64F" 2>/dev/null || { echo "other|b64失败"; exit 1; }
+
+# ---------- ModelBest 调用 ----------
+mb_call() {
+  M="$1"; P="$2"; MT="$3"
+  {
+    printf '{"model":"%s","max_tokens":%s,"temperature":0,"messages":[{"role":"user","content":[{"type":"image_url","image_url":{"url":"data:image/jpeg;base64,' "$M" "$MT"
+    cat "$B64F"
+    printf '"}},{"type":"text","text":"%s"}]}]}' "$P"
+  } > "$REQF"
+  curl -s -m 45 -X POST "$API_MB" -H "Authorization: Bearer $KMB" \
+    -H "Content-Type: application/json" --data-binary @"$REQF" 2>/dev/null
+}
+
+# ---------- 智谱调用 ----------
+zp_call() {
+  P="$1"; MT="$2"
+  {
+    printf '{"model":"glm-4.6v-flash","thinking":{"type":"disabled"},"max_tokens":%s,"temperature":0,"messages":[{"role":"user","content":[{"type":"image_url","image_url":{"url":"' "$MT"
+    cat "$B64F"
+    printf '"}},{"type":"text","text":"%s"}]}]}' "$P"
+  } > "$REQF"
+  curl -s -m 45 -X POST "$API_ZP" -H "Authorization: Bearer $KZP" \
+    -H "Content-Type: application/json" --data-binary @"$REQF" 2>/dev/null
+}
+
+get_c() { echo "$1" | sed -n 's/.*"content":"\([^"]*\)".*/\1/p' | head -1; }
+
+# ============ 类别判定 ============
+PROMPT_CAT="判断这张照片属于哪一类。只输出一个大写字母，不要任何其他内容: A=工地施工 B=家庭生活 C=手机截图 D=其他"
+CAT_L=""
+
+# 1) ModelBest 4.7-35B
+if [ -n "$KMB" ]; then
+  R=$(mb_call "MiniCPM-V-4.7-35B-A3B" "$PROMPT_CAT" 5)
+  C=$(get_c "$R"); [ -n "$C" ] && CAT_L=$(echo "$C" | tr -d ' \r\n\t' | cut -c1 | tr 'a-z' 'A-Z')
+fi
+# 2) ModelBest 4.7-1B
+if [ -z "$CAT_L" ] && [ -n "$KMB" ]; then
+  R=$(mb_call "MiniCPM-V-4.7-1B" "$PROMPT_CAT" 5)
+  C=$(get_c "$R"); [ -n "$C" ] && CAT_L=$(echo "$C" | tr -d ' \r\n\t' | cut -c1 | tr 'a-z' 'A-Z')
+fi
+# 3) 智谱(重试2次)
+if [ -z "$CAT_L" ] && [ -n "$KZP" ]; then
+  for i in 1 2; do
+    R=$(zp_call "$PROMPT_CAT" 5)
+    C=$(get_c "$R"); if [ -n "$C" ]; then CAT_L=$(echo "$C" | tr -d ' \r\n\t' | cut -c1 | tr 'a-z' 'A-Z'); break; fi
+    sleep 2
+  done
+fi
+
+# ============ 描述 ============
+PROMPT_DESC="用15字以内中文描述这张照片的画面内容。只输出描述本身。"
+DESC=""
+if [ -n "$KMB" ]; then
+  R=$(mb_call "MiniCPM-V-4.7-35B-A3B" "$PROMPT_DESC" 40)
+  DESC=$(get_c "$R")
+fi
+if [ -z "$DESC" ] && [ -n "$KMB" ]; then
+  R=$(mb_call "MiniCPM-V-4.7-1B" "$PROMPT_DESC" 40)
+  DESC=$(get_c "$R")
+fi
+if [ -z "$DESC" ] && [ -n "$KZP" ]; then
+  R=$(zp_call "$PROMPT_DESC" 40)
+  DESC=$(get_c "$R")
+fi
+
+rm -f "$B64F" "$REQF"
+[ -z "$CAT_L" ] && { echo "other|类别识别失败"; exit 1; }
+
+CAT="other"
+case "$CAT_L" in
+  A) CAT="work" ;;
+  B) CAT="home" ;;
+  C) CAT="screenshot" ;;
+  D) CAT="other" ;;
+esac
+
+DESC=$(echo "$DESC" | sed 's/.*<\/think>//; s/<[^>]*>//g' | tr '\n\r' '  ' | tr -s ' ' | cut -c1-40)
+[ -z "$DESC" ] && DESC="(无描述)"
+
+echo "$CAT|$DESC"
+exit 0

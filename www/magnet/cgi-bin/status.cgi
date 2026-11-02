@@ -1,1 +1,134 @@
-IyEvc3lzdGVtL2Jpbi9zaAojIENHSTog5o6i5rWL5LiJ5Liq5rqQ56uZ55qE6L+e6YCa54q25oCB77yM5L6b6aG16Z2i54q25oCB5p2h5L2/55SoCiMg5Ye65Y+COiB7ImJ0c293Ijp7Im9rIjpib29sLCJjb2RlIjoiMjAwfHRpbWVvdXR8Li4uIn0sInRwYiI6ey4uLn0sInl0cyI6ey4uLn0sInQiOuaXtumXtOaIs30KIwojIOivreS5ieW+iOmHjeimge+8mueKtuaAgeeCueihqOi+vueahOaYr+OAjOeUqOaIt+atpOWIu+iDveS4jeiDveS7jui/meS4gOa6kOaQnOWIsOe7k+aenOOAje+8jAojIOS4jeaYr+OAjOS7o+eQhui/meadoei3r+mAmuS4jemAmuOAjeOAguaJgOS7peS7o+eQhuW8gOedgOaXtu+8jGFwaWJheSAvIFlUUyDkvJrlkIzml7bmjqLku6PnkIblkowKIyDnm7Tov57kuKTmnaHot6/vvIzku7vkuIAgMjAwIOWwseeul+mAmuKAlOKAlOWQpuWImeS8muWHuueOsOOAjOeCueaYvuekuue6oueahOOAgeS9huWFtuWunuaQnOW+l+WIsOOAjeeahAojIOiHquebuOefm+ebvu+8iOWunua1i+i4qei/h++8muiKgueCueatu+WFieaXtuaQnOe0ouiHquWKqOmAgOWbnuebtOi/nuiDveWHuue7k+aenO+8jOeKtuaAgeeCueWNtOaKpee6ou+8ieOAggojIGJ0c293IOawuOi/nOebtOi/nu+8jOWboOS4uiBidHNvdy5jZ2kg5pys6Lqr5bCx5LiN5rOo5YWl5Luj55CG44CCCiMKIyDkuInkuKrmupDlubbooYzmjqLmtYvvvIzljZXkuKogNSDnp5LotoXml7bvvIzmlbTkvZPnuqYgNX42IOenku+8iOWJjeerr+etiSAxMCDnp5LvvInjgIIKIyA1IOenkuS4jeW6lOetlOWwseW9kyLmnKrnn6Ui77yI54Gw54K577yJ77yaYXBpYmF5IOWunua1i+e7j+W4uCAyOCDnp5Lku6XkuIrkuI3ov5Tlm57vvIwKIyDnrYnmm7TkuYXlj6rkvJrpobbliLDliY3nq6/kuIrpmZDjgIHnirbmgIHlj43ogIzmm7Tlt67jgIIKCnByaW50ZiAnQ29udGVudC1UeXBlOiBhcHBsaWNhdGlvbi9qc29uXHJcbicKcHJpbnRmICdDYWNoZS1Db250cm9sOiBuby1zdG9yZVxyXG4nCnByaW50ZiAnWC1Db250ZW50LVR5cGUtT3B0aW9uczogbm9zbmlmZlxyXG4nCnByaW50ZiAnXHJcbicKCkNVUkw9JChjb21tYW5kIC12IGN1cmwgMj4vZGV2L251bGwpClsgLXogIiRDVVJMIiBdICYmIENVUkw9L3N5c3RlbS9iaW4vY3VybAoKIyDku6PnkIbmhJ/nn6XlupPvvJrlhrPlrpogJFBST1hZX09QVCDmmK/lkKbmnInlgLzvvIjlvIDlhbMgb24gKyDphY3nva7mnInnnJ/lrp7oioLngrnmiY3ms6jlhaXvvIkKZm9yIF9sIGluIC9kYXRhL2FkYi9zcnYvbWFnbmV0L3Byb3h5LWxpYi5zaCAvZGF0YS9hZGIvbWFnbmV0L3Byb3h5LWxpYi5zaDsgZG8KICBbIC1mICIkX2wiIF0gJiYgeyAuICIkX2wiOyBicmVhazsgfQpkb25lCgpVQT0nTW96aWxsYS81LjAgKExpbnV4OyBBbmRyb2lkIDEzOyA8REVWSUNFX01PREVMPikgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEyMC4wIE1vYmlsZSBTYWZhcmkvNTM3LjM2JwoKQlRTT1dfVVJMPSdodHRwczovL2J0c293LmxpdmUvYnRzL2RhdGEvYXBpL3NlYXJjaCcKIyDkuI3opoHluKYgY2F0PTDvvJphcGliYXkg5oqK5a6D5b2T55yf5a6e5YiG57G777yM5Lya56iz5a6a6L+U5Zue5Y2g5L2N6K6w5b2V77yI6KeBIHNlYXJjaC5jZ2nvvIkKVFBCX1VSTD0naHR0cHM6Ly9hcGliYXkub3JnL3EucGhwP3E9aW5jZXB0aW9uJwpZVFNfVVJMPSdodHRwczovL3l0cy5nZy9hcGkvdjIvbGlzdF9tb3ZpZXMuanNvbj9xdWVyeV90ZXJtPWluY2VwdGlvbiZsaW1pdD0xJwojIE55YWEg5Y+q5Zyo5Luj55CG5LiL5Y+v55So77yI55u06L+e5a6e5rWLIDEyIOenkui2heaXtu+8ie+8jOaJgOS7peWug+WPquaOouS7o+eQhumCo+adoei3r++8mwojIOS7o+eQhuayoeW8gOaXtuWug+W/heeEtuaYr+eBsOeahO+8jOi/meaYr+S6i+Wunu+8jOS4jeivpeiwjuaKpee7v+eCueOAggpOWUFBX1VSTD0naHR0cHM6Ly9ueWFhLnNpLz9xPW5hcnV0byZjPTBfMCZmPTAnCiMgVG9ycmVudEtpdHR5IOWQjOagt+WPquWcqOS7o+eQhuS4i+WPr+eUqO+8jOWPquaOouS7o+eQhgpUS19VUkw9J2h0dHBzOi8vd3d3LnRvcnJlbnRraXR0eS50di9zZWFyY2gvdWJ1bnR1LycKCiMg5om+5LiA5Liq5Y+v5YaZ55qE5Li05pe255uu5b2V55So5LqO5pS26ZuG5bm26KGM57uT5p6cClRNUD0iIgpmb3IgZCBpbiAiJFRNUERJUiIgL2RhdGEvbG9jYWwvdG1wIC9jYWNoZSAvdG1wOyBkbwogIGlmIFsgLW4gIiRkIiBdICYmIFsgLWQgIiRkIiBdICYmIFsgLXcgIiRkIiBdOyB0aGVuCiAgICBUTVA9IiRkIgogICAgYnJlYWsKICBmaQpkb25lCgpidHNvd19jb2RlPSIiCnRwYl9jb2RlPSIiCnl0c19jb2RlPSIiCgppZiBbIC1uICIkVE1QIiBdOyB0aGVuCiAgQj0iJFRNUC8ubWFncGllX3N0XyQkIgoKICAjIGJ0c29377ya5Y+q5o6i55u06L+e77yI5LiOIGJ0c293LmNnaSDnmoTlrp7pmYXooYzkuLrkuIDoh7TvvIkKICAiJENVUkwiIC1zIC1vIC9kZXYvbnVsbCAtdyAnJXtodHRwX2NvZGV9JyAtLW1heC10aW1lIDUgLUEgIiRVQSIgLVggUE9TVCBcCiAgICAtSCAnQ29udGVudC1UeXBlOiBhcHBsaWNhdGlvbi9qc29uJyAtSCAnUmVmZXJlcjogaHR0cHM6Ly9idHNvdy5saXZlLycgXAogICAgLWQgJ1t7InNlYXJjaCI6ImluY2VwdGlvbiJ9LDEsMV0nICIkQlRTT1dfVVJMIiA+ICIkQi4xIiAyPi9kZXYvbnVsbCAmCgogIGlmIFsgLW4gIiRQUk9YWV9PUFQiIF07IHRoZW4KICAgICMg5Luj55CG5byA552A77ya5Lik5p2h6Lev6YO95o6i77yILjJwLy4zcCDotbDku6PnkIbvvIwuMmQvLjNkIOebtOi/nu+8iQogICAgIiRDVVJMIiAkUFJPWFlfT1BUIC1zIC1vIC9kZXYvbnVsbCAtdyAnJXtodHRwX2NvZGV9JyAtLW1heC10aW1lIDUgLUEgIiRVQSIgXAogICAgICAiJFRQQl9VUkwiID4gIiRCLjJwIiAyPi9kZXYvbnVsbCAmCiAgICAiJENVUkwiIC1zIC1vIC9kZXYvbnVsbCAtdyAnJXtodHRwX2NvZGV9JyAtLW1heC10aW1lIDUgLUEgIiRVQSIgXAogICAgICAiJFRQQl9VUkwiID4gIiRCLjJkIiAyPi9kZXYvbnVsbCAmCiAgICAiJENVUkwiICRQUk9YWV9PUFQgLXNMIC1vIC9kZXYvbnVsbCAtdyAnJXtodHRwX2NvZGV9JyAtLW1heC10aW1lIDUgLUEgIiRVQSIgXAogICAgICAiJFlUU19VUkwiID4gIiRCLjNwIiAyPi9kZXYvbnVsbCAmCiAgICAiJENVUkwiIC1zTCAtbyAvZGV2L251bGwgLXcgJyV7aHR0cF9jb2RlfScgLS1tYXgtdGltZSA1IC1BICIkVUEiIFwKICAgICAgIiRZVFNfVVJMIiA+ICIkQi4zZCIgMj4vZGV2L251bGwgJgogICAgIyBOeWFhIOWPquaOouS7o+eQhu+8muWug+ebtOi/nuW/heatu++8jOaOouebtOi/nuWPquS8mueZveetiSA1IOenkgogICAgIiRDVVJMIiAkUFJPWFlfT1BUIC1zTCAtbyAvZGV2L251bGwgLXcgJyV7aHR0cF9jb2RlfScgLS1tYXgtdGltZSA2IC1BICIkVUEiIFwKICAgICAgIiROWUFBX1VSTCIgPiAiJEIuNCIgMj4vZGV2L251bGwgJgogICAgIiRDVVJMIiAkUFJPWFlfT1BUIC1zTCAtbyAvZGV2L251bGwgLXcgJyV7aHR0cF9jb2RlfScgLS1tYXgtdGltZSA2IC1BICIkVUEiIFwKICAgICAgIiRUS19VUkwiID4gIiRCLjUiIDI+L2Rldi9udWxsICYKICBlbHNlCiAgICAiJENVUkwiIC1zIC1vIC9kZXYvbnVsbCAtdyAnJXtodHRwX2NvZGV9JyAtLW1heC10aW1lIDUgLUEgIiRVQSIgXAogICAgICAiJFRQQl9VUkwiID4gIiRCLjJkIiAyPi9kZXYvbnVsbCAmCiAgICAiJENVUkwiIC1zTCAtbyAvZGV2L251bGwgLXcgJyV7aHR0cF9jb2RlfScgLS1tYXgtdGltZSA1IC1BICIkVUEiIFwKICAgICAgIiRZVFNfVVJMIiA+ICIkQi4zZCIgMj4vZGV2L251bGwgJgogICAgIyDku6PnkIbmsqHlvIDvvJpOeWFhIC8gVEsg55u05o6l5qCH54Gw77yM5LiN5Y675o6i77yI5o6i5LqG5Lmf5pivIDEyIOenkui2heaXtu+8jOeZveWNoCA1IOenkumihOeul++8iQogICAgZWNobyAiMDAwIiA+ICIkQi40IiAyPi9kZXYvbnVsbCAmCiAgICBlY2hvICIwMDAiID4gIiRCLjUiIDI+L2Rldi9udWxsICYKICBmaQoKICB3YWl0CgogIGJ0c293X2NvZGU9JChjYXQgIiRCLjEiIDI+L2Rldi9udWxsKQogIHRwYl9jb2RlPSQoY2F0ICIkQi4yZCIgMj4vZGV2L251bGwpCiAgeXRzX2NvZGU9JChjYXQgIiRCLjNkIiAyPi9kZXYvbnVsbCkKICBueWFhX2NvZGU9JChjYXQgIiRCLjQiIDI+L2Rldi9udWxsKQogIHRraXR0eV9jb2RlPSQoY2F0ICIkQi41IiAyPi9kZXYvbnVsbCkKICAjIOS7o+eQhumCo+adoei3r+WPquimgeS5n+aLv+WIsCAyMDDvvIzlsLHopobnm5bmiJAgMjAw77yI5Lu75LiA6YCa5Y2z566X6YCa77yJCiAgaWYgWyAtbiAiJFBST1hZX09QVCIgXTsgdGhlbgogICAgWyAiJChjYXQgIiRCLjJwIiAyPi9kZXYvbnVsbCkiID0gIjIwMCIgXSAmJiB0cGJfY29kZT0yMDAKICAgIFsgIiQoY2F0ICIkQi4zcCIgMj4vZGV2L251bGwpIiA9ICIyMDAiIF0gJiYgeXRzX2NvZGU9MjAwCiAgZmkKICBybSAtZiAiJEIuMSIgIiRCLjJwIiAiJEIuMmQiICIkQi4zcCIgIiRCLjNkIiAiJEIuNCIgIiRCLjUiCmVsc2UKICAjIOayoeacieWPr+WGmeS4tOaXtuebruW9leaXtumAgOWbnuS4suihjO+8jOi2heaXtuaUtuefreS7peaOp+WItuaAu+aXtumVvwogIGJ0c293X2NvZGU9JCgiJENVUkwiIC1zIC1vIC9kZXYvbnVsbCAtdyAnJXtodHRwX2NvZGV9JyAtLW1heC10aW1lIDMgLUEgIiRVQSIgLVggUE9TVCBcCiAgICAtSCAnQ29udGVudC1UeXBlOiBhcHBsaWNhdGlvbi9qc29uJyAtSCAnUmVmZXJlcjogaHR0cHM6Ly9idHNvdy5saXZlLycgXAogICAgLWQgJ1t7InNlYXJjaCI6ImluY2VwdGlvbiJ9LDEsMV0nICIkQlRTT1dfVVJMIiAyPi9kZXYvbnVsbCkKICB0cGJfY29kZT0kKCIkQ1VSTCIgJFBST1hZX09QVCAtcyAtbyAvZGV2L251bGwgLXcgJyV7aHR0cF9jb2RlfScgLS1tYXgtdGltZSAzIC1BICIkVUEiIFwKICAgICIkVFBCX1VSTCIgMj4vZGV2L251bGwpCiAgeXRzX2NvZGU9JCgiJENVUkwiICRQUk9YWV9PUFQgLXNMIC1vIC9kZXYvbnVsbCAtdyAnJXtodHRwX2NvZGV9JyAtLW1heC10aW1lIDMgLUEgIiRVQSIgXAogICAgIiRZVFNfVVJMIiAyPi9kZXYvbnVsbCkKICBueWFhX2NvZGU9JCgiJENVUkwiICRQUk9YWV9PUFQgLXNMIC1vIC9kZXYvbnVsbCAtdyAnJXtodHRwX2NvZGV9JyAtLW1heC10aW1lIDMgLUEgIiRVQSIgXAogICAgIiROWUFBX1VSTCIgMj4vZGV2L251bGwpCiAgdGtpdHR5X2NvZGU9JCgiJENVUkwiICRQUk9YWV9PUFQgLXNMIC1vIC9kZXYvbnVsbCAtdyAnJXtodHRwX2NvZGV9JyAtLW1heC10aW1lIDMgLUEgIiRVQSIgXAogICAgIiRUS19VUkwiIDI+L2Rldi9udWxsKQpmaQoKYnRzb3dfb2s9J2ZhbHNlJwp0cGJfb2s9J2ZhbHNlJwp5dHNfb2s9J2ZhbHNlJwpueWFhX29rPSdmYWxzZScKdGtpdHR5X29rPSdmYWxzZScKWyAiJGJ0c293X2NvZGUiID0gIjIwMCIgXSAmJiBidHNvd19vaz0ndHJ1ZScKWyAiJHRwYl9jb2RlIiA9ICIyMDAiIF0gJiYgdHBiX29rPSd0cnVlJwpbICIkeXRzX2NvZGUiID0gIjIwMCIgXSAmJiB5dHNfb2s9J3RydWUnClsgIiRueWFhX2NvZGUiID0gIjIwMCIgXSAmJiBueWFhX29rPSd0cnVlJwpbICIkdGtpdHR5X2NvZGUiID0gIjIwMCIgXSAmJiB0a2l0dHlfb2s9J3RydWUnCgojIGN1cmwg6L+e5LiN5LiKL+i2heaXtumDveS8mui+k+WHuiAiMDAwIu+8jOe7n+S4gOaIkCB0aW1lb3V077yM5YmN56uv5omN6IO95b2T5oiQIuacquefpSLmmL7npLrngbDngrnjgIIKIyDlkKbliJkgMDAwIOS8mui1sOWIsOmdniAyMDAg5YiG5pSv6KKr5qCH5oiQ57qi54K577yM5a6e5rWLIGFwaWJheSDmhaLnmoTml7blgJnlv4XnjrDor6/miqXjgIIKWyAiJGJ0c293X2NvZGUiID0gIjAwMCIgXSAmJiBidHNvd19jb2RlPScnClsgIiR0cGJfY29kZSIgPSAiMDAwIiBdICYmIHRwYl9jb2RlPScnClsgIiR5dHNfY29kZSIgPSAiMDAwIiBdICYmIHl0c19jb2RlPScnClsgIiRueWFhX2NvZGUiID0gIjAwMCIgXSAmJiBueWFhX2NvZGU9JycKWyAiJHRraXR0eV9jb2RlIiA9ICIwMDAiIF0gJiYgdGtpdHR5X2NvZGU9JycKCmVjaG8gIntcImJ0c293XCI6e1wib2tcIjokYnRzb3dfb2ssXCJjb2RlXCI6XCIke2J0c293X2NvZGU6LXRpbWVvdXR9XCJ9LFwidHBiXCI6e1wib2tcIjokdHBiX29rLFwiY29kZVwiOlwiJHt0cGJfY29kZTotdGltZW91dH1cIn0sXCJ5dHNcIjp7XCJva1wiOiR5dHNfb2ssXCJjb2RlXCI6XCIke3l0c19jb2RlOi10aW1lb3V0fVwifSxcIm55YWFcIjp7XCJva1wiOiRueWFhX29rLFwiY29kZVwiOlwiJHtueWFhX2NvZGU6LXRpbWVvdXR9XCJ9LFwidGtpdHR5XCI6e1wib2tcIjokdGtpdHR5X29rLFwiY29kZVwiOlwiJHt0a2l0dHlfY29kZTotdGltZW91dH1cIn0sXCJ0XCI6JChkYXRlICslcyl9IgpleGl0IDAK
+#!/system/bin/sh
+# CGI: 探测三个源站的连通状态，供页面状态条使用
+# 出参: {"btsow":{"ok":bool,"code":"200|timeout|..."},"tpb":{...},"yts":{...},"t":时间戳}
+#
+# 语义很重要：状态点表达的是「用户此刻能不能从这一源搜到结果」，
+# 不是「代理这条路通不通」。所以代理开着时，apibay / YTS 会同时探代理和
+# 直连两条路，任一 200 就算通——否则会出现「点显示红的、但其实搜得到」的
+# 自相矛盾（实测踩过：节点死光时搜索自动退回直连能出结果，状态点却报红）。
+# btsow 永远直连，因为 btsow.cgi 本身就不注入代理。
+#
+# 三个源并行探测，单个 5 秒超时，整体约 5~6 秒（前端等 10 秒）。
+# 5 秒不应答就当"未知"（灰点）：apibay 实测经常 28 秒以上不返回，
+# 等更久只会顶到前端上限、状态反而更差。
+
+printf 'Content-Type: application/json\r\n'
+printf 'Cache-Control: no-store\r\n'
+printf 'X-Content-Type-Options: nosniff\r\n'
+printf '\r\n'
+
+CURL=$(command -v curl 2>/dev/null)
+[ -z "$CURL" ] && CURL=/system/bin/curl
+
+# 代理感知库：决定 $PROXY_OPT 是否有值（开关 on + 配置有真实节点才注入）
+for _l in /data/adb/srv/magnet/proxy-lib.sh /data/adb/magnet/proxy-lib.sh; do
+  [ -f "$_l" ] && { . "$_l"; break; }
+done
+
+UA='Mozilla/5.0 (Linux; Android 13; <DEVICE_MODEL>) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Mobile Safari/537.36'
+
+BTSOW_URL='https://btsow.live/bts/data/api/search'
+# 不要带 cat=0：apibay 把它当真实分类，会稳定返回占位记录（见 search.cgi）
+TPB_URL='https://apibay.org/q.php?q=inception'
+YTS_URL='https://yts.gg/api/v2/list_movies.json?query_term=inception&limit=1'
+# Nyaa 只在代理下可用（直连实测 12 秒超时），所以它只探代理那条路；
+# 代理没开时它必然是灰的，这是事实，不该谎报绿点。
+NYAA_URL='https://nyaa.si/?q=naruto&c=0_0&f=0'
+# TorrentKitty 同样只在代理下可用，只探代理
+TK_URL='https://www.torrentkitty.tv/search/ubuntu/'
+
+# 找一个可写的临时目录用于收集并行结果
+TMP=""
+for d in "$TMPDIR" /data/local/tmp /cache /tmp; do
+  if [ -n "$d" ] && [ -d "$d" ] && [ -w "$d" ]; then
+    TMP="$d"
+    break
+  fi
+done
+
+btsow_code=""
+tpb_code=""
+yts_code=""
+
+if [ -n "$TMP" ]; then
+  B="$TMP/.magpie_st_$$"
+
+  # btsow：只探直连（与 btsow.cgi 的实际行为一致）
+  "$CURL" -s -o /dev/null -w '%{http_code}' --max-time 5 -A "$UA" -X POST \
+    -H 'Content-Type: application/json' -H 'Referer: https://btsow.live/' \
+    -d '[{"search":"inception"},1,1]' "$BTSOW_URL" > "$B.1" 2>/dev/null &
+
+  if [ -n "$PROXY_OPT" ]; then
+    # 代理开着：两条路都探（.2p/.3p 走代理，.2d/.3d 直连）
+    "$CURL" $PROXY_OPT -s -o /dev/null -w '%{http_code}' --max-time 5 -A "$UA" \
+      "$TPB_URL" > "$B.2p" 2>/dev/null &
+    "$CURL" -s -o /dev/null -w '%{http_code}' --max-time 5 -A "$UA" \
+      "$TPB_URL" > "$B.2d" 2>/dev/null &
+    "$CURL" $PROXY_OPT -sL -o /dev/null -w '%{http_code}' --max-time 5 -A "$UA" \
+      "$YTS_URL" > "$B.3p" 2>/dev/null &
+    "$CURL" -sL -o /dev/null -w '%{http_code}' --max-time 5 -A "$UA" \
+      "$YTS_URL" > "$B.3d" 2>/dev/null &
+    # Nyaa 只探代理：它直连必死，探直连只会白等 5 秒
+    "$CURL" $PROXY_OPT -sL -o /dev/null -w '%{http_code}' --max-time 6 -A "$UA" \
+      "$NYAA_URL" > "$B.4" 2>/dev/null &
+    "$CURL" $PROXY_OPT -sL -o /dev/null -w '%{http_code}' --max-time 6 -A "$UA" \
+      "$TK_URL" > "$B.5" 2>/dev/null &
+  else
+    "$CURL" -s -o /dev/null -w '%{http_code}' --max-time 5 -A "$UA" \
+      "$TPB_URL" > "$B.2d" 2>/dev/null &
+    "$CURL" -sL -o /dev/null -w '%{http_code}' --max-time 5 -A "$UA" \
+      "$YTS_URL" > "$B.3d" 2>/dev/null &
+    # 代理没开：Nyaa / TK 直接标灰，不去探（探了也是 12 秒超时，白占 5 秒预算）
+    echo "000" > "$B.4" 2>/dev/null &
+    echo "000" > "$B.5" 2>/dev/null &
+  fi
+
+  wait
+
+  btsow_code=$(cat "$B.1" 2>/dev/null)
+  tpb_code=$(cat "$B.2d" 2>/dev/null)
+  yts_code=$(cat "$B.3d" 2>/dev/null)
+  nyaa_code=$(cat "$B.4" 2>/dev/null)
+  tkitty_code=$(cat "$B.5" 2>/dev/null)
+  # 代理那条路只要也拿到 200，就覆盖成 200（任一通即算通）
+  if [ -n "$PROXY_OPT" ]; then
+    [ "$(cat "$B.2p" 2>/dev/null)" = "200" ] && tpb_code=200
+    [ "$(cat "$B.3p" 2>/dev/null)" = "200" ] && yts_code=200
+  fi
+  rm -f "$B.1" "$B.2p" "$B.2d" "$B.3p" "$B.3d" "$B.4" "$B.5"
+else
+  # 没有可写临时目录时退回串行，超时收短以控制总时长
+  btsow_code=$("$CURL" -s -o /dev/null -w '%{http_code}' --max-time 3 -A "$UA" -X POST \
+    -H 'Content-Type: application/json' -H 'Referer: https://btsow.live/' \
+    -d '[{"search":"inception"},1,1]' "$BTSOW_URL" 2>/dev/null)
+  tpb_code=$("$CURL" $PROXY_OPT -s -o /dev/null -w '%{http_code}' --max-time 3 -A "$UA" \
+    "$TPB_URL" 2>/dev/null)
+  yts_code=$("$CURL" $PROXY_OPT -sL -o /dev/null -w '%{http_code}' --max-time 3 -A "$UA" \
+    "$YTS_URL" 2>/dev/null)
+  nyaa_code=$("$CURL" $PROXY_OPT -sL -o /dev/null -w '%{http_code}' --max-time 3 -A "$UA" \
+    "$NYAA_URL" 2>/dev/null)
+  tkitty_code=$("$CURL" $PROXY_OPT -sL -o /dev/null -w '%{http_code}' --max-time 3 -A "$UA" \
+    "$TK_URL" 2>/dev/null)
+fi
+
+btsow_ok='false'
+tpb_ok='false'
+yts_ok='false'
+nyaa_ok='false'
+tkitty_ok='false'
+[ "$btsow_code" = "200" ] && btsow_ok='true'
+[ "$tpb_code" = "200" ] && tpb_ok='true'
+[ "$yts_code" = "200" ] && yts_ok='true'
+[ "$nyaa_code" = "200" ] && nyaa_ok='true'
+[ "$tkitty_code" = "200" ] && tkitty_ok='true'
+
+# curl 连不上/超时都会输出 "000"，统一成 timeout，前端才能当成"未知"显示灰点。
+# 否则 000 会走到非 200 分支被标成红点，实测 apibay 慢的时候必现误报。
+[ "$btsow_code" = "000" ] && btsow_code=''
+[ "$tpb_code" = "000" ] && tpb_code=''
+[ "$yts_code" = "000" ] && yts_code=''
+[ "$nyaa_code" = "000" ] && nyaa_code=''
+[ "$tkitty_code" = "000" ] && tkitty_code=''
+
+echo "{\"btsow\":{\"ok\":$btsow_ok,\"code\":\"${btsow_code:-timeout}\"},\"tpb\":{\"ok\":$tpb_ok,\"code\":\"${tpb_code:-timeout}\"},\"yts\":{\"ok\":$yts_ok,\"code\":\"${yts_code:-timeout}\"},\"nyaa\":{\"ok\":$nyaa_ok,\"code\":\"${nyaa_code:-timeout}\"},\"tkitty\":{\"ok\":$tkitty_ok,\"code\":\"${tkitty_code:-timeout}\"},\"t\":$(date +%s)}"
+exit 0

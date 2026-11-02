@@ -1,1 +1,132 @@
-IyEvc3lzdGVtL2Jpbi9zaAojIGRlY2lkZS5jZ2kg4oCUIOaOpeaUtuS4gOadoeS6uuW3peWIpOWumu+8jOi/veWKoOWGmSBkZWNpc2lvbnMuanNvbmwKIyDoi6XliKTlrprkuLrjgIzlrZjmoaPjgI3kuJTpgInmi6nmlrDlu7rkuovku7bvvIzliJkqKuW9k+WcuueZu+iusOS6i+S7tioq77yM5ZCO57ut5a2Y5qGj5Y+v55u05o6l5Zyo5LiL5ouJ6YeM6YCJ5YiwCkRBVEE9L2RhdGEvbWVkaWEvMC9uYXNiYWsvc3RhdGUKQVJDPS9kYXRhL21lZGlhLzAvbmFzYmFrL2FyY2hpdmUKcHJpbnRmICdDb250ZW50LVR5cGU6IGFwcGxpY2F0aW9uL2pzb25cclxuQ2FjaGUtQ29udHJvbDogbm8tc3RvcmVcclxuXHJcbicKCmlmIFsgIiRSRVFVRVNUX01FVEhPRCIgIT0gIlBPU1QiIF07IHRoZW4KICBlY2hvICd7Im9rIjpmYWxzZSwiZXJyIjoiUE9TVCBvbmx5In0nOyBleGl0IDAKZmkKCkxFTj0ke0NPTlRFTlRfTEVOR1RIOi0wfQpjYXNlICIkTEVOIiBpbiAnJ3wqWyEwLTldKikgTEVOPTAgOzsgZXNhYwpbICIkTEVOIiAtZ3QgODE5MiBdICYmIHsgZWNobyAneyJvayI6ZmFsc2UsImVyciI6ImJvZHkgdG9vIGxhcmdlIn0nOyBleGl0IDA7IH0KQk9EWT0kKGhlYWQgLWMgIiRMRU4iIDI+L2Rldi9udWxsKQoKZ2V0ZigpIHsKICBwcmludGYgJyVzJyAiJEJPRFkiIHwgc2VkIC1uICdzLy4qIiciJDEiJyI6IlwoW14iXSpcKSIuKi9cMS9wJyB8IGhlYWQgLTEKfQoKSUQ9JChnZXRmIGlkKQpBQ1Q9JChnZXRmIGFjdGlvbikKRVY9JChnZXRmIGV2ZW50KQpUT1BJQz0kKGdldGYgdG9waWMpCkNBVElOPSQoZ2V0ZiBjYXQpCgojIC0tLSDmoKHpqozvvJrliIbnsbvnmb3lkI3ljZXvvIjkurrlt6Xlj6/nuqDmraMgQUkg5Yik6ZSZ55qE57G75Yir77yJIC0tLQpjYXNlICIkQ0FUSU4iIGluCiAgd29ya3xob21lfHNjcmVlbnNob3R8dmlkZW98b3RoZXIpIDs7CiAgKikgQ0FUSU49IiIgOzsKZXNhYwoKIyAtLS0g5qCh6aqM77yaaWQg5b+F6aG75pivIDE2IOS9jeWwj+WGmeWNgeWFrei/m+WItiAtLS0KY2FzZSAiJElEIiBpbgogICcnfCpbITAtOWEtZl0qKSBlY2hvICd7Im9rIjpmYWxzZSwiZXJyIjoiYmFkIGlkIn0nOyBleGl0IDAgOzsKZXNhYwpbICR7I0lEfSAtZXEgMTYgXSB8fCB7IGVjaG8gJ3sib2siOmZhbHNlLCJlcnIiOiJiYWQgaWQgbGVuIn0nOyBleGl0IDA7IH0KCiMgLS0tIOagoemqjO+8muWKqOS9nOeZveWQjeWNlSAtLS0KY2FzZSAiJEFDVCIgaW4KICBkZWx8a2VlcHxob2xkfGFyYykgOzsKICAqKSBlY2hvICd7Im9rIjpmYWxzZSwiZXJyIjoiYmFkIGFjdGlvbiJ9JzsgZXhpdCAwIDs7CmVzYWMKCiMgLS0tIOa4hea0l++8mmV2ZW50IOWPquWFgeiuuCBldi0g5byA5aS0ICsg5pWw5a2X77yM5YW25L2Z5Lii5byDIC0tLQpjYXNlICIkRVYiIGluCiAgZXYtWzAtOV0qKSBjYXNlICIkRVYiIGluICpbITAtOWEtekEtWi1dKikgRVY9IiIgOzsgZXNhYyA7OwogICopIEVWPSIiIDs7CmVzYWMKCiMgLS0tIOa4hea0l++8mnRvcGljIOWOu+WNsemZqeWtl+espu+8jOaIquaWrSAyMCDlrZcgLS0tClRPUElDPSQocHJpbnRmICclcycgIiRUT1BJQyIgfCBzZWQgJ3MvWy9cXDoqPyI8PnxdLy9nJyB8IHRyIC1kICdcclxuXHQnIHwgY3V0IC1jMS02MCkKCk5PVz0kKGRhdGUgKyVzKQp0b3VjaCAiJERBVEEvZGVjaXNpb25zLmpzb25sIiAiJERBVEEvZXZlbnRzLmpzb25sIiAyPi9kZXYvbnVsbAoKIyAtLS0g5qCh6aqM77ya5a2Y5qGj5b+F6aG75LqM6YCJ5LiA77yM5LiN6IO95pei5LiN6YCJ5LqL5Lu25Lmf5LiN5aGr5Li76aKYIC0tLQojIOe8uuS6hui/memBk++8jGFwcGx5IOS8muWFnOW6leW7uuWHuuOAjOacquWRveWQjeOAjeWkue+8jOS6i+WQjuayoeazlei/vea6r+aYr+WTquS4quS6i+S7tgppZiBbICIkQUNUIiA9ICJhcmMiIF0gJiYgWyAteiAiJEVWIiBdICYmIFsgLXogIiRUT1BJQyIgXTsgdGhlbgogIGVjaG8gJ3sib2siOmZhbHNlLCJlcnIiOiLlrZjmoaPpnIDpgInmi6nlt7LmnInkuovku7bmiJbloavlhpnkuLvpopgifSc7IGV4aXQgMApmaQoKIyAtLS0g5qCh6aqM77ya5oyH5a6a55qE5bey5pyJ5LqL5Lu25b+F6aG755yf5a6e5a2Y5ZyoIC0tLQojIOWJjeerr+S4i+aLieWPr+iDveW3sui/h+acn++8iOavlOWmguS6i+S7tuiiq+a4heeQhu+8ie+8jOaUvui/h+WOu+WwseS8mumdmem7mOaWsOW7uuS4gOS4quepuuS4u+mimOS6i+S7tgppZiBbICIkQUNUIiA9ICJhcmMiIF0gJiYgWyAtbiAiJEVWIiBdOyB0aGVuCiAgaWYgISBncmVwIC1xRiAiXCJldmVudF9pZFwiOlwiJEVWXCIiICIkREFUQS9ldmVudHMuanNvbmwiIDI+L2Rldi9udWxsOyB0aGVuCiAgICBlY2hvICd7Im9rIjpmYWxzZSwiZXJyIjoi5omA6YCJ5LqL5Lu25LiN5a2Y5Zyo77yM6K+35Yi35paw6aG16Z2i5ZCO6YeN6YCJIn0nOyBleGl0IDAKICBmaQpmaQoKIyDmnKzmnaHnlJ/mlYjnmoTliIbnsbvvvJrkurrlt6XpgInnmoTkvJjlhYjvvIzmsqHkvKDlsLHlm57okL3liLAgQUkg5Yik55qECkFMPSQoZ3JlcCAtRiAiXCJpZFwiOlwiJElEXCIiICIkREFUQS9hbmFseXNpcy5qc29ubCIgMj4vZGV2L251bGwgfCBoZWFkIC0xKQppZiBbIC1uICIkQ0FUSU4iIF07IHRoZW4KICBDQVRTRUw9IiRDQVRJTiIKZWxzZQogIENBVFNFTD0kKHByaW50ZiAnJXMnICIkQUwiIHwgc2VkIC1uICdzLy4qImNhdCI6IlwoW14iXSpcKSIuKi9cMS9wJykKICBjYXNlICIkQ0FUU0VMIiBpbgogICAgd29ya3xob21lfHNjcmVlbnNob3R8dmlkZW98b3RoZXJ8dW5jbGFzc2lmaWVkKSA7OwogICAgKikgQ0FUU0VMPSJvdGhlciIgOzsKICBlc2FjCmZpCgpFVklEPSIiCmlmIFsgIiRBQ1QiID0gImFyYyIgXSAmJiBbIC16ICIkRVYiIF0gJiYgWyAtbiAiJFRPUElDIiBdOyB0aGVuCiAgIyDlj5bor6Xmlofku7bnmoTmi43mkYTml6XmnJ/vvIjnsbvliKvnlKjkuIrpnaLnrpflpb3nmoQgQ0FUU0VM77yJCiAgQ0FUPSIkQ0FUU0VMIgogIEREPSQocHJpbnRmICclcycgIiRBTCIgfCBzZWQgLW4gJ3MvLioiZGF0ZSI6IlwoW14iXSpcKSIuKi9cMS9wJykKICBbIC16ICIkREQiIF0gJiYgREQ9JChkYXRlICslWS0lbS0lZCAyPi9kZXYvbnVsbCkKICBjYXNlICIkQ0FUIiBpbgogICAgd29ya3xob21lfHNjcmVlbnNob3R8dmlkZW98b3RoZXJ8dW5jbGFzc2lmaWVkKSA7OwogICAgKikgQ0FUPSJvdGhlciIgOzsKICBlc2FjCiAgVFA9JChwcmludGYgJyVzJyAiJFRPUElDIiB8IHNlZCAnc0BbL1xcOio/Ijw+fF1AQGcnIHwgdHIgLWQgJ1xyXG5cdCcgfCBjdXQgLWMxLTIwKQogIFsgLXogIiRUUCIgXSAmJiBUUD0i5pyq5ZG95ZCNIgogIFlZWVk9JChwcmludGYgJyVzJyAiJEREIiB8IGN1dCAtYzEtNCkKICBZTT0kKHByaW50ZiAnJXMnICIkREQiIHwgY3V0IC1jMS03KQoKICAjIOWkueWQjeWUr+S4gO+8muWQjOS4gOWkqeWQjOS4u+mimOmHjeWkjeWHuueOsOaXtuWKoOW6j+WPt++8iOafpeebruW9lSArIOafpeS6i+S7tuihqO+8jOS4pOiAheeahueul+WNoOeUqO+8iQogIEJBU0U9IiR7RER9XyR7Q0FUfV8ke1RQfSIKICBGT0xERVI9IiRCQVNFIjsgU0VRPTEKICB3aGlsZSA6OyBkbwogICAgaWYgWyAhIC1kICIkQVJDLyRZTS8kRk9MREVSIiBdICYmICEgZ3JlcCAtcUYgIlwiZm9sZGVyXCI6XCIkRk9MREVSXCIiICIkREFUQS9ldmVudHMuanNvbmwiIDI+L2Rldi9udWxsOyB0aGVuCiAgICAgIGJyZWFrCiAgICBmaQogICAgU0VRPSQoKFNFUSsxKSk7IEZPTERFUj0iJHtCQVNFfV8ke1NFUX0iCiAgICBbICIkU0VRIiAtZ3QgMzAgXSAmJiBicmVhawogIGRvbmUKCiAgIyDkuovku7YgaWQg5oyJ5b2T5aSp5bqP5Y+36YCS5aKe77yM6YG/5YWN5LiN5ZCM5Li76aKY5pKe5Y+3CiAgRDg9JChwcmludGYgJyVzJyAiJEREIiB8IHRyIC1kICctJykKICBOPTEKICB3aGlsZSBncmVwIC1xRiAiXCJldmVudF9pZFwiOlwiZXYtJEQ4LSQocHJpbnRmICclMDJkJyAiJE4iKVwiIiAiJERBVEEvZXZlbnRzLmpzb25sIiAyPi9kZXYvbnVsbDsgZG8KICAgIE49JCgoTisxKSk7IFsgIiROIiAtZ3QgOTkgXSAmJiBicmVhawogIGRvbmUKICBFVklEPSJldi0kRDgtJChwcmludGYgJyUwMmQnICIkTiIpIgoKICBwcmludGYgJ3siZXZlbnRfaWQiOiIlcyIsInN0YXJ0X2RhdGUiOiIlcyIsInNsdWciOiIlcyIsInRvcGljIjoiJXMiLCJmb2xkZXIiOiIlcyIsInN0YXR1cyI6Im9wZW4iLCJjb3VudHMiOnsiaSI6MCwidiI6MH0sInRzIjolc31cbicgXAogICAgIiRFVklEIiAiJEREIiAiJENBVCIgIiRUUCIgIiRGT0xERVIiICIkTk9XIiA+PiAiJERBVEEvZXZlbnRzLmpzb25sIgoKICAjIOeUqOaWsOW7uueahOS6i+S7tiBpZCDkvZzkuLrmnKzmnaHnmoQgZXZlbnQg6JC955uYCiAgRVY9IiRFVklEIgpmaQoKIyDlkIzkuIAgaWQg5YWB6K646KaG55uW77ya5paw5Yik5a6a5YWI5YaZ77yM6K+75Y+W5pe25Y+W5pyA5ZCO5LiA5p2hCnByaW50ZiAneyJpZCI6IiVzIiwiYWN0aW9uIjoiJXMiLCJldmVudCI6IiVzIiwidG9waWMiOiIlcyIsImNhdCI6IiVzIiwiYnkiOiJ3ZWIiLCJ0cyI6JXN9XG4nIFwKICAiJElEIiAiJEFDVCIgIiRFViIgIiRUT1BJQyIgIiRDQVRTRUwiICIkTk9XIiA+PiAiJERBVEEvZGVjaXNpb25zLmpzb25sIgoKIyDljrvph43lkI7orqHmlbDvvIjlkIzkuIAgaWQg5aSa5p2h5Y+W5pyA5ZCO5LiA5p2h77yJClVOSVE9JChzZWQgLW4gJ3MvLioiaWQiOiJcKFswLTlhLWZdXHsxNlx9XCkiLiovXDEvcCcgIiREQVRBL2RlY2lzaW9ucy5qc29ubCIgfCBzb3J0IC11IHwgd2MgLWwgfCB0ciAtZCAnICcpCgpwcmludGYgJ3sib2siOnRydWUsImlkIjoiJXMiLCJhY3Rpb24iOiIlcyIsImV2ZW50X2lkIjoiJXMiLCJjYXQiOiIlcyIsImRlY2lkZWQiOiVzfVxuJyBcCiAgIiRJRCIgIiRBQ1QiICIkRVZJRCIgIiRDQVRTRUwiICIkVU5JUSIK
+#!/system/bin/sh
+# decide.cgi — 接收一条人工判定，追加写 decisions.jsonl
+# 若判定为「存档」且选择新建事件，则**当场登记事件**，后续存档可直接在下拉里选到
+DATA=/data/media/0/nasbak/state
+ARC=/data/media/0/nasbak/archive
+printf 'Content-Type: application/json\r\nCache-Control: no-store\r\n\r\n'
+
+if [ "$REQUEST_METHOD" != "POST" ]; then
+  echo '{"ok":false,"err":"POST only"}'; exit 0
+fi
+
+LEN=${CONTENT_LENGTH:-0}
+case "$LEN" in ''|*[!0-9]*) LEN=0 ;; esac
+[ "$LEN" -gt 8192 ] && { echo '{"ok":false,"err":"body too large"}'; exit 0; }
+BODY=$(head -c "$LEN" 2>/dev/null)
+
+getf() {
+  printf '%s' "$BODY" | sed -n 's/.*"'"$1"'":"\([^"]*\)".*/\1/p' | head -1
+}
+
+ID=$(getf id)
+ACT=$(getf action)
+EV=$(getf event)
+TOPIC=$(getf topic)
+CATIN=$(getf cat)
+
+# --- 校验：分类白名单（人工可纠正 AI 判错的类别） ---
+case "$CATIN" in
+  work|home|screenshot|video|other) ;;
+  *) CATIN="" ;;
+esac
+
+# --- 校验：id 必须是 16 位小写十六进制 ---
+case "$ID" in
+  ''|*[!0-9a-f]*) echo '{"ok":false,"err":"bad id"}'; exit 0 ;;
+esac
+[ ${#ID} -eq 16 ] || { echo '{"ok":false,"err":"bad id len"}'; exit 0; }
+
+# --- 校验：动作白名单 ---
+case "$ACT" in
+  del|keep|hold|arc) ;;
+  *) echo '{"ok":false,"err":"bad action"}'; exit 0 ;;
+esac
+
+# --- 清洗：event 只允许 ev- 开头 + 数字，其余丢弃 ---
+case "$EV" in
+  ev-[0-9]*) case "$EV" in *[!0-9a-zA-Z-]*) EV="" ;; esac ;;
+  *) EV="" ;;
+esac
+
+# --- 清洗：topic 去危险字符，截断 20 字 ---
+TOPIC=$(printf '%s' "$TOPIC" | sed 's/[/\\:*?"<>|]//g' | tr -d '\r\n\t' | cut -c1-60)
+
+NOW=$(date +%s)
+touch "$DATA/decisions.jsonl" "$DATA/events.jsonl" 2>/dev/null
+
+# --- 校验：存档必须二选一，不能既不选事件也不填主题 ---
+# 缺了这道，apply 会兜底建出「未命名」夹，事后没法追溯是哪个事件
+if [ "$ACT" = "arc" ] && [ -z "$EV" ] && [ -z "$TOPIC" ]; then
+  echo '{"ok":false,"err":"存档需选择已有事件或填写主题"}'; exit 0
+fi
+
+# --- 校验：指定的已有事件必须真实存在 ---
+# 前端下拉可能已过期（比如事件被清理），放过去就会静默新建一个空主题事件
+if [ "$ACT" = "arc" ] && [ -n "$EV" ]; then
+  if ! grep -qF "\"event_id\":\"$EV\"" "$DATA/events.jsonl" 2>/dev/null; then
+    echo '{"ok":false,"err":"所选事件不存在，请刷新页面后重选"}'; exit 0
+  fi
+fi
+
+# 本条生效的分类：人工选的优先，没传就回落到 AI 判的
+AL=$(grep -F "\"id\":\"$ID\"" "$DATA/analysis.jsonl" 2>/dev/null | head -1)
+if [ -n "$CATIN" ]; then
+  CATSEL="$CATIN"
+else
+  CATSEL=$(printf '%s' "$AL" | sed -n 's/.*"cat":"\([^"]*\)".*/\1/p')
+  case "$CATSEL" in
+    work|home|screenshot|video|other|unclassified) ;;
+    *) CATSEL="other" ;;
+  esac
+fi
+
+EVID=""
+if [ "$ACT" = "arc" ] && [ -z "$EV" ] && [ -n "$TOPIC" ]; then
+  # 取该文件的拍摄日期（类别用上面算好的 CATSEL）
+  CAT="$CATSEL"
+  DD=$(printf '%s' "$AL" | sed -n 's/.*"date":"\([^"]*\)".*/\1/p')
+  [ -z "$DD" ] && DD=$(date +%Y-%m-%d 2>/dev/null)
+  case "$CAT" in
+    work|home|screenshot|video|other|unclassified) ;;
+    *) CAT="other" ;;
+  esac
+  TP=$(printf '%s' "$TOPIC" | sed 's@[/\\:*?"<>|]@@g' | tr -d '\r\n\t' | cut -c1-20)
+  [ -z "$TP" ] && TP="未命名"
+  YYYY=$(printf '%s' "$DD" | cut -c1-4)
+  YM=$(printf '%s' "$DD" | cut -c1-7)
+
+  # 夹名唯一：同一天同主题重复出现时加序号（查目录 + 查事件表，两者皆算占用）
+  BASE="${DD}_${CAT}_${TP}"
+  FOLDER="$BASE"; SEQ=1
+  while :; do
+    if [ ! -d "$ARC/$YM/$FOLDER" ] && ! grep -qF "\"folder\":\"$FOLDER\"" "$DATA/events.jsonl" 2>/dev/null; then
+      break
+    fi
+    SEQ=$((SEQ+1)); FOLDER="${BASE}_${SEQ}"
+    [ "$SEQ" -gt 30 ] && break
+  done
+
+  # 事件 id 按当天序号递增，避免不同主题撞号
+  D8=$(printf '%s' "$DD" | tr -d '-')
+  N=1
+  while grep -qF "\"event_id\":\"ev-$D8-$(printf '%02d' "$N")\"" "$DATA/events.jsonl" 2>/dev/null; do
+    N=$((N+1)); [ "$N" -gt 99 ] && break
+  done
+  EVID="ev-$D8-$(printf '%02d' "$N")"
+
+  printf '{"event_id":"%s","start_date":"%s","slug":"%s","topic":"%s","folder":"%s","status":"open","counts":{"i":0,"v":0},"ts":%s}\n' \
+    "$EVID" "$DD" "$CAT" "$TP" "$FOLDER" "$NOW" >> "$DATA/events.jsonl"
+
+  # 用新建的事件 id 作为本条的 event 落盘
+  EV="$EVID"
+fi
+
+# 同一 id 允许覆盖：新判定先写，读取时取最后一条
+printf '{"id":"%s","action":"%s","event":"%s","topic":"%s","cat":"%s","by":"web","ts":%s}\n' \
+  "$ID" "$ACT" "$EV" "$TOPIC" "$CATSEL" "$NOW" >> "$DATA/decisions.jsonl"
+
+# 去重后计数（同一 id 多条取最后一条）
+UNIQ=$(sed -n 's/.*"id":"\([0-9a-f]\{16\}\)".*/\1/p' "$DATA/decisions.jsonl" | sort -u | wc -l | tr -d ' ')
+
+printf '{"ok":true,"id":"%s","action":"%s","event_id":"%s","cat":"%s","decided":%s}\n' \
+  "$ID" "$ACT" "$EVID" "$CATSEL" "$UNIQ"

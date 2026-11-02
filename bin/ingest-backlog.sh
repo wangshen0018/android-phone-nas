@@ -1,1 +1,141 @@
-IyEvc3lzdGVtL2Jpbi9zaAojIGluZ2VzdC1iYWNrbG9nLnNoIOKAlCDmioogSzgwIOWkh+S7veadpeeahOWOhuWPsueFp+eJh+aQrOi/myBuYXNiYWsvaW5ib3jvvIjmjInlubTku73liIbnm67lvZXvvIkKIyAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KIyDkuI4ganVkZ2Uuc2gg55qE5YWz57O777yaCiMgICDCtyDmnKzohJrmnKzlj6rjgIzmkKzmlofku7bjgI3vvIwqKuS4jeeZu+iusOOAgeS4jeWIpOivuyoqCiMgICDCtyDmkKzlrozlkI4gaW5ib3gvPFlZWVktTU0tREQ+LyDkuIvmnInmlofku7bvvIzkvYYgc3RhdGUvIOmHjOayoeaciSBsb2MtKi50c3YKIyAgIMK3IOaJgOS7pSBqdWRnZS5zaCDkuI3kvJroh6rliqjliKTor7vlroPku6zvvIjlroPlj6rorqQgbG9jLSoudHN277yJCiMgICDCtyDmg7PliKTlk6rkuIDlubTvvIznlKgganVkZ2UteWVhci5zaCA8WVlZWT4g5omL5Yqo6Kem5Y+RCiMKIyDorr7orqHvvJoKIyAgIMK3IG12IOS4jSBjb3B577yI5ZCM5YiG5Yy677yM5LiN5Y2g5Y+M5Lu977yJCiMgICDCtyDluYLnrYnvvJppbmJveCDph4zlt7LmnInlkIzlkI3lsLHot7Pov4cKIyAgIMK3IOaMieaWh+S7tuWQjemHjOeahOaLjeaRhOaXpeacn+W9kuWFpSBpbmJveC88WVlZWS1NTS1ERD4vCiMKIyDnlKjms5U6CiMgICBpbmdlc3QtYmFja2xvZy5zaCAtLWRyeSBb5bm0XSAgICAg5Y+q6aKE6KeICiMgICBpbmdlc3QtYmFja2xvZy5zaCBb5bm0XSAgICAgICAgICAg5pCs56e777yI6buY6K6k5YWo6YOo5Y6G5Y+y77yJCiMgICBpbmdlc3QtYmFja2xvZy5zaCAtLXJlY2VudCBOICAgICDlj6rmkKzmnIDov5EgTiDlpKkKIyAgIOW5tCDlj6/nnIHnlaXvvJvnu5kgMjAyNiDliJnlj6rmkKwgMjAyNiDlubTnmoQKCkJBU0U9L2RhdGEvbWVkaWEvMC9uYXNiYWsKSU5CT1g9JEJBU0UvaW5ib3gKU1Q9JEJBU0Uvc3RhdGUKTE9HRD0vZGF0YS9hZGIvbmFzYmFrL2xvZ3MKTE9HPSRMT0dEL2JhY2tsb2cubG9nCkJCPS9kYXRhL2FkYi9tYWdpc2svYnVzeWJveAoKRFJZPTA7IFlFQVI9IiI7IFJFQ0VOVD0iIgp3aGlsZSBbICQjIC1ndCAwIF07IGRvCiAgY2FzZSAiJDEiIGluCiAgICAtLWRyeSkgRFJZPTE7IHNoaWZ0IDs7CiAgICAtLXJlY2VudCkgUkVDRU5UPSIkMiI7IHNoaWZ0IDIgOzsKICAgIFswLTldWzAtOV1bMC05XVswLTldKSBZRUFSPSIkMSI7IHNoaWZ0IDs7CiAgICAqKSBzaGlmdCA7OwogIGVzYWMKZG9uZQoKbWtkaXIgLXAgIiRJTkJPWCIgIiRTVCIgIiRMT0dEIiAyPi9kZXYvbnVsbAp0b3VjaCAiJExPRyIgMj4vZGV2L251bGwKbG9nKCkgeyBlY2hvICIkKGRhdGUgJyslWS0lbS0lZCAlSDolTTolUycpICQqIiA+PiAiJExPRyI7IH0KCmZkYXRlKCkgewogIEI9JChiYXNlbmFtZSAiJDEiKTsgUj0iIgogICMg4pGgIOWujOaVtCBZWVlZLU1NLURE77yI5pyA5piO56Gu77yJCiAgY2FzZSAiJEIiIGluCiAgICAqMjBbMC05XVswLTldLVswMV1bMC05XS1bMC0zXVswLTldKikKICAgICAgUj0kKHByaW50ZiAnJXMnICIkQiIgfCBzZWQgLW4gJ3MvLipcKDIwWzAtOV1bMC05XS1bMDFdWzAtOV0tWzAtM11bMC05XVwpLiovXDEvcCcgfCBoZWFkIC0xKSA7OwogIGVzYWMKICAjIOKRoSBZWVlZTU1ERF9ISE1NU1Mg4oCU4oCUIOWwj+exs+ebuOacuuWRveWQje+8jOW/hemhu+e0p+i3n+S4i+WIkue6vzbkvY3mlbDlrZcKICBbIC16ICIkUiIgXSAmJiBSPSQocHJpbnRmICclcycgIiRCIiB8IHNlZCAtbiAncy8uKlteMC05XVwoMjBbMC05XVswLTldXClcKFswMV1bMC05XVwpXChbMC0zXVswLTldXClfWzAtOV1bMC05XVswLTldWzAtOV1bMC05XVswLTldLiovXDEtXDItXDMvcCcgfCBoZWFkIC0xKQogIFsgLXogIiRSIiBdICYmIFI9JChwcmludGYgJyVzJyAiJEIiIHwgc2VkIC1uICdzL15cKDIwWzAtOV1bMC05XVwpXChbMDFdWzAtOV1cKVwoWzAtM11bMC05XVwpX1swLTldWzAtOV1bMC05XVswLTldWzAtOV1bMC05XS4qL1wxLVwyLVwzL3AnIHwgaGVhZCAtMSkKICAjIOKRoiAxMyDkvY3mr6vnp5Lml7bpl7TmiLMg4oCU4oCUIOW/hemhu+WcqOmAmueUqCBZWVlZTU1ERCDkuYvliY3vvIzlkKbliJkgMTczMjA4MzA5MCDkvJrooqvor6/or7vmiJAgMjA4MwogIFsgLXogIiRSIiBdICYmIGNhc2UgIiRCIiBpbgogICAgKjFbMC05XVswLTldWzAtOV1bMC05XVswLTldWzAtOV1bMC05XVswLTldWzAtOV1bMC05XVswLTldWzAtOV0qKQogICAgICBUUz0kKHByaW50ZiAnJXMnICIkQiIgfCBzZWQgLW4gJ3MvLipbXjAtOV1cKDFbMC05XVx7MTJcfVwpW14wLTldLiovXDEvcCcgfCBoZWFkIC0xKQogICAgICBbIC16ICIkVFMiIF0gJiYgVFM9JChwcmludGYgJyVzJyAiJEIiIHwgc2VkIC1uICdzLy4qW14wLTldXCgxWzAtOV1cezEyXH1cKSQvXDEvcCcgfCBoZWFkIC0xKQogICAgICBpZiBbIC1uICIkVFMiIF07IHRoZW4KICAgICAgICBSPSQoJEJCIGRhdGUgLWQgIkAkKHByaW50ZiAnJXMnICIkVFMiIHwgc2VkICdzLy4uLiQvLycpIiArJVktJW0tJWQgMj4vZGV2L251bGwpCiAgICAgICAgIyDlkIjnkIbmgKfmoKHpqozvvJrml7bpl7TmiLPop6Plh7rnmoTlubTku73lv4XpobvlnKggMjAwMC0yMTAwCiAgICAgICAgY2FzZSAiJFIiIGluIDIwWzAtOV1bMC05XS0qKSA7OyAqKSBSPSIiIDs7IGVzYWMKICAgICAgZmkgOzsKICBlc2FjCiAgIyDikaMgWVlZWV9NTV9ERAogIFsgLXogIiRSIiBdICYmIGNhc2UgIiRCIiBpbgogICAgKjIwWzAtOV1bMC05XV9bMDFdWzAtOV1fWzAtM11bMC05XSopCiAgICAgIFI9JChwcmludGYgJyVzJyAiJEIiIHwgc2VkIC1uICdzLy4qXCgyMFswLTldWzAtOV1cKV9cKFswMV1bMC05XVwpX1woWzAtM11bMC05XVwpXy4qL1wxLVwyLVwzL3AnIHwgaGVhZCAtMSkgOzsKICBlc2FjCiAgIyDikaQg5YWc5bqV77ya5ZCN5a2X6YeM5Lu75oSPIDIwMDAtMjA5OSDnmoQgWVlZWU1NRETvvIjmlL7mnIDlkI7vvIzpgb/lhY3or6/mipPvvIkKICBbIC16ICIkUiIgXSAmJiBSPSQocHJpbnRmICclcycgIiRCIiB8IHNlZCAtbiAncy8uKlwoMjBbMC05XVswLTldXClcKFswMV1bMC05XVwpXChbMC0zXVswLTldXCkuKi9cMS1cMi1cMy9wJyB8IGhlYWQgLTEpCiAgIyDikaUg5pyA5ZCO55SoIG10aW1lCiAgWyAteiAiJFIiIF0gJiYgUj0kKCRCQiBkYXRlIC1kICJAJCgkQkIgc3RhdCAtYyAlWSAiJDEiIDI+L2Rldi9udWxsIHx8IGVjaG8gMCkiICslWS0lbS0lZCAyPi9kZXYvbnVsbCkKICBbIC16ICIkUiIgXSAmJiBSPSJ1bmtub3duIgogIHByaW50ZiAnJXMnICIkUiIKfQoKTU9WRUQ9MDsgU0tJUD0wOyBFUlI9MAoKaGFuZGxlX2RpcigpIHsKICBTUkNESVI9IiQxIgogIFsgLWQgIiRTUkNESVIiIF0gfHwgcmV0dXJuIDAKICBsb2cgIuaJq+aPjzogJFNSQ0RJUiIKICBmaW5kICIkU1JDRElSIiAtbWF4ZGVwdGggMSAtdHlwZSBmIFwKICAgIFwoIC1pbmFtZSAnKi5qcGcnIC1vIC1pbmFtZSAnKi5qcGVnJyAtbyAtaW5hbWUgJyoucG5nJyAtbyAtaW5hbWUgJyouaGVpYycgXAogICAgICAgLW8gLWluYW1lICcqLndlYnAnIC1vIC1pbmFtZSAnKi5tcDQnIC1vIC1pbmFtZSAnKi5tb3YnIC1vIC1pbmFtZSAnKi4zZ3AnIFwKICAgICAgIC1vIC1pbmFtZSAnKi5tNHYnIFwpIDI+L2Rldi9udWxsIHwgd2hpbGUgSUZTPSByZWFkIC1yIEY7IGRvCiAgICBCPSQoYmFzZW5hbWUgIiRGIikKICAgIGNhc2UgIiRCIiBpbiAuKnwqLnRtcHwucGVuZGluZy0qfC5ub21lZGlhKSBjb250aW51ZSA7OyBlc2FjCgogICAgRD0kKGZkYXRlICIkRiIpCiAgICAjIOW5tOS7vei/h+a7pAogICAgaWYgWyAtbiAiJFlFQVIiIF07IHRoZW4KICAgICAgY2FzZSAiJEQiIGluICIkWUVBUiItKikgOzsgKikgY29udGludWUgOzsgZXNhYwogICAgZmkKICAgICMg5pyA6L+RIE4g5aSp6L+H5rukCiAgICBpZiBbIC1uICIkUkVDRU5UIiBdOyB0aGVuCiAgICAgIENVVD0kKCRCQiBkYXRlIC1kICJAJCgoICQoZGF0ZSArJXMpIC0gUkVDRU5UICogODY0MDAgKSkiICslWS0lbS0lZCAyPi9kZXYvbnVsbCkKICAgICAgWyAtbiAiJENVVCIgXSAmJiBjYXNlICIkRCIgaW4KICAgICAgICB1bmtub3duKSBjb250aW51ZSA7OwogICAgICBlc2FjCiAgICAgIGlmIFsgLW4gIiRDVVQiIF0gJiYgWyAiJEQiIFw8ICIkQ1VUIiBdOyB0aGVuIGNvbnRpbnVlOyBmaQogICAgZmkKCiAgICBSRUw9IiRELyRCIgogICAgaWYgWyAtZiAiJElOQk9YLyRSRUwiIF07IHRoZW4gU0tJUD0kKChTS0lQKzEpKTsgY29udGludWU7IGZpCgogICAgREVTVD0iJElOQk9YLyREIgogICAgaWYgWyAiJERSWSIgPSAiMSIgXTsgdGhlbgogICAgICBlY2hvICIgIFtEUlldICRCIC0+ICRELyIKICAgIGVsc2UKICAgICAgbWtkaXIgLXAgIiRERVNUIiAyPi9kZXYvbnVsbAogICAgICBpZiBtdiAtZiAiJEYiICIkREVTVC8kQiIgMj4vZGV2L251bGw7IHRoZW4KICAgICAgICBNT1ZFRD0kKChNT1ZFRCsxKSkKICAgICAgZWxzZQogICAgICAgIEVSUj0kKChFUlIrMSkpOyBsb2cgIkZBSUw6IG12ICRGIgogICAgICBmaQogICAgZmkKICBkb25lCn0KCmhhbmRsZV9kaXIgL2RhdGEvbWVkaWEvMC9EQ0lNL0NhbWVyYQpoYW5kbGVfZGlyIC9kYXRhL21lZGlhLzAvRENJTS9DYW1TY2FubmVyCmhhbmRsZV9kaXIgL2RhdGEvbWVkaWEvMC9QaWN0dXJlcy9zY2FubmVyCmhhbmRsZV9kaXIgL2RhdGEvbWVkaWEvMC9QaWN0dXJlcy9HYWxsZXJ5L293bmVyL2ZhbWlseS1raWQKaGFuZGxlX2RpciAvZGF0YS9tZWRpYS8wL1BpY3R1cmVzL0dhbGxlcnkvb3duZXIvaWQtY2FyZAoKaWYgWyAiJERSWSIgPSAiMSIgXTsgdGhlbgogIGVjaG8gIiIKICBlY2hvICI9PT0gRFJZIFJVTiDlrozmiJDvvIjmnKrliqjku7vkvZXmlofku7bvvIk9PT0iCmVsc2UKICBsb2cgIj09PSDmkKznp7vlrozmiJA6IG1vdmVkPSRNT1ZFRCBza2lwPSRTS0lQIGVycj0kRVJSIHllYXI9JHtZRUFSOi1hbGx9IHJlY2VudD0ke1JFQ0VOVDotbm9uZX0gPT09IgogIGVjaG8gIiIKICBlY2hvICLmkKznp7vnu5/orqE6IG1vdmVkPSRNT1ZFRCBza2lwPSRTS0lQIGVycj0kRVJSIgpmaQoKZWNobyAiIgplY2hvICItLS0gaW5ib3gg55uu5b2VKOaMieaXpeacnykgLS0tIgpscyAtMSAiJElOQk9YIiAyPi9kZXYvbnVsbCB8IHNvcnQgfCBoZWFkIC0yMAplY2hvICIgIOWFsSAkKGxzIC0xICIkSU5CT1giIDI+L2Rldi9udWxsIHwgd2MgLWwpIOS4quaXpeacn+ebruW9lSIKZWNobyAiIgplY2hvICItLS0g5bey55m76K6w5b6F5YikKGxvYy0qLnRzdikg5pWw6YePOiAkKGxzICIkU1QiL2xvYy0qLnRzdiAyPi9kZXYvbnVsbCB8IHdjIC1sKSAtLS0iCmVjaG8gIi0tLSDlt7LliKTor7soYW5hbHlzaXMvKi5qc29uKSDmlbDph486ICQobHMgIiRTVCIvYW5hbHlzaXMvKi5qc29uIDI+L2Rldi9udWxsIHwgd2MgLWwpIC0tLSIK
+#!/system/bin/sh
+# ingest-backlog.sh — 把 K80 备份来的历史照片搬进 nasbak/inbox（按年份分目录）
+# ---------------------------------------------------------------
+# 与 judge.sh 的关系：
+#   · 本脚本只「搬文件」，**不登记、不判读**
+#   · 搬完后 inbox/<YYYY-MM-DD>/ 下有文件，但 state/ 里没有 loc-*.tsv
+#   · 所以 judge.sh 不会自动判读它们（它只认 loc-*.tsv）
+#   · 想判哪一年，用 judge-year.sh <YYYY> 手动触发
+#
+# 设计：
+#   · mv 不 copy（同分区，不占双份）
+#   · 幂等：inbox 里已有同名就跳过
+#   · 按文件名里的拍摄日期归入 inbox/<YYYY-MM-DD>/
+#
+# 用法:
+#   ingest-backlog.sh --dry [年]     只预览
+#   ingest-backlog.sh [年]           搬移（默认全部历史）
+#   ingest-backlog.sh --recent N     只搬最近 N 天
+#   年 可省略；给 2026 则只搬 2026 年的
+
+BASE=/data/media/0/nasbak
+INBOX=$BASE/inbox
+ST=$BASE/state
+LOGD=/data/adb/nasbak/logs
+LOG=$LOGD/backlog.log
+BB=/data/adb/magisk/busybox
+
+DRY=0; YEAR=""; RECENT=""
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --dry) DRY=1; shift ;;
+    --recent) RECENT="$2"; shift 2 ;;
+    [0-9][0-9][0-9][0-9]) YEAR="$1"; shift ;;
+    *) shift ;;
+  esac
+done
+
+mkdir -p "$INBOX" "$ST" "$LOGD" 2>/dev/null
+touch "$LOG" 2>/dev/null
+log() { echo "$(date '+%Y-%m-%d %H:%M:%S') $*" >> "$LOG"; }
+
+fdate() {
+  B=$(basename "$1"); R=""
+  # ① 完整 YYYY-MM-DD（最明确）
+  case "$B" in
+    *20[0-9][0-9]-[01][0-9]-[0-3][0-9]*)
+      R=$(printf '%s' "$B" | sed -n 's/.*\(20[0-9][0-9]-[01][0-9]-[0-3][0-9]\).*/\1/p' | head -1) ;;
+  esac
+  # ② YYYYMMDD_HHMMSS —— 小米相机命名，必须紧跟下划线6位数字
+  [ -z "$R" ] && R=$(printf '%s' "$B" | sed -n 's/.*[^0-9]\(20[0-9][0-9]\)\([01][0-9]\)\([0-3][0-9]\)_[0-9][0-9][0-9][0-9][0-9][0-9].*/\1-\2-\3/p' | head -1)
+  [ -z "$R" ] && R=$(printf '%s' "$B" | sed -n 's/^\(20[0-9][0-9]\)\([01][0-9]\)\([0-3][0-9]\)_[0-9][0-9][0-9][0-9][0-9][0-9].*/\1-\2-\3/p' | head -1)
+  # ③ 13 位毫秒时间戳 —— 必须在通用 YYYYMMDD 之前，否则 1732083090 会被误读成 2083
+  [ -z "$R" ] && case "$B" in
+    *1[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]*)
+      TS=$(printf '%s' "$B" | sed -n 's/.*[^0-9]\(1[0-9]\{12\}\)[^0-9].*/\1/p' | head -1)
+      [ -z "$TS" ] && TS=$(printf '%s' "$B" | sed -n 's/.*[^0-9]\(1[0-9]\{12\}\)$/\1/p' | head -1)
+      if [ -n "$TS" ]; then
+        R=$($BB date -d "@$(printf '%s' "$TS" | sed 's/...$//')" +%Y-%m-%d 2>/dev/null)
+        # 合理性校验：时间戳解出的年份必须在 2000-2100
+        case "$R" in 20[0-9][0-9]-*) ;; *) R="" ;; esac
+      fi ;;
+  esac
+  # ④ YYYY_MM_DD
+  [ -z "$R" ] && case "$B" in
+    *20[0-9][0-9]_[01][0-9]_[0-3][0-9]*)
+      R=$(printf '%s' "$B" | sed -n 's/.*\(20[0-9][0-9]\)_\([01][0-9]\)_\([0-3][0-9]\)_.*/\1-\2-\3/p' | head -1) ;;
+  esac
+  # ⑤ 兜底：名字里任意 2000-2099 的 YYYYMMDD（放最后，避免误抓）
+  [ -z "$R" ] && R=$(printf '%s' "$B" | sed -n 's/.*\(20[0-9][0-9]\)\([01][0-9]\)\([0-3][0-9]\).*/\1-\2-\3/p' | head -1)
+  # ⑥ 最后用 mtime
+  [ -z "$R" ] && R=$($BB date -d "@$($BB stat -c %Y "$1" 2>/dev/null || echo 0)" +%Y-%m-%d 2>/dev/null)
+  [ -z "$R" ] && R="unknown"
+  printf '%s' "$R"
+}
+
+MOVED=0; SKIP=0; ERR=0
+
+handle_dir() {
+  SRCDIR="$1"
+  [ -d "$SRCDIR" ] || return 0
+  log "扫描: $SRCDIR"
+  find "$SRCDIR" -maxdepth 1 -type f \
+    \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.heic' \
+       -o -iname '*.webp' -o -iname '*.mp4' -o -iname '*.mov' -o -iname '*.3gp' \
+       -o -iname '*.m4v' \) 2>/dev/null | while IFS= read -r F; do
+    B=$(basename "$F")
+    case "$B" in .*|*.tmp|.pending-*|.nomedia) continue ;; esac
+
+    D=$(fdate "$F")
+    # 年份过滤
+    if [ -n "$YEAR" ]; then
+      case "$D" in "$YEAR"-*) ;; *) continue ;; esac
+    fi
+    # 最近 N 天过滤
+    if [ -n "$RECENT" ]; then
+      CUT=$($BB date -d "@$(( $(date +%s) - RECENT * 86400 ))" +%Y-%m-%d 2>/dev/null)
+      [ -n "$CUT" ] && case "$D" in
+        unknown) continue ;;
+      esac
+      if [ -n "$CUT" ] && [ "$D" \< "$CUT" ]; then continue; fi
+    fi
+
+    REL="$D/$B"
+    if [ -f "$INBOX/$REL" ]; then SKIP=$((SKIP+1)); continue; fi
+
+    DEST="$INBOX/$D"
+    if [ "$DRY" = "1" ]; then
+      echo "  [DRY] $B -> $D/"
+    else
+      mkdir -p "$DEST" 2>/dev/null
+      if mv -f "$F" "$DEST/$B" 2>/dev/null; then
+        MOVED=$((MOVED+1))
+      else
+        ERR=$((ERR+1)); log "FAIL: mv $F"
+      fi
+    fi
+  done
+}
+
+handle_dir /data/media/0/DCIM/Camera
+handle_dir /data/media/0/DCIM/CamScanner
+handle_dir /data/media/0/Pictures/scanner
+handle_dir /data/media/0/Pictures/Gallery/owner/family-kid
+handle_dir /data/media/0/Pictures/Gallery/owner/id-card
+
+if [ "$DRY" = "1" ]; then
+  echo ""
+  echo "=== DRY RUN 完成（未动任何文件）==="
+else
+  log "=== 搬移完成: moved=$MOVED skip=$SKIP err=$ERR year=${YEAR:-all} recent=${RECENT:-none} ==="
+  echo ""
+  echo "搬移统计: moved=$MOVED skip=$SKIP err=$ERR"
+fi
+
+echo ""
+echo "--- inbox 目录(按日期) ---"
+ls -1 "$INBOX" 2>/dev/null | sort | head -20
+echo "  共 $(ls -1 "$INBOX" 2>/dev/null | wc -l) 个日期目录"
+echo ""
+echo "--- 已登记待判(loc-*.tsv) 数量: $(ls "$ST"/loc-*.tsv 2>/dev/null | wc -l) ---"
+echo "--- 已判读(analysis/*.json) 数量: $(ls "$ST"/analysis/*.json 2>/dev/null | wc -l) ---"

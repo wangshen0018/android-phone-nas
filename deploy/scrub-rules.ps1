@@ -1,1 +1,45 @@
-IyDohLHmlY/op4TliJkKIwojIOaKiuengeacieeJiOWkjeWItuWIsOWFrOW8gOeJiOaXtu+8jOaMiemhuuW6j+abv+aNouOAggojIOabv+aNouWQjuW/hemhu+i3keS4gOasoSBzY3J1Yi12ZXJpZnkucHMxIOehruiupOmbtuaui+eVmeOAggoKJFNjcnViUnVsZXMgPSBAKAogICAgIyAtLS0tIOWHreaNriAtLS0tCiAgICBAeyBGcm9tID0gJ2s0MHNydic7ICAgICAgICAgICAgICAgIFRvID0gJ0NIQU5HRV9NRSc7IE5vdGUgPSAnYXJpYTIgcnBjLXNlY3JldCcgfSwKCiAgICAjIC0tLS0g5YaF572RIElQIC0tLS0KICAgIEB7IEZyb20gPSAnMTkyLjE2OC41MC4yNDEnOyAgICAgICAgVG8gPSAnPEs0MF9MQU5fSVA+JzsgICBOb3RlID0gJ05BUyDlsYDln5/nvZHlnLDlnYAnIH0sCiAgICBAeyBGcm9tID0gJzE5Mi4xNjguNTAuMSc7ICAgICAgICAgIFRvID0gJzxST1VURVJfRE5TPic7ICAgTm90ZSA9ICfot6/nlLHlmaggRE5TJyB9LAogICAgQHsgRnJvbSA9ICcxMDAuNjQuMTgwLjEyMSc7ICAgICAgICBUbyA9ICc8SzQwX1RBSUxTQ0FMRV9JUD4nOyBOb3RlID0gJ1RhaWxzY2FsZSDlnLDlnYAnIH0sCgogICAgIyAtLS0tIOiuvuWkh+agh+ivhiAtLS0tCiAgICBAeyBGcm9tID0gJ00yMDEySzExQUMnOyAgICAgICAgICAgIFRvID0gJzxERVZJQ0VfTU9ERUw+JzsgTm90ZSA9ICdLNDAg5Z6L5Y+3JyB9LAogICAgQHsgRnJvbSA9ICcyNDEyMlJLQzdDJzsgICAgICAgICAgICBUbyA9ICc8SzgwX01PREVMPic7ICAgIE5vdGUgPSAnSzgwIOWei+WPtycgfSwKCiAgICAjIC0tLS0g5Liq5Lq655uu5b2V5ZCNIC0tLS0KICAgIEB7IEZyb20gPSAn5YS/5a2QJzsgICAgICAgICAgICAgICAgICBUbyA9ICdmYW1pbHkta2lkJzsgICAgTm90ZSA9ICflrrbkurrnm7jlhoznm67lvZUnIH0sCiAgICBAeyBGcm9tID0gJ+i6q+S7veivgSc7ICAgICAgICAgICAgICAgIFRvID0gJ2lkLWNhcmQnOyAgICAgICBOb3RlID0gJ+ivgeS7tuebruW9lScgfSwKICAgIEB7IEZyb20gPSAn5q+V5Lia6K+BJzsgICAgICAgICAgICAgICAgVG8gPSAnZGlwbG9tYSc7ICAgICAgIE5vdGUgPSAn5q+V5Lia6K+BJyB9LAogICAgQHsgRnJvbSA9ICfnu5PlqZror4EnOyAgICAgICAgICAgICAgICBUbyA9ICdtYXJyaWFnZS1jZXJ0JzsgTm90ZSA9ICfnu5PlqZror4EnIH0sCgogICAgIyAtLS0tIOecn+WunuS6i+S7tuS4u+mimO+8iOekuuS+i+aVsOaNruaJjeacieeahO+8iSAtLS0tCiAgICBAeyBGcm9tID0gJ+ecgeawtOWIqeWOheinhuWvnyc7ICAgICAgICAgIFRvID0gJ3NpdGUtaW5zcGVjdGlvbicgfSwKICAgIEB7IEZyb20gPSAn5rGH5rKz5bel56iL5L6L5LyaJzsgICAgICAgICAgVG8gPSAncHJvamVjdC1tZWV0aW5nJyB9LAogICAgQHsgRnJvbSA9ICfmsYfmsrPoi4/luoTlt6XljZXlpITnkIYnOyAgICAgIFRvID0gJ3RpY2tldC1oYW5kbGluZycgfSwKICAgIEB7IEZyb20gPSAn5Y675Li05rKC5rC05oC76LCI5YikJzsgICAgICAgIFRvID0gJ25lZ290aWF0aW9uJyB9LAoKICAgICMgLS0tLSDotKblj7cgLS0tLQogICAgQHsgRnJvbSA9ICd3YW5nc2hlbjAwMTgnOyAgICAgICAgICBUbyA9ICc8eW91ci1hY2NvdW50PicgfQopCgojIOaWh+S7tuexu+Wei++8muWPquWkhOeQhui/meS6mwokVGV4dEV4dGVuc2lvbnMgPSBAKCcuc2gnLCcuY2dpJywnLmh0bWwnLCcubWQnLCcuY29uZicsJy5wczEnLCcuanNvbicsJy55bWwnLCcueWFtbCcsJy50eHQnKQoKIyDmsLjov5zkuI3lpI3liLbliLDlhazlvIDniYjnmoTot6/lvoTvvIjmraPliJnvvIkKJEV4Y2x1ZGVQYXRocyA9IEAoCiAgICAnZ3lwL2d5cC1iYWNrdXAuc2gnLCAgICAgICMg5ZCr55yf5a6e5LqR55uY55uu5b2V5ZCN5LiOIHJjbG9uZSDor63kuYkKICAgICdkb2NzL+S6pOaOpeaWh+ahoy5tZCcsICAgICAgICAjIOWQq+WFqOmDqOecn+WunuaTjeS9nOiusOW9leS4juS4quS6uuaVsOaNrgogICAgJ2RvY3MvU0VDUkVUUy5tZCcsICAgICAgICAjIOWvhumSpeivtOaYju+8jOWPqueVmeWcqOengeacieeJiAogICAgJ3d3dy9uZXR3b3JrLmh0bWwnLCAgICAgICAjIOWFqOaYr+ecn+WuniBJUCDlkoznq6/lj6MKICAgICd3d3cvYXJpYW5nLXNldHVwLmh0bWwnICAgIyDlkKvnnJ/lrp4gc2VjcmV0IOeahCBiYXNlNjQKKQo=
+# 脱敏规则
+#
+# 把私有版复制到公开版时，按顺序替换。
+# 替换后必须跑一次 scrub-verify.ps1 确认零残留。
+
+$ScrubRules = @(
+    # ---- 凭据 ----
+    @{ From = 'k40srv';                To = 'CHANGE_ME'; Note = 'aria2 rpc-secret' },
+
+    # ---- 内网 IP ----
+    @{ From = '192.168.50.241';        To = '<K40_LAN_IP>';   Note = 'NAS 局域网地址' },
+    @{ From = '192.168.50.1';          To = '<ROUTER_DNS>';   Note = '路由器 DNS' },
+    @{ From = '100.64.180.121';        To = '<K40_TAILSCALE_IP>'; Note = 'Tailscale 地址' },
+
+    # ---- 设备标识 ----
+    @{ From = 'M2012K11AC';            To = '<DEVICE_MODEL>'; Note = 'K40 型号' },
+    @{ From = '24122RKC7C';            To = '<K80_MODEL>';    Note = 'K80 型号' },
+
+    # ---- 个人目录名 ----
+    @{ From = '儿子';                  To = 'family-kid';    Note = '家人相册目录' },
+    @{ From = '身份证';                To = 'id-card';       Note = '证件目录' },
+    @{ From = '毕业证';                To = 'diploma';       Note = '毕业证' },
+    @{ From = '结婚证';                To = 'marriage-cert'; Note = '结婚证' },
+
+    # ---- 真实事件主题（示例数据才有的） ----
+    @{ From = '省水利厅视察';          To = 'site-inspection' },
+    @{ From = '汇河工程例会';          To = 'project-meeting' },
+    @{ From = '汇河苏庄工单处理';      To = 'ticket-handling' },
+    @{ From = '去临沂水总谈判';        To = 'negotiation' },
+
+    # ---- 账号 ----
+    @{ From = 'wangshen0018';          To = '<your-account>' }
+)
+
+# 文件类型：只处理这些
+$TextExtensions = @('.sh','.cgi','.html','.md','.conf','.ps1','.json','.yml','.yaml','.txt')
+
+# 永远不复制到公开版的路径（正则）
+$ExcludePaths = @(
+    'gyp/gyp-backup.sh',      # 含真实云盘目录名与 rclone 语义
+    'docs/交接文档.md',        # 含全部真实操作记录与个人数据
+    'docs/SECRETS.md',        # 密钥说明，只留在私有版
+    'www/network.html',       # 全是真实 IP 和端口
+    'www/ariang-setup.html'   # 含真实 secret 的 base64
+)

@@ -1,1 +1,28 @@
-IyEvc3lzdGVtL2Jpbi9zaAojIHp6ei1uYXNiYWsuc2gg4oCUIOebuOWGjOWkh+S7vea1geeoi+iHquWQr++8iE1hZ2lzayBzZXJ2aWNlLmTvvIzku6Ugcm9vdCDov5DooYzvvIkKIyDotbfkuKTmoLfkuJzopb/vvJrliKTlrprpobUgaHR0cGQoODA4MykgKyDosIPluqYgZGFlbW9uCgpCQj0vZGF0YS9hZGIvbWFnaXNrL2J1c3lib3gKV1dXPS9kYXRhL2FkYi9uYXNiYWsvd3d3CkNPTkY9L2RhdGEvYWRiL25hc2Jhay9odHRwZC5jb25mCkJJTj0vZGF0YS9hZGIvbmFzYmFrL2JpbgpMT0dEPS9kYXRhL2FkYi9uYXNiYWsvbG9ncwoKd2hpbGUgWyAiJChnZXRwcm9wIHN5cy5ib290X2NvbXBsZXRlZCkiICE9ICIxIiBdOyBkbyBzbGVlcCA1OyBkb25lCnNsZWVwIDE1Cgpta2RpciAtcCAiJExPR0QiIDI+L2Rldi9udWxsCmVjaG8gIiQoZGF0ZSAnKyVGICVUJykgc2VydmljZS5kIOWUpOmGkiIgPj4gIiRMT0dEL2Jvb3QubG9nIiAyPi9kZXYvbnVsbAoKIyAtLS0tLS0tLS0tIOWIpOWumumhtSAtLS0tLS0tLS0tCiMgQW5kcm9pZCDnmoQgcHMgLUEg6buY6K6k5LiN6L6T5Ye65ZG95Luk6KGM77yM5b+F6aG75bimIC1vIHBpZCxhcmdzIOaJjeiDveWMuemFjQpwcyAtQSAtbyBwaWQsYXJncyAyPi9kZXYvbnVsbCB8IGdyZXAgLXEgIltoXXR0cGQuKjgwODMiIHx8IHsKICAiJEJCIiBodHRwZCAtcCA4MDgzIC1oICIkV1dXIiAtYyAiJENPTkYiIDI+PiIkTE9HRC9ib290LmxvZyIKICBlY2hvICIkKGRhdGUgJyslRiAlVCcpIGh0dHBkIDgwODMg5bey6LW3IiA+PiAiJExPR0QvYm9vdC5sb2ciIDI+L2Rldi9udWxsCn0KCiMgLS0tLS0tLS0tLSDosIPluqYgZGFlbW9uIC0tLS0tLS0tLS0KcHMgLUEgLW8gcGlkLGFyZ3MgMj4vZGV2L251bGwgfCBncmVwIC1xICJuYXNiYWsvYmluL2RhZW1vbi5zaCIgfHwgewogIHNldHNpZCBub2h1cCBzaCAiJEJJTi9kYWVtb24uc2giID4vZGV2L251bGwgMj4mMSAmCiAgZWNobyAiJChkYXRlICcrJUYgJVQnKSBkYWVtb24g5bey6LW3IiA+PiAiJExPR0QvYm9vdC5sb2ciIDI+L2Rldi9udWxsCn0K
+#!/system/bin/sh
+# zzz-nasbak.sh — 相册备份流程自启（Magisk service.d，以 root 运行）
+# 起两样东西：判定页 httpd(8083) + 调度 daemon
+
+BB=/data/adb/magisk/busybox
+WWW=/data/adb/nasbak/www
+CONF=/data/adb/nasbak/httpd.conf
+BIN=/data/adb/nasbak/bin
+LOGD=/data/adb/nasbak/logs
+
+while [ "$(getprop sys.boot_completed)" != "1" ]; do sleep 5; done
+sleep 15
+
+mkdir -p "$LOGD" 2>/dev/null
+echo "$(date '+%F %T') service.d 唤醒" >> "$LOGD/boot.log" 2>/dev/null
+
+# ---------- 判定页 ----------
+# Android 的 ps -A 默认不输出命令行，必须带 -o pid,args 才能匹配
+ps -A -o pid,args 2>/dev/null | grep -q "[h]ttpd.*8083" || {
+  "$BB" httpd -p 8083 -h "$WWW" -c "$CONF" 2>>"$LOGD/boot.log"
+  echo "$(date '+%F %T') httpd 8083 已起" >> "$LOGD/boot.log" 2>/dev/null
+}
+
+# ---------- 调度 daemon ----------
+ps -A -o pid,args 2>/dev/null | grep -q "nasbak/bin/daemon.sh" || {
+  setsid nohup sh "$BIN/daemon.sh" >/dev/null 2>&1 &
+  echo "$(date '+%F %T') daemon 已起" >> "$LOGD/boot.log" 2>/dev/null
+}

@@ -1,1 +1,311 @@
-IyEvc3lzdGVtL2Jpbi9zaAojIGp1ZGdlLnNoIOKAlCDnhafniYfliKTor7vvvJrnmbvorrDmlrDmlofku7Yg4oaSIOWPquWIpOaWsOWiniDihpIg6YeN5bu66aG16Z2i5pWw5o2uCiMKIyDnlKjms5U6CiMgICBqdWRnZS5zaCAgICAgICAgICAgICAg5a6M5pW05rWB56iL77yI55m76K6wICsg5Yik6K+7ICsg6YeN5bu66aG16Z2i5pWw5o2u77yJCiMgICBqdWRnZS5zaCAtLWluZ2VzdCAgICAg5Y+q55m76K6w77yI6L276YeP77yM5omr5o+P5bu656Gs6ZO+5o6l77yM5LiN6LCD5qih5Z6L77yJCiMKIyDlhbPplK7orr7orqEoMjAyNi0xMS0wMik6CiMgICAxLiDpmJ/liJfkvJjlhYjvvJppbmdlc3Qg5oqK5paw5paH5Lu2aWTlhpnlhaUgc3RhdGUvcGVuZGluZy5xdWV1Ze+8jOWIpOivu+WPquivu+mYn+WIl++8jAojICAgICAg5LiN5YaN6YGN5Y6GIDMwMDArIOS4qiBsb2MtKi50c3bvvIjpgqPmmK/kuIDmrKHlh6DljYHnp5LnmoTlvIDplIDvvInjgIIKIyAgIDIuIOWPquWIpOaWsOWinu+8mkpVREdFX01BWEFHRV9EQVlTIOaOp+WItuWPquWIpOacgOi/kSBOIOWkqeWGhSBtdGltZSDnmoTmlofku7bvvIwKIyAgICAgIOWOhuWPsuenr+WOi+S4jeWKqOOAguiuvuS4uiAwIOWImeWIpOWFqOmDqOOAggojICAgMy4g54aU5pat5L+u5aW977yaRkFJTENOVCDmmK/ov57nu63lpLHotKXorqHmlbDvvIzmiJDlip/ljbPlvZLpm7bvvJvnhpTmlq3ml7bmnKzova7ot7Pov4fkuI3okL3nm5jvvIwKIyAgICAgIOS4i+asoeS7jeWPr+mHjeWIpO+8iOaXp+eJiOaKiueGlOaWree7k+aenOWGmei/myBhbmFseXNpcyDlr7zoh7TmsLjkuYXml6Dms5Xph43liKTvvInjgIIKIyAgIDQuIOS4jeWHuuW7uuiuru+8muWIpOivu+e7k+aenOWPquacieWIhuexuyvmj4/ov7Ar5qih5Z6LK+iAl+aXtu+8jOayoeaciSBzdWdnZXN0IOWtl+auteOAggojCiMg5bmC562J5L+d6K+BOgojICAgLSDliKTor7vnu5PmnpzokL0gJFNUL2FuYWx5c2lzLzxpZD4uanNvbu+8jOWQjOS4gCBpZCDopobnm5blhpkKIyAgIC0gJFNUL2FuYWx5c2lzLmpzb25sIOWPqui/veWKoOWuoeiuoei9qOi/uQojICAgLSDlt7LliKTov4fnmoQgaWQg55u05o6l6Lez6L+H77yM5Lit5pat5ZCO6YeN6LeR5LiN6YeN5aSN6K6h6LS5CgpCQVNFPS9kYXRhL21lZGlhLzAvbmFzYmFrCklOQk9YPSRCQVNFL2luYm94ClNUPSRCQVNFL3N0YXRlCkFSQz0kQkFTRS9hcmNoaXZlCldXVz0vZGF0YS9hZGIvbmFzYmFrL3d3dwpMT0dEPS9kYXRhL2FkYi9uYXNiYWsvbG9ncwpCQj0vZGF0YS9hZGIvbWFnaXNrL2J1c3lib3gKVkxNU1JDPS9kYXRhL2FkYi9uYXNiYWsvYmluL3ZsbV9jbGFzc2lmeS5zaApWTE09L2RhdGEvYWRiL25hc2Jhay9iaW4vdmxtX3J1bi5zaApMT0c9JExPR0QvanVkZ2UubG9nClFVRVVFPSRTVC9wZW5kaW5nLnF1ZXVlCk9OTFlfSU5HRVNUPTAKT05MWV9KVURHRT0wCmNhc2UgIiR7MTotfSIgaW4KICAtLWluZ2VzdCkgT05MWV9JTkdFU1Q9MSA7OwogIC0tanVkZ2UpICBPTkxZX0pVREdFPTEgOzsKZXNhYwoKbWtkaXIgLXAgIiRTVCIgIiRTVC9hbmFseXNpcyIgIiRXV1cvbWVkaWEiICIkTE9HRCIgMj4vZGV2L251bGwKdG91Y2ggIiRMT0ciICIkU1QvYW5hbHlzaXMuanNvbmwiICIkUVVFVUUiIDI+L2Rldi9udWxsCgpsb2coKSB7IGVjaG8gIiQoZGF0ZSAnKyVZLSVtLSVkICVIOiVNOiVTJykgJCoiID4+ICIkTE9HIjsgfQpqZXNjKCkgeyBwcmludGYgJyVzJyAiJDEiIHwgc2VkICdzL1xcL1xcXFwvZzsgcy8iL1xcIi9nJyB8IHRyIC1kICdcclxuXHQnOyB9Cm1raWQoKSB7IHByaW50ZiAnJXM6JXMnICIkMSIgIiQyIiB8ICRCQiBzaGEyNTZzdW0gMj4vZGV2L251bGwgfCBjdXQgLWMxLTE2OyB9CgojIOaLjeaRhOaXpeacn++8muaWh+S7tuWQjeS8mOWFiCA+IG10aW1lCmZkYXRlKCkgewogIEI9JChiYXNlbmFtZSAiJDEiKQogIFI9IiIKICBjYXNlICIkQiIgaW4KICAgICoyMFswLTldWzAtOV0tWzAxXVswLTldLVswLTNdWzAtOV0qKQogICAgICBSPSQocHJpbnRmICclcycgIiRCIiB8IHNlZCAtbiAncy8uKlwoMjBbMC05XVswLTldLVswMV1bMC05XS1bMC0zXVswLTldXCkuKi9cMS9wJyB8IGhlYWQgLTEpIDs7CiAgICAqMjBbMC05XVswLTldWzAxXVswLTldWzAtM11bMC05XV8qKQogICAgICBSPSQocHJpbnRmICclcycgIiRCIiB8IHNlZCAtbiAncy8uKlwoMjBbMC05XVswLTldXClcKFswMV1bMC05XVwpXChbMC0zXVswLTldXClfLiovXDEtXDItXDMvcCcgfCBoZWFkIC0xKSA7OwogICAgKjIwWzAtOV1bMC05XV9bMDFdWzAtOV1fWzAtM11bMC05XSopCiAgICAgIFI9JChwcmludGYgJyVzJyAiJEIiIHwgc2VkIC1uICdzLy4qXCgyMFswLTldWzAtOV1cKV9cKFswMV1bMC05XVwpX1woWzAtM11bMC05XVwpXy4qL1wxLVwyLVwzL3AnIHwgaGVhZCAtMSkgOzsKICAgICoxWzAtOV1bMC05XVswLTldWzAtOV1bMC05XVswLTldWzAtOV1bMC05XVswLTldWzAtOV1bMC05XVswLTldKikKICAgICAgVFM9JChwcmludGYgJyVzJyAiJEIiIHwgc2VkIC1uICdzLy4qW14wLTldXCgxWzAtOV1cezEyXH1cKVteMC05XS4qL1wxL3AnIHwgaGVhZCAtMSkKICAgICAgaWYgWyAtbiAiJFRTIiBdOyB0aGVuCiAgICAgICAgVFNfUz0kKHByaW50ZiAnJXMnICIkVFMiIHwgc2VkICdzLy4uLiQvLycpCiAgICAgICAgUj0kKCRCQiBkYXRlIC1kICJAJFRTX1MiICslWS0lbS0lZCAyPi9kZXYvbnVsbCkKICAgICAgZmkgOzsKICBlc2FjCiAgWyAteiAiJFIiIF0gJiYgUj0kKCRCQiBkYXRlIC1kICJAJDIiICslWS0lbS0lZCAyPi9kZXYvbnVsbCkKICBwcmludGYgJyVzJyAiJFIiCn0KCiMgLS0tLS0tLS0tLSAxLiDnmbvorrAgLS0tLS0tLS0tLQppbmdlc3QoKSB7CiAgTkVXPTA7IFRPVEFMPTA7IE9MRElORz0wCiAgSU5HRVNUX01BWEFHRV9EQVlTPSR7SU5HRVNUX01BWEFHRV9EQVlTOi0yfQogIElDVVQ9JCgoICQoZGF0ZSArJXMpIC0gSU5HRVNUX01BWEFHRV9EQVlTICogODY0MDAgKSkKICBTQ0FOPSRMT0dEL19zY2FuLnR4dAogIGZpbmQgJHtJTkdFU1RfUk9PVDotJElOQk9YfSAtdHlwZSBmIFwKICAgIFwoIC1pbmFtZSAnKi5qcGcnIC1vIC1pbmFtZSAnKi5qcGVnJyAtbyAtaW5hbWUgJyoucG5nJyAtbyAtaW5hbWUgJyouaGVpYycgXAogICAgICAgLW8gLWluYW1lICcqLndlYnAnIC1vIC1pbmFtZSAnKi5tcDQnIC1vIC1pbmFtZSAnKi5tb3YnIC1vIC1pbmFtZSAnKi4zZ3AnIFwKICAgICAgIC1vIC1pbmFtZSAnKi5tNHYnIFwpIDI+L2Rldi9udWxsID4gIiRTQ0FOIgogIHdoaWxlIElGUz0gcmVhZCAtciBGOyBkbwogICAgY2FzZSAiJEYiIGluICovLnRyYXNoZWQqfCovLnBlbmRpbmcqfCovLnRodW1ibmFpbHMqKSBjb250aW51ZSA7OyBlc2FjCiAgICBSRUw9JChwcmludGYgJyVzJyAiJEYiIHwgc2VkICJzI14kSU5CT1gvIyMiKQogICAgIyBfZHVwX2JhY2t1cCDmmK/ljrvph43lia/mnKznmoTplb/mnJ/lrZjmlL7lpITvvIzkuI3mmK/lvoXliKTntKDmnZDvvJrml6LkuI3lhaXpmJ/vvIzkuZ/kuI3lu7rlqpLkvZPpk77mjqXjgIIKICAgICMg5LmL5YmN5YWo6YOo5omr6L+b5p2l77yM5a+86Ie0IDE0NzIg5Liq6YeN5aSN5Lu26Zy45Y2g5b6F5Yik5YiX6KGo44CB6L+Y54GM5LqGIDExMDEg5p2h54aU5pat5Lyq6K6w5b2V44CCCiAgICBjYXNlICIkUkVMIiBpbiBfZHVwX2JhY2t1cC8qKSBjb250aW51ZSA7OyBlc2FjCiAgICBTWj0kKCRCQiBzdGF0IC1jICVzICIkRiIgMj4vZGV2L251bGwpCiAgICBbIC16ICIkU1oiIF0gfHwgWyAiJFNaIiA9ICIwIiBdICYmIGNvbnRpbnVlCiAgICBJRD0kKG1raWQgIiRSRUwiICIkU1oiKQogICAgVE9UQUw9JCgoVE9UQUwrMSkpCiAgICBFWFQ9JChwcmludGYgJyVzJyAiJHtSRUwjIyoufSIgfCB0ciAnQS1aJyAnYS16JykKICAgICMg5aqS5L2T56Gs6ZO+5o6l5L6bIGh0dHBkIOebtOWHuu+8iOWQjOWIhuWMuumbtuaLt+i0ne+8jOWksei0pemAgOWMluS4uuWkjeWItu+8iQogICAgaWYgWyAhIC1mICIkV1dXL21lZGlhLyRJRC4kRVhUIiBdOyB0aGVuCiAgICAgIGxuIC1mICIkRiIgIiRXV1cvbWVkaWEvJElELiRFWFQiIDI+L2Rldi9udWxsIHx8IGNwIC1mICIkRiIgIiRXV1cvbWVkaWEvJElELiRFWFQiIDI+L2Rldi9udWxsCiAgICBmaQogICAgIyDkvY3nva7mmKDlsITlt7Llup/lvIPvvJrml6fniYjlhpkgbG9jLSoudHN277yMYnVpbGQoKSDpgY3ljoblroPlr7zoh7Tph43lpI3ku7bmt7fov5vliJfooajjgIIKICAgICMg546w5Zyo5pS55Li66Zif5YiXKGluYm94IOWGhSkrYW5hbHlzaXMg5Y+M5rqQ77yMbG9jIOaWh+S7tuS4jeWGjeeUn+aIkO+8iOW3suW9kuahoyBzdGF0ZS9fbG9jX29sZC/vvInjgIIKICAgICMg5pyq5Yik6L+H55qEIOKGkiDov5vpmJ/liJfvvIjliKTor7vlj6ror7vpmJ/liJfvvIzpgb/lhY3mr4/mrKHpgY3ljoblhajph4/mlofku7bvvIkKICAgICMg5L2G5Y+q5pS244CM5paw5aKe44CN77yabXRpbWUg5pep5LqOIElOR0VTVF9NQVhBR0VfREFZUyDnmoTljoblj7Lnp6/ljovkuI3ov5vpmJ/liJfvvIwKICAgICMg5ZCm5YiZ5q+P5qyhIGluZ2VzdCDpg73kvJrmiorlh6DljYPkuKrogIHmlofku7bph43mlrDngYzlm57pmJ/liJfjgIIKICAgIGlmIFsgISAtZiAiJFNUL2FuYWx5c2lzLyRJRC5qc29uIiBdOyB0aGVuCiAgICAgIE5FVz0kKChORVcrMSkpCiAgICAgIEZNVD0kKCRCQiBzdGF0IC1jICVZICIkRiIgMj4vZGV2L251bGwpCiAgICAgIFsgLXogIiRGTVQiIF0gJiYgRk1UPSQoZGF0ZSArJXMpCiAgICAgIGlmIFsgIiRJTkdFU1RfTUFYQUdFX0RBWVMiIC1ndCAwIF0gJiYgWyAiJEZNVCIgLWx0ICIkSUNVVCIgXTsgdGhlbgogICAgICAgIE9MRElORz0kKChPTERJTkcrMSkpCiAgICAgIGVsc2UKICAgICAgICBpZiAhIGdyZXAgLXFGICIkSUQJIiAiJFFVRVVFIiAyPi9kZXYvbnVsbDsgdGhlbgogICAgICAgICAgcHJpbnRmICclc1x0JXNcbicgIiRJRCIgIiRSRUwiID4+ICIkUVVFVUUiCiAgICAgICAgZmkKICAgICAgZmkKICAgIGZpCiAgZG9uZSA8ICIkU0NBTiIKICBybSAtZiAiJFNDQU4iCiAgbG9nICJpbmdlc3Q6IOaJq+aPjyAkVE9UQUwg5Liq77yM5paw5aKe5b6F5YikICRORVcg5Liq77yM5Y6G5Y+y6Lez6L+HICRPTERJTkcg5Liq77yM6Zif5YiXICQod2MgLWwgPCAiJFFVRVVFIiAyPi9kZXYvbnVsbCB8IHRyIC1kICcgJykg5p2hIgp9CgojIC0tLS0tLS0tLS0gMi4g5Yik6K+7IC0tLS0tLS0tLS0KanVkZ2VfYWxsKCkgewogIHNlZCAncy9eTUFYU1o9LiovTUFYU1o9MTI1ODI5MTIvJyAiJFZMTVNSQyIgPiAiJFZMTSIgMj4vZGV2L251bGwKICBbIC1zICIkVkxNIiBdIHx8IGNwIC1mICIkVkxNU1JDIiAiJFZMTSIKICBjaG1vZCA3NTUgIiRWTE0iIDI+L2Rldi9udWxsCgogIHRvdWNoICIkUVVFVUUiIDI+L2Rldi9udWxsCiAgIyDpmJ/liJfljrvph43vvIjlkIwgaWQg5Y+q5L+d55WZ5LiA5p2h77yM5Y+W5pyA5paw55qEIHJlbO+8iQogIGF3ayAtRidcdCcgJyQxIT0iIiB7YVskMV09JDB9IEVORHtmb3IoayBpbiBhKSBwcmludCBhW2tdfScgIiRRVUVVRSIgPiAiJFFVRVVFLmRlZCIgMj4vZGV2L251bGwKICBtdiAtZiAiJFFVRVVFLmRlZCIgIiRRVUVVRSIgMj4vZGV2L251bGwKCiAgIyDlvoXliKTmlbDvvJrpmJ/liJfkuK3ov5jmsqHmnIkgYW5hbHlzaXMg55qECiAgUEVORElORz0wCiAgd2hpbGUgSUZTPScJJyByZWFkIC1yIF9xaSBfcXI7IGRvCiAgICBbIC16ICIkX3FpIiBdICYmIGNvbnRpbnVlCiAgICBbIC1mICIkU1QvYW5hbHlzaXMvJF9xaS5qc29uIiBdIHx8IFBFTkRJTkc9JCgoUEVORElORysxKSkKICBkb25lIDwgIiRRVUVVRSIKICBsb2cgImp1ZGdlOiDpmJ/liJflvoXliKQgJFBFTkRJTkcg5LiqIgogIFsgIiRQRU5ESU5HIiAtZXEgMCBdICYmIHJldHVybiAwCgogIEJBVENIPSIkKGRhdGUgKyVZLSVtLSVkKSIKICBST1VORD0wOyBGQUlMQ05UPTA7IEZBSUxUT1Q9MDsgU0tJUENOVD0wOyBPTERDTlQ9MDsgT0tDTlQ9MDsgRkFJTE1BWD0zCiAgSlVER0VfTUFYQUdFX0RBWVM9JHtKVURHRV9NQVhBR0VfREFZUzotMn0KICBDVVQ9JCgoICQoZGF0ZSArJXMpIC0gSlVER0VfTUFYQUdFX0RBWVMgKiA4NjQwMCApKQoKICBRS0VFUD0iJFFVRVVFLmtlZXAiCiAgOiA+ICIkUUtFRVAiIDI+L2Rldi9udWxsCgogIHdoaWxlIElGUz0nCScgcmVhZCAtciBJRCBSRUw7IGRvCiAgICBbIC16ICIkSUQiIF0gJiYgY29udGludWUKICAgICMg5bey5Yik6L+HIOKGkiDlh7rpmJ8KICAgIFsgLWYgIiRTVC9hbmFseXNpcy8kSUQuanNvbiIgXSAmJiBjb250aW51ZQogICAgWyAteiAiJFJFTCIgXSAmJiBjb250aW51ZQoKICAgIFNSQz0iJElOQk9YLyRSRUwiCiAgICBpZiBbICEgLWYgIiRTUkMiIF07IHRoZW4KICAgICAgbG9nICIgIFskKChST1VORCsxKSkvJFBFTkRJTkddIOa6kOaWh+S7tuW3suS4jeWcqCBpbmJveO+8jOWHuumYnyAkUkVMIgogICAgICBjb250aW51ZQogICAgZmkKICAgIFNaPSQoJEJCIHN0YXQgLWMgJXMgIiRTUkMiIDI+L2Rldi9udWxsKQogICAgRVhUPSQocHJpbnRmICclcycgIiR7UkVMIyMqLn0iIHwgdHIgJ0EtWicgJ2EteicpCiAgICBOQU1FPSQoYmFzZW5hbWUgIiRSRUwiKQogICAgTVQ9JCgkQkIgc3RhdCAtYyAlWSAiJFNSQyIgMj4vZGV2L251bGwpCiAgICBbIC16ICIkTVQiIF0gJiYgTVQ9JChkYXRlICslcykKICAgIFJPVU5EPSQoKFJPVU5EKzEpKQogICAgRkRBVEU9JChmZGF0ZSAiJFJFTCIgIiRNVCIpCgogICAgIyAtLS0tIOWPquWIpOaWsOWinu+8mm10aW1lIOaXqeS6juaXtumXtOeql+eahOebtOaOpeWHuumYn++8jOawuOS4jeWIpOivuyAtLS0tCiAgICAjIOWOhuWPsuenr+WOi+aWh+S7tuS4jeWGmeWbniBRS0VFUO+8jOaJgOS7peS4i+S4gOi9ruS4jeS8muWGjeWHuueOsO+8jOmYn+WIl+iHqueEtuaUtuaVmwogICAgaWYgWyAiJEpVREdFX01BWEFHRV9EQVlTIiAtZ3QgMCBdICYmIFsgIiRNVCIgLWx0ICIkQ1VUIiBdOyB0aGVuCiAgICAgIE9MRENOVD0kKChPTERDTlQrMSkpCiAgICAgIGNvbnRpbnVlCiAgICBmaQoKICAgIFQwPSQoZGF0ZSArJXMpCiAgICBDQVQ9IiI7IERFU0M9IiI7IE1PREVMPSIiOyBTVUc9IiIKCiAgICBjYXNlICIkRVhUIiBpbgogICAgICBqcGd8anBlZ3xwbmd8aGVpY3x3ZWJwKQogICAgICAgIGlmIFsgIiRGQUlMQ05UIiAtZ2UgIiRGQUlMTUFYIiBdOyB0aGVuCiAgICAgICAgICBTS0lQQ05UPSQoKFNLSVBDTlQrMSkpCiAgICAgICAgICBwcmludGYgJyVzXHQlc1xuJyAiJElEIiAiJFJFTCIgPj4gIiRRS0VFUCIKICAgICAgICAgIGxvZyAiICBbJFJPVU5ELyRQRU5ESU5HXSBza2lwIHwg6L+e57ut5aSx6LSl6L6+5LiK6ZmQKCRGQUlMTUFYKe+8jOeVmemYn+S4i+asoSB8ICRSRUwiCiAgICAgICAgICBjb250aW51ZQogICAgICAgIGZpCiAgICAgICAgT1VUPSQoc2ggIiRWTE0iICIkU1JDIiAyPi9kZXYvbnVsbCB8IHRyIC1kICdccicgfCBncmVwIC12ICdeW1s6c3BhY2U6XV0qJCcgfCB0YWlsIC0xKQogICAgICAgIGlmIFsgLW4gIiRPVVQiIF07IHRoZW4KICAgICAgICAgIENBVD0kKHByaW50ZiAnJXMnICIkT1VUIiB8IHNlZCAncy98LiovLycgfCB0ciAtZCAnIFx0JykKICAgICAgICAgIERFU0M9JChwcmludGYgJyVzJyAiJE9VVCIgfCBzZWQgJ3MvXltefF0qfC8vJyB8IHNlZCAncy9eW1s6c3BhY2U6XV0qLy87IHMvW1s6c3BhY2U6XV0qJC8vJykKICAgICAgICAgIE1PREVMPSJtaW5pY3BtLXYvemhpcHUiCiAgICAgICAgZmkKICAgICAgICBpZiBbIC16ICIkREVTQyIgXTsgdGhlbgogICAgICAgICAgc2xlZXAgMgogICAgICAgICAgT1VUPSQoc2ggIiRWTE0iICIkU1JDIiAyPi9kZXYvbnVsbCB8IHRyIC1kICdccicgfCBncmVwIC12ICdeW1s6c3BhY2U6XV0qJCcgfCB0YWlsIC0xKQogICAgICAgICAgaWYgWyAtbiAiJE9VVCIgXTsgdGhlbgogICAgICAgICAgICBDQVQ9JChwcmludGYgJyVzJyAiJE9VVCIgfCBzZWQgJ3MvfC4qLy8nIHwgdHIgLWQgJyBcdCcpCiAgICAgICAgICAgIERFU0M9JChwcmludGYgJyVzJyAiJE9VVCIgfCBzZWQgJ3MvXltefF0qfC8vJyB8IHNlZCAncy9eW1s6c3BhY2U6XV0qLy87IHMvW1s6c3BhY2U6XV0qJC8vJykKICAgICAgICAgICAgTU9ERUw9Im1pbmljcG0tdi96aGlwdShyZXRyeSkiCiAgICAgICAgICBmaQogICAgICAgIGZpCiAgICAgICAgY2FzZSAiJENBVCIgaW4gd29ya3xob21lfHNjcmVlbnNob3R8dmlkZW98b3RoZXIpIDs7ICopIENBVD0ib3RoZXIiIDs7IGVzYWMKICAgICAgICBjYXNlICIkREVTQyIgaW4KICAgICAgICAgICrov4flpKfot7Pov4cqKSBDQVQ9InVuY2xhc3NpZmllZCI7IERFU0M9Iui2heWHuuaooeWei+WNleWbvuS4iumZkO+8jOacquWIpOivuyIgOzsKICAgICAgICAgICror4bliKvlpLHotKUqfCrmlofku7bkuI3lrZjlnKgqfCrml6Dlj6/nlKhLZXkqfCpiNjTlpLHotKUqKSBDQVQ9InVuY2xhc3NpZmllZCI7IERFU0M9IuivhuWIq+Wksei0pe+8jOW+heS6uuW3pSIgOzsKICAgICAgICBlc2FjCiAgICAgICAgWyAteiAiJERFU0MiIF0gJiYgeyBDQVQ9InVuY2xhc3NpZmllZCI7IERFU0M9IuaooeWei+aXoOi/lOWbnu+8jOW+heS6uuW3pSI7IH0KICAgICAgICAjIOWksei0pe+8muiuoeaVsOOAgeeVmemYn+OAgeS4jei/myBhbmFseXNpc++8iOmBv+WFjeaxoeafk++8jOS4i+asoeWPr+mHjeWIpO+8iQogICAgICAgIGlmIFsgIiRDQVQiID0gInVuY2xhc3NpZmllZCIgXTsgdGhlbgogICAgICAgICAgRkFJTENOVD0kKChGQUlMQ05UKzEpKTsgRkFJTFRPVD0kKChGQUlMVE9UKzEpKQogICAgICAgICAgcHJpbnRmICclc1x0JXNcbicgIiRJRCIgIiRSRUwiID4+ICIkUUtFRVAiCiAgICAgICAgICBsb2cgIiAgWyRST1VORC8kUEVORElOR10gZmFpbCB8ICRERVNDIHwgJFJFTO+8iOeVmemYn+WPr+mHjeWIpO+8iSIKICAgICAgICAgIGNvbnRpbnVlCiAgICAgICAgZmkKICAgICAgICBGQUlMQ05UPTAKICAgICAgICA7OwogICAgICBtcDR8bW92fDNncHxtNHYpCiAgICAgICAgQ0FUPSJ2aWRlbyI7IE1PREVMPSJydWxlOnZpZGVvIgogICAgICAgIERFU0M9Iuinhumike+8jCQoYXdrIC12IHM9IiRTWiIgJ0JFR0lOe3ByaW50ZiAiJS4xZiIsIHMvMTA0ODU3Nn0nKU1C77yM5pyq5YGa55S76Z2i6K+G5YirIgogICAgICAgIEZBSUxDTlQ9MAogICAgICAgIDs7CiAgICAgICopCiAgICAgICAgQ0FUPSJ1bmNsYXNzaWZpZWQiOyBERVNDPSIo5LiN5pSv5oyB55qE5omp5bGV5ZCNKSIKICAgICAgICA7OwogICAgZXNhYwoKICAgIFQxPSQoZGF0ZSArJXMpOyBNUz0kKCggKFQxLVQwKSoxMDAwICkpCiAgICAjIOe7k+aenO+8muWIhuexuyvmj4/ov7Ar5qih5Z6LK+iAl+aXtu+8jOS4jeWQqyBzdWdnZXN0CiAgICBMSU5FPSQocHJpbnRmICd7ImlkIjoiJXMiLCJuYW1lIjoiJXMiLCJyZWwiOiIlcyIsInNpemUiOiVzLCJtdGltZSI6JXMsImRhdGUiOiIlcyIsInR5cGUiOiIlcyIsImNhdCI6IiVzIiwiZGVzYyI6IiVzIiwibW9kZWwiOiIlcyIsImJhdGNoIjoiJXMiLCJtcyI6JXMsInRzIjolc30nIFwKICAgICAgIiRJRCIgIiQoamVzYyAiJE5BTUUiKSIgIiQoamVzYyAiJFJFTCIpIiAiJFNaIiAiJE1UIiAiJEZEQVRFIiAiJEVYVCIgXAogICAgICAiJENBVCIgIiQoamVzYyAiJERFU0MiKSIgIiQoamVzYyAiJE1PREVMIikiICIkQkFUQ0giICIkTVMiICIkKGRhdGUgKyVzKSIpCiAgICBwcmludGYgJyVzXG4nICIkTElORSIgPiAiJFNUL2FuYWx5c2lzLyRJRC5qc29uIgogICAgcHJpbnRmICclc1xuJyAiJExJTkUiID4+ICIkU1QvYW5hbHlzaXMuanNvbmwiCiAgICBsb2cgIiAgWyRST1VORC8kUEVORElOR10gJENBVCB8ICRERVNDIHwgJHtNU31tcyB8ICROQU1FIgogICAgT0tDTlQ9JCgoT0tDTlQrMSkpCiAgICAjIOaIkOWKnyDihpIg5Ye66Zif77yI5LiN5YaZ5ZueIFFLRUVQ77yJCiAgICBjYXNlICIkRVhUIiBpbiBtcDR8bW92fDNncHxtNHYpIDs7ICopIHNsZWVwIDIgOzsgZXNhYwogIGRvbmUgPCAiJFFVRVVFIgoKICBtdiAtZiAiJFFLRUVQIiAiJFFVRVVFIiAyPi9kZXYvbnVsbAogIGxvZyAianVkZ2U6IOacrOi9rue7k+adnyDmiJDlip89JE9LQ05UIOWksei0pT0kRkFJTFRPVCDnhpTmlq3ot7Pov4c9JFNLSVBDTlQg6Lez6L+H5pen5paH5Lu2PSRPTERDTlQg5aSE55CGPSRST1VORCDlvoXliKQ9JFBFTkRJTkciCn0KCiMgLS0tLS0tLS0tLSAzLiDph43lu7rpobXpnaLmlbDmja4gLS0tLS0tLS0tLQojIOaVsOaNrua6kOWPquacieS4gOS4qu+8mnBlbmRpbmcucXVldWXvvIjnnJ/lvoXliKTvvIkrIGFuYWx5c2lzIOmHjCLmlofku7blvZPliY3ov5jlnKggaW5ib3gi55qE6K6w5b2V44CCCiMg5pep5YWI6L+Z6YeM6YGN5Y6GIGxvYy0qLnRzdiDigJTigJQg6YKj5piv5pen5p625p6E55qE6YGX55WZ5a6a5L2N5paH5Lu277yM6YeM6Z2iIDE0NzIg5p2h5oyH5ZCRIF9kdXBfYmFja3VwCiMg55qE6YeN5aSN5Ymv5pys77yM5a+86Ie05bey5a2Y5qGj55qE6K+B5Lu2562J5paH5Lu25Y+N5aSN5Ye6546w5Zyo5b6F5Yik5YiX6KGo6YeM44CCbG9jIOW3suW9kuaho+WIsCBzdGF0ZS9fbG9jX29sZC/jgIIKYnVpbGQoKSB7CiAgVE1QPSRMT0dEL19kYXRhLmpzb24udG1wCiAgewogICAgcHJpbnRmICd7InBvcnQiOjgwODMsImJhdGNoIjoiJXMiLCJnZW5lcmF0ZWQiOiVzLCJpdGVtcyI6WycgIiQoZGF0ZSArJVklbSVkLSVIJU0pIiAiJChkYXRlICslcykiCiAgICBGSVJTVD0xCgogICAgIyAoYSkg5b6F5Yik6Zif5YiX77yacGVuZGluZy5xdWV1ZSDmr4/ooYwgImlkPFRBQj5yZWwiCiAgICBpZiBbIC1zICIkUVVFVUUiIF07IHRoZW4KICAgICAgd2hpbGUgSUZTPScJJyByZWFkIC1yIElEIFJFTDsgZG8KICAgICAgICBbIC16ICIkSUQiIF0gJiYgY29udGludWUKICAgICAgICBbIC16ICIkUkVMIiBdICYmIGNvbnRpbnVlCiAgICAgICAgU1JDPSIkSU5CT1gvJFJFTCIKICAgICAgICBbIC1mICIkU1JDIiBdIHx8IGNvbnRpbnVlICAgICAgICAgICMg5paH5Lu25bey5LiN5Zyo77yI6KKr56e75YqoL+WOu+mHje+8ieKGkiDkuI3liJcKICAgICAgICAjIOW3suacieWIhuaekOe7k+aenOeahOi1sCAoYinvvIzpgb/lhY3ph43lpI0KICAgICAgICBbIC1zICIkU1QvYW5hbHlzaXMvJElELmpzb24iIF0gJiYgY29udGludWUKICAgICAgICBTWj0kKCRCQiBzdGF0IC1jICVzICIkU1JDIiAyPi9kZXYvbnVsbCk7IFsgLXogIiRTWiIgXSAmJiBTWj0wCiAgICAgICAgTVQ9JCgkQkIgc3RhdCAtYyAlWSAiJFNSQyIgMj4vZGV2L251bGwpOyBbIC16ICIkTVQiIF0gJiYgTVQ9JChkYXRlICslcykKICAgICAgICBFWFQ9IiR7UkVMIyMqLn0iCiAgICAgICAgTkFNRT0iJHtSRUwjIyovfSIKICAgICAgICBGREFURT0kKGZkYXRlICIkUkVMIiAiJE1UIikKICAgICAgICBbICIkRklSU1QiID0gIjEiIF0gfHwgcHJpbnRmICcsJwogICAgICAgIHByaW50ZiAneyJpZCI6IiVzIiwibmFtZSI6IiVzIiwicmVsIjoiJXMiLCJzaXplIjolcywibXRpbWUiOiVzLCJkYXRlIjoiJXMiLCJ0eXBlIjoiJXMiLCJjYXQiOiJwZW5kaW5nIiwiZGVzYyI6IuW+heWIpOivu++8iOWwmuacquiwg+eUqCBBSe+8iSIsIm1vZGVsIjoiLSIsImJhdGNoIjoiJXMiLCJtcyI6MCwidHMiOjB9JyBcCiAgICAgICAgICAiJElEIiAiJChqZXNjICIkTkFNRSIpIiAiJChqZXNjICIkUkVMIikiICIkU1oiICIkTVQiICIkRkRBVEUiICIkRVhUIiAiJEJBVENIIgogICAgICAgIEZJUlNUPTAKICAgICAgZG9uZSA8ICIkUVVFVUUiCiAgICBmaQoKICAgICMgKGIpIOW3suWIpOS9huaWh+S7tuS7jeWcqCBpbmJveCDnmoTvvJrkv53nlZnlnKjliJfooajph4zmmL7npLrmj4/ov7DkuI7liKTlrprnirbmgIHjgIIKICAgICMgICAgIOadoeS7tiLmlofku7bov5jlnKgi5b6I5YWz6ZSuIOKAlOKAlCDlt7LlvZLmoaMv5Y676YeN55qE6Ieq54S25raI5aSx77yM5LiN55So5Y+m5YGa5Y+N5p+l44CCCiAgICAjICAgICDkvYYgX2R1cF9iYWNrdXAg5piv5Y676YeN5Ymv5pys55qE6ZW/5pyf5a2Y5pS+5aSE77yM6YeM6Z2i55qE5paH5Lu25rC46L+cIui/mOWcqCLvvIwKICAgICMgICAgIOW/hemhu+aYvuW8j+aOkumZpO+8jOWQpuWImemHjeWkjeS7tuS8muS4gOebtOmcuOWNoOW+heWIpOWIl+ihqOOAggogICAgZm9yIEFKIGluICIkU1QiL2FuYWx5c2lzLyouanNvbjsgZG8KICAgICAgWyAtcyAiJEFKIiBdIHx8IGNvbnRpbnVlCiAgICAgIFJFTD0kKHNlZCAtbiAncy8uKiJyZWwiOiJcKFteIl0qXCkiLiovXDEvcCcgIiRBSiIgfCBoZWFkIC0xKQogICAgICBbIC16ICIkUkVMIiBdICYmIGNvbnRpbnVlCiAgICAgIGNhc2UgIiRSRUwiIGluIF9kdXBfYmFja3VwLyopIGNvbnRpbnVlIDs7IGVzYWMKICAgICAgWyAtZiAiJElOQk9YLyRSRUwiIF0gfHwgY29udGludWUKICAgICAgWyAiJEZJUlNUIiA9ICIxIiBdIHx8IHByaW50ZiAnLCcKICAgICAgdHIgLWQgJ1xyXG4nIDwgIiRBSiIKICAgICAgRklSU1Q9MAogICAgZG9uZQoKICAgIHByaW50ZiAnXX0nCiAgfSA+ICIkVE1QIiAyPi9kZXYvbnVsbAogICMg5pyr5a2X6IqC5qCh6aqM77ya5LiN6IO95bim57uT5bC+5o2i6KGMIOKAlOKAlCBwcmludGYgJ119XG4nIOS5i+WQjiB0YWlsIC1jIDEg5Y+W5Yiw55qE5piv5o2i6KGM56ym77yMCiAgIyDlkb3ku6Tmm7/mjaLlj4jkvJrmiorooYzlsL7mjaLooYzliaXmjonvvIznu5PmnpzmsLjov5zmmK/nqbrkuLLvvIznrYnkuo7moKHpqozlv4XnhLblpLHotKXvvIjouKnov4fvvInjgIIKICBpZiBbIC1zICIkVE1QIiBdICYmIFsgIiQodGFpbCAtYyAyICIkVE1QIikiID0gIl19IiBdOyB0aGVuCiAgICBtdiAtZiAiJFRNUCIgIiRXV1cvZGF0YS5qc29uIgogICAgbG9nICJidWlsZDogZGF0YS5qc29uICQod2MgLWMgPCAiJFdXVy9kYXRhLmpzb24iKSDlrZfoioIiCiAgZWxzZQogICAgbG9nICJidWlsZDog5aSx6LSlKEpTT07kuI3lrozmlbQpIgogICAgcm0gLWYgIiRUTVAiCiAgZmkKfQoKIyAtLS0tLS0tLS0tIOS4u+a1geeoiyAtLS0tLS0tLS0tCmlmIFsgIiRPTkxZX0lOR0VTVCIgPSAiMSIgXTsgdGhlbgogIGluZ2VzdAogIGV4aXQgMApmaQoKaWYgWyAiJE9OTFlfSlVER0UiID0gIjEiIF07IHRoZW4KICBqdWRnZV9hbGwKICBidWlsZAogIGV4aXQgMApmaQoKaW5nZXN0Cmp1ZGdlX2FsbApidWlsZA==
+#!/system/bin/sh
+# judge.sh — 照片判读：登记新文件 → 只判新增 → 重建页面数据
+#
+# 用法:
+#   judge.sh              完整流程（登记 + 判读 + 重建页面数据）
+#   judge.sh --ingest     只登记（轻量，扫描建硬链接，不调模型）
+#
+# 关键设计(2026-11-02):
+#   1. 队列优先：ingest 把新文件id写入 state/pending.queue，判读只读队列，
+#      不再遍历 3000+ 个 loc-*.tsv（那是一次几十秒的开销）。
+#   2. 只判新增：JUDGE_MAXAGE_DAYS 控制只判最近 N 天内 mtime 的文件，
+#      历史积压不动。设为 0 则判全部。
+#   3. 熔断修好：FAILCNT 是连续失败计数，成功即归零；熔断时本轮跳过不落盘，
+#      下次仍可重判（旧版把熔断结果写进 analysis 导致永久无法重判）。
+#   4. 不出建议：判读结果只有分类+描述+模型+耗时，没有 suggest 字段。
+#
+# 幂等保证:
+#   - 判读结果落 $ST/analysis/<id>.json，同一 id 覆盖写
+#   - $ST/analysis.jsonl 只追加审计轨迹
+#   - 已判过的 id 直接跳过，中断后重跑不重复计费
+
+BASE=/data/media/0/nasbak
+INBOX=$BASE/inbox
+ST=$BASE/state
+ARC=$BASE/archive
+WWW=/data/adb/nasbak/www
+LOGD=/data/adb/nasbak/logs
+BB=/data/adb/magisk/busybox
+VLMSRC=/data/adb/nasbak/bin/vlm_classify.sh
+VLM=/data/adb/nasbak/bin/vlm_run.sh
+LOG=$LOGD/judge.log
+QUEUE=$ST/pending.queue
+ONLY_INGEST=0
+ONLY_JUDGE=0
+case "${1:-}" in
+  --ingest) ONLY_INGEST=1 ;;
+  --judge)  ONLY_JUDGE=1 ;;
+esac
+
+mkdir -p "$ST" "$ST/analysis" "$WWW/media" "$LOGD" 2>/dev/null
+touch "$LOG" "$ST/analysis.jsonl" "$QUEUE" 2>/dev/null
+
+log() { echo "$(date '+%Y-%m-%d %H:%M:%S') $*" >> "$LOG"; }
+jesc() { printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g' | tr -d '\r\n\t'; }
+mkid() { printf '%s:%s' "$1" "$2" | $BB sha256sum 2>/dev/null | cut -c1-16; }
+
+# 拍摄日期：文件名优先 > mtime
+fdate() {
+  B=$(basename "$1")
+  R=""
+  case "$B" in
+    *20[0-9][0-9]-[01][0-9]-[0-3][0-9]*)
+      R=$(printf '%s' "$B" | sed -n 's/.*\(20[0-9][0-9]-[01][0-9]-[0-3][0-9]\).*/\1/p' | head -1) ;;
+    *20[0-9][0-9][01][0-9][0-3][0-9]_*)
+      R=$(printf '%s' "$B" | sed -n 's/.*\(20[0-9][0-9]\)\([01][0-9]\)\([0-3][0-9]\)_.*/\1-\2-\3/p' | head -1) ;;
+    *20[0-9][0-9]_[01][0-9]_[0-3][0-9]*)
+      R=$(printf '%s' "$B" | sed -n 's/.*\(20[0-9][0-9]\)_\([01][0-9]\)_\([0-3][0-9]\)_.*/\1-\2-\3/p' | head -1) ;;
+    *1[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]*)
+      TS=$(printf '%s' "$B" | sed -n 's/.*[^0-9]\(1[0-9]\{12\}\)[^0-9].*/\1/p' | head -1)
+      if [ -n "$TS" ]; then
+        TS_S=$(printf '%s' "$TS" | sed 's/...$//')
+        R=$($BB date -d "@$TS_S" +%Y-%m-%d 2>/dev/null)
+      fi ;;
+  esac
+  [ -z "$R" ] && R=$($BB date -d "@$2" +%Y-%m-%d 2>/dev/null)
+  printf '%s' "$R"
+}
+
+# ---------- 1. 登记 ----------
+ingest() {
+  NEW=0; TOTAL=0; OLDING=0
+  INGEST_MAXAGE_DAYS=${INGEST_MAXAGE_DAYS:-2}
+  ICUT=$(( $(date +%s) - INGEST_MAXAGE_DAYS * 86400 ))
+  SCAN=$LOGD/_scan.txt
+  find ${INGEST_ROOT:-$INBOX} -type f \
+    \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.heic' \
+       -o -iname '*.webp' -o -iname '*.mp4' -o -iname '*.mov' -o -iname '*.3gp' \
+       -o -iname '*.m4v' \) 2>/dev/null > "$SCAN"
+  while IFS= read -r F; do
+    case "$F" in */.trashed*|*/.pending*|*/.thumbnails*) continue ;; esac
+    REL=$(printf '%s' "$F" | sed "s#^$INBOX/##")
+    # _dup_backup 是去重副本的长期存放处，不是待判素材：既不入队，也不建媒体链接。
+    # 之前全部扫进来，导致 1472 个重复件霸占待判列表、还灌了 1101 条熔断伪记录。
+    case "$REL" in _dup_backup/*) continue ;; esac
+    SZ=$($BB stat -c %s "$F" 2>/dev/null)
+    [ -z "$SZ" ] || [ "$SZ" = "0" ] && continue
+    ID=$(mkid "$REL" "$SZ")
+    TOTAL=$((TOTAL+1))
+    EXT=$(printf '%s' "${REL##*.}" | tr 'A-Z' 'a-z')
+    # 媒体硬链接供 httpd 直出（同分区零拷贝，失败退化为复制）
+    if [ ! -f "$WWW/media/$ID.$EXT" ]; then
+      ln -f "$F" "$WWW/media/$ID.$EXT" 2>/dev/null || cp -f "$F" "$WWW/media/$ID.$EXT" 2>/dev/null
+    fi
+    # 位置映射已废弃：旧版写 loc-*.tsv，build() 遍历它导致重复件混进列表。
+    # 现在改为队列(inbox 内)+analysis 双源，loc 文件不再生成（已归档 state/_loc_old/）。
+    # 未判过的 → 进队列（判读只读队列，避免每次遍历全量文件）
+    # 但只收「新增」：mtime 早于 INGEST_MAXAGE_DAYS 的历史积压不进队列，
+    # 否则每次 ingest 都会把几千个老文件重新灌回队列。
+    if [ ! -f "$ST/analysis/$ID.json" ]; then
+      NEW=$((NEW+1))
+      FMT=$($BB stat -c %Y "$F" 2>/dev/null)
+      [ -z "$FMT" ] && FMT=$(date +%s)
+      if [ "$INGEST_MAXAGE_DAYS" -gt 0 ] && [ "$FMT" -lt "$ICUT" ]; then
+        OLDING=$((OLDING+1))
+      else
+        if ! grep -qF "$ID	" "$QUEUE" 2>/dev/null; then
+          printf '%s\t%s\n' "$ID" "$REL" >> "$QUEUE"
+        fi
+      fi
+    fi
+  done < "$SCAN"
+  rm -f "$SCAN"
+  log "ingest: 扫描 $TOTAL 个，新增待判 $NEW 个，历史跳过 $OLDING 个，队列 $(wc -l < "$QUEUE" 2>/dev/null | tr -d ' ') 条"
+}
+
+# ---------- 2. 判读 ----------
+judge_all() {
+  sed 's/^MAXSZ=.*/MAXSZ=12582912/' "$VLMSRC" > "$VLM" 2>/dev/null
+  [ -s "$VLM" ] || cp -f "$VLMSRC" "$VLM"
+  chmod 755 "$VLM" 2>/dev/null
+
+  touch "$QUEUE" 2>/dev/null
+  # 队列去重（同 id 只保留一条，取最新的 rel）
+  awk -F'\t' '$1!="" {a[$1]=$0} END{for(k in a) print a[k]}' "$QUEUE" > "$QUEUE.ded" 2>/dev/null
+  mv -f "$QUEUE.ded" "$QUEUE" 2>/dev/null
+
+  # 待判数：队列中还没有 analysis 的
+  PENDING=0
+  while IFS='	' read -r _qi _qr; do
+    [ -z "$_qi" ] && continue
+    [ -f "$ST/analysis/$_qi.json" ] || PENDING=$((PENDING+1))
+  done < "$QUEUE"
+  log "judge: 队列待判 $PENDING 个"
+  [ "$PENDING" -eq 0 ] && return 0
+
+  BATCH="$(date +%Y-%m-%d)"
+  ROUND=0; FAILCNT=0; FAILTOT=0; SKIPCNT=0; OLDCNT=0; OKCNT=0; FAILMAX=3
+  JUDGE_MAXAGE_DAYS=${JUDGE_MAXAGE_DAYS:-2}
+  CUT=$(( $(date +%s) - JUDGE_MAXAGE_DAYS * 86400 ))
+
+  QKEEP="$QUEUE.keep"
+  : > "$QKEEP" 2>/dev/null
+
+  while IFS='	' read -r ID REL; do
+    [ -z "$ID" ] && continue
+    # 已判过 → 出队
+    [ -f "$ST/analysis/$ID.json" ] && continue
+    [ -z "$REL" ] && continue
+
+    SRC="$INBOX/$REL"
+    if [ ! -f "$SRC" ]; then
+      log "  [$((ROUND+1))/$PENDING] 源文件已不在 inbox，出队 $REL"
+      continue
+    fi
+    SZ=$($BB stat -c %s "$SRC" 2>/dev/null)
+    EXT=$(printf '%s' "${REL##*.}" | tr 'A-Z' 'a-z')
+    NAME=$(basename "$REL")
+    MT=$($BB stat -c %Y "$SRC" 2>/dev/null)
+    [ -z "$MT" ] && MT=$(date +%s)
+    ROUND=$((ROUND+1))
+    FDATE=$(fdate "$REL" "$MT")
+
+    # ---- 只判新增：mtime 早于时间窗的直接出队，永不判读 ----
+    # 历史积压文件不写回 QKEEP，所以下一轮不会再出现，队列自然收敛
+    if [ "$JUDGE_MAXAGE_DAYS" -gt 0 ] && [ "$MT" -lt "$CUT" ]; then
+      OLDCNT=$((OLDCNT+1))
+      continue
+    fi
+
+    T0=$(date +%s)
+    CAT=""; DESC=""; MODEL=""; SUG=""
+
+    case "$EXT" in
+      jpg|jpeg|png|heic|webp)
+        if [ "$FAILCNT" -ge "$FAILMAX" ]; then
+          SKIPCNT=$((SKIPCNT+1))
+          printf '%s\t%s\n' "$ID" "$REL" >> "$QKEEP"
+          log "  [$ROUND/$PENDING] skip | 连续失败达上限($FAILMAX)，留队下次 | $REL"
+          continue
+        fi
+        OUT=$(sh "$VLM" "$SRC" 2>/dev/null | tr -d '\r' | grep -v '^[[:space:]]*$' | tail -1)
+        if [ -n "$OUT" ]; then
+          CAT=$(printf '%s' "$OUT" | sed 's/|.*//' | tr -d ' \t')
+          DESC=$(printf '%s' "$OUT" | sed 's/^[^|]*|//' | sed 's/^[[:space:]]*//; s/[[:space:]]*$//')
+          MODEL="minicpm-v/zhipu"
+        fi
+        if [ -z "$DESC" ]; then
+          sleep 2
+          OUT=$(sh "$VLM" "$SRC" 2>/dev/null | tr -d '\r' | grep -v '^[[:space:]]*$' | tail -1)
+          if [ -n "$OUT" ]; then
+            CAT=$(printf '%s' "$OUT" | sed 's/|.*//' | tr -d ' \t')
+            DESC=$(printf '%s' "$OUT" | sed 's/^[^|]*|//' | sed 's/^[[:space:]]*//; s/[[:space:]]*$//')
+            MODEL="minicpm-v/zhipu(retry)"
+          fi
+        fi
+        case "$CAT" in work|home|screenshot|video|other) ;; *) CAT="other" ;; esac
+        case "$DESC" in
+          *过大跳过*) CAT="unclassified"; DESC="超出模型单图上限，未判读" ;;
+          *识别失败*|*文件不存在*|*无可用Key*|*b64失败*) CAT="unclassified"; DESC="识别失败，待人工" ;;
+        esac
+        [ -z "$DESC" ] && { CAT="unclassified"; DESC="模型无返回，待人工"; }
+        # 失败：计数、留队、不进 analysis（避免污染，下次可重判）
+        if [ "$CAT" = "unclassified" ]; then
+          FAILCNT=$((FAILCNT+1)); FAILTOT=$((FAILTOT+1))
+          printf '%s\t%s\n' "$ID" "$REL" >> "$QKEEP"
+          log "  [$ROUND/$PENDING] fail | $DESC | $REL（留队可重判）"
+          continue
+        fi
+        FAILCNT=0
+        ;;
+      mp4|mov|3gp|m4v)
+        CAT="video"; MODEL="rule:video"
+        DESC="视频，$(awk -v s="$SZ" 'BEGIN{printf "%.1f", s/1048576}')MB，未做画面识别"
+        FAILCNT=0
+        ;;
+      *)
+        CAT="unclassified"; DESC="(不支持的扩展名)"
+        ;;
+    esac
+
+    T1=$(date +%s); MS=$(( (T1-T0)*1000 ))
+    # 结果：分类+描述+模型+耗时，不含 suggest
+    LINE=$(printf '{"id":"%s","name":"%s","rel":"%s","size":%s,"mtime":%s,"date":"%s","type":"%s","cat":"%s","desc":"%s","model":"%s","batch":"%s","ms":%s,"ts":%s}' \
+      "$ID" "$(jesc "$NAME")" "$(jesc "$REL")" "$SZ" "$MT" "$FDATE" "$EXT" \
+      "$CAT" "$(jesc "$DESC")" "$(jesc "$MODEL")" "$BATCH" "$MS" "$(date +%s)")
+    printf '%s\n' "$LINE" > "$ST/analysis/$ID.json"
+    printf '%s\n' "$LINE" >> "$ST/analysis.jsonl"
+    log "  [$ROUND/$PENDING] $CAT | $DESC | ${MS}ms | $NAME"
+    OKCNT=$((OKCNT+1))
+    # 成功 → 出队（不写回 QKEEP）
+    case "$EXT" in mp4|mov|3gp|m4v) ;; *) sleep 2 ;; esac
+  done < "$QUEUE"
+
+  mv -f "$QKEEP" "$QUEUE" 2>/dev/null
+  log "judge: 本轮结束 成功=$OKCNT 失败=$FAILTOT 熔断跳过=$SKIPCNT 跳过旧文件=$OLDCNT 处理=$ROUND 待判=$PENDING"
+}
+
+# ---------- 3. 重建页面数据 ----------
+# 数据源只有一个：pending.queue（真待判）+ analysis 里"文件当前还在 inbox"的记录。
+# 早先这里遍历 loc-*.tsv —— 那是旧架构的遗留定位文件，里面 1472 条指向 _dup_backup
+# 的重复副本，导致已存档的证件等文件反复出现在待判列表里。loc 已归档到 state/_loc_old/。
+build() {
+  TMP=$LOGD/_data.json.tmp
+  {
+    printf '{"port":8083,"batch":"%s","generated":%s,"items":[' "$(date +%Y%m%d-%H%M)" "$(date +%s)"
+    FIRST=1
+
+    # (a) 待判队列：pending.queue 每行 "id<TAB>rel"
+    if [ -s "$QUEUE" ]; then
+      while IFS='	' read -r ID REL; do
+        [ -z "$ID" ] && continue
+        [ -z "$REL" ] && continue
+        SRC="$INBOX/$REL"
+        [ -f "$SRC" ] || continue          # 文件已不在（被移动/去重）→ 不列
+        # 已有分析结果的走 (b)，避免重复
+        [ -s "$ST/analysis/$ID.json" ] && continue
+        SZ=$($BB stat -c %s "$SRC" 2>/dev/null); [ -z "$SZ" ] && SZ=0
+        MT=$($BB stat -c %Y "$SRC" 2>/dev/null); [ -z "$MT" ] && MT=$(date +%s)
+        EXT="${REL##*.}"
+        NAME="${REL##*/}"
+        FDATE=$(fdate "$REL" "$MT")
+        [ "$FIRST" = "1" ] || printf ','
+        printf '{"id":"%s","name":"%s","rel":"%s","size":%s,"mtime":%s,"date":"%s","type":"%s","cat":"pending","desc":"待判读（尚未调用 AI）","model":"-","batch":"%s","ms":0,"ts":0}' \
+          "$ID" "$(jesc "$NAME")" "$(jesc "$REL")" "$SZ" "$MT" "$FDATE" "$EXT" "$BATCH"
+        FIRST=0
+      done < "$QUEUE"
+    fi
+
+    # (b) 已判但文件仍在 inbox 的：保留在列表里显示描述与判定状态。
+    #     条件"文件还在"很关键 —— 已归档/去重的自然消失，不用另做反查。
+    #     但 _dup_backup 是去重副本的长期存放处，里面的文件永远"还在"，
+    #     必须显式排除，否则重复件会一直霸占待判列表。
+    for AJ in "$ST"/analysis/*.json; do
+      [ -s "$AJ" ] || continue
+      REL=$(sed -n 's/.*"rel":"\([^"]*\)".*/\1/p' "$AJ" | head -1)
+      [ -z "$REL" ] && continue
+      case "$REL" in _dup_backup/*) continue ;; esac
+      [ -f "$INBOX/$REL" ] || continue
+      [ "$FIRST" = "1" ] || printf ','
+      tr -d '\r\n' < "$AJ"
+      FIRST=0
+    done
+
+    printf ']}'
+  } > "$TMP" 2>/dev/null
+  # 末字节校验：不能带结尾换行 —— printf ']}\n' 之后 tail -c 1 取到的是换行符，
+  # 命令替换又会把行尾换行剥掉，结果永远是空串，等于校验必然失败（踩过）。
+  if [ -s "$TMP" ] && [ "$(tail -c 2 "$TMP")" = "]}" ]; then
+    mv -f "$TMP" "$WWW/data.json"
+    log "build: data.json $(wc -c < "$WWW/data.json") 字节"
+  else
+    log "build: 失败(JSON不完整)"
+    rm -f "$TMP"
+  fi
+}
+
+# ---------- 主流程 ----------
+if [ "$ONLY_INGEST" = "1" ]; then
+  ingest
+  exit 0
+fi
+
+if [ "$ONLY_JUDGE" = "1" ]; then
+  judge_all
+  build
+  exit 0
+fi
+
+ingest
+judge_all
+build

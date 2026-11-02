@@ -1,1 +1,71 @@
-IyEvc3lzdGVtL2Jpbi9zaAojIOWFseS6q++8muWIpOaWrSLmnKzlnLDku6PnkIbmmK/lkKblt7LlsLHnu6rkuJTlgLzlvpfotbAi44CC55Sx5pCc57Si57G7IENHSSBzb3VyY2XjgIIKIyDnu5Pmnpzlhpnov5vlhajlsYAgUFJPWFlfT1BU77yI5L2/55So5aSEKirkuI3opoHliqDlvJXlj7cqKu+8jOepuuWAvOaXtumdoOivjeWIhuWJsuiHqueEtua2iOWkse+8mwojICAg5Yqg5byV5Y+35Lya55WZ5LiL5LiA5Liq56m65Y+C5pWw77yMY3VybCDkvJrmiorlroPlvZMgVVJM77yM5a6e5rWL5oqlICJvcHRpb24gOiBibGFuayBhcmd1bWVudCLvvInjgIIKIwojIOWPquacieWcqOWQjOaXtua7oei2s+S4ieS4quadoeS7tuaXtuaJjeazqOWFpSAtLXByb3h577yaCiMgICAxKSBzdGF0ZSA9IG9uICAgICAgICAyKSBzYi5waWQg5oyH5ZCR55qE6L+b56iL55yf55qE5rS7552AICAgMykg6YWN572u6YeM5pyJ55yf5a6e6IqC54K577yIcHJveHkvZGlyZWN0IOmDveS4jeeul++8iQojIOesrCAzIOadoeaYr+mHjeeCue+8mmRpcmVjdCDlh7rnq5nlj6rmmK/pgI/kvKDvvIzkuI3op6PlhrPlsIHplIHvvIzljbTnmb3nmb3lpJrnu5XkuIDot7PjgIIKIyDlrp7mtYsgWVRTIOebtOi/niAxfjIg56eS77yM57uPIGRpcmVjdCDku6PnkIYgMTIuOCDnp5LjgILmiYDku6XmnKrmjqXoioLngrnml7blv4XpobvotbDnm7Tov57jgIIKIwojIOWFqOeoi+eUqCBzaGVsbCDlhoXlu7rvvIhyZWFkIC8gY2FzZe+8ie+8jOWPquWcqOWPluerr+WPo+aXtiBmb3JrIOS4gOasoSBncmVw44CCCiMg5pep5YWI54mI5pys5q+P5Liq6L+b56iLIGZvcmsg5LiA5qyhIHRy77yM5Y2V5qyh6K+35rGCIDE1IOenku+8jOWIq+WGjeeKr+OAggoKTUFHUElFX1BST1hZPSIiClBST1hZX09QVD0iIgoKZm9yIF9kIGluIC9kYXRhL2FkYi9zcnYvbWFncGllLXByb3h5IC9kYXRhL2FkYi9tYWdwaWUtcHJveHk7IGRvCiAgWyAtZiAiJF9kL2NvbmZpZy5qc29uIiBdICYmIHsgTUFHUElFX1BST1hZPSIkX2QiOyBicmVhazsgfQpkb25lCgppZiBbIC1uICIkTUFHUElFX1BST1hZIiBdOyB0aGVuCiAgX3M9IiIKICBfcD0iIgogIF9jPSIiCiAgcmVhZCAtciBfcyA8ICIkTUFHUElFX1BST1hZL3N0YXRlIiAyPi9kZXYvbnVsbAogIGlmIFsgIiRfcyIgPSAib24iIF07IHRoZW4KICAgIHJlYWQgLXIgX3AgPCAiJE1BR1BJRV9QUk9YWS9zYi5waWQiIDI+L2Rldi9udWxsCiAgICBpZiBbIC1uICIkX3AiIF07IHRoZW4KICAgICAgcmVhZCAtciBfYyA8ICIvcHJvYy8kX3AvY29tbSIgMj4vZGV2L251bGwKICAgICAgaWYgWyAiJF9jIiA9ICJzaW5nLWJveCIgXTsgdGhlbgogICAgICAgICMg55yL6YWN572u6YeM5pyJ5rKh5pyJ55yf5a6e6IqC54K55Ye656uZ44CC5Lik5Liq5Z2R6YO96Lip6L+H77yaCiAgICAgICAgIyAgMSkg5q2j5ZCR5p6a5Li+5Y2P6K6u5ZCN5Lya5ryP77yIc2luZy1ib3gg5ZCI5rOV57G75Z6L5b6I5aSa77yM6ICM5LiUICJwcm94eSIg5qC55pys5LiN5piv57G75Z6L5ZCN77yMCiAgICAgICAgIyAgICAg5LiK5LiA54mI5YaZ5LqG5a6D77yM5a6e5rWLIHNpbmctYm94IOebtOaOpeaKpSB1bmtub3duIG91dGJvdW5kIHR5cGU6IHByb3h577yJ44CCCiAgICAgICAgIyAgICAg5pS55oiQ5Y+N5ZCR77yab3V0Ym91bmRzIOWMuuautemHjOWHuueOsOS7u+S9lSAidHlwZSIg5LiU5LiN5pivIGRpcmVjdC9ibG9ja++8jOWwseeul+acieiKgueCueOAggogICAgICAgICMgIDIpIOW/hemhu+mZkOWumuWPqueciyBvdXRib3VuZHMg5Yy65q6144CCaW5ib3VuZHMg6YeM6YKj5LiqIG1peGVkIOWFpeermeS5n+W4piAidHlwZSLvvIwKICAgICAgICAjICAgICDkuI3liqDljLrmrrXliKTmlq3kvJrmioogZGlyZWN0IOmFjee9ruivr+WIpOaIkCLlt7LmjqXoioLngrki44CCCiAgICAgICAgIyDnlKjlhoXlu7ogcmVhZCDpgJDooYzmiavmj4/vvIzkuI0gZm9ya+OAggogICAgICAgICMg5Y+q55yLIG91dGJvdW5kcyDmlbDnu4TnmoQqKuesrOS4gOS4qioqIHR5cGUg4oCU4oCUIOmCo+aJjeaYr+m7mOiupOWHuuerme+8jOWGs+Wumua1gemHj+WOu+WTquOAggogICAgICAgICMg6KeB5Yiw5bCx5a6a6K665bm25YGc5q2i5omr5o+P77yM5ZCm5YiZ5ZCO6Z2iIGRucy9yb3V0ZSDmrrXokL3ph4znmoQgInR5cGUiOiJodHRwcyIg5Lya6K+v5Yik44CCCiAgICAgICAgX25vZGU9IiIKICAgICAgICBfaW49MAogICAgICAgIF9zZWVuPTAKICAgICAgICB3aGlsZSBJRlM9IHJlYWQgLXIgX2xpbmUgfHwgWyAtbiAiJF9saW5lIiBdOyBkbwogICAgICAgICAgWyAiJF9zZWVuIiA9IDEgXSAmJiBicmVhawogICAgICAgICAgY2FzZSAiJF9saW5lIiBpbgogICAgICAgICAgICAqJyJvdXRib3VuZHMiJyopIF9pbj0xOyBjb250aW51ZSA7OwogICAgICAgICAgICAqJyJpbmJvdW5kcyInKikgIF9pbj0wOyBjb250aW51ZSA7OwogICAgICAgICAgZXNhYwogICAgICAgICAgWyAiJF9pbiIgPSAxIF0gfHwgY29udGludWUKICAgICAgICAgIGNhc2UgIiRfbGluZSIgaW4KICAgICAgICAgICAgKicidHlwZSInKikKICAgICAgICAgICAgICBfc2Vlbj0xCiAgICAgICAgICAgICAgY2FzZSAiJF9saW5lIiBpbgogICAgICAgICAgICAgICAgKicidHlwZSI6ICJkaXJlY3QiJyp8KicidHlwZSI6ImRpcmVjdCInKikgOzsKICAgICAgICAgICAgICAgIConInR5cGUiOiAiYmxvY2siJyp8KicidHlwZSI6ImJsb2NrIicqKSAgIDs7CiAgICAgICAgICAgICAgICAqKSBfbm9kZT0xIDs7CiAgICAgICAgICAgICAgZXNhYwogICAgICAgICAgICAgIDs7CiAgICAgICAgICBlc2FjCiAgICAgICAgZG9uZSA8ICIkTUFHUElFX1BST1hZL2NvbmZpZy5qc29uIgogICAgICAgIGlmIFsgLW4gIiRfbm9kZSIgXTsgdGhlbgogICAgICAgICAgX3BvcnQ9JChncmVwIC1vICdsaXN0ZW5fcG9ydFteMC05XSpbMC05XSonICIkTUFHUElFX1BST1hZL2NvbmZpZy5qc29uIiAyPi9kZXYvbnVsbCB8IGhlYWQgLTEgfCB0ciAtZGMgJzAtOScpCiAgICAgICAgICBbIC1uICIkX3BvcnQiIF0gfHwgX3BvcnQ9MTA4MDgKICAgICAgICAgIFBST1hZX09QVD0iLS1wcm94eSBodHRwOi8vMTI3LjAuMC4xOiRfcG9ydCIKICAgICAgICAgICMg57ut5ZG977ya5pCc57Si5rS75Yqo566XIuS9v+eUqOS4rSLvvIzliKvorqnnnIvpl6jni5fmiormraPlnKjnlKjnmoTku6PnkIblhbPmjokKICAgICAgICAgIHRvdWNoICIkTUFHUElFX1BST1hZL2xhc3R1c2UiIDI+L2Rldi9udWxsCiAgICAgICAgZmkKICAgICAgZmkKICAgIGZpCiAgZmkKZmk=
+#!/system/bin/sh
+# 共享：判断"本地代理是否已就绪且值得走"。由搜索类 CGI source。
+# 结果写进全局 PROXY_OPT（使用处**不要加引号**，空值时靠词分割自然消失；
+#   加引号会留下一个空参数，curl 会把它当 URL，实测报 "option : blank argument"）。
+#
+# 只有在同时满足三个条件时才注入 --proxy：
+#   1) state = on        2) sb.pid 指向的进程真的活着   3) 配置里有真实节点（proxy/direct 都不算）
+# 第 3 条是重点：direct 出站只是透传，不解决封锁，却白白多绕一跳。
+# 实测 YTS 直连 1~2 秒，经 direct 代理 12.8 秒。所以未接节点时必须走直连。
+#
+# 全程用 shell 内建（read / case），只在取端口时 fork 一次 grep。
+# 早先版本每个进程 fork 一次 tr，单次请求 15 秒，别再犯。
+
+MAGPIE_PROXY=""
+PROXY_OPT=""
+
+for _d in /data/adb/srv/magpie-proxy /data/adb/magpie-proxy; do
+  [ -f "$_d/config.json" ] && { MAGPIE_PROXY="$_d"; break; }
+done
+
+if [ -n "$MAGPIE_PROXY" ]; then
+  _s=""
+  _p=""
+  _c=""
+  read -r _s < "$MAGPIE_PROXY/state" 2>/dev/null
+  if [ "$_s" = "on" ]; then
+    read -r _p < "$MAGPIE_PROXY/sb.pid" 2>/dev/null
+    if [ -n "$_p" ]; then
+      read -r _c < "/proc/$_p/comm" 2>/dev/null
+      if [ "$_c" = "sing-box" ]; then
+        # 看配置里有没有真实节点出站。两个坑都踩过：
+        #  1) 正向枚举协议名会漏（sing-box 合法类型很多，而且 "proxy" 根本不是类型名，
+        #     上一版写了它，实测 sing-box 直接报 unknown outbound type: proxy）。
+        #     改成反向：outbounds 区段里出现任何 "type" 且不是 direct/block，就算有节点。
+        #  2) 必须限定只看 outbounds 区段。inbounds 里那个 mixed 入站也带 "type"，
+        #     不加区段判断会把 direct 配置误判成"已接节点"。
+        # 用内建 read 逐行扫描，不 fork。
+        # 只看 outbounds 数组的**第一个** type —— 那才是默认出站，决定流量去哪。
+        # 见到就定论并停止扫描，否则后面 dns/route 段落里的 "type":"https" 会误判。
+        _node=""
+        _in=0
+        _seen=0
+        while IFS= read -r _line || [ -n "$_line" ]; do
+          [ "$_seen" = 1 ] && break
+          case "$_line" in
+            *'"outbounds"'*) _in=1; continue ;;
+            *'"inbounds"'*)  _in=0; continue ;;
+          esac
+          [ "$_in" = 1 ] || continue
+          case "$_line" in
+            *'"type"'*)
+              _seen=1
+              case "$_line" in
+                *'"type": "direct"'*|*'"type":"direct"'*) ;;
+                *'"type": "block"'*|*'"type":"block"'*)   ;;
+                *) _node=1 ;;
+              esac
+              ;;
+          esac
+        done < "$MAGPIE_PROXY/config.json"
+        if [ -n "$_node" ]; then
+          _port=$(grep -o 'listen_port[^0-9]*[0-9]*' "$MAGPIE_PROXY/config.json" 2>/dev/null | head -1 | tr -dc '0-9')
+          [ -n "$_port" ] || _port=10808
+          PROXY_OPT="--proxy http://127.0.0.1:$_port"
+          # 续命：搜索活动算"使用中"，别让看门狗把正在用的代理关掉
+          touch "$MAGPIE_PROXY/lastuse" 2>/dev/null
+        fi
+      fi
+    fi
+  fi
+fi
