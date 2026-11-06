@@ -1,0 +1,10 @@
+# 统一行尾为 LF：K40 上 sh/cgi 用 CRLF 会报 bad interpreter
+* text=auto eol=lf
+
+# 二进制原样
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.woff2 binary
