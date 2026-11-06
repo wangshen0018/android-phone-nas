@@ -353,6 +353,66 @@ settings put system screen_off_timeout 2147483647
 
 ---
 
+## 附：网页里看手机实时画面（含反向操作）
+
+管理面板上加了一个「手机屏幕」页，直接在页面里显示手机实时画面，
+并且鼠标能点、能拖、能打字——相当于把 scrcpy 搬进浏览器。
+
+**关键点：不需要在电脑上跑任何东西，也不需要 HTTPS 和证书。**
+
+链路是这样：scrcpy 内核（`scrcpy-server.jar`）用 `app_process` 起来后，
+**它自己就是个 WebSocket 服务器**（监听 8886），node 那层中转完全多余。
+所以客户端静态资源直接放 8083 静态目录，浏览器连 `ws://<手机IP>:8886/` 就行，
+页面和视频流全部来自手机本身。
+
+```
+浏览器 ──┬─ http 8083 ──> busybox httpd（页面 + www/remote/ 客户端）
+         └─ ws  8886  ──> scrcpy-server（app_process，H.264 硬编）
+```
+
+### 这一段踩过的坑
+
+**坑一：想用 WebCodecs 就必须先上 HTTPS——而且光给子页面加 HTTPS 没用。**
+
+WebCodecs 的 `VideoDecoder` 是 secure context only。更麻烦的是
+**iframe 的安全上下文继承自父链**：父页面是 `http://`，里面嵌 `https://` 也不给用。
+而跨站 iframe（`http://A` 嵌 `https://B`）还有第三道墙——cookie 要
+`SameSite=None; Secure`，WS 握手经常直接 1006。实测过：地址栏直连能出画面，
+同样的地址塞进 http 页面的 iframe 就永远停在 `connecting...`，
+手机端连编码进程都没起。
+
+绕过去的路子不是加密，是**换播放器**：这个客户端的 MSE（H264 Converter）解码器
+不要求安全上下文。于是全部改用 `player=mse`，纯 http、同源 iframe，一次通。
+
+**坑二：`busybox httpd` 做不了 WebSocket 升级。**
+
+所以别想着在 8083 上自己实现 WS 转发。把 WS 留给手机上的 scrcpy-server，
+8083 只负责发静态文件，职责反而最清楚。
+
+**坑三：scrcpy 1.19 在 Android 14 上居然能跑。**
+
+2021 年的老内核，本以为要改，实测 `app_process` 直接起来、硬编正常。
+但启动参数必须匹配它的协议版本（`1.19-ws8`），版本号写错会静默退出。
+
+### 部署
+
+```sh
+adb push srv/scrcpy-server-1.19-ws8.jar /data/local/tmp/
+adb shell su -c 'cp /data/local/tmp/scrcpy-server-1.19-ws8.jar /data/adb/nasbak/srv/scrcpy-server.jar'
+adb push bin/scrcpy-serve.sh /data/local/tmp/
+adb shell su -c 'cp /data/local/tmp/scrcpy-serve.sh /data/adb/nasbak/bin/ && chmod 755 /data/adb/nasbak/bin/scrcpy-serve.sh'
+adb shell su -c 'sh /data/adb/nasbak/bin/scrcpy-serve.sh ensure'
+```
+
+`scrcpy-serve.sh` 有 `start` / `stop` / `status` / `ensure`；
+`ensure` 会识别「进程在但 8886 没监听」并重启，适合挂 cron 看护。
+开机由 `service.d` 触发一次，之后 `cron` 每 5 分钟兜一次。
+
+**开销**：没人看的时候 `%CPU 0.0`，内存常驻约 143 MB。编码是硬件 H.264，
+不占 CPU；但屏幕常亮 + 长期编码还是会发热，建议按需 `stop`。
+
+---
+
 ## 目录结构
 
 ```
@@ -397,6 +457,18 @@ settings put system screen_off_timeout 2147483647
 | `www/judge.html` | 文件判定页 |
 | `www/archive.html` | 存档管理页（类型-年份折叠） |
 | `www/cgi/*.cgi` | 判定 / 存档 / 状态接口 |
+| `bin/media-gc.sh` | 媒体副本回收（默认干跑，`--apply` 才删） |
+| `bin/lib-sidecar.sh` | 副本目录与硬链接辅助 |
+| `bin/ingest-backlog.sh` | 一次性补录历史积压（不做常驻） |
+| `srv/update-trackers.sh` | 每周刷新 BT tracker 并热改运行中的 aria2 |
+| `srv/bt-stall.sh` | 扫 RPC 找卡住的 BT 任务，输出 `bt-stall.json` |
+| `bin/thunder-confirm.sh` | 手机迅雷投递后的确认与结果回写 |
+| `bin/thunder-sync.sh` | 把迅雷下载完成的文件搬回下载目录 |
+| `bin/scrcpy-serve.sh` | 投屏服务启停与看护（`start/stop/status/ensure`） |
+| `srv/scrcpy-server-1.19-ws8.jar` | scrcpy 内核，自带 WebSocket 服务（8886） |
+| `www/screen.html` | 「手机屏幕」页，同源 iframe 直嵌 `/remote/` |
+| `www/remote/` | ws-scrcpy 客户端静态资源（约 682 KB） |
+| `www/pinyin.js` | 拼音首字母搜索 |
 | `deploy/deploy.ps1` | 一键部署 |
 
 ---
@@ -404,6 +476,8 @@ settings put system screen_off_timeout 2147483647
 ## 已知限制
 
 - Web 面板**没有鉴权**。只适合纯内网，或前面挂 Tailscale 之类做访问控制。
+- **投屏端口 8886 也没有鉴权**，而且权限比面板大得多：连上就能全机操作这台 root 手机。
+  同样只能靠网络层控制（内网 / 虚拟组网），绝不要暴露到公网。
 - 只处理图片和视频，其他文件不参与判读。
 - 单机单点，手机挂了就是全挂，无冗余。
 - 云端同步是 `rclone sync` 单向推送，不做双向。

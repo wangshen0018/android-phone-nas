@@ -26,3 +26,11 @@ ps -A -o pid,args 2>/dev/null | grep -q "nasbak/bin/daemon.sh" || {
   setsid nohup sh "$BIN/daemon.sh" >/dev/null 2>&1 &
   echo "$(date '+%F %T') daemon 已起" >> "$LOGD/boot.log" 2>/dev/null
 }
+
+# ---------- 投屏服务（scrcpy-server 1.19-ws8，监听 8886）----------
+# 给 www/screen.html 用；自带 WebSocket，浏览器直连，不再需要 PC 上的 node 桥。
+# 空闲 0% CPU，故常驻；进程被杀由 crond 的 ensure 兜底。
+[ -x "$BIN/scrcpy-serve.sh" ] && {
+  sh "$BIN/scrcpy-serve.sh" ensure
+  echo "$(date '+%F %T') scrcpy-serve ensure 已执行" >> "$LOGD/boot.log" 2>/dev/null
+}

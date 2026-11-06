@@ -18,8 +18,21 @@
 #   - 判读结果落 $ST/analysis/<id>.json，同一 id 覆盖写
 #   - $ST/analysis.jsonl 只追加审计轨迹
 #   - 已判过的 id 直接跳过，中断后重跑不重复计费
+#
+# 2026-11-03 改动（互斥锁）：
+#   本脚本用固定名中间文件（$LOGD/_data.json.tmp、$LOGD/_scan.txt），
+#   两个实例并发时会互相删掉对方正在读的文件，出现「build: 失败(JSON不完整)」
+#   这种假报错；两次 --judge 并发还会让同一批照片调两遍 VLM，等于双倍花钱。
+#   现在整段流程用 mkdir 原子锁（bin/lib-lock.sh）保护，拿不到锁直接退出。
 
 BASE=/data/media/0/nasbak
+# 锁库必须存在，否则宁可整个脚本不跑（并发下的假报错比不跑更难排查）
+if [ -r /data/adb/nasbak/bin/lib-lock.sh ]; then
+  . /data/adb/nasbak/bin/lib-lock.sh
+else
+  echo "缺少 /data/adb/nasbak/bin/lib-lock.sh，无法保证单实例，本次退出" >&2
+  exit 1
+fi
 INBOX=$BASE/inbox
 ST=$BASE/state
 ARC=$BASE/archive
@@ -30,6 +43,30 @@ VLMSRC=/data/adb/nasbak/bin/vlm_classify.sh
 VLM=/data/adb/nasbak/bin/vlm_run.sh
 LOG=$LOGD/judge.log
 QUEUE=$ST/pending.queue
+# ---------- 媒体副本目录（2026-11-03 迁移） ----------
+# 副本必须和 inbox/archive 在同一挂载，否则 ln 必失败（Cross-device link）。
+# Android 把 /data/media/0（用户存储）与 /data/adb（root 区）刻意隔离，
+# 旧版把副本放 $WWW/media，ln 每次失败退化成 cp，3164 份副本白占 7.9G。
+# 现在副本实体在 $ST/media（media/0 同侧，ln 实测成功 nlink=2），
+# www 根下留 symlink $WWW/media → $ST/media，httpd 的 URL 完全不用改
+# （busybox httpd 允许跟随符号链接，SELinux Enforcing 下实测 HTTP 200）。
+MEDIA_DIR=$ST/media
+WWW_LINK=$WWW/media
+ensure_media_layout() {
+  mkdir -p "$MEDIA_DIR" 2>/dev/null
+  if [ -L "$WWW_LINK" ]; then
+    cur=$(readlink "$WWW_LINK" 2>/dev/null)
+    [ "$cur" = "$MEDIA_DIR" ] || ln -sfn "$MEDIA_DIR" "$WWW_LINK" 2>/dev/null
+  elif [ -d "$WWW_LINK" ]; then
+    # 旧实体目录 → 改名让位。mv 失败时绝不 ln：否则 ln -sfn 会钻到目录里
+    # 建出 www/media/media 这种嵌套链接。
+    if mv -f "$WWW_LINK" "${WWW_LINK}.old-legacy" 2>/dev/null; then
+      ln -sfn "$MEDIA_DIR" "$WWW_LINK" 2>/dev/null
+    fi
+  else
+    ln -sfn "$MEDIA_DIR" "$WWW_LINK" 2>/dev/null
+  fi
+}
 ONLY_INGEST=0
 ONLY_JUDGE=0
 case "${1:-}" in
@@ -37,12 +74,30 @@ case "${1:-}" in
   --judge)  ONLY_JUDGE=1 ;;
 esac
 
-mkdir -p "$ST" "$ST/analysis" "$WWW/media" "$LOGD" 2>/dev/null
+mkdir -p "$ST" "$ST/analysis" "$MEDIA_DIR" "$LOGD" 2>/dev/null
 touch "$LOG" "$ST/analysis.jsonl" "$QUEUE" 2>/dev/null
+ensure_media_layout
 
 log() { echo "$(date '+%Y-%m-%d %H:%M:%S') $*" >> "$LOG"; }
 jesc() { printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g' | tr -d '\r\n\t'; }
 mkid() { printf '%s:%s' "$1" "$2" | $BB sha256sum 2>/dev/null | cut -c1-16; }
+
+# ---------- 单实例锁 ----------
+# ingest 与 judge 共用 pending.queue 与 analysis/ 目录，judge 还会重写队列
+# （mv -f QKEEP QUEUE），并发跑会丢条目、也会让 build 读到半截 JSON。
+# 两次 --judge 并发更糟：同一批照片会调两遍 VLM，直接双倍花钱。
+# 拿不到锁就退出（不阻塞、不等待），本轮留到下次调度。
+# ingest 允许重试几次（最多约 3 秒）：它最轻、常与手动操作撞车，
+# 等一下就能接上；判读可能跑几分钟，就不等了，撞上就让下一轮补。
+if [ "$ONLY_INGEST" = "1" ]; then LOCK_TRIES=3; else LOCK_TRIES=1; fi
+if ! lock_acquire judge "$LOCK_TRIES"; then
+  log "judge: 已有实例在运行，本次退出（未做任何改动）"
+  echo "已有实例在运行，本次退出（未做任何改动）"
+  exit 0
+fi
+trap 'lock_release judge' 0
+trap 'lock_release judge; exit 1' INT TERM
+
 
 # 拍摄日期：文件名优先 > mtime
 fdate() {
@@ -71,8 +126,11 @@ ingest() {
   NEW=0; TOTAL=0; OLDING=0
   INGEST_MAXAGE_DAYS=${INGEST_MAXAGE_DAYS:-2}
   ICUT=$(( $(date +%s) - INGEST_MAXAGE_DAYS * 86400 ))
-  SCAN=$LOGD/_scan.txt
+  SCAN=$LOGD/_scan.$$.txt
+  # 2026-11-06：迅雷成品已改投 downloads/Thunder，不再进 inbox；
+  # 这里再加一层路径排除作防御，防止将来改回 inbox/Thunder 时把视频灌进 VLM 队列。
   find ${INGEST_ROOT:-$INBOX} -type f \
+    ! -path '*/Thunder/*' ! -path '*/downloads/*' ! -path '*/_dup_backup/*' \
     \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.heic' \
        -o -iname '*.webp' -o -iname '*.mp4' -o -iname '*.mov' -o -iname '*.3gp' \
        -o -iname '*.m4v' \) 2>/dev/null > "$SCAN"
@@ -88,8 +146,8 @@ ingest() {
     TOTAL=$((TOTAL+1))
     EXT=$(printf '%s' "${REL##*.}" | tr 'A-Z' 'a-z')
     # 媒体硬链接供 httpd 直出（同分区零拷贝，失败退化为复制）
-    if [ ! -f "$WWW/media/$ID.$EXT" ]; then
-      ln -f "$F" "$WWW/media/$ID.$EXT" 2>/dev/null || cp -f "$F" "$WWW/media/$ID.$EXT" 2>/dev/null
+    if [ ! -f "$MEDIA_DIR/$ID.$EXT" ]; then
+      ln -f "$F" "$MEDIA_DIR/$ID.$EXT" 2>/dev/null || cp -f "$F" "$MEDIA_DIR/$ID.$EXT" 2>/dev/null
     fi
     # 位置映射已废弃：旧版写 loc-*.tsv，build() 遍历它导致重复件混进列表。
     # 现在改为队列(inbox 内)+analysis 双源，loc 文件不再生成（已归档 state/_loc_old/）。
@@ -121,8 +179,8 @@ judge_all() {
 
   touch "$QUEUE" 2>/dev/null
   # 队列去重（同 id 只保留一条，取最新的 rel）
-  awk -F'\t' '$1!="" {a[$1]=$0} END{for(k in a) print a[k]}' "$QUEUE" > "$QUEUE.ded" 2>/dev/null
-  mv -f "$QUEUE.ded" "$QUEUE" 2>/dev/null
+  awk -F'\t' '$1!="" {a[$1]=$0} END{for(k in a) print a[k]}' "$QUEUE" > "$QUEUE.$$.ded" 2>/dev/null
+  mv -f "$QUEUE.$$.ded" "$QUEUE" 2>/dev/null
 
   # 待判数：队列中还没有 analysis 的
   PENDING=0
@@ -138,7 +196,7 @@ judge_all() {
   JUDGE_MAXAGE_DAYS=${JUDGE_MAXAGE_DAYS:-2}
   CUT=$(( $(date +%s) - JUDGE_MAXAGE_DAYS * 86400 ))
 
-  QKEEP="$QUEUE.keep"
+  QKEEP="$QUEUE.$$.keep"
   : > "$QKEEP" 2>/dev/null
 
   while IFS='	' read -r ID REL; do
@@ -240,7 +298,7 @@ judge_all() {
 # 早先这里遍历 loc-*.tsv —— 那是旧架构的遗留定位文件，里面 1472 条指向 _dup_backup
 # 的重复副本，导致已存档的证件等文件反复出现在待判列表里。loc 已归档到 state/_loc_old/。
 build() {
-  TMP=$LOGD/_data.json.tmp
+  TMP=$LOGD/_data.json.$$.tmp
   {
     printf '{"port":8083,"batch":"%s","generated":%s,"items":[' "$(date +%Y%m%d-%H%M)" "$(date +%s)"
     FIRST=1

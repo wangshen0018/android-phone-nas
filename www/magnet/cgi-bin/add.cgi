@@ -11,8 +11,8 @@ printf 'X-Content-Type-Options: nosniff\r\n'
 printf '\r\n'
 
 SELF_DIR=$(cd "$(dirname "$0")" 2>/dev/null && pwd)
-if [ -f "$SELF_DIR/../../lib/aria2.sh" ]; then
-  . "$SELF_DIR/../../lib/aria2.sh"
+if [ -f "/data/adb/srv/magnet/lib/aria2.sh" ]; then
+  . "/data/adb/srv/magnet/lib/aria2.sh"
 else
   echo '{"error":"lib/aria2.sh not found, redeploy needed"}'
   exit 0

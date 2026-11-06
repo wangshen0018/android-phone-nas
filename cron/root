@@ -2,3 +2,8 @@
 0 3 * * * sh /data/local/tmp/gyp/gyp-backup.sh
 0 12 * * * sh /data/local/tmp/gyp/gyp-backup.sh
 */2 * * * * sh /data/adb/nasbak/bin/status-collect.sh
+30 4 * * 1 sh /data/adb/nasbak/bin/media-gc.sh --apply
+20 4 * * 1 sh /data/adb/srv/update-trackers.sh
+*/10 * * * * sh /data/adb/srv/bt-stall.sh
+*/5 * * * * sh /data/adb/nasbak/bin/thunder-sync.sh
+*/5 * * * * sh /data/adb/nasbak/bin/scrcpy-serve.sh ensure

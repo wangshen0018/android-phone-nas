@@ -93,9 +93,34 @@ list)
       N=$(find "$D" -maxdepth 1 -type f 2>/dev/null | wc -l | tr -d ' ')
       SZ=$($BB du -sb "$D" 2>/dev/null | awk '{print $1}')
       [ -z "$SZ" ] && SZ=0
+      # 最近变动时间：取事件夹内文件的 mtime 最大值。
+      # 不能用目录 mtime —— 实测 6 个事件夹的目录 mtime 全等于同一次批量操作的时间
+      # （1793545219），完全没有区分度。文件 mtime 才反映"这个事件最后一次进/出文件"。
+      # 用 find -exec stat + 一次批量 stat，6 个夹共 0.2 秒，比逐文件 fork 快一个量级。
+      LAST=$($BB find "$D" -maxdepth 1 -type f -exec $BB stat -c %Y {} + 2>/dev/null | sort -n | tail -1)
+      [ -z "$LAST" ] && LAST=0
+      # 封面：取事件夹内第一张图片，按归档 mid 公式生成预览链接。
+      # 供存档页的图形化事件选择器显示缩略图，避免逐个事件再拉一次 files。
+      # mid 公式必须与 files 动作完全一致，否则 media-gc 的归档 mid 集合对不上。
+      CVMID=""; CVEXT=""
+      for CFP in "$D"/*; do
+        [ -f "$CFP" ] || continue
+        CEX=$(printf '%s' "${CFP##*.}" | tr 'A-Z' 'a-z')
+        case "$CEX" in jpg|jpeg|png|webp|gif|bmp) ;; *) continue ;; esac
+        CN=$(basename "$CFP")
+        CS=$(stat -c %s "$CFP" 2>/dev/null); [ -z "$CS" ] && CS=0
+        CVMID=$(printf '%s:%s' "$YM/$F/$CN" "$CS" | $BB sha256sum 2>/dev/null | cut -c1-16)
+        CVEXT="$CEX"
+        WWMDIR=/data/media/0/nasbak/state/media   # 实体目录与照片同挂载，ln 必成（旧版在 /data/adb 下必失败）
+        mkdir -p "$WWMDIR" 2>/dev/null
+        [ -f "$WWMDIR/$CVMID.$CVEXT" ] || {
+          ln -f "$CFP" "$WWMDIR/$CVMID.$CVEXT" 2>/dev/null || cp -f "$CFP" "$WWMDIR/$CVMID.$CVEXT" 2>/dev/null
+        }
+        break
+      done
       [ "$FIRST" = "1" ] || printf ','
-      printf '{"folder":"%s","ym":"%s","count":%s,"size":%s,"meta":%s}' \
-        "$(jesc "$F")" "$YM" "$N" "$SZ" "$ln"
+      printf '{"folder":"%s","ym":"%s","count":%s,"size":%s,"last":%s,"cover":"%s","coverExt":"%s","meta":%s}' \
+        "$(jesc "$F")" "$YM" "$N" "$SZ" "$LAST" "$CVMID" "$CVEXT" "$ln"
       FIRST=0
     done < "$DATA/events.jsonl"
   fi
@@ -121,7 +146,7 @@ files)
   [ -d "$D" ] || { echo '{"ok":false,"err":"folder not exists"}'; exit 0; }
   printf '{"ok":true,"folder":"%s","files":[' "$F"
   FIRST=1
-  WWMDIR=/data/adb/nasbak/www/media
+  WWMDIR=/data/media/0/nasbak/state/media   # 实体目录与照片同挂载，ln 必成（旧版在 /data/adb 下必失败）
   mkdir -p "$WWMDIR" 2>/dev/null
   for fp in "$D"/*; do
     [ -f "$fp" ] || continue

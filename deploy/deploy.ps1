@@ -49,6 +49,9 @@ $SrvMap = [ordered]@{
   'aria2.sh'         = '/data/adb/srv/magnet/lib/aria2.sh'
   'proxy-lib.sh'     = '/data/adb/srv/magnet/proxy-lib.sh'
   'magnet-httpd.conf'= '/data/adb/srv/magnet/httpd.conf'
+  'update-trackers.sh' = '/data/adb/srv/update-trackers.sh'
+  'bt-stall.sh'        = '/data/adb/srv/bt-stall.sh'
+  'scrcpy-server-1.19-ws8.jar' = '/data/adb/nasbak/srv/scrcpy-server.jar'
 }
 
 # www 下需要保持可执行的 CGI
@@ -151,6 +154,15 @@ done
 chmod 755 /data/adb/nasbak/www/magnet/cgi-bin/*.cgi 2>/dev/null
 chmod 644 /data/adb/nasbak/www/*.html /data/adb/nasbak/www/magnet/index.html 2>/dev/null
 
+# --- www/remote（投屏客户端静态资源，供 screen.html 内嵌）---
+mkdir -p /data/adb/nasbak/www/remote
+for f in $ST/www__remote__*; do
+  [ -f "$f" ] || continue
+  n=$(basename "$f" | sed 's/^www__remote__//')
+  cp -f "$f" "/data/adb/nasbak/www/remote/$n"
+done
+chmod 644 /data/adb/nasbak/www/remote/* 2>/dev/null
+
 # --- httpd.conf ---
 [ -f $ST/httpd.conf ] && cp -f $ST/httpd.conf /data/adb/nasbak/httpd.conf
 
@@ -160,6 +172,12 @@ mkdir -p /data/adb/srv/magnet/lib
 [ -f $ST/srv_aria2.sh ]          && cp -f $ST/srv_aria2.sh /data/adb/srv/magnet/lib/aria2.sh
 [ -f $ST/srv_proxy-lib.sh ]      && cp -f $ST/srv_proxy-lib.sh /data/adb/srv/magnet/proxy-lib.sh
 [ -f $ST/srv_magnet-httpd.conf ] && cp -f $ST/srv_magnet-httpd.conf /data/adb/srv/magnet/httpd.conf
+[ -f $ST/srv_update-trackers.sh ] && cp -f $ST/srv_update-trackers.sh /data/adb/srv/update-trackers.sh
+[ -f $ST/srv_bt-stall.sh ]        && cp -f $ST/srv_bt-stall.sh /data/adb/srv/bt-stall.sh
+mkdir -p /data/adb/nasbak/srv
+[ -f $ST/srv_scrcpy-server-1.19-ws8.jar ] && cp -f $ST/srv_scrcpy-server-1.19-ws8.jar /data/adb/nasbak/srv/scrcpy-server.jar
+chmod 644 /data/adb/nasbak/srv/scrcpy-server.jar 2>/dev/null
+chmod 755 /data/adb/srv/update-trackers.sh /data/adb/srv/bt-stall.sh 2>/dev/null
 
 # --- service.d ---
 for f in $ST/service.d__*.sh; do

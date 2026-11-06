@@ -137,6 +137,29 @@ task_log() {
     if port_open 6800; then S=true; D="页面就绪 · RPC 6800 可连"; else S=false; D="页面就绪 · RPC 未连"; fi
   else S=false; D="未部署"; fi
   printf ',{"name":"下载管理 AriaNg","ok":%s,"detail":"%s"}' "$S" "$(jesc "$D")"
+
+  # 迅雷加速：按需拉起是常态，装了即视为健康；running 只作详情。
+  # 2026-11-06 改：原来「已安装·未运行」直接标 ok=false，而这套链路本来就是
+  # 点投递才 am start，网络页会长期挂一个没意义的红点。
+  # 最近一次投递结果由 thunder-confirm.sh 回写，顺手带出来便于排障。
+  XP=com.xunlei.downloadprovider
+  XDL=/sdcard/Android/data/$XP/files/ThunderDownload
+  XLAST=/data/media/0/nasbak/state/thunder-last.json
+  if pm list packages 2>/dev/null | grep -q "^package:$XP$"; then
+    S=true
+    if $BB pgrep -f xunlei >/dev/null 2>&1; then XR="运行中"; else XR="未运行（按需拉起属正常）"; fi
+    XN=0
+    [ -d "$XDL" ] && XN=$(ls -1 "$XDL" 2>/dev/null | grep -vc '^\.')
+    XSTATE=$(grep -o '"state":"[^"]*"' "$XLAST" 2>/dev/null | head -1 | sed 's/.*:"//; s/"$//')
+    if [ -n "$XSTATE" ]; then
+      D="已安装 · $XR · ${XN:-0} 个任务 · 上次投递:${XSTATE}"
+    else
+      D="已安装 · $XR · ${XN:-0} 个任务 · 暂无投递记录"
+    fi
+  else
+    S=false; D="未安装"
+  fi
+  printf ',{"name":"迅雷加速","ok":%s,"detail":"%s"}' "$S" "$(jesc "$D")"
   printf '],'
 
   # ---- 定时任务 ----

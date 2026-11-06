@@ -166,6 +166,7 @@ for ID in $IDS; do
           if [ "$OLD" = "$NEW" ]; then
             RES="archived"; PATHOUT="$YM/$FOLDER/$NAME"
             ledger_add "$ID" "$NAME" "$OLD" "arc" "inbox/$REL" "$PATHOUT" 2>/dev/null
+            . /data/adb/nasbak/bin/lib-sidecar.sh 2>/dev/null; sidecar_append 2>/dev/null
             CNT_A=$((CNT_A+1))
           else
             mv -f "$ARC/$YM/$FOLDER/$NAME" "$SRC_FILE" 2>/dev/null

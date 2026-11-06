@@ -33,6 +33,9 @@ button:disabled{background:#9bbce0}
 .ops{display:flex;gap:8px;margin-left:auto}
 .ops button{padding:6px 12px;font-size:13px;background:#eef3fb;color:#0b5ed7;border-radius:6px}
 .ops button.pri{background:#007bff;color:#fff}
+/* 迅雷按钮：用蓝色系里的深青区分，既不抢主按钮也一眼可辨 */
+.ops button.xl{background:#e6f7f5;color:#0f766e}
+.ops button.xl:disabled{opacity:.6}
 .hint{text-align:center;color:#999;font-size:13px;padding:24px 0}
 .err{color:#c1121f;text-align:center;padding:16px}
 .statusbar{display:flex;align-items:center;gap:14px;margin:0 0 10px;font-size:12px;color:#666}
@@ -42,6 +45,29 @@ button:disabled{background:#9bbce0}
 .st.fail .dot{background:#c1121f}
 .st.on{font-weight:700}
 .st-ts{margin-left:auto;color:#999;font-size:11px}
+
+/* 卡住的任务（数据来自 /bt-stall.json，由 srv/bt-stall.sh 每 10 分钟生成） */
+.stall{background:#fff;border:1px solid #e3e9f2;border-radius:10px;margin-bottom:10px;overflow:hidden}
+.stall-hd{display:flex;align-items:center;gap:8px;padding:10px 12px;font-size:13px;cursor:pointer;user-select:none}
+.stall-hd b{background:#c1121f;color:#fff;border-radius:10px;padding:1px 7px;font-size:11px}
+.stall-ts{margin-left:auto;color:#999;font-size:11px;font-weight:400}
+.stall-caret{color:#9aa8ba;font-size:10px}
+.stall.open .stall-caret{transform:rotate(180deg)}
+.stall-list{display:none;border-top:1px solid #eef2f7}
+.stall.open .stall-list{display:block}
+.stall-item{padding:9px 12px;border-bottom:1px solid #f4f7fb;font-size:12px}
+.stall-item:last-child{border-bottom:none}
+.stall-item .sl-top{display:flex;align-items:center;gap:8px;color:#444}
+.stall-item .sl-hash{font-family:monospace;color:#0b5ed7}
+.stall-item .sl-r{font-size:11px;padding:2px 6px;border:1px solid #e3e9f2;border-radius:4px;color:#666}
+.stall-item .sl-m{color:#8a9bb0;font-size:11px;margin-top:4px}
+.stall-item button{padding:5px 10px;font-size:12px;background:#eef3fb;color:#0b5ed7;border-radius:6px}
+.stall-item .sl-top button:first-of-type{margin-left:auto}
+.stall-item button.xl{background:#e6f7f5;color:#0f766e}
+.stall-item button:disabled{opacity:.6}
+.stall-hd .xl-last{margin-left:6px;color:#8a9bb0;font-size:11px;font-weight:400}
+.stall-hd .xl-log{font-size:11px;color:#0b5ed7;text-decoration:none;margin-left:6px}
+.stall-tip{padding:8px 12px;font-size:11px;color:#8a9bb0;border-top:1px solid #eef2f7}
 
 /* 代理开关 */
 .px{padding:3px 9px;border-radius:12px;background:#e6eaef;color:#555;font-size:12px;cursor:pointer;user-select:none;border:none}
@@ -99,6 +125,16 @@ button:disabled{background:#9bbce0}
   <div class="tab" data-src="yts" onclick="setTab(this)">YTS</div>
   <div class="tab" data-src="nyaa" onclick="setTab(this)">NYAA</div>
   <div class="tab" data-src="tkitty" onclick="setTab(this)">TK</div>
+</div>
+<div class="stall" id="stall" style="display:none">
+  <div class="stall-hd" onclick="toggleStall()">
+    <span>⚠ 卡住的任务 <b id="stall-n">0</b></span>
+    <span class="stall-ts" id="stall-ts"></span>
+    <span class="xl-last" id="stall-xl"></span>
+    <a class="xl-log" href="javascript:void(0)" onclick="showThunderLog();event.stopPropagation()">日志</a>
+    <span class="stall-caret">▼</span>
+  </div>
+  <div class="stall-list" id="stall-list"></div>
 </div>
 <div id="out"><div class="hint">输入关键词开始搜索</div></div>
 
@@ -410,6 +446,7 @@ function render(){
         <span class="ops">
           <button onclick="copyMagnet('${x.hash}')">复制</button>
           <button class="pri" onclick="addUri('${x.hash}', this)">下载</button>
+          <button class="xl" onclick="thunderAdd('${x.hash}', this)" title="单条投给本机迅雷（P2SP 通道救死种）；若迅雷正在下载会先询问">迅雷</button>
         </span>
       </div>
     </div>`).join('');
@@ -433,6 +470,139 @@ function copyMagnet(hash){
   if (navigator.clipboard) navigator.clipboard.writeText(m).then(()=>alert('磁力链接已复制'),()=>prompt('复制磁力链接：', m));
   else prompt('复制磁力链接：', m);
 }
+
+/* ---------------- 迅雷加速 ----------------
+   冷门种子的真实死局是"全网做种归零"，aria2 看不到迅雷自己的服务器缓存节点。
+   实测同一冷门种子：aria2 卡 190 分钟拿不到元数据，迅雷秒级解析并 1MB/s 开跑。
+   这里把链接投给本机迅雷 App（am start），下载完成后由 thunder-sync.sh 搬进 inbox。 */
+/* 2026-11-06：不再显示「已投递 ✓」这种未经确认的假成功。
+   CGI 先写 pending，thunder-confirm.sh 点完面板再回写 confirmed / failed，
+   这里按 rid 轮询真实结果；同时页面内串行，避免两个按钮交错 force-stop。 */
+let xlBusy = false;
+async function thunderAdd(hash, btn, force){
+  const h = String(hash || '');
+  if (!/^([0-9a-fA-F]{32}|[0-9a-fA-F]{40})$/.test(h)) {
+    alert('无效 info_hash：只接受单条 32/40 位十六进制'); return;
+  }
+  if (xlBusy) { alert('已有投递在等待迅雷确认，请稍候'); return; }
+  xlBusy = true;
+  btn.disabled = true;
+  const old = btn.textContent;
+  btn.textContent = '投递中…';
+  const url = 'cgi-bin/thunder.cgi?a=add&h=' + encodeURIComponent(h) + (force ? '&force=1' : '');
+  const done = (text, color, tip) => {
+    btn.textContent = text;
+    if (color) { btn.style.background = color; btn.style.color = '#fff'; }
+    if (tip) btn.title = tip;
+    setTimeout(()=>{ btn.textContent = old; btn.disabled = false;
+                     btn.style.background = ''; btn.style.color = ''; }, 6000);
+    xlBusy = false;
+  };
+  try {
+    const r = await fetchT(url, {}, 20000);
+    const d = await r.json();
+    if (d && d.needForce) {
+      xlBusy = false; btn.disabled = false; btn.textContent = old;
+      if (confirm((d.err || '迅雷正在下载') + '\n\n继续会强制停止当前下载，确定吗？'))
+        return thunderAdd(h, btn, true);
+      return;
+    }
+    if (!d || !d.ok) {
+      done('失败', '#c1121f');
+      alert('投递失败：' + ((d && d.err) || '未知错误')); return;
+    }
+    btn.textContent = '确认中…';
+    if (d.interrupted) btn.title = '本次强制停止了迅雷，可能中断了正在下载的任务';
+    const st = await waitThunderConfirm(d.rid);
+    if (st === 'confirmed') done('已接单 ✓', '#25a244');
+    else if (st === 'failed') {
+      done('需手动确认', '#c1121f');
+      alert('迅雷自动确认失败，请在手机上手动点「立即下载」。可点面板上的「日志」查看原因。');
+    } else done('结果未知', '#8a9bb0');
+  } catch (e) {
+    done('请求超时', '#c1121f');
+    alert('请求超时或连接失败，确认 K40 上已安装并登录迅雷。');
+  }
+}
+async function waitThunderConfirm(rid){
+  const deadline = Date.now() + 30000;
+  while (Date.now() < deadline) {
+    await new Promise(r => setTimeout(r, 2000));
+    try {
+      const r = await fetchT('cgi-bin/thunder.cgi?a=last&rid=' + encodeURIComponent(rid), {}, 8000);
+      const d = await r.json();
+      if (!d || d.state === 'pending' || d.state === 'none') continue;
+      return d.state;
+    } catch(e) { /* CGI 偶尔抖动，继续等 */ }
+  }
+  return 'timeout';
+}
+async function loadThunderLast(){
+  try {
+    const r = await fetchT('cgi-bin/thunder.cgi?a=last', {}, 8000);
+    const d = await r.json();
+    const el = document.getElementById('stall-xl');
+    if (!el || !d) return;
+    if (!d.state || d.state === 'none') { el.textContent = ''; return; }
+    const map = {pending:'等待确认', confirmed:'已接单', failed:'需手动确认'};
+    el.textContent = '迅雷上次：' + (map[d.state] || d.state) + '（' + (d.ts || '') + '）';
+    el.style.color = d.state === 'failed' ? '#c1121f' : '#8a9bb0';
+  } catch(e) {}
+}
+async function showThunderLog(){
+  try {
+    const r = await fetchT('cgi-bin/thunder.cgi?a=log', {}, 8000);
+    const d = await r.json();
+    alert((d && d.log ? d.log.split('|').join('\n') : '（无日志）'));
+  } catch(e) { alert('读取日志失败'); }
+}
+/* ---------------- 卡住的任务 ----------------
+   数据由 srv/bt-stall.sh 每 10 分钟写到 /bt-stall.json，纯静态、同源、无 CGI。
+   只显示 hash 与数值，不显示下载文件名。 */
+const STALL_KEY = 'magpie_stall_open';
+let stallOpen = false;
+function toggleStall(){
+  stallOpen = !stallOpen;
+  document.getElementById('stall').classList.toggle('open', stallOpen);
+  try { localStorage.setItem(STALL_KEY, stallOpen ? '1' : '0'); } catch(e) {}
+}
+function stallReason(r){
+  return r === 'no_metadata' ? '未取到种子信息' : (r === 'no_speed' ? '长时间无速度' : String(r));
+}
+function copyMagnetFull(m){
+  if (navigator.clipboard) navigator.clipboard.writeText(m).then(()=>alert('磁力链接已复制'),()=>prompt('复制磁力链接：', m));
+  else prompt('复制磁力链接：', m);
+}
+function renderStall(d){
+  const box = document.getElementById('stall');
+  const items = (d && Array.isArray(d.items)) ? d.items : [];
+  if (!items.length) { box.style.display = 'none'; return; }
+  box.style.display = 'block';
+  document.getElementById('stall-n').textContent = items.length;
+  document.getElementById('stall-ts').textContent = d.ts || '';
+  document.getElementById('stall-list').innerHTML = items.map(t => {
+    const h = String(t.hash || '').slice(0, 12);
+    const pct = (+t.total > 0) ? Math.floor(+t.done / +t.total * 100) : 0;
+    const m = t.magnet || ('magnet:?xt=urn:btih:' + (t.hash || ''));
+    return '<div class="stall-item">' +
+      '<div class="sl-top"><span class="sl-hash">' + esc(h) + '…</span>' +
+      '<span class="sl-r">' + esc(stallReason(t.reason)) + '</span>' +
+      '<button onclick="copyMagnetFull(\'' + m + '\')">复制磁力</button>' +
+      '<button class="xl" onclick="thunderAdd(\'' + String(t.hash||'') + '\', this)">交给迅雷</button></div>' +
+      '<div class="sl-m">' + (+t.total ? fmtSize(+t.done) + ' / ' + fmtSize(+t.total) + ' · ' + pct + '%' : '元数据未获取') +
+      ' · seeder ' + (+t.seeders || 0) + ' · 已卡 ' + (+t.mins || 0) + ' 分钟</div>' +
+      '</div>';
+  }).join('') + '<div class="stall-tip">「交给迅雷」直接投给本机迅雷（若它正在下载会先询问）；复制磁力可重新加入或粘贴到光鸭云盘。迅雷成品落在 nasbak/downloads/Thunder，不进照片判读。</div>';
+}
+async function loadStall(){
+  try {
+    const r = await fetch('/bt-stall.json?t=' + Date.now(), {cache:'no-store'});
+    if (r.ok) renderStall(await r.json());
+  } catch(e) { /* 首次部署还没生成文件时静默 */ }
+  loadThunderLast();
+  setTimeout(loadStall, 60000);
+}
+
 /* ---------------- 下载进度 ----------------
    轮询 cgi-bin/list.cgi（后端只做 token 补齐和拼接，解析交给这里）。
    有任务时 3 秒一次，空闲 15 秒一次，别让手机一直醒着。 */
@@ -548,6 +718,11 @@ try {
 } catch(e) {}
 checkStatus();
 pollTasks();
+try {
+  stallOpen = localStorage.getItem(STALL_KEY) === '1';
+  if (stallOpen) document.getElementById('stall').classList.add('open');
+} catch(e) {}
+loadStall();
 // 代理状态只在加载时查一次：它是本机 CGI（实测 0.14 秒），不像源站会漂移，
 // 不需要 30 秒轮询；开关后 toggleProxy 内部会主动重查。
 checkProxy();

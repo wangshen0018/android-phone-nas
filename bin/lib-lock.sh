@@ -14,8 +14,9 @@
 #
 # 机制：mkdir 是原子操作，用它当锁。
 #   · 锁目录 $LOCKDIR/<名字>.lock/ 内写 pid
-#   · 拿不到锁 → 返回失败，由调用方决定退出（不阻塞、不等待）
-#   · 陈旧锁三种判定：pid 文件缺失且目录够老 / pid 已不存在 / 锁目录年龄超限
+#   · 拿不到锁 → 直接返回失败，由调用方决定退出（不阻塞、不等待）
+#   · 锁目录在、但里面的 pid 已不存在 → 判定为陈旧锁（上次被 kill -9），
+#     清掉后重试；pid 可能被系统复用，所以再加一条"锁目录年龄超过 6 小时即视为陈旧"
 #
 # 锁目录为什么放 /data/local/tmp 而不是 state/：
 #   /data/media/0 是 FUSE 挂载层，mkdir 原子性没有保证（实测踩过 ls 重定向 rc=1）；
@@ -36,59 +37,46 @@ LOCK_MAXAGE=21600            # 锁目录年龄上限（秒），超过即视为�
 BB=/data/adb/magisk/busybox   # 统一走 busybox：crond 的 PATH 与交互 shell 不同，
                               # /system/bin 的 toybox 未必支持 stat -c 之类的写法
 
-# lock_acquire <名字> [最大尝试次数，默认3]
+# lock_acquire <名字> [最大尝试次数，默认1]
 # 成功返回 0，失败返回 1
-#
-# 注意 _maxtry 的语义曾经写错过（2026-11-03 实际踩到）：
-#   早期默认 1，清理陈旧锁时既 rm 了锁目录、又消耗掉唯一一次尝试，
-#   于是第一次调用必然返回失败 —— 表现是「日志写'已有实例在运行'，
-#   但 ps 查不到任何实例」，而且每个调度周期都要白白浪费一次。
-#   现在修成：清理陈旧锁后用 continue 重新进入循环（不消耗尝试次数），
-#   并把默认尝试次数提到 3，给「清理后重新 mkdir」留出余地。
 lock_acquire() {
   _ln="$1"
-  _maxtry="${2:-3}"
+  _maxtry="${2:-1}"
   _t=0
   mkdir -p "$LOCKDIR" 2>/dev/null
   while [ "$_t" -lt "$_maxtry" ]; do
-    # 先试直接拿锁
     if mkdir "$LOCKDIR/$_ln.lock" 2>/dev/null; then
       echo $$ > "$LOCKDIR/$_ln.lock/pid" 2>/dev/null
       return 0
     fi
 
-    # 拿不到：判断陈旧锁
+    # 锁已存在：判断是不是陈旧锁
     _p=$(cat "$LOCKDIR/$_ln.lock/pid" 2>/dev/null)
     _mt=$($BB stat -c %Y "$LOCKDIR/$_ln.lock" 2>/dev/null)
     _age=$(( $(date +%s) - ${_mt:-0} ))
 
-    # (a) pid 文件缺失
     if [ -z "$_p" ]; then
-      # 可能是对方刚 mkdir 完还没写 pid（毫秒级窗口）。
+      # 还没有 pid 文件：可能是对方刚 mkdir 完还没写 pid（毫秒级窗口）。
+      # 目录很新就当对方活着，不去抢；目录很旧才当陈旧锁清掉。
       if [ "$_age" -lt 60 ]; then
-        # 目录很新 → 认为对方正在启动，稍等再看，这次不计入失败
-        sleep 1
-        _t=$((_t+1))
-        continue
+        _t=$((_t+1)); sleep 1; continue
       fi
-      # 目录够老却没有 pid → 陈旧锁，清掉后立刻重试（不消耗尝试次数）
       rm -rf "$LOCKDIR/$_ln.lock" 2>/dev/null
-      continue
+      _t=$((_t+1)); continue
     fi
 
-    # (b) 持锁进程已不存在 → 陈旧锁
     if ! kill -0 "$_p" 2>/dev/null; then
+      # 持锁进程已死（上次被 kill -9）→ 陈旧锁，清掉后重试
       rm -rf "$LOCKDIR/$_ln.lock" 2>/dev/null
-      continue                      # 不消耗尝试次数，立刻重试
+      _t=$((_t+1)); continue
     fi
 
-    # (c) pid 还活着但锁太老：pid 可能被系统复用，按年龄兜底
+    # pid 还活着，但可能是系统复用的别人的 pid；再按锁目录年龄兜一次
     if [ "$_age" -gt "$LOCK_MAXAGE" ]; then
       rm -rf "$LOCKDIR/$_ln.lock" 2>/dev/null
-      continue                      # 同上
+      _t=$((_t+1)); continue
     fi
 
-    # pid 活着且锁不老 → 真的有人在跑
     _t=$((_t+1))
     sleep 1
   done
@@ -109,12 +97,6 @@ lock_release() {
 # 用于「两个脚本操作同一份数据、但不必互斥执行」的场景：
 # 例如 media-gc 要搬走 media/ 里的副本，而 judge.sh --ingest 正在往 media/ 里建副本，
 # 两者同时做会让新建的副本被当成孤儿搬走。此时 media-gc 主动让路即可。
-#
-# 但要注意：这个函数只看 pid 存活，无法识别「进程卡死」。
-# 2026-11-03 真实事故：status-collect.sh 的持锁进程卡在 tr 上，
-# pid 一直活着，于是 lock_acquire 认为有人持锁，缓存 3.4 小时没更新。
-# 所以 _maxtry 的"计次"派不上用场 —— 见到活着的 pid 就老实返回失败，
-# 由调用方决定跳过本轮，而不是死等。
 lock_busy() {
   _ln="$1"
   _p=$(cat "$LOCKDIR/$_ln.lock/pid" 2>/dev/null)

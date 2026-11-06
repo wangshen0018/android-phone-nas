@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>存档管理 · 家庭文件储存管理</title>
+<script src="pinyin.js"></script>
 <style>
 :root{--bg:#f6f7f8;--card:#fff;--tx:#1a1d21;--mu:#6b7280;--bd:#dcdfe3;--pr:#2563eb;--dn:#dc2626;--wn:#d97706}
 *{box-sizing:border-box}
@@ -45,6 +46,8 @@ main{max-width:1180px;margin:0 auto;padding:14px}
 .evh .fn{font-weight:600;font-size:13.5px;word-break:break-all;flex:1;min-width:180px}
 .evh .ym{font-size:11.5px;color:var(--mu);border:1px solid var(--bd);border-radius:3px;padding:0 5px;background:#fff}
 .evh .cnt{font-size:12px;color:var(--mu);font-variant-numeric:tabular-nums;white-space:nowrap}
+.evh .lz{font-size:11.5px;color:#9aa1a9;font-variant-numeric:tabular-nums;white-space:nowrap;border:1px solid #dde1e6;
+  border-radius:3px;padding:0 5px;background:#fff}
 .evh .acts{display:flex;gap:6px}
 .evb{display:none;padding:10px 13px 13px}
 .ev.open .evb{display:block}
@@ -89,6 +92,39 @@ main{max-width:1180px;margin:0 auto;padding:14px}
 .fld input,.fld select{width:100%;font:13px inherit;padding:6px 8px;border:1px solid var(--bd);border-radius:4px;background:#fff;color:var(--tx)}
 .tip{font-size:12px;color:var(--mu);line-height:1.7;background:#f8f9fa;border-left:3px solid var(--bd);padding:8px 10px;border-radius:3px;margin-bottom:12px}
 .tip b{color:var(--wn)}
+
+/* 图形化事件选择器 */
+.modal .box.wide{width:min(94vw,760px)}
+.pkbar{display:flex;gap:8px;margin-bottom:10px}
+.pkbar input{flex:1;font:13px inherit;padding:6px 9px;border:1px solid var(--bd);border-radius:4px;background:#fff;color:var(--tx)}
+.pkbar input:focus{outline:none;border-color:var(--pr)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.chip{border:1px solid var(--bd);background:#fff;color:#4b5563;border-radius:14px;padding:3px 11px;
+  font-size:12.5px;cursor:pointer;font-variant-numeric:tabular-nums}
+.chip:hover{border-color:#b9bec4;background:#f9fafb}
+.chip.on{background:var(--pr);border-color:var(--pr);color:#fff}
+.pkgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:9px;
+  max-height:44vh;overflow:auto;padding:2px;align-content:start;align-items:start}
+.pk{border:1px solid var(--bd);border-radius:7px;overflow:hidden;cursor:pointer;background:#fff;
+  display:flex;flex-direction:column;transition:border-color .12s,box-shadow .12s}
+.pk:hover{border-color:#b9bec4}
+.pk.on{border-color:var(--pr);box-shadow:0 0 0 2px rgba(37,99,235,.18)}
+.pk .cv{position:relative;padding-top:75%;background:#eef0f2;overflow:hidden}
+.pk .cv img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.pk .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:26px;color:#a8b0b9;background:#eef0f2}
+.pk .tx{padding:6px 8px 8px;min-height:0}
+.pk .tp2{font-size:12.5px;font-weight:600;line-height:1.35;word-break:break-all;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pk .mt{font-size:11px;color:var(--mu);margin-top:3px;display:flex;gap:5px;align-items:center;
+  font-variant-numeric:tabular-nums;flex-wrap:wrap}
+.pk .tg{font-size:10.5px;color:#4b5563;background:#eef0f2;border-radius:3px;padding:0 5px}
+.pk .lz{font-size:10.5px;color:#9aa1a9}
+.pk .lz.old{color:#b45309}
+.pksel{font-size:12.5px;color:var(--mu);margin-right:auto;align-self:center;
+  max-width:52%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pksel b{color:var(--pr)}
+.pknone{grid-column:1/-1;text-align:center;color:var(--mu);padding:26px 0;font-size:13px}
 #toast{position:fixed;left:50%;transform:translateX(-50%);top:14px;z-index:300;background:#1a1d21;color:#fff;
   padding:9px 18px;border-radius:6px;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none;max-width:90vw}
 #toast.on{opacity:1}
@@ -136,21 +172,24 @@ main{max-width:1180px;margin:0 auto;padding:14px}
   </div>
 </div>
 
-<!-- 移到事件模态框 -->
+<!-- 移到事件模态框（图形化选择器） -->
 <div class="modal" id="mMove">
   <div class="bg" onclick="closeM('mMove')"></div>
-  <div class="box">
+  <div class="box wide">
     <div class="hd">移动到事件<button class="x" onclick="closeM('mMove')">×</button></div>
     <div class="bd2">
       <div class="tip" id="mvTip"></div>
-      <div class="fld">
-        <label>目标事件夹</label>
-        <select id="mvSel"></select>
+      <div class="pkbar">
+        <input id="mvQ" placeholder="搜索事件名 / 主题 / 日期 / 拼音首字母，如 视察、2026-10、hhgclh">
+        <button class="btn pr" onclick="openNewEvent(true)">＋ 新建</button>
       </div>
+      <div class="chips" id="mvCats"></div>
+      <div class="pkgrid" id="mvGrid"></div>
     </div>
     <div class="ft">
+      <span class="pksel" id="mvPicked">未选择目标事件</span>
       <button class="btn" onclick="closeM('mMove')">取消</button>
-      <button class="btn pr" id="mvOk">确定移动</button>
+      <button class="btn pr" id="mvOk" disabled>确定移动</button>
     </div>
   </div>
 </div>
@@ -164,13 +203,7 @@ main{max-width:1180px;margin:0 auto;padding:14px}
       <div class="tip">夹名格式为 <b>日期_分类_主题</b>，例如 <code>2026-10-20_work_site-inspection</code></div>
       <div class="fld"><label>日期</label><input id="newDate" type="date"></div>
       <div class="fld"><label>分类</label>
-        <select id="newSlug">
-          <option value="work">工作 work</option>
-          <option value="home">家庭 home</option>
-          <option value="other" selected>其他 other</option>
-          <option value="screenshot">截图 screenshot</option>
-          <option value="video">视频 video</option>
-        </select>
+        <div class="chips" id="newSlug" style="margin-bottom:0"></div>
       </div>
       <div class="fld"><label>主题（≤20字）</label><input id="newTopic" placeholder="例如 site-inspection"></div>
     </div>
@@ -194,6 +227,34 @@ let GRPOPEN={};         // slug -> bool（类型分组展开状态，默认展�
 
 /* 分类显示名，与判定页保持一致 */
 const CATNAME={work:'工地施工',home:'家庭生活',screenshot:'手机截图',video:'视频',other:'其他',unclassified:'未识别'};
+/* 无封面时的分类图标 */
+const CATICON={work:'🏗',home:'🏠',screenshot:'📱',video:'🎬',other:'📁',unclassified:'❓'};
+
+/* 分类 slug：优先取 events.jsonl 的 meta.slug，缺失时从 日期_分类_主题 第 2 段解析 */
+function slugOf(e){
+  const s=e.meta&&e.meta.slug;
+  if(s) return s;
+  const p=String(e.folder||'').split('_');
+  return (p.length>=2&&p[1])||'other';
+}
+/* 事件主题：优先 meta.topic，回退文件夹名第 3 段 */
+function topicOf(e){
+  const t=e.meta&&e.meta.topic;
+  if(t) return t;
+  const p=String(e.folder||'').split('_');
+  return p.length>=3?p.slice(2).join('_'):String(e.folder||'');
+}
+/* 事件日期：优先 meta.start_date，回退文件夹名前 10 位 */
+function dateOf(e){
+  const d=e.meta&&e.meta.start_date;
+  if(d) return d;
+  const m=String(e.folder||'').match(/^(\d{4}-\d{2}-\d{2})/);
+  return m?m[1]:'';
+}
+function coverSrc(e){
+  if(!e.cover) return '';
+  return '/media/'+encodeURIComponent(e.cover)+'.'+encodeURIComponent(e.coverExt||'jpg');
+}
 
 /* 单个事件夹卡片 */
 function evCard(e){
@@ -204,6 +265,7 @@ function evCard(e){
       <span class="fn">${esc(e.folder)}</span>
       <span class="ym">${esc(e.ym)}</span>
       <span class="cnt">${e.count} 个 · ${fmtSize(e.size)}</span>
+      ${e.last?`<span class="lz" title="文件最近变动 ${esc(fullLast(e.last))}">更新 ${esc(fmtLast(e.last))}</span>`:''}
       <span class="acts">
         <button class="btn sm" data-a="sel">选择</button>
         <button class="btn sm" data-a="ren">改名</button>
@@ -225,6 +287,40 @@ function fmtSize(n){
   if(n<1048576) return (n/1024).toFixed(1)+' KB';
   if(n<1073741824) return (n/1048576).toFixed(1)+' MB';
   return (n/1073741824).toFixed(2)+' GB';
+}
+
+/* 最近变动时间：秒级时间戳 → "今天 / 昨天 / MM-DD / YYYY-MM-DD"
+ * 口径是事件夹内文件 mtime 的最大值，即这个事件最后一次进/出文件的时间。
+ * 不用目录 mtime：实测各事件夹的目录 mtime 全被同一次批量操作抹平，没有区分度。
+ * 除今天/昨天外一律显示日期——混用"N 天前"会让多个事件夹无法横向比新旧。 */
+function fmtLast(sec){
+  const t=Number(sec||0);
+  if(!t) return '';
+  const now=new Date(), d=new Date(t*1000);
+  const d0=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  const d1=new Date(d.getFullYear(),d.getMonth(),d.getDate());
+  const days=Math.round((d0-d1)/86400000);
+  if(days<=0) return '今天';
+  if(days===1) return '昨天';
+  const md=pad2d(d.getMonth()+1)+'-'+pad2d(d.getDate());
+  return d.getFullYear()===now.getFullYear()?md:(d.getFullYear()+'-'+md);
+}
+function pad2d(n){ return String(n).padStart(2,'0'); }
+/* 精确到分钟的完整时间，用于 title 悬浮提示 */
+function fullLast(sec){
+  const t=Number(sec||0);
+  if(!t) return '';
+  const d=new Date(t*1000);
+  return d.getFullYear()+'-'+pad2d(d.getMonth()+1)+'-'+pad2d(d.getDate())+' '+
+         pad2d(d.getHours())+':'+pad2d(d.getMinutes());
+}
+/* 卡片上的"最近变动"标签：超过 30 天标暖色，一眼看出老夹 */
+function lastTag(e){
+  const s=fmtLast(e.last);
+  if(!s) return '';
+  const days=e.last?(Date.now()/1000-Number(e.last))/86400:0;
+  const cls=days>30?'lz old':'lz';
+  return `<span class="${cls}" title="文件最近变动 ${esc(fullLast(e.last))}">更新 ${esc(s)}</span>`;
 }
 function closeM(id){ document.getElementById(id).classList.remove('on'); }
 
@@ -268,14 +364,7 @@ function renderList(trash){
     return (b.meta&&b.meta.start_date||'').localeCompare(a.meta&&a.meta.start_date||'');
   });
 
-  // 二级分组：类型（slug）→ 年份。slug 从 events.jsonl 的 meta 里取，
-  // 缺失时回退到从文件夹名 YYYY-MM-DD_slug_topic 的第 3 段解析。
-  const slugOf=e=>{
-    const s=e.meta&&e.meta.slug;
-    if(s) return s;
-    const p=String(e.folder||'').split('_');
-    return (p.length>=2&&p[1])||'other';
-  };
+  // 二级分组：类型（slug）→ 年份。slugOf() 已提到全局，与选择器共用一套口径。
   const groups={};   // slug -> {year -> [events]}
   sorted.forEach(e=>{
     const sl=slugOf(e);
@@ -453,25 +542,132 @@ document.getElementById('renOk').addEventListener('click',async()=>{
   }catch(e){ toast('失败：'+e.message,true); }
 });
 
-// ---------- 移动到其他事件 ----------
-document.getElementById('bkmove').addEventListener('click',()=>{
+// ---------- 移动到其他事件（图形化选择器） ----------
+let MVSRC=null;        // 来源事件夹
+let MVPICK=null;       // 已选中的目标事件夹
+let MVQ='';            // 搜索词
+let MVCAT='all';       // 分类筛选
+
+document.getElementById('bkmove').addEventListener('click',openMove);
+
+function openMove(){
   if(!PICK.size){ toast('请先选择文件',true); return; }
   const folders=[...new Set([...PICK].map(k=>k.split('|')[0]))];
   if(folders.length>1){ toast('一次只能移动同一事件夹里的文件，请分开操作',true); return; }
-  const src=folders[0];
-  const others=EVENTS.filter(e=>e.folder!==src);
-  if(!others.length){ toast('没有其他事件夹可移动',true); return; }
-  const sel=document.getElementById('mvSel');
-  sel.innerHTML=others.map(e=>`<option value="${esc(e.folder)}">${esc(e.folder)} (${e.count})</option>`).join('');
-  document.getElementById('mvTip').innerHTML='要把 <b>'+PICK.size+'</b> 个文件从 <code>'+esc(src)+'</code> 移到目标事件夹';
+  MVSRC=folders[0]; MVPICK=null; MVQ=''; MVCAT='all';
+  document.getElementById('mvQ').value='';
+  document.getElementById('mvTip').innerHTML=
+    '要把 <b>'+PICK.size+'</b> 个文件从 <code>'+esc(MVSRC)+'</code> 移到哪个事件夹？点卡片选中即可。';
   document.getElementById('mMove').classList.add('on');
+  renderPicker();
+}
+
+document.getElementById('mvQ').addEventListener('input',e=>{
+  MVQ=e.target.value||'';
+  renderPicker();
 });
 
+/* 拼音首字母索引：按事件缓存在对象上，loadAll 换一批数据后自然失效。
+ * 只在搜索词含字母时才算，纯中文/日期搜索不触发。
+ * PY 来自 /pinyin.js，若未加载则返回空串，搜索自动退回原文匹配。 */
+function pyIndexOf(e){
+  if(e._py!==undefined) return e._py;
+  let s='';
+  try{
+    if(window.PY&&PY.initials) s=PY.initials([e.folder,topicOf(e),dateOf(e),(CATNAME[slugOf(e)]||'')].join(' '));
+  }catch(err){ s=''; }
+  e._py=s;
+  return s;
+}
+
+/* 事件卡片（选择器内） */
+function pkCard(e){
+  const sl=slugOf(e);
+  const cov=e.cover
+    ? `<img loading="lazy" src="${esc(coverSrc(e))}" onerror="this.style.display='none';var p=this.parentNode.querySelector('.ph');if(p)p.style.display='flex';">`
+    : '';
+  const phStyle=e.cover?'display:none':'';
+  const d=dateOf(e);
+  return `<div class="pk${MVPICK===e.folder?' on':''}" data-f="${esc(e.folder)}" title="${esc(e.folder)}">
+    <div class="cv">${cov}<div class="ph" style="${phStyle}">${CATICON[sl]||'📁'}</div></div>
+    <div class="tx">
+      <div class="tp2">${esc(topicOf(e))}</div>
+      <div class="mt"><span>${esc(d||e.ym)}</span><span>·</span><span>${e.count} 个 · ${fmtSize(e.size)}</span></div>
+      <div class="mt"><span class="tg">${esc(CATNAME[sl]||sl)}</span>${lastTag(e)}</div>
+    </div>
+  </div>`;
+}
+
+function renderPicker(){
+  const others=EVENTS.filter(e=>e.folder!==MVSRC);
+
+  /* 搜索：支持用空格分词，多词之间是「与」关系。
+   * 每个词先按原文匹配（主题/夹名/日期/分类名），未命中再试拼音首字母串——
+   * 打 hhgc 能命中「project-meeting」，打 hh 例会 也能命中。 */
+  const q=MVQ.trim().toLowerCase();
+  const terms=q?q.split(/\s+/).filter(Boolean):[];
+  const hasAscii=/[a-z]/.test(q);
+  const matched=others.filter(e=>{
+    if(!terms.length) return true;
+    const hay=(e.folder+' '+topicOf(e)+' '+dateOf(e)+' '+(CATNAME[slugOf(e)]||'')).toLowerCase();
+    const py=hasAscii?pyIndexOf(e):'';
+    return terms.every(t=> hay.indexOf(t)>=0 || (py && py.indexOf(t)>=0));
+  });
+
+  // 分类计数基于搜索结果，保证筛选片数字与屏幕上看到的卡片数一致
+  const cnt={};
+  matched.forEach(e=>{ const s=slugOf(e); cnt[s]=(cnt[s]||0)+1; });
+  const cats=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a]);
+  // 当前选中的分类在新结果里已无命中时，自动回落到「全部」，避免出现空网格
+  if(MVCAT!=='all' && !cnt[MVCAT]) MVCAT='all';
+
+  document.getElementById('mvCats').innerHTML=
+    [{k:'all',n:'全部',c:matched.length},...cats.map(c=>({k:c,n:CATNAME[c]||c,c:cnt[c]}))]
+      .map(x=>`<button class="chip${MVCAT===x.k?' on':''}" data-c="${esc(x.k)}">${esc(x.n)} ${x.c}</button>`)
+      .join('');
+  document.getElementById('mvCats').querySelectorAll('.chip').forEach(b=>{
+    b.onclick=()=>{ MVCAT=b.dataset.c; renderPicker(); };
+  });
+
+  const list=matched.filter(e=>MVCAT==='all' || slugOf(e)===MVCAT);
+
+  const grid=document.getElementById('mvGrid');
+  if(!others.length){
+    grid.innerHTML='<div class="pknone">没有其他事件夹。点右上角「＋ 新建」先建一个。</div>';
+  }else if(!list.length){
+    grid.innerHTML='<div class="pknone">没有匹配的事件夹。可试主题关键字、日期（2026-10）或拼音首字母（hhgclh）。</div>';
+  }else{
+    grid.innerHTML=list.map(pkCard).join('');
+    grid.querySelectorAll('.pk').forEach(el=>{
+      el.addEventListener('click',()=>{
+        MVPICK=el.dataset.f;
+        grid.querySelectorAll('.pk').forEach(x=>x.classList.toggle('on',x===el));
+        updPickerFoot();
+      });
+    });
+  }
+  updPickerFoot();
+}
+
+function updPickerFoot(){
+  const el=document.getElementById('mvPicked');
+  const btn=document.getElementById('mvOk');
+  if(MVPICK){
+    el.innerHTML='目标：<b>'+esc(topicOf(EVENTS.find(e=>e.folder===MVPICK)||{folder:MVPICK}))+'</b>';
+    btn.disabled=false;
+  }else{
+    el.textContent='未选择目标事件';
+    btn.disabled=true;
+  }
+}
+
 document.getElementById('mvOk').addEventListener('click',async()=>{
-  const folders=[...new Set([...PICK].map(k=>k.split('|')[0]))];
-  const src=folders[0];
-  const to=document.getElementById('mvSel').value;
+  if(!MVPICK){ toast('请先选目标事件',true); return; }
+  const to=MVPICK;
+  const src=MVSRC;
   const names=[...PICK].map(k=>k.split('|')[1]);
+  const btn=document.getElementById('mvOk');
+  btn.disabled=true;
   try{
     const url=CGI+'?action=move&from='+encodeURIComponent(src)+'&to='+encodeURIComponent(to)+'&files='+encodeURIComponent(names.join(','));
     const r=await fetch(url,{cache:'no-store'});
@@ -481,8 +677,12 @@ document.getElementById('mvOk').addEventListener('click',async()=>{
     closeM('mMove');
     PICK.clear(); SELMODE=false;
     delete FILES[src]; delete FILES[to];
+    MVPICK=null; MVSRC=null;
     await loadAll();
-  }catch(e){ toast('失败：'+e.message,true); }
+  }catch(e){
+    toast('失败：'+e.message,true);
+    btn.disabled=false;
+  }
 });
 
 // ---------- 批量重命名（加前缀/序号） ----------
@@ -547,16 +747,33 @@ document.getElementById('bkclear').addEventListener('click',()=>{
 });
 
 // ---------- 新建事件 ----------
-function openNewEvent(){
+let NEWSLUG='other';
+let NEW_THEN_MOVE=false;   // 由选择器里的「＋ 新建」触发时，建完回到选择器并选中
+
+function renderSlugChips(){
+  const opts=[['work','工作'],['home','家庭'],['screenshot','截图'],['video','视频'],['other','其他']];
+  document.getElementById('newSlug').innerHTML=opts.map(([v,n])=>
+    `<button class="chip${NEWSLUG===v?' on':''}" data-v="${v}" type="button">${n}</button>`).join('');
+  document.getElementById('newSlug').querySelectorAll('.chip').forEach(b=>{
+    b.onclick=()=>{ NEWSLUG=b.dataset.v; renderSlugChips(); };
+  });
+}
+
+function openNewEvent(thenMove){
+  NEW_THEN_MOVE=!!thenMove;
+  NEWSLUG='other';
+  renderSlugChips();
   const d=new Date();
   const iso=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
   document.getElementById('newDate').value=iso;
   document.getElementById('newTopic').value='';
+  if(thenMove) closeM('mMove');
   document.getElementById('mNew').classList.add('on');
+  setTimeout(()=>document.getElementById('newTopic').focus(),120);
 }
 document.getElementById('newOk').addEventListener('click',async()=>{
   const date=document.getElementById('newDate').value;
-  const slug=document.getElementById('newSlug').value;
+  const slug=NEWSLUG;
   const topic=document.getElementById('newTopic').value.trim();
   if(!date){ toast('请选日期',true); return; }
   if(!topic){ toast('请填主题',true); return; }
@@ -567,7 +784,15 @@ document.getElementById('newOk').addEventListener('click',async()=>{
     if(!j.ok) throw new Error(j.err||'create failed');
     toast('已创建：'+j.folder);
     closeM('mNew');
+    const back=NEW_THEN_MOVE; NEW_THEN_MOVE=false;
     await loadAll();
+    // 从选择器进来的，建完自动回到选择器并选中新事件，省一次点选
+    if(back && MVSRC){
+      MVPICK=j.folder; MVQ=''; MVCAT='all';
+      document.getElementById('mvQ').value='';
+      document.getElementById('mMove').classList.add('on');
+      renderPicker();
+    }
   }catch(e){ toast('失败：'+e.message,true); }
 });
 
