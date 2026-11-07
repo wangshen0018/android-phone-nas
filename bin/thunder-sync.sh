@@ -1,5 +1,5 @@
 #!/system/bin/sh
-# thunder-sync.sh — 把迅雷下完的文件搬进 nasbak/downloads/Thunder
+# thunder-sync.sh — 把迅雷下完的文件搬进 /sdcard/Download/Thunder（系统下载目录）
 #
 # 为什么需要（2026-11-05）：
 #   迅雷的下载目录固定为 /sdcard/Android/data/com.xunlei.downloadprovider/files/ThunderDownload
@@ -8,7 +8,8 @@
 #   所以必须「复制 + 校验 + 删源」，不能 mv。
 #
 # 2026-11-06 改进（本轮四项必做之二）：
-#   · 目标从 inbox/Thunder 改到 downloads/Thunder —— 原来 mp4/mov 会被
+#   · 目标从 inbox/Thunder 改到 downloads/Thunder（2026-11-07 又移到系统下载
+#     目录 /sdcard/Download/Thunder，用户抱怨藏太深）—— 原来 mp4/mov 会被
 #     judge.sh --ingest 扫进照片判读队列，≤12MB 的还会真调 VLM（产生费用、
 #     污染 data.json），而 move-by-date.sh 又不扫 Thunder，文件永久滞留。
 #   · 「已下完」判据从「连续两轮大小不变」改为四条同时满足：
@@ -34,7 +35,13 @@
 BASE=/data/media/0/nasbak
 ST=$BASE/state
 DLDIR=/sdcard/Android/data/com.xunlei.downloadprovider/files/ThunderDownload
-DESTROOT=$BASE/downloads/Thunder
+# 2026-11-07 用户要求：搬到系统「下载」目录，别埋在 nasbak/downloads/Thunder 三层里。
+# /sdcard/Download = /data/media/0/Download。与 nasbak 同一分区（/data），
+# 移动只是 rename，不产生额外拷贝。
+DESTROOT=/data/media/0/Download/Thunder
+# 目标在公共目录下，属主必须归回 media_rw，否则手机文件管理器里看不到或不能改
+# （root 写的文件在 /sdcard 的 FUSE 视图下属于 root）。动态取，避免硬编码 uid。
+SDCARD_OWN=$(stat -c '%u:%g' /data/media/0 2>/dev/null); [ -z "$SDCARD_OWN" ] && SDCARD_OWN=1023:1023
 DONE_SUFFIX=.nasbak-done
 LOG=$ST/thunder-sync.log
 STATEF=$ST/_thunder_sizes.tsv
@@ -123,7 +130,7 @@ write_ledger() { # $1=相对路径 $2=文件名 $3=大小
     "$(date +%s)" "$(date '+%Y-%m-%dT%H:%M:%S%z')" "$_id" \
     "$(jesc "$2")" "$3" \
     "$(jesc "Android/data/com.xunlei.downloadprovider/files/ThunderDownload/$1")" \
-    "$(jesc "downloads/Thunder/$1")" "迅雷下载搬运（源改名保留 ${KEEP_HOURS}h）" \
+    "$(jesc "Download/Thunder/$1")" "迅雷下载搬运（源改名保留 ${KEEP_HOURS}h）" \
     >> "$LEDGER" 2>/dev/null
 }
 
@@ -196,7 +203,12 @@ while IFS= read -r FP; do
 
   DEST="$DESTROOT/$REL"
   DESTDIR=$(dirname "$DEST")
-  [ "$APPLY" = "1" ] && mkdir -p "$DESTDIR" 2>/dev/null
+  if [ "$APPLY" = "1" ]; then
+    mkdir -p "$DESTDIR" 2>/dev/null
+    # 目录也要归 media_rw，否则手机端进不去
+    $BB chown "$SDCARD_OWN" "$DESTDIR" 2>/dev/null
+    $BB chmod 775 "$DESTDIR" 2>/dev/null
+  fi
 
   # 目标已有同名同大小 → 之前搬过（或迅雷重新下载了同一份），只标记源不重复搬
   if [ -f "$DEST" ]; then
@@ -221,6 +233,9 @@ while IFS= read -r FP; do
   if cp -f "$FP" "$DEST" 2>/dev/null; then
     DSZ=$($BB stat -c %s "$DEST" 2>/dev/null)
     if [ "$DSZ" = "$SZ" ]; then
+      # 属主归位：root 写的文件在手机文件管理器里属于 root，普通应用改不了
+      $BB chown "$SDCARD_OWN" "$DEST" 2>/dev/null
+      $BB chmod 664 "$DEST" 2>/dev/null
       if mark_done "$FP" "$SZ"; then
         MOVED=$((MOVED+1)); BYTES=$((BYTES+SZ))
         log "搬入 $REL  ${SZ}B（源改名保留 ${KEEP_HOURS}h）"

@@ -100,6 +100,15 @@ foreach ($t in $targets) {
     Say ("    {0,-12} {1,3} 个文件" -f $t, $n)
     $pushed += $n
 }
+# 顶层文档（工作约定与变更日志）——每次都同步，避免设备上的版本过期
+foreach ($doc in @('AGENTS.md', 'CHANGELOG.md')) {
+    $srcDoc = Join-Path $Repo $doc
+    if (Test-Path $srcDoc) {
+        & adb -s $Device push $srcDoc "/data/local/tmp/stage/doc_$doc" 2>&1 | Out-Null
+        $pushed++
+        Say ("    文档        {0}" -f $doc)
+    }
+}
 Say "    共推送 $pushed 个文件"
 
 # ---------- 远端安装 ----------
@@ -162,6 +171,11 @@ for f in $ST/www__remote__*; do
   cp -f "$f" "/data/adb/nasbak/www/remote/$n"
 done
 chmod 644 /data/adb/nasbak/www/remote/* 2>/dev/null
+
+# --- 顶层文档（AGENTS.md / CHANGELOG.md）---
+for d in AGENTS.md CHANGELOG.md; do
+  [ -f "$ST/doc_$d" ] && cp -f "$ST/doc_$d" "/data/adb/nasbak/$d" && chmod 644 "/data/adb/nasbak/$d"
+done
 
 # --- httpd.conf ---
 [ -f $ST/httpd.conf ] && cp -f $ST/httpd.conf /data/adb/nasbak/httpd.conf

@@ -6,4 +6,4 @@
 20 4 * * 1 sh /data/adb/srv/update-trackers.sh
 */10 * * * * sh /data/adb/srv/bt-stall.sh
 */5 * * * * sh /data/adb/nasbak/bin/thunder-sync.sh
-*/5 * * * * sh /data/adb/nasbak/bin/scrcpy-serve.sh ensure
+50 4 * * * sh /data/adb/nasbak/bin/trash-gc.sh --apply

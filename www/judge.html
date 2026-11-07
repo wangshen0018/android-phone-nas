@@ -19,13 +19,100 @@ header{position:sticky;top:0;z-index:10;background:var(--card);border-bottom:1px
 .btn.pr{border-color:var(--pr);color:var(--pr)}
 .btn.dn{border-color:var(--dn);color:var(--dn)}
 .btn:disabled{opacity:.45;cursor:default}
+/* 操作记录条：sticky 在 header 下方，随时能看到刚判了什么、能撤。
+   每条是一句中文描述（把某文件判为/归入某人），竖排。
+   展开时要限高：20 条 × 19px ≈ 380px，不限高会把列表整个顶出屏幕（实测 566px）。 */
+#histbar{position:sticky;top:52px;z-index:9;display:flex;align-items:flex-start;gap:10px;
+  max-width:1080px;margin:0 auto;padding:7px 16px;background:#f0f3f7;
+  border-bottom:1px solid var(--bd);font-size:12.5px}
+body.cols2 #histbar{max-width:1560px}
+#histbar .hb-t{color:var(--mu);flex-shrink:0;font-size:12px;line-height:19px;padding-top:1px}
+#histbar .hb-list{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0;
+  overflow-y:auto;max-height:138px;   /* 收起 2 条 ~44px；展开最多 7 条，再多就条内滚动 */
+  scrollbar-width:thin}
+#histbar .hb-list::-webkit-scrollbar{width:6px}
+#histbar .hb-list::-webkit-scrollbar-thumb{background:#c3cad2;border-radius:3px}
+#histbar .hb-empty{color:#b0b6bd;font-size:12px;line-height:19px}
+#histbar .hb-i{display:flex;align-items:baseline;gap:7px;min-width:0;
+  font-size:12px;color:#4b5563;line-height:19px;white-space:nowrap}
+#histbar .hb-i .tm{color:#9aa3ad;flex-shrink:0;font-variant-numeric:tabular-nums;font-size:11.5px}
+#histbar .hb-i .tx{overflow:hidden;text-overflow:ellipsis;min-width:0}
+#histbar .hb-i .nm{color:#111;font-weight:500}
+#histbar .hb-i .a{font-weight:600}
+#histbar .hb-i .a.del{color:var(--dn)}
+#histbar .hb-i .a.keep{color:#0b7285}
+#histbar .hb-i .a.hold{color:#b8860b}
+#histbar .hb-i .a.arc{color:var(--pr)}
+#histbar .hb-i .ev{color:var(--pr);font-weight:600}
+#histbar .hb-i b{color:#111;font-weight:700}
+/* 已执行的标记：提醒撤销不能把文件搬回来 */
+#histbar .hb-i .dm{color:#b45309;background:#fef3c7;border:1px solid #fcd34d;
+  border-radius:4px;padding:0 4px;font-size:10.5px;margin-left:5px;font-weight:600}
+#histbar .hb-i .ct{color:#8b9299;font-size:11.5px}
+#histbar .hb-i.latest .tx{color:#111}
+#histbar .hb-i.latest .tm::before{content:'▸';color:var(--pr);margin-right:3px}
+#histbar #hbUndo{flex-shrink:0}
+#histbar #hbUndo:disabled{opacity:.4;cursor:default}
+#histbar .hb-more{flex-shrink:0;padding:4px 9px;font-size:11.5px;color:var(--pr);
+  border-color:#c7d7f5;background:#fff}
+#histbar .hb-more:hover{background:#eef4ff}
+
 main{max-width:1080px;margin:0 auto;padding:14px}
+/* 双列：容器加宽 + #list 变两列网格（卡片按日期顺序自动流转进两轨），
+   卡片改竖排（缩略图整宽在上），单纯并排会把图压没；
+   daygrp 跨满两轨，日期条永远占整行，不会拆散分组 */
+body.cols2 main{max-width:1560px}
+body.cols2 #list{display:grid;grid-template-columns:1fr 1fr;gap:0 14px;align-items:start}
+body.cols2 .daygrp{grid-column:1/-1;max-width:none}
+/* daybar 的宽度由 .daygrp 的 padding 控制，别额外限宽 */
+body.cols2 .c{flex-direction:column;gap:0}
+body.cols2 .th{width:100%;min-width:0;height:230px}
+body.cols2 .th img{max-height:230px}
+body.cols2 .hint{max-width:1560px}
+body.cols2 #rep{max-width:1560px}
+/* 单列/双列切换按钮 */
+#colBtn{white-space:nowrap}
+/* 窄屏（含 iframe 较窄时）双列自动退回单轨，避免卡片挤变形 */
+@media(max-width:1150px){
+  body.cols2 #list{grid-template-columns:1fr}
+}
 .c{display:flex;gap:14px;background:var(--card);border:1px solid var(--bd);border-radius:6px;margin-bottom:10px;overflow:hidden}
-.c.done{opacity:.55}
-.th{width:220px;min-width:220px;background:#eef0f2;display:flex;align-items:center;justify-content:center;cursor:zoom-in;position:relative}
+/* 已判定：只让文字区变淡，缩略图保持原样 ——
+   整卡 opacity 会把视频封面也洗白，看不出画面内容（2026-11-06 实测）。
+   注意：子元素的 opacity:1 盖不过父元素的 opacity，必须分开设。 */
+.c.done{opacity:1}
+.c.done .bd,.c.done .selbox{opacity:.55}
+.c.done .th{opacity:.9}
+/* 已执行完（文件已进回收站/已归档）：整卡再压暗一点，但保留撤销可能 */
+.c.executed{background:#fafafa}
+.c.executed .th{opacity:.55}
+.c.executed .bd{opacity:.45}
+.th{width:220px;min-width:220px;background:#eef0f2;display:flex;align-items:center;justify-content:center;cursor:zoom-in;position:relative;
+  /* 单列时缩略图固定 220×160（约 1.375:1）。视频块必须继承同一高度，
+     否则 .vph 自己的 height:160px 只覆盖宽度不覆盖比例，会显得又扁又宽。 */
+  height:160px;flex-shrink:0}
 .th img{width:100%;height:100%;max-height:200px;object-fit:contain;display:block}
-.vph{width:100%;height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--mu);font-size:12px;gap:6px;cursor:pointer}
+/* 视频占位块：撑满 .th 的高度，比例由 .th 决定，自己不另设高 */
+.vph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--mu);font-size:12px;gap:6px;cursor:pointer}
 .vph span:first-child{font-size:26px;color:#9aa1a9}
+/* 视频缩略图：用备份时预生成的 <id>.jpg 铺满整块，按 cover 裁切。
+   竖屏视频也统一按卡片尺寸裁，不再出现"扁一条"或"瘦一条"的怪异比例。 */
+.vph.vthumb{position:relative;overflow:hidden;background:#1a1d21}
+.vph.vthumb img{position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center;display:block}
+.vph.vthumb .vplay{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  font-size:30px;color:rgba(255,255,255,.92);text-shadow:0 2px 10px rgba(0,0,0,.65);z-index:2;
+  transition:font-size .15s}
+.vph.vthumb .vmeta{position:absolute;left:0;right:0;bottom:0;z-index:2;
+  background:linear-gradient(transparent,rgba(0,0,0,.72));color:#fff;
+  font-size:11px;padding:12px 6px 4px}
+/* 有缩略图时 ▶ 淡一点，别盖住画面 */
+.vph.vthumb:has(img) .vplay{font-size:24px;opacity:.85}
+.vph.vthumb:has(img):hover .vplay{font-size:30px;opacity:1}
+/* 还没生成缩略图（老视频 / 抽帧失败）：保持深色底 + 大 ▶，不显示破图 */
+.vph.vthumb.noframe .vplay{font-size:30px}
+/* 双列模式：视频块高度跟随卡片，也保持一致比例 */
+body.cols2 .vph.vthumb{height:230px}
 .bd{flex:1;padding:10px 12px 12px;min-width:0}
 .t{font-weight:600;font-size:13.5px;word-break:break-all}
 .m{color:var(--mu);font-size:12px;margin:3px 0 6px;font-variant-numeric:tabular-nums}
@@ -108,10 +195,69 @@ input{width:150px}
 .cvprog i{position:absolute;left:0;top:0;height:100%;width:0;background:#3b82f6;border-radius:3px;pointer-events:none}
 .cvtime{font-variant-numeric:tabular-nums;color:#9aa1a9;white-space:nowrap}
 /* ── 批量归档模态框 ── */
-#arcmodal{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center}
-#arcmodal .am-bg{position:absolute;inset:0;background:rgba(0,0,0,.45)}
-#arcmodal .am-box{position:relative;background:#fff;border-radius:9px;width:min(92vw,460px);
-  max-height:88vh;display:flex;flex-direction:column;box-shadow:0 12px 40px rgba(0,0,0,.28);overflow:hidden}
+/* 归档抽屉：从右侧滑出。
+   2026-11-06 二次改版：宽度从 420 提到 640（资源管理器式两级导航需要横向空间），
+   并把「归入已有」做成 分类九宫格 → 事件九宫格 的两级钻取。 */
+#arcmodal{position:fixed;inset:0;z-index:200;display:block}
+#arcmodal .am-bg{position:absolute;inset:0;background:rgba(0,0,0,.28)}
+#arcmodal .am-box{position:absolute;top:0;right:0;bottom:0;background:#fff;
+  width:min(96vw,640px);display:flex;flex-direction:column;
+  box-shadow:-8px 0 32px rgba(0,0,0,.22);overflow:hidden;
+  animation:amSlideIn .18s ease-out}
+@keyframes amSlideIn{from{transform:translateX(26px);opacity:.55}to{transform:translateX(0);opacity:1}}
+
+/* 面包屑：分类 › 事件，点上级可回退 */
+#arcmodal .am-crumb{display:flex;align-items:center;gap:7px;padding:9px 15px;
+  border-bottom:1px solid var(--bd);background:#fafbfc;font-size:12.5px;flex-wrap:wrap;min-height:38px}
+#arcmodal .am-crumb .ck{color:var(--pr);cursor:pointer;padding:2px 5px;border-radius:4px}
+#arcmodal .am-crumb .ck:hover{background:#e8f0fe}
+#arcmodal .am-crumb .cur{color:#33383d;font-weight:600;padding:2px 5px}
+#arcmodal .am-crumb .sep{color:#c3c9d1}
+#arcmodal .am-crumb .r{margin-left:auto;color:var(--mu);font-size:11.5px}
+
+/* 九宫格：auto-fill 自适应，每格最窄 128px —— 窄屏自动变两列，宽屏四列 */
+#arcmodal .am-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));
+  gap:9px;padding:14px 15px;overflow-y:auto;flex:1;align-content:start}
+#arcmodal .am-tile{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:7px;padding:16px 8px;border:1px solid var(--bd);border-radius:8px;background:#fff;
+  cursor:pointer;user-select:none;transition:.12s;min-height:104px;text-align:center}
+#arcmodal .am-tile:hover{border-color:var(--pr);background:#f7fafe;transform:translateY(-1px);
+  box-shadow:0 3px 10px rgba(37,99,235,.12)}
+#arcmodal .am-tile:active{transform:translateY(0)}
+#arcmodal .am-tile .ico{font-size:26px;line-height:1}
+#arcmodal .am-tile .nm4{font-size:12.5px;font-weight:600;color:#22303f;line-height:1.3;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  word-break:break-all;max-width:100%}
+#arcmodal .am-tile .sub{font-size:11px;color:var(--mu);font-variant-numeric:tabular-nums}
+#arcmodal .am-tile .cntb{font-size:10.5px;color:#fff;background:var(--pr);
+  border-radius:9px;padding:0 6px;line-height:1.5}
+/* 已选中的事件格 */
+#arcmodal .am-tile.on{border-color:var(--pr);border-width:2px;background:#e8f0fe;padding:15px 7px}
+#arcmodal .am-tile.on::after{content:"✓";position:absolute}
+#arcmodal .am-tile.pick{position:relative}
+#arcmodal .am-tile.pick.on{box-shadow:0 0 0 3px rgba(37,99,235,.16)}
+
+/* 底部操作条 */
+#arcmodal .am-ft{padding:11px 15px;border-top:1px solid var(--bd);display:flex;
+  align-items:center;gap:9px;flex-wrap:wrap;background:#fff}
+#arcmodal .am-ft #am-stat{margin-right:auto;font-size:12px;color:var(--mu);
+  font-variant-numeric:tabular-nums;max-width:52%;line-height:1.4}
+#arcmodal .am-ok{background:var(--pr);color:#fff;border-color:var(--pr)}
+#arcmodal .am-ok:hover{filter:brightness(1.08)}
+#arcmodal .am-ok:disabled{opacity:.5;cursor:default}
+/* 被归档文件清单（横向滚动条，节省纵向空间） */
+#arcmodal .am-files{display:flex;gap:7px;overflow-x:auto;padding:9px 15px;
+  border-bottom:1px solid var(--bd);background:#fafbfc;flex-shrink:0}
+#arcmodal .am-f{position:relative;flex-shrink:0;width:64px}
+#arcmodal .am-f img,#arcmodal .am-f .vico{width:64px;height:64px;object-fit:cover;
+  border-radius:5px;background:#e9ecef;display:flex;align-items:center;justify-content:center;
+  font-size:20px;color:#9aa1a9;border:1px solid var(--bd)}
+#arcmodal .am-f .nm3{display:block;font-size:10px;color:#5b6472;text-align:center;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:2px}
+#arcmodal .am-f .rm{position:absolute;right:-3px;top:-3px;width:17px;height:17px;
+  border-radius:50%;background:#dc2626;color:#fff;border:2px solid #fff;font-size:10px;
+  line-height:1;cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center}
+#arcmodal .am-f .rm:hover{background:#b91c1c}
 #arcmodal .am-hd{padding:13px 16px;border-bottom:1px solid var(--bd);font-weight:600;font-size:14.5px;
   display:flex;align-items:center;gap:6px}
 #arcmodal .am-hd b{color:var(--pr)}
@@ -157,6 +303,15 @@ input{width:150px}
 #bgjob .bgj-bar{height:4px;background:#2c3138;border-radius:2px;overflow:hidden;margin-top:8px}
 #bgjob .bgj-bar i{display:block;height:100%;width:0;background:#3b82f6;transition:width .2s}
 #bgjob .bgj-msg{margin-top:6px;color:#9aa1a9;font-size:11.5px;line-height:1.5;min-height:1em}
+/* 有失败：标红、不自动消失，避免"点完什么都没发生"的错觉 */
+#bgjob.has-fail{background:#2a1618;border:1px solid #7f1d1d}
+#bgjob.has-fail .bgj-t{color:#fca5a5}
+#bgjob.has-fail .bgj-bar i{background:#dc2626}
+#bgjob.has-fail .bgj-msg{color:#fca5a5}
+#bgjob .bgj-retry{display:none;margin-top:8px;width:100%;padding:5px 0;border-radius:5px;
+  background:#dc2626;color:#fff;border:none;font-size:12px;cursor:pointer}
+#bgjob.has-fail .bgj-retry{display:block}
+#bgjob .bgj-retry:hover{background:#b91c1c}
 /* ── 已判定完成的日期组：折叠时变细条 ── */
 .daygrp.folded .daybar{margin-bottom:8px;padding:6px 12px;background:#eef1f4;
   border-left-color:#9ca3af;opacity:.82}
@@ -171,12 +326,23 @@ input{width:150px}
     <b>文件判定</b>
     <span class="stat" id="stat">加载中…</span>
     <div class="pg"><i id="bar"></i></div>
-    <button class="btn pr" id="apply">模拟执行</button>
+    <button class="btn" id="colBtn" title="切换单列/双列显示">双列</button>
+    <button class="btn pr" id="apply" title="先统计再确认，不会误删">执行判定</button>
     <button class="btn" id="reset">重置判定</button>
     <button class="btn" id="reload">刷新</button>
   </div>
 </header>
 <div class="hint">点左侧缩略图就地放大查看，视频也在本页播放（← → 翻页，Esc 关闭）。四个按钮即最终判定，点下立刻写入 K40，不需要再点保存。</div>
+
+<!-- 操作记录条：默认只显示最近 2 条，点「展开」看全部。
+     数据来自 undo.cgi?a=last，撤销调用 undo.cgi?a=undo&id=xxx（追加 action=none，不删历史）。 -->
+<div id="histbar">
+  <span class="hb-t">最近操作</span>
+  <div class="hb-list" id="hbList"><span class="hb-empty">暂无</span></div>
+  <button class="btn hb-more" id="hbMore" title="展开全部操作记录" style="display:none">展开</button>
+  <button class="btn" id="hbUndo" title="撤销最近一次判定" disabled>↶ 撤销</button>
+</div>
+
 <main id="list"></main>
 <div id="rep"></div>
 
@@ -230,11 +396,189 @@ async function load(){
   const r=await fetch('data.json?_='+Date.now());
   ITEMS=(await r.json()).items||[];
   await syncState();
+  // 先拿操作记录，再渲染列表。
+  // 原因（2026-11-06）：render() 末尾会启动视频缩略图队列，而 K40 上的
+  // busybox httpd 是单线程的 —— 队列一开始发请求，loadHist 的 fetch 就只能排队，
+  // 首屏「最近操作」会长时间显示"暂无"。先取历史，代价是首屏晚 0.2 秒。
+  await loadHist();
   render();
   // 便于自测：index.html#v5 直接打开第 5 条
   const m=/^#v(\d+)$/.exec(location.hash);
   if(m && ITEMS[+m[1]]) openLB(+m[1]);
 }
+
+/* ================= 操作记录 & 撤销 =================
+   历史由 undo.cgi 从 decisions.jsonl 倒读生成（已去重、已剔除撤销记录）。
+   撤销 = 追加一条 action=none，前端 state.cgi 看到 none 就当未判定，
+   卡片按钮自动恢复可用。全程只追加，不删历史，可审计可再判。
+   展示：默认只露最近 2 条，点「展开」看全部 —— 避免顶栏被历史记录撑满。 */
+let HIST=[];
+let HIST_OPEN=false;
+const HIST_COLLAPSED=2;   // 收起时显示几条
+
+async function loadHist(){
+  try{
+    const r=await fetch('cgi/undo.cgi?a=last&n=20&_='+Date.now(),{cache:'no-store'});
+    const j=await r.json();
+    HIST=(j.items||[]);
+  }catch(e){ HIST=[]; }
+  renderHist();
+}
+
+/* 把一条历史记录翻成一句人话。
+   同一批操作（后端已按「动作+事件+60秒」聚合）合并成一条：
+     单个 → 「把 a.jpg 判为删除」
+     批量 → 「把 a.jpg、b.jpg 等 16 个文件归入 工作 › project-survey」 */
+function histText(h){
+  const n=h.n||1;
+  const act=ACTNAME[h.act]||h.act||'操作';
+  // 单条：完整文件名；多条：前两个文件名 + 等 N 个
+  let nm;
+  if(n<=1){
+    nm=`<span class="nm">${esc(h.name||h.id)}</span>`;
+  }else if(h.name2){
+    nm=`<span class="nm">${esc(h.name||h.id)}</span>、<span class="nm">${esc(h.name2)}</span> 等 <b>${n}</b> 个文件`;
+  }else{
+    nm=`<b>${n}</b> 个文件`;
+  }
+  // 事件名：events.jsonl 查得到就是中文名；查不到（早期废弃事件）就是 ev-xxx 这种 id
+  let evName=h.event_name||h.event||'';
+  if(/^ev-\d{8}-\d{2}$/.test(evName)){
+    // 只剩 id，说明这个事件后来被清理掉了，别让用户看天书
+    const d=evName.slice(3,11), m=+d.slice(4,6), day=+d.slice(6,8);
+    evName=`${m}月${day}日的事件（已不存在）`;
+  }
+  const target = h.act==='arc'
+    ? `归入 <span class="ev">${esc(evName||'未命名事件')}</span>`
+    : `判为 <span class="a ${h.act}">${esc(act)}</span>`;
+  // 执行过的加个标记：撤销只能还原判定状态，文件搬不回来（见撤销按钮的警告）
+  const doneMark = (h.exec_n>0)
+    ? `<span class="dm" title="已执行：文件已实际归档/删除，撤销只还原判定状态">已执行</span>`
+    : '';
+  return `把 ${nm} ${target}${doneMark}`;
+}
+
+/* 相对时间：刚刚 / 3 分钟前 / 14:07 / 11-05 14:07 */
+function histTime(ts){
+  if(!ts) return '';
+  const d=new Date(ts*1000), now=Date.now(), df=(now-d.getTime())/1000;
+  if(df<45) return '刚刚';
+  if(df<3600) return Math.floor(df/60)+' 分钟前';
+  const hm=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+  const isToday=d.toDateString()===new Date().toDateString();
+  if(isToday) return hm;
+  return String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+' '+hm;
+}
+
+function renderHist(){
+  const box=document.getElementById('hbList');
+  const btn=document.getElementById('hbUndo');
+  const more=document.getElementById('hbMore');
+  if(!box) return;
+
+  if(!HIST.length){
+    box.innerHTML='<span class="hb-empty">暂无操作</span>';
+    if(btn) btn.disabled=true;
+    if(more) more.style.display='none';
+    return;
+  }
+
+  const show = HIST_OPEN ? HIST : HIST.slice(0, HIST_COLLAPSED);
+  box.innerHTML=show.map((h,i)=>{
+    const tip=[h.name||h.id, ACTNAME[h.act]||h.act, h.cat, h.event, h.desc]
+      .filter(Boolean).join(' · ');
+    return `<span class="hb-i${i===0&&!HIST_OPEN?' latest':''}" title="${esc(tip)}">
+      <span class="tm">${esc(histTime(h.ts))}</span>
+      <span class="tx">${histText(h)}</span>
+    </span>`;
+  }).join('');
+
+  // 超过 2 条才显示展开/收起
+  if(more){
+    if(HIST.length>HIST_COLLAPSED){
+      more.style.display='';
+      more.textContent = HIST_OPEN ? '收起' : `展开全部 ${HIST.length} 条`;
+    }else{
+      more.style.display='none';
+    }
+  }
+  if(btn) btn.disabled=false;
+}
+
+document.getElementById('hbMore').onclick=function(){
+  HIST_OPEN=!HIST_OPEN;
+  renderHist();
+};
+
+document.getElementById('hbUndo').onclick=async function(){
+  if(!HIST.length){ alert('没有可撤销的操作'); return; }
+  const top=HIST[0];
+  const n=top.n||1;
+  const actName=ACTNAME[top.act]||top.act;
+  let evN=top.event_name||top.event||'';
+  if(/^ev-\d{8}-\d{2}$/.test(evN)){
+    const d=evN.slice(3,11);
+    evN=`${+d.slice(4,6)}月${+d.slice(6,8)}日的事件`;
+  }
+  const what = top.act==='arc'
+    ? `归入「${evN||'未命名事件'}」`
+    : `判为「${actName}」`;
+  const subject = n>1
+    ? `把 ${top.name||top.id}${top.name2?`、${top.name2}`:''} 等 ${n} 个文件 ${what}`
+    : `把 ${top.name||top.id} ${what}`;
+  const when=histTime(top.ts);
+  const execN=top.exec_n||0;
+  const isArc=top.act==='arc';
+
+  // 撤销的真实语义：只追加一条 action=none 把判定状态还原，
+  // 已经执行过的文件操作回不来（arc 的文件已在 archive/，del 的源文件已 rm）。
+  // 这里必须说清楚，否则用户会以为点了撤销文件就回原位了（2026-11-06 澄清）。
+  let tail='';
+  if(execN>0){
+    const what2 = isArc
+      ? `${execN} 个文件已经移进归档目录`
+      : `源文件已经被删除`;
+    tail=`\n\n⚠ 这批操作已经执行过了（${what2}）。\n`+
+         `撤销只会把它们恢复成「未判定」状态，可以重新判断；\n`+
+         (isArc
+           ? `但文件不会自动移回 inbox —— 需要你手动从 archive/ 里拿回来。`
+           : `删除的文件无法找回。`);
+    if(n>1 && execN<n) tail+=`\n\n（这 ${n} 个里有 ${execN} 个已执行，其余 ${n-execN} 个未执行。）`;
+  }else{
+    tail = n>1 ? `\n\n这会一起撤销这 ${n} 个文件，全部回到未判定状态。` : '\n\n撤销后该文件回到未判定状态，可以重新判断。';
+  }
+
+  if(!confirm(`撤销上一次操作？\n\n上一次（${when}）：${subject}${tail}`)) return;
+
+  this.disabled=true; this.textContent='撤销中…';
+  try{
+    const ids=(top.ids||top.id).split(',').filter(Boolean);
+    const r=await fetch('cgi/undo.cgi?a=undo&ids='+encodeURIComponent(ids.join(',')),{cache:'no-store'});
+    const j=await r.json();
+    if(!j.ok){ alert('撤销失败：'+(j.err||'未知')); return; }
+
+    // 撤销结果要说清楚"文件到底回来了几个"（2026-11-06 用户要求）
+    // 后端返回三组计数：restored=已从归档搬回、restore_failed=搬失败、deleted_gone=删除救不回
+    const rs=j.restored||0, rf=j.restore_failed||0, dg=j.deleted_gone||0;
+    let rep=`已撤销 ${j.undone} 项判定，文件恢复为「未判定」。`;
+    if(rs)  rep+=`\n\n✅ 已把 ${rs} 个文件从归档搬回 inbox 原位置。`;
+    if(rf)  rep+=`\n\n⚠ ${rf} 个文件搬回失败（可能归档里已找不到，或目标位置被占用）。`;
+    if(dg)  rep+=`\n\n❌ ${dg} 个文件是「删除」操作，源文件已不存在，无法找回。\n（预览图还在 state/_media_gc_trash/ 隔离区，需要的话可以手动捞）`;
+    if(!rs && !rf && !dg) rep+='\n\n（这些判定还没执行过，没有文件需要搬回。）';
+    alert(rep);
+
+    // 前端状态同步：把这一组从 Cur 里去掉
+    ids.forEach(id=>delete CUR[id]);
+    await syncState();
+    await loadHist();
+    render();
+  }catch(e){
+    alert('撤销请求失败：'+e.message);
+  }finally{
+    this.textContent='↶ 撤销';
+    this.disabled=HIST.length===0;
+  }
+};
 
 /* 只刷新判定状态与事件列表，不动列表 DOM 结构 */
 async function syncState(){
@@ -245,46 +589,9 @@ async function syncState(){
   }catch(e){ /* 保持旧值 */ }
 }
 
-const evOpts=()=>['<option value="">新建事件</option>'].concat(EVENTS.map(e=>
-  `<option value="${esc(e.event_id)}">${esc(e.start_date)} ${esc(CATNAME[e.slug]||e.slug)} · ${esc(e.topic)}${e.status==='sealed'?'（已封箱）':''}</option>`)).join('');
-
-/* 事件列表变化后，就地刷新所有下拉，保留各自已选项 */
-function refreshSelects(){
-  document.querySelectorAll('select[id^="ev-"]').forEach(sel=>{
-    const keep=sel.value;
-    sel.innerHTML=evOpts();
-    if(keep && [...sel.options].some(o=>o.value===keep)) sel.value=keep;
-    syncCatSel(sel.id.slice(3));
-  });
-}
-
-/* 分类下拉 ↔ 事件下拉联动：
-   归入已有事件时分类由事件决定（禁用），新建事件时分类由人决定并写进夹名 */
-function syncCatSel(id){
-  const ev=document.getElementById('ev-'+id), ct=document.getElementById('ct-'+id);
-  if(!ev||!ct) return;
-  const e=EVENTS.find(x=>x.event_id===ev.value);
-  if(e){
-    ct.value=CATPICK.includes(e.slug)?e.slug:'other';
-    ct.disabled=true;
-    ct.title='跟随事件「'+(e.topic||'')+'」的分类';
-  }else{
-    ct.disabled=false;
-    ct.title='分类决定归档文件夹名，AI 判错可改';
-  }
-  paintCat(id);
-}
-
-/* 把下拉里的分类写回卡片上的标签，避免"改了看着没变" */
-function paintCat(id){
-  const ct=document.getElementById('ct-'+id);
-  const it=ITEMS.find(x=>x.id===id);
-  const el=document.querySelector('#c-'+id+' .tagcat');
-  if(!ct||!it||!el||!ct.value) return;  // 还没选分类时不改标签
-  it.cat=ct.value;
-  el.textContent=CATNAME[ct.value]||ct.value;
-  el.className='tag tagcat '+(ct.value==='work'?'w':(ct.value==='screenshot'?'d':''));
-}
+/* 2026-11-06 归档改抽屉后，卡片上不再有 ct-/ev-/tp- 三件套下拉，
+   下面这三个函数（evOpts/refreshSelects/syncCatSel/paintCat）已无用武之地。
+   保留 catOpts 供抽屉内部生成分类选项。 */
 
 /* 多选集合 */
 const PICK=new Set();
@@ -295,8 +602,20 @@ const UNFOLD=new Set();   // 手动展开过的（优先级高于自动折叠）
 function cardHTML(it,i){
   const doneAct=CUR[it.id];
   const v=isVid(it);
+  /* 视频缩略图（2026-11-06 改）：改成用备份时预生成的 <id>.jpg。
+     走过的弯路：一开始让浏览器 <video preload=metadata> + canvas 抽首帧。
+     但 K40 的 busybox httpd 是单线程的，一个视频要顺序读十几 MB，
+     几十个视频排下来直接把 httpd 堵死 —— 连 judge.html 自己都打不开。
+     现在由 bin/make-vthumb.sh 在备份后用 ffmpeg 预抽一帧存成 state/thumb/<id>.jpg
+     （320px、约 18KB），页面只发一个普通图片请求，快得多也不会卡。
+     onerror 时退回 ▶ 占位，保证老视频（还没抽过帧的）不显示破图。 */
   const thumb=v
-    ? `<div class="vph" data-view="${i}"><span>▶</span><span>视频 ${fmt(it.size)}</span><span>点击就地播放</span></div>`
+    ? `<div class="vph vthumb" data-view="${i}" data-vsrc="${mediaURL(it)}">
+         <img src="thumb/${it.id}.jpg" loading="lazy" alt=""
+              onerror="this.closest('.vthumb').classList.add('noframe');this.remove()">
+         <span class="vplay">▶</span>
+         <span class="vmeta">视频 ${fmt(it.size)}</span>
+       </div>`
     : `<img src="${mediaURL(it)}" loading="lazy" data-view="${i}" alt="">`;
   const tagCat=`<span class="tag tagcat ${it.cat==='work'?'w':(it.cat==='screenshot'?'d':'')}">${CATNAME[it.cat]||it.cat}</span>`;
   // AI建议已移除：判读只出描述，不给删除/留存建议
@@ -309,23 +628,22 @@ function cardHTML(it,i){
       <div class="m">${fmt(it.size)} · ${esc(it.date||dstr(it.mtime))} · ${tagCat}${tagCd}<span class="tag">${it.ms}ms ${esc(it.model||'')}</span></div>
       <div class="d">${esc(it.desc)}</div>
       <div class="a">
-        <button class="btn dn" data-act="del" ${doneAct?'disabled':''}>删除</button>
+        <button class="btn dn" data-act="del" title="点下即执行：移入回收站，30 天内可撤销找回" ${doneAct?'disabled':''}>删除</button>
         <button class="btn" data-act="keep" ${doneAct?'disabled':''}>留存</button>
         <button class="btn" data-act="hold" ${doneAct?'disabled':''}>暂存</button>
         <button class="btn pr" data-act="arc" ${doneAct?'disabled':''}>存档</button>
         <span class="mark">${doneAct?('已判：'+ACTNAME[doneAct]):''}</span>
       </div>
-      <div class="arc" id="arc-${it.id}">
-        <span class="lbl">分类</span>
-        <select id="ct-${it.id}" title="分类决定归档文件夹名，可改">${catOpts(it.cat)}</select>
-        <span class="lbl">事件</span>
-        <select id="ev-${it.id}">${evOpts()}</select>
-        <input id="tp-${it.id}" placeholder="事件主题（新建时必填）" maxlength="20">
-        <button class="btn pr" data-confirm="1">确认存档</button>
-      </div>
     </div>
   </div>`;
 }
+
+
+/* ================= 视频缩略图 =================
+   由 bin/make-vthumb.sh 在备份后用 ffmpeg 预生成 state/thumb/<id>.jpg，
+   这里不再做任何抽帧 —— 曾经用浏览器 <video> + canvas 抽，但 K40 的
+   busybox httpd 是单线程，几十个视频的元数据请求會把服务堵死，
+   页面连自己的 cgi 都请求不到（2026-11-06 实测整页卡死）。 */
 
 /* 按天分组渲染 */
 function render(){
@@ -376,7 +694,8 @@ function render(){
   document.querySelectorAll('[data-act]').forEach(b=>b.onclick=()=>{
     const id=b.closest('.c').id.slice(2);
     const act=b.dataset.act;
-    if(act==='arc'){ document.getElementById('arc-'+id).classList.toggle('on'); return; }
+    // 存档不再展开内联下拉，直接开右侧抽屉（与批量归档同一个界面）
+    if(act==='arc'){ startBulkArc([id]); return; }
     submit(id,act,'','');
   });
 
@@ -427,13 +746,6 @@ function render(){
 
   updBulk();
   initExtras();
-  refreshSelects();  // 新建事件后刷新下拉
-  document.querySelectorAll('select[id^="ct-"]').forEach(s=>s.onchange=()=>paintCat(s.id.slice(3)));
-  document.querySelectorAll('select[id^="ev-"]').forEach(s=>s.onchange=()=>syncCatSel(s.id.slice(3)));
-  document.querySelectorAll('[data-confirm]').forEach(b=>b.onclick=()=>{
-    const id=b.closest('.c').id.slice(2);
-    confirmArc(id);
-  });
 }
 
 /* 底部悬浮批量条 */
@@ -833,6 +1145,47 @@ document.addEventListener('keydown',e=>{
 async function bulkSubmit(ids,act){
   if(!ids.length) return;
   const label=ACTNAME[act]||act;
+
+  // 删除：写入后立刻执行（用户确认手动判删除不会误判，不再二次确认）。
+  // 别的动作仍然走确认 + 等顶栏「执行判定」。
+  if(act==='del'){
+    const n=ids.length;
+    let ok=0,fail=0,execOk=0,execFail=0;
+    const bar=document.getElementById('bulkbar');
+    if(bar) bar.style.opacity='.6';
+    try{
+      for(const id of ids){
+        try{
+          const body=JSON.stringify({id,action:'del',event:'',topic:'',cat:''});
+          const r=await fetch('cgi/decide.cgi',{method:'POST',headers:{'Content-Type':'application/json'},body});
+          const j=await r.json();
+          if(j.ok){ ok++; CUR[id]='del'; PICK.delete(id); } else fail++;
+        }catch(e){ fail++; }
+      }
+      // 写完后一次性把成功的这些执行掉（传 ids，绝不裸调）
+      const okIds=ids.filter(id=>CUR[id]==='del');
+      if(okIds.length){
+        try{
+          const r2=await fetch('cgi/apply.cgi?ids='+encodeURIComponent(okIds.join(',')),{method:'POST',cache:'no-store'});
+          const j2=await r2.json();
+          (j2.items||[]).forEach(it=>{
+            if(it.result==='deleted') execOk++;
+            else execFail++;
+          });
+        }catch(e){ execFail=okIds.length; }
+      }
+    }finally{
+      if(bar) bar.style.opacity='';
+    }
+    let msg=`删除完成：${ok} 个判定成功`;
+    if(execOk) msg+=`，${execOk} 个已移入回收站（30 天内可撤销找回）`;
+    if(execFail) msg+=`，${execFail} 个执行失败——请点顶栏「执行判定」重试`;
+    if(fail) msg+=`；${fail} 个判定写入失败`;
+    alert(msg);
+    render();
+    return;
+  }
+
   if(!confirm(`要对选中的 ${ids.length} 项执行「${label}」吗？`)) return;
 
   let ok=0,fail=0;
@@ -856,11 +1209,16 @@ async function bulkSubmit(ids,act){
 /* ── 批量存档：统一选事件后执行 ── */
 /* ── 批量归档：模态框，支持「归入已有事件」或「新建事件」 ── */
 /* ── 后台归档队列：不阻塞界面 ── */
-const BG={queue:[],running:false,ok:0,fail:0,total:0,lastErr:'',newEvId:'',cfg:null};
+const BG={queue:[],running:false,ok:0,fail:0,total:0,lastErr:'',newEvId:'',cfg:null,
+          failNames:[],failIds:[],currName:''};
 
 function enqueueBulkArc(ids,cfg){
   BG.queue=BG.queue.concat(ids.map(id=>({id})));
   BG.cfg=cfg;
+  // 新一轮任务：清掉上一轮的结果，否则失败列表会越滚越长
+  if(!BG.running && BG.queue.length===ids.length){
+    BG.ok=0; BG.fail=0; BG.failNames=[]; BG.failIds=[]; BG.lastErr='';
+  }
   BG.total=BG.queue.length+BG.ok+BG.fail;
   if(!BG.running) runBgQueue();
   updBgPanel();
@@ -879,10 +1237,22 @@ function updBgPanel(){
       <span class="bgj-c" id="bgjCnt">0/0</span>
       <button class="bgj-x" id="bgjClose" title="收起（任务继续）">×</button></div>
       <div class="bgj-bar"><i id="bgjBar"></i></div>
-      <div class="bgj-msg" id="bgjMsg"></div>`;
+      <div class="bgj-msg" id="bgjMsg"></div>
+      <button class="bgj-retry" id="bgjRetry">重试失败的项</button>`;
     document.body.appendChild(p);
     p.querySelector('#bgjClose').onclick=()=>{ p.classList.add('mini'); };
     p.onclick=e=>{ if(p.classList.contains('mini')) p.classList.remove('mini'); };
+    p.querySelector('#bgjRetry').onclick=ev=>{
+      ev.stopPropagation();
+      // 只重跑失败的那些，成功的不动。用同一份 cfg（同一事件）重试。
+      if(!BG.failIds.length || !BG.cfg) return;
+      const ids=BG.failIds.slice();
+      const cfg=Object.assign({},BG.cfg);
+      BG.failIds=[]; BG.failNames=[];
+      BG.fail=0; BG.ok=0; BG.lastErr=''; BG.newEvId='';
+      p.remove();
+      enqueueBulkArc(ids,cfg);
+    };
   }
   p.classList.remove('mini');
   const cnt=document.getElementById('bgjCnt');
@@ -893,12 +1263,28 @@ function updBgPanel(){
   if(bar) bar.style.width=(total?done/total*100:0)+'%';
   if(t) t.textContent=BG.running?'归档中…':(BG.fail?`完成，${BG.fail} 项失败`:'归档完成');
   if(msg){
-    msg.textContent=BG.running?'':`成功 ${BG.ok} 项` + (BG.fail?`，失败 ${BG.fail} 项${BG.lastErr?'（'+BG.lastErr+'）':''}`:'');
+    if(BG.running){
+      msg.textContent='';
+    }else{
+      let s=`成功 ${BG.ok} 项`;
+      if(BG.fail){
+        s+=`，失败 ${BG.fail} 项${BG.lastErr?'（'+BG.lastErr+'）':''}`;
+        // 列出失败的文件名，别让人只知道"失败了"却不知道是哪个
+        if(BG.failNames.length){
+          s+='\n'+BG.failNames.slice(0,5).join('、')+(BG.failNames.length>5?` 等 ${BG.failNames.length} 个`:'');
+        }
+        s+='\n点这里重试或关闭';
+      }
+      msg.textContent=s;
+      msg.style.whiteSpace='pre-line';
+    }
   }
+  // 有失败时标红且不自动消失 —— 之前 5 秒就消失，用户根本没看见（2026-11-06）
+  p.classList.toggle('has-fail', !BG.running && BG.fail>0);
   if(!BG.running && done>0){
-    // 完成 5 秒后自动消失
     clearTimeout(BG._t);
-    BG._t=setTimeout(()=>{ const q=document.getElementById('bgjob'); if(q) q.remove(); BG.ok=0;BG.fail=0;BG.total=0; },5000);
+    if(BG.fail>0) return;          // 有失败就停在这儿，等用户处理
+    BG._t=setTimeout(()=>{ const q=document.getElementById('bgjob'); if(q) q.remove(); BG.ok=0;BG.fail=0;BG.total=0;BG.failNames=[]; },5000);
   }
 }
 
@@ -926,8 +1312,19 @@ async function runBgQueue(){
           card.querySelectorAll('[data-act]').forEach(b=>b.disabled=true);
           const cb=card.querySelector('[data-pick]'); if(cb){ cb.checked=false; cb.disabled=true; }
         }
-      }else{ BG.fail++; BG.lastErr=j.err||''; }
-    }catch(e){ BG.fail++; BG.lastErr=e.message||''; }
+      }else{
+        BG.fail++; BG.lastErr=j.err||'';
+        // 记下失败的是哪个文件，完成后列出来
+        const it=ITEMS.find(x=>x.id===item.id);
+        BG.failNames.push(it?it.name:item.id);
+        BG.failIds.push(item.id);
+      }
+    }catch(e){
+      BG.fail++; BG.lastErr=e.message||'';
+      const it=ITEMS.find(x=>x.id===item.id);
+      BG.failNames.push(it?it.name:item.id);
+      BG.failIds.push(item.id);
+    }
     updBgPanel();
     // 让出主线程，保证界面可交互
     await new Promise(r=>setTimeout(r,0));
@@ -941,8 +1338,16 @@ async function runBgQueue(){
   render();
 }
 
-function startBulkArc(ids){
+/* 归档抽屉：单张与批量共用同一个入口。
+   · 单张：卡片上的「存档」按钮调用 startBulkArc([id])
+   · 批量：底部批量条调用 startBulkArc(已选 id 数组)
+   · 抽屉里可以直接看到被归档的文件缩略图，对照着填事件
+   · 「归入已有」改成可点列表而非下拉，事件多时也快 */
+function startBulkArc(ids, opts){
   if(!ids.length) return;
+  const old=document.getElementById('arcmodal'); if(old) old.remove();
+
+  const multi = ids.length>1;
 
   // 已选文件里出现最多的日期作为事件起始日
   const dates={};
@@ -950,9 +1355,27 @@ function startBulkArc(ids){
   const dayMode=Object.keys(dates).sort((a,b)=>dates[b]-dates[a])[0] || new Date().toISOString().slice(0,10);
   const multiDay=Object.keys(dates).length>1;
 
-  const evOptsHTML=['<option value="">— 新建事件 —</option>'].concat(
-    EVENTS.map(e=>`<option value="${esc(e.event_id)}">${esc(e.start_date)} ${CATNAME[e.slug]||e.slug} · ${esc(e.topic)}${e.status==='sealed'?'（已封箱）':''}</option>`)
-  ).join('');
+  // 分类图标
+  const CATICO={work:'🏗',home:'🏠',screenshot:'📱',video:'🎬',other:'📁',unclassified:'❓'};
+
+  // 按分类归拢已有事件：{slug: [{ev}]}
+  const byCat={};
+  EVENTS.forEach(e=>{
+    const sl=e.slug||'other';
+    (byCat[sl]=byCat[sl]||[]).push(e);
+  });
+
+  // 被归档文件清单（横向缩略图条）
+  const filesHTML = ids.map(id=>{
+    const it=ITEMS.find(x=>x.id===id) || {};
+    const v=isVid(it);
+    const thumb = v ? '<div class="vico">▶</div>' : `<img src="${mediaURL(it)}" loading="lazy" alt="">`;
+    return `<div class="am-f" data-id="${esc(id)}" title="${esc(it.name||'')}">
+      ${thumb}
+      <span class="nm3">${esc(it.name||id)}</span>
+      <button class="rm" title="移出本次归档" data-rm="${esc(id)}">×</button>
+    </div>`;
+  }).join('');
 
   const catOptsHTML=CATPICK.map(k=>`<option value="${k}"${k==='work'?' selected':''}>${CATNAME[k]}</option>`).join('');
 
@@ -961,36 +1384,34 @@ function startBulkArc(ids){
   m.innerHTML=`
     <div class="am-bg"></div>
     <div class="am-box">
-      <div class="am-hd">批量归档 <b>${ids.length}</b> 项<button class="am-x" title="关闭">✕</button></div>
-      <div class="am-bd">
-        <div class="am-row">
-          <label>方式</label>
-          <div class="am-seg">
-            <button type="button" class="am-tab on" data-mode="new">新建事件</button>
-            <button type="button" class="am-tab" data-mode="exist" ${EVENTS.length?'':'disabled'}>归入已有</button>
-          </div>
-        </div>
-        <div id="am-new">
-          <div class="am-row"><label>主题</label>
-            <input id="am-topic" maxlength="20" placeholder="如：河道治理工程巡查、孩子生日">
-          </div>
-          <div class="am-row"><label>分类</label>
-            <select id="am-cat">${catOptsHTML}</select>
-          </div>
-          <div class="am-row"><label>日期</label>
-            <input id="am-date" value="${dayMode}" readonly title="取自文件拍摄日期">
-            ${multiDay?`<span class="am-warn">跨 ${Object.keys(dates).length} 天</span>`:''}
-          </div>
-          <div class="am-tip">事件夹名：<code id="am-preview">—</code></div>
-        </div>
-        <div id="am-exist" style="display:none">
-          <div class="am-row"><label>事件</label>
-            <select id="am-ev">${evOptsHTML}</select>
-          </div>
-        </div>
+      <div class="am-hd">
+        <span>归档${multi?' <b>'+ids.length+'</b> 项':''}</span>
+        <button class="am-x" title="关闭（Esc）">✕</button>
       </div>
+
+      <div class="am-files" id="am-files">${filesHTML}</div>
+
+      <div class="am-crumb" id="am-crumb"></div>
+
+      <div class="am-tiles" id="am-tiles"></div>
+
+      <div id="am-new" style="display:none;padding:14px 15px;overflow-y:auto;flex:1">
+        <div class="am-row"><label>主题</label>
+          <input id="am-topic" maxlength="20" placeholder="如：河道治理巡查、孩子生日">
+        </div>
+        <div class="am-row"><label>分类</label>
+          <select id="am-cat">${catOptsHTML}</select>
+        </div>
+        <div class="am-row"><label>日期</label>
+          <input id="am-date" value="${dayMode}" readonly title="取自文件拍摄日期">
+          ${multiDay?`<span class="am-warn">跨 ${Object.keys(dates).length} 天</span>`:''}
+        </div>
+        <div class="am-tip">事件夹名：<code id="am-preview">—</code></div>
+      </div>
+
       <div class="am-ft">
         <span id="am-stat"></span>
+        <button class="btn am-newbtn">＋ 新建事件</button>
         <button class="btn am-cancel">取消</button>
         <button class="btn pr am-ok">确认归档</button>
       </div>
@@ -998,52 +1419,185 @@ function startBulkArc(ids){
   document.body.appendChild(m);
 
   const $m=s=>m.querySelector(s);
+  const tilesEl=$m('#am-tiles'), crumbEl=$m('#am-crumb'), statEl=$m('#am-stat'), okBtn=$m('.am-ok');
+  const newPanel=$m('#am-new');
   const topicEl=$m('#am-topic'), catEl=$m('#am-cat'), dateEl=$m('#am-date'), prevEl=$m('#am-preview');
-  let mode='new';
 
+  let mode='exist';          // exist=选已有事件（默认，优先显示）；new=新建
+  let pickedEv='';
+  let curCat=null;           // 当前钻入的分类；null=在分类层
+  let curIds=ids.slice();
+
+  /* ---------- 面包屑 ---------- */
+  function renderCrumb(){
+    if(mode==='new'){
+      crumbEl.innerHTML = `<span class="cur">新建事件</span>
+        <span class="r">填好主题与分类即可归档</span>`;
+      return;
+    }
+    if(!curCat){
+      crumbEl.innerHTML = `<span class="cur">全部事件</span>
+        <span class="sep">›</span>
+        <span style="color:var(--mu)">选择一个分类</span>
+        <span class="r">共 ${EVENTS.length} 个事件</span>`;
+    }else{
+      const ev=EVENTS.find(e=>e.event_id===pickedEv);
+      crumbEl.innerHTML = `<span class="ck" data-back="1">全部事件</span>
+        <span class="sep">›</span>
+        <span class="cur">${CATICO[curCat]||'📁'} ${esc(CATNAME[curCat]||curCat)}</span>
+        ${ev?`<span class="sep">›</span><span style="color:var(--pr);font-weight:600">${esc(ev.topic)}</span>`:''}
+        <span class="r">${ev?'已选中':'选择事件'}</span>`;
+      const bk=crumbEl.querySelector('[data-back]');
+      if(bk) bk.onclick=()=>{ curCat=null; renderTiles(); };
+    }
+  }
+
+  /* ---------- 九宫格 ---------- */
+  function renderTiles(){
+    if(mode==='new'){ tilesEl.style.display='none'; newPanel.style.display=''; return; }
+    tilesEl.style.display=''; newPanel.style.display='none';
+
+    if(!EVENTS.length){
+      tilesEl.innerHTML='<div style="grid-column:1/-1;text-align:center;color:var(--mu);padding:30px 0;font-size:13px">还没有事件夹<br><span style="font-size:12px">点下方「＋ 新建事件」创建第一个</span></div>';
+      renderCrumb(); updStat(); return;
+    }
+
+    if(!curCat){
+      // 第一级：分类九宫格
+      const cats=Object.keys(byCat).sort((a,b)=>byCat[b].length-byCat[a].length);
+      tilesEl.innerHTML=cats.map(sl=>`
+        <div class="am-tile pick" data-cat="${esc(sl)}">
+          <span class="ico">${CATICO[sl]||'📁'}</span>
+          <span class="nm4">${esc(CATNAME[sl]||sl)}</span>
+          <span class="cntb">${byCat[sl].length}</span>
+        </div>`).join('');
+      tilesEl.querySelectorAll('[data-cat]').forEach(el=>{
+        el.onclick=()=>{ curCat=el.dataset.cat; renderTiles(); };
+      });
+    }else{
+      // 第二级：该分类下的事件九宫格（按日期倒序）
+      const evs=(byCat[curCat]||[]).slice().sort((a,b)=>
+        String(b.start_date||'').localeCompare(String(a.start_date||'')));
+      tilesEl.innerHTML=evs.map(e=>`
+        <div class="am-tile pick${e.event_id===pickedEv?' on':''}" data-ev="${esc(e.event_id)}">
+          <span class="ico">📂</span>
+          <span class="nm4">${esc(e.topic)}</span>
+          <span class="sub">${esc(e.start_date||'')}${e.status==='sealed'?' · 已封箱':''}</span>
+        </div>`).join('');
+      tilesEl.querySelectorAll('[data-ev]').forEach(el=>{
+        el.onclick=()=>{
+          const ev=el.dataset.ev;
+          if(!ev){ alert('这个事件没有有效 id，请刷新页面后重试'); return; }
+          pickedEv=ev;
+          tilesEl.querySelectorAll('[data-ev]').forEach(x=>x.classList.toggle('on',x===el));
+          renderCrumb(); updStat();
+          /* 末级选中即执行：点具体事件就是要归档，不必再点一次"确认归档"（2026-11-06 用户要求）。
+             给 220ms 让高亮反馈先画出来，否则点完立刻消失会显得"没反应"。 */
+          setTimeout(()=>doArchive('exist', ev, '', ''), 220);
+        };
+      });
+    }
+    renderCrumb(); updStat();
+  }
+
+  /* ---------- 底部状态 ---------- */
+  function updStat(){
+    const n=curIds.length;
+    if(mode==='new'){
+      statEl.textContent=`新建事件 · 归档 ${n} 项`;
+      okBtn.disabled=false;
+      return;
+    }
+    if(pickedEv){
+      const ev=EVENTS.find(e=>e.event_id===pickedEv);
+      statEl.textContent=`归入「${ev?ev.topic:''}」· 归档 ${n} 项`;
+      okBtn.disabled=false;
+    }else{
+      statEl.textContent = curCat ? '请点选一个事件' : '请先选分类';
+      okBtn.disabled=true;
+    }
+  }
+
+  /* ---------- 模式切换 ---------- */
+  function setMode(mm){
+    mode=mm;
+    if(mm==='new'){ curCat=null; pickedEv=''; }
+    renderTiles();
+    if(mm==='new') setTimeout(()=>topicEl.focus(),30);
+  }
+  $m('.am-newbtn').onclick=()=>{ setMode(mode==='new'?'exist':'new'); };
+
+  /* ---------- 新建模式的预览 ---------- */
   const updPreview=()=>{
     const t=(topicEl.value||'').trim()||'未命名';
     prevEl.textContent=`${dateEl.value}_${catEl.value}_${t}`;
   };
   topicEl.oninput=updPreview; catEl.onchange=updPreview;
   updPreview();
-  setTimeout(()=>topicEl.focus(),50);
 
-  m.querySelectorAll('.am-tab').forEach(b=>{
-    b.onclick=()=>{
-      mode=b.dataset.mode;
-      m.querySelectorAll('.am-tab').forEach(x=>x.classList.toggle('on',x===b));
-      $m('#am-new').style.display=mode==='new'?'':'none';
-      $m('#am-exist').style.display=mode==='exist'?'':'none';
+  /* ---------- 移除文件 ---------- */
+  m.querySelectorAll('[data-rm]').forEach(b=>{
+    b.onclick=e=>{
+      e.stopPropagation();
+      const id=b.dataset.rm;
+      curIds=curIds.filter(x=>x!==id);
+      b.closest('.am-f').remove();
+      if(!curIds.length){ close(); return; }
+      const hd=m.querySelector('.am-hd span');
+      if(hd) hd.innerHTML = curIds.length>1 ? ('归档 <b>'+curIds.length+'</b> 项') : '归档';
+      updStat();
     };
   });
-  const close=()=>m.remove();
+
+  const close=()=>{ m.remove(); document.removeEventListener('keydown',onEscKey); };
   m.querySelector('.am-x').onclick=close;
   m.querySelector('.am-bg').onclick=close;
   m.querySelector('.am-cancel').onclick=close;
 
-  m.querySelector('.am-ok').onclick=()=>{
-    const evId = mode==='exist' ? $m('#am-ev').value : '';
+  // Esc 关闭。变量名不能叫 esc —— 会与全局 HTML 转义函数同名并进 TDZ（实证过）。
+  const onEscKey=(e)=>{ if(e.key==='Escape') close(); };
+  document.addEventListener('keydown',onEscKey);
+
+  /* ---------- 统一的归档执行 ----------
+     三个入口共用：末级事件直点 / 确认按钮 / （新建模式的）确认按钮
+
+     关键防线（2026-11-06 加）：事件为空就绝对不能提交。
+     原因：decide.cgi 对「arc 且既无 event 又无 topic」的请求会拒写，
+     但批量队列只把失败数加一、提示 5 秒后消失，用户根本看不见 ——
+     实测 VID_20261105_185443.mp4 和 VID_20261105_185426.mp4 就是这样
+     点了存档却没有产生任何判定记录，看起来像"存档不成功"。 */
+  function doArchive(mm, evId, topic, cat){
+    // 归入已有事件：必须有事件 id
+    if(mm==='exist' && !evId){
+      alert('没有选中事件，无法归档。\n\n请先点一个分类，再点具体事件。');
+      return;
+    }
+    // 新建事件：必须有主题
+    if(mm==='new' && !(topic||'').trim()){
+      alert('请填写事件主题再归档。');
+      return;
+    }
+    close();
+    enqueueBulkArc(curIds.slice(), {mode:mm, evId, topic, cat});
+  }
+
+  /* ---------- 确认按钮（新建模式仍需点；归入已有模式已由末级直点承担） ---------- */
+  okBtn.onclick=()=>{
+    const evId = mode==='exist' ? pickedEv : '';
     const topic = mode==='new' ? (topicEl.value||'').trim() : '';
     const cat   = mode==='new' ? catEl.value : '';
 
     if(mode==='new' && !topic){ alert('请填写事件主题'); topicEl.focus(); return; }
-    if(mode==='exist' && !evId){ alert('请选择事件'); return; }
+    if(mode==='exist' && !evId){ alert('请点选一个事件'); return; }
 
-    // 立即关闭模态框，任务转入后台
-    close();
-    enqueueBulkArc(ids.slice(), {mode, evId, topic, cat});
+    doArchive(mode, evId, topic, cat);
   };
+
+  // 初始：优先「归入已有」；没有事件时直接进新建
+  setMode(EVENTS.length ? 'exist' : 'new');
 }
 
-/* ── 单条确认存档（原有逻辑） ── */
-async function confirmArc(id){
-  const ev=document.getElementById('ev-'+id).value;
-  const tp=document.getElementById('tp-'+id).value.trim();
-  const cat=document.getElementById('ct-'+id).value;
-  if(!ev && !tp){ alert('请选择事件或填写新事件主题'); return; }
-  await submit(id,'arc',ev,tp,'',cat);
-}
+/* 单条存档改走抽屉（startBulkArc），原 confirmArc 读的 ev-/tp-/ct- 已不存在，删除 */
 
 async function submit(id,act,ev,topic,evLabel,cat){
   const body=JSON.stringify({id,action:act,event:ev||'',topic:topic||'',cat:cat||''});
@@ -1056,10 +1610,32 @@ async function submit(id,act,ev,topic,evLabel,cat){
   card.classList.add('done');
   card.querySelector('.mark').textContent='已判：'+ACTNAME[act]+(act==='arc'&&(j.event_id||ev)?(' · '+(evLabel||j.event_id||ev)):'');
   card.querySelectorAll('[data-act]').forEach(x=>x.disabled=true);
-  card.querySelector('.arc').classList.remove('on');
+  const arcBox=card.querySelector('.arc'); if(arcBox) arcBox.classList.remove('on');
 
-  // 新建事件时 decide.cgi 会立即登记，这里同步刷新下拉
-  if(act==='arc'){ await syncState(); refreshSelects(); }
+  /* 删除即时执行（2026-11-06 用户要求）：
+     用户明确"手动判定的删除不会有误判，直接执行"，所以点删除写完判定就立刻执行，
+     不必再等顶栏的「执行判定」。归档/留存/暂存仍走原来的批量流程。
+     安全性：文件只是移进回收站（保留 30 天），撤销能找回，所以即时执行风险可控。 */
+  if(act==='del'){
+    try{
+      const r2=await fetch('cgi/apply.cgi?ids='+encodeURIComponent(id),{method:'POST',cache:'no-store'});
+      const j2=await r2.json();
+      const it=(j2.items||[]).find(x=>x.id===id);
+      if(it && it.result==='deleted'){
+        card.querySelector('.mark').textContent='已判：删除 · 已移入回收站';
+        // 卡片变灰提示已处理完，但保留撤销入口
+        card.classList.add('executed');
+      }else if(it && it.result!=='deleted'){
+        card.querySelector('.mark').textContent='已判：删除 · 执行失败('+(it.note||it.result||'未知')+')';
+      }
+    }catch(e){
+      const mk=card.querySelector('.mark');
+      if(mk) mk.textContent='已判：删除 · 执行失败，点顶栏「执行判定」重试';
+    }
+  }
+
+  // 归档后事件列表可能新增，同步一次（抽屉下次打开就能看到）
+  if(act==='arc'){ await syncState(); }
 
   const done=ITEMS.filter(i=>CUR[i.id]).length;
   $('#stat').textContent='已判 '+done+' / '+ITEMS.length+'（批次 '+(ITEMS[0]?ITEMS[0].batch:'-')+'）';
@@ -1095,21 +1671,76 @@ async function submit(id,act,ev,topic,evLabel,cat){
   }catch(e){ /* 折叠失败不影响判定 */ }
 }
 
+/* 执行判定：先调 preview 拿清单，弹确认框，确认后才真正执行。
+   为什么要两步（2026-11-06）：STG 指向真实 inbox，del 是真删、arc 是真移，
+   一步点下去没有反悔机会。preview 只统计不动文件，安全。 */
 $('#apply').onclick=async()=>{
-  if(!confirm('在沙箱内执行全部已判决策？会真的移动/删除 nasbak-test/staging 下的副本。')) return;
-  $('#apply').disabled=true; $('#apply').textContent='执行中…';
+  const btn=$('#apply');
+  btn.disabled=true;
+  const old=btn.textContent;
+  btn.textContent='统计中…';
   try{
-    const r=await fetch('cgi/apply.cgi',{method:'POST'});
-    const j=await r.json();
-    const s=j.summary||{};
+    const r=await fetch('cgi/apply.cgi?a=preview',{method:'POST'});
+    const p=await r.json();
+    if(!p.ok){ alert('预览失败：'+(p.err||'未知')); return; }
+
+    const s=p.summary||{};
+    const total=s.executed||0;
+    if(!total){ alert('没有待执行的判定。\n\n（判定过的文件都已执行过，或者还没判任何文件）'); return; }
+
+    // 拼成人话：每条是「11月2日备份的 16 个文件将移入 工作 › project-survey」这样的一整句
+    const CN={del:'删除',keep:'留存',hold:'暂存'};
+    const md=d=>{const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(d); return m?`${+m[2]}月${+m[3]}日`:d;};
+    // 事件显示名：分类 › 主题，缺一个就用另一个；都没有时退化成文件夹名
+    const evName=g=>{
+      const cat=(g.cat||'').trim(), tp=(g.topic||'').trim();
+      if(cat&&tp) return `${cat} › ${tp}`;
+      if(tp) return tp;
+      if(cat) return cat;
+      // folder 形如 2026-11-05_work_project-survey：去掉日期前缀和分类代码，尽量可读
+      const f=(g.event||'').replace(/^\d{4}-\d{2}-\d{2}_/,'');
+      const p=f.split('_');
+      return p.length>=2 ? `${p[0]} › ${p.slice(1).join('_')}` : (f||'未命名事件');
+    };
+    const lines=(p.groups||[]).slice()
+      .sort((a,b)=> String(a.date).localeCompare(String(b.date))
+                 || (a.kind==='arc'?0:1)-(b.kind==='arc'?0:1))
+      .map(g=> g.kind==='arc'
+        ? `· ${md(g.date)}备份的 ${g.n} 个文件将移入「${evName(g)}」`
+        : `· ${md(g.date)}备份的 ${g.n} 个文件将${CN[g.kind]||g.kind}`);
+
+    let msg=`即将执行 ${total} 项判定：\n\n`;
+    if(lines.length) msg+=lines.join('\n')+'\n\n';
+    const tail=[];
+    if(s.held)   tail.push(`暂存 ${s.held}`);
+    if(s.kept)   tail.push(`留存 ${s.kept}`);
+    if(s.new_events) tail.push(`新建 ${s.new_events} 个事件夹`);
+    if(tail.length) msg+=tail.join(' · ')+'\n\n';
+    if(s.deleted) msg+=`删除的 ${s.deleted} 个源文件会真删，预览图移入隔离区。\n\n`;
+    if(s.missing) msg+=`另有 ${s.missing} 个找不到原文件，会跳过。\n\n`;
+    msg+=`确定执行吗？`;
+
+    if(!confirm(msg)) return;
+
+    btn.textContent='执行中…';
+    const r2=await fetch('cgi/apply.cgi',{method:'POST'});
+    const j=await r2.json();
+    const s2=j.summary||{};
+    const fails=(j.items||[]).filter(x=>x.result==='failed'||x.result==='missing');
     $('#rep').innerHTML=`<div class="box">
-      <b>模拟执行完成</b>：归档 ${s.archived||0} · 删除 ${s.deleted||0} · 留存 ${s.kept||0} · 暂存 ${s.held||0}
-      ${s.new_events?(' · 新建事件 '+s.new_events):''}
-      <table><tr><th>文件</th><th>判定</th><th>结果</th><th>K40 位置</th></tr>
-      ${(j.items||[]).map(x=>`<tr><td>${esc(x.name)}</td><td>${ACTNAME[x.action]||x.action}</td><td>${esc(x.result)}</td><td>${esc(x.path||'-')}<br><span style="color:#6b7280">${esc(x.note||'')}</span></td></tr>`).join('')}
+      <b>执行完成</b>：归档 ${s2.archived||0} · 删除 ${s2.deleted||0} · 留存 ${s2.kept||0} · 暂存 ${s2.held||0}
+      ${s2.new_events?(' · 新建事件 '+s2.new_events):''}
+      ${fails.length?` · <span style="color:#dc2626">异常 ${fails.length}</span>`:''}
+      <table><tr><th>文件</th><th>判定</th><th>结果</th><th>位置</th></tr>
+      ${(j.items||[]).map(x=>`<tr${(x.result==='failed'||x.result==='missing')?' style="background:#fff5f5"':''}><td>${esc(x.name)}</td><td>${ACTNAME[x.action]||x.action}</td><td>${esc(x.result)}</td><td>${esc(x.path||'-')}<br><span style="color:#6b7280">${esc(x.note||'')}</span></td></tr>`).join('')}
       </table></div>`;
-  }catch(e){ alert('执行失败：'+e); }
-  $('#apply').disabled=false; $('#apply').textContent='模拟执行';
+    // 执行后刷新历史与状态（判定已落地，卡片状态由 state.cgi 决定）
+    await syncState(); await loadHist();
+  }catch(e){
+    alert('执行失败：'+e.message);
+  }finally{
+    btn.disabled=false; btn.textContent=old;
+  }
 };
 
 $('#reset').onclick=async()=>{
@@ -1119,6 +1750,24 @@ $('#reset').onclick=async()=>{
   load();
 };
 $('#reload').onclick=()=>location.reload();
+
+/* 单列/双列切换：状态记在 localStorage，刷新后保持 */
+(function(){
+  const KEY='judge-cols';
+  const btn=document.getElementById('colBtn');
+  function apply(cols){
+    document.body.classList.toggle('cols2',cols===2);
+    btn.textContent=cols===2?'单列':'双列';
+    btn.title=cols===2?'切回单列显示':'切换双列显示';
+  }
+  const saved=+(localStorage.getItem(KEY)||1);
+  apply(saved===2?2:1);
+  btn.onclick=()=>{
+    const next=document.body.classList.contains('cols2')?1:2;
+    localStorage.setItem(KEY,next);
+    apply(next);
+  };
+})();
 
 load();
 </script>

@@ -39,6 +39,16 @@ main{max-width:1180px;margin:0 auto;padding:14px}
 
 /* 事件夹卡片 */
 .ev{background:var(--card);border:1px solid var(--bd);border-radius:7px;margin-bottom:12px;overflow:hidden}
+/* 双列：事件夹卡排两轨；展开的那张跨满整行（缩略图网格需要宽度）；
+   窄屏自动回单轨。列内对齐靠 grid-auto-flow:dense 补空隙 */
+body.cols2 .evlist{display:grid;grid-template-columns:1fr 1fr;gap:0 12px;align-items:start;grid-auto-flow:row dense}
+body.cols2 .evlist>.ev.open{grid-column:1/-1}
+body.cols2 .evh{padding:8px 11px;gap:8px}
+body.cols2 .evh .fn{font-size:12.5px;min-width:120px}
+@media(max-width:1150px){
+  body.cols2 .evlist{grid-template-columns:1fr}
+}
+#colBtn{white-space:nowrap}
 .evh{display:flex;align-items:center;gap:10px;padding:10px 13px;background:#eef0f2;cursor:pointer;flex-wrap:wrap}
 .evh:hover{background:#e7eaed}
 .evh .arw{width:14px;color:var(--mu);font-size:12px;transition:transform .15s}
@@ -137,6 +147,7 @@ main{max-width:1180px;margin:0 auto;padding:14px}
     <b>已存档管理</b>
     <span class="stat" id="hstat">加载中…</span>
     <span style="flex:1"></span>
+    <button class="btn sm" id="colBtn" title="切换单列/双列显示">双列</button>
     <a href="/">← 返回导航</a>
     <button class="btn sm" onclick="loadAll()">刷新</button>
     <button class="btn sm pr" onclick="openNewEvent()">新建事件</button>
@@ -391,7 +402,7 @@ function renderList(trash){
         <div class="yrbar" style="font-size:12px;color:#5b6472;padding:7px 2px 6px;font-weight:600">
           ${esc(yr)} 年 <span style="font-weight:400;color:#7b8494">· ${evs.length} 个事件 · ${yN} 个文件 · ${fmtSize(yS)}</span>
         </div>
-        ${evs.map(e=>evCard(e)).join('')}
+        <div class="evlist">${evs.map(e=>evCard(e)).join('')}</div>
       </div>`;
     }).join('');
     return `<div class="grp${gopen?' open':''}" data-g="${esc(sl)}">
@@ -798,6 +809,25 @@ document.getElementById('newOk').addEventListener('click',async()=>{
 
 // 初始化
 loadAll();
+
+/* 单列/双列切换：状态记在 localStorage，刷新后保持。
+   纯 CSS 类切换，不碰渲染逻辑，展开状态(OPEN)和勾选(PICK)都不受影响 */
+(function(){
+  const KEY='archive-cols';
+  const btn=document.getElementById('colBtn');
+  function apply(cols){
+    document.body.classList.toggle('cols2',cols===2);
+    btn.textContent=cols===2?'单列':'双列';
+    btn.title=cols===2?'切回单列显示':'切换双列显示';
+  }
+  const saved=+(localStorage.getItem(KEY)||1);
+  apply(saved===2?2:1);
+  btn.onclick=()=>{
+    const next=document.body.classList.contains('cols2')?1:2;
+    localStorage.setItem(KEY,next);
+    apply(next);
+  };
+})();
 </script>
 </body>
 </html>

@@ -28,9 +28,7 @@ ps -A -o pid,args 2>/dev/null | grep -q "nasbak/bin/daemon.sh" || {
 }
 
 # ---------- 投屏服务（scrcpy-server 1.19-ws8，监听 8886）----------
-# 给 www/screen.html 用；自带 WebSocket，浏览器直连，不再需要 PC 上的 node 桥。
-# 空闲 0% CPU，故常驻；进程被杀由 crond 的 ensure 兜底。
-[ -x "$BIN/scrcpy-serve.sh" ] && {
-  sh "$BIN/scrcpy-serve.sh" ensure
-  echo "$(date '+%F %T') scrcpy-serve ensure 已执行" >> "$LOGD/boot.log" 2>/dev/null
-}
+# 2026-11-07 用户要求改为「按需启用」：不再开机自启、也不进 crond 看护。
+# 由 www/screen.html 的「启动投屏 / 停止服务」按钮通过 www/cgi/scrcpy.cgi 触发，
+# 无人观看时手机不占编码资源、不持续发热。
+# 手动排障仍可直接执行：sh /data/adb/nasbak/bin/scrcpy-serve.sh start|stop|status

@@ -45,10 +45,15 @@ fdate() {
 
 log "=== 开始 (apply=$APPLY) ==="
 MOVED=0; DUPN=0; FAILN=0; SKIPN=0
+# 按来源统计本轮移了多少（2026-11-06 加）：
+# 通知要在归位之后发，那时源目录已经空了，靠回头扫目录永远数不到；
+# 所以在搬运的当下就累积，最后把 "相机 9 · 扫描 2" 这样的串交给 notify.sh。
+N_CAM=0; N_SCAN=0; N_SON=0; N_ID=0
 
 for SRC in Camera CamScanner scanner family-kid id-card; do
   D="$INBOX/$SRC"
   [ -d "$D" ] || continue
+  SRC_CNT=0
   for F in "$D"/*; do
     [ -f "$F" ] || continue
     B=$(basename "$F")
@@ -99,6 +104,7 @@ for SRC in Camera CamScanner scanner family-kid id-card; do
         ledger_add "$ID" "$B" "$S" "mvdate" "inbox/$SRC/$B" "$RELDST" "按拍摄日期 $DD 归位"
         log "MOVED $SRC/$B -> $RELDST"
         MOVED=$((MOVED+1))
+        SRC_CNT=$((SRC_CNT+1))
       else
         log "FAIL  $SRC/$B"; echo "FAIL  $F"; FAILN=$((FAILN+1))
       fi
@@ -106,8 +112,25 @@ for SRC in Camera CamScanner scanner family-kid id-card; do
       echo "PLAN  $SRC/$B -> $DD/"
     fi
   done
+  # 本来源有搬动才记数，中文名给用户看。
+  # CamScanner 与 scanner 都叫「扫描」，用统一计数器累加，避免出现两条「扫描」。
+  if [ "$SRC_CNT" -gt 0 ]; then
+    case "$SRC" in
+      Camera)             N_CAM=$((N_CAM + SRC_CNT)) ;;
+      CamScanner|scanner) N_SCAN=$((N_SCAN + SRC_CNT)) ;;
+      family-kid)               N_SON=$((N_SON + SRC_CNT)) ;;
+      id-card)             N_ID=$((N_ID + SRC_CNT)) ;;
+    esac
+  fi
 done
 
 ledger_rotate 2>/dev/null
 log "=== 完成: moved=$MOVED dup=$DUPN fail=$FAILN skip=$SKIPN ==="
-echo "moved=$MOVED dup=$DUPN fail=$FAILN skip=$SKIPN"
+# 拼来源明细，最后一行是给 daemon.sh 解析的机器可读串
+SRCLIST=""
+[ "$N_CAM" -gt 0 ]  && SRCLIST="${SRCLIST}相机 ${N_CAM} · "
+[ "$N_SCAN" -gt 0 ] && SRCLIST="${SRCLIST}扫描 ${N_SCAN} · "
+[ "$N_SON" -gt 0 ]  && SRCLIST="${SRCLIST}family-kid ${N_SON} · "
+[ "$N_ID" -gt 0 ]   && SRCLIST="${SRCLIST}id-card ${N_ID} · "
+SRCLIST=$(printf '%s' "$SRCLIST" | sed 's/ · $//')
+echo "moved=$MOVED dup=$DUPN fail=$FAILN skip=$SKIPN src=$SRCLIST"

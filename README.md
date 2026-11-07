@@ -49,24 +49,27 @@
 
 ```
 拍照手机上传 → inbox/<固定目录>
-   ↓ move-by-date.sh    按拍摄日期归位到 inbox/<YYYY-MM-DD>/
+   ↓ move-by-date.sh    按拍摄日期归位到 inbox/<YYYY-MM-DD>/（顺手统计来源：相机 9 · 扫描 2）
    ↓ judge.sh --ingest  新文件入 pending.queue
    ↓ judge.sh --judge   VLM 判读（夜间窗口）
+   ↓ make-vthumb.sh     ffmpeg 抽视频首帧存 state/thumb/
    ↓ 人工判定（web 面板）
    ↓ apply.cgi          归档到 archive/<YYYY-MM>/<事件夹>/
    ↓ gyp-backup.sh      rclone 同步到云盘
+   ↓ notify.sh          有新文件才推微信，避免每轮骚扰
 ```
 
 **Web 面板（8083，单 httpd 同源）**
 
 | 入口 | 功能 |
 |---|---|
-| 文件判定 | 缩略图列表、就地放大、视频页内播放、分类/事件夹选择 |
-| 存档管理 | 按「类型-年份」折叠分组、批量重命名/移动、回收区 |
+| 文件判定 | 缩略图列表、就地放大、视频页内播放（封面由服务端预生成）、分类/事件夹选择、顶部操作记录条可撤销 |
+| 存档管理 | 按「类型-年份」折叠分组、单列/双列切换、批量重命名/移动、回收站 |
 | 磁力搜索 | 多站聚合搜索，一键推给 aria2 |
 | 下载管理 | AriaNg（RPC 免配置预置） |
 | 网络服务管理 | 服务状态、访问入口、定时任务 |
 | 统计 | 判读进度、分类分布、存储构成、操作台账 |
+| 手机屏幕 | 网页里实时看屏幕并反向操作（详见附录，按需启停） |
 
 ---
 
@@ -104,7 +107,7 @@ $env:ADB_DEVICE = "<NAS_LAN_IP>:5555"
 
 ---
 
-## 三十个坑
+## 三十一个坑
 
 这部分是真正花时间的地方。
 
@@ -202,9 +205,24 @@ printf ']}'                                 # 别写结尾换行
 [ "$(tail -c 2 "$TMP")" = "]}" ] && mv ...  # 比对最后两字节
 ```
 
+**13. 从设备往回取文件别用 `exec-out` 重定向，走 `/sdcard` 中转 + md5**
+
+`adb exec-out "su -c 'cat 文件'" > local` 在 Git Bash / MSYS 下会把 `\n` 变成 `\r\n`：
+一个 50 行的脚本涨 50 字节，行尾全被污染，回灌回去直接 `bad interpreter`。
+更坑的是字节增量不一定等于行数（HTML 那种长文件对不上），肉眼完全看不出来。
+
+```sh
+# 对：设备端先拷到 /sdcard（FUSE 视图，pull 不做任何转换）
+adb shell su -c 'cp /data/adb/nasbak/www/x.html /sdcard/_sync/; chown -R media_rw:media_rw /sdcard/_sync'
+adb pull /sdcard/_sync/. ./tmp/
+md5sum ./tmp/x.html   # 必须和设备端 md5sum 一致再入库
+```
+
+顺带：`/data/adb/**` 属 root，`adb shell ls` 直接 Permission denied，一律 `su -c` 包起来。
+
 ### HTTP 与 CGI
 
-**13. busybox httpd 是单线程的**
+**14. busybox httpd 是单线程的**
 
 CGI 里用 `nc` 探测自己所在端口会**死锁**——请求占着唯一的线程等自己响应。
 
@@ -213,7 +231,7 @@ nc -z 127.0.0.1 8083              # 错：8083 的 CGI 探测 8083
 timeout 3 nc -z 127.0.0.1 5244    # 对：同端口靠进程检测，其他端口加 timeout
 ```
 
-**14. CGI 里 `exit 0` 在 `for` 循环内会退出整个脚本**
+**15. CGI 里 `exit 0` 在 `for` 循环内会退出整个脚本**
 
 ```sh
 for x in ...; do
@@ -221,17 +239,17 @@ for x in ...; do
 done
 ```
 
-**15. CGI 里做重活会拖垮整个 httpd**
+**16. CGI 里做重活会拖垮整个 httpd**
 
 遍历 3000 个文件、调 VLM、`du -sb` 大目录——全部移到后台采集脚本，
 CGI 只读缓存 JSON。实测 `status.cgi` 从 15 秒降到毫秒级。
 
-**16. 放在 web 根里的 `.sh` 会被当静态文件下载**
+**17. 放在 web 根里的 `.sh` 会被当静态文件下载**
 
 含密钥的库必须放 web 根**之外**，CGI 用绝对路径引用。
 用 `$SELF_DIR/../../lib/x.sh` 这种相对路径很危险——目录结构一变就跑到 web 根里。
 
-**17. URL 编码的中文必须自己解码**
+**18. URL 编码的中文必须自己解码**
 
 busybox 没有现成工具，逐字节 `printf`：
 
@@ -253,13 +271,13 @@ urldec() {
 }
 ```
 
-**18. busybox httpd 不认 `DirectoryIndex`，根路径固定是 `index.html`**
+**19. busybox httpd 不认 `DirectoryIndex`，根路径固定是 `index.html`**
 
 想让 `/` 是导航页，就得让 `index.html` 本身是导航页，其他页面改名。
 
 ### 文件与 ID
 
-**19. `id = sha256(rel + ":" + size)` 会因文件移动而改变**
+**20. `id = sha256(rel + ":" + size)` 会因文件移动而改变**
 
 `inbox/Camera/a.jpg` → `inbox/2026-10-20/a.jpg`，id 就变了。
 需要稳定引用时另做与路径无关的 mid：
@@ -268,11 +286,11 @@ urldec() {
 mid = sha256("YM/F/NAME:SIZE")[0:16]    # 移动后仍可用
 ```
 
-**20. 用 `find | wc -l` 算「待判」会把已出队的历史文件算进去**
+**21. 用 `find | wc -l` 算「待判」会把已出队的历史文件算进去**
 
 进度条永远停在同一数字。改为读真正的队列文件行数。
 
-**21. 数据源遗留文件是隐形炸弹**
+**22. 数据源遗留文件是隐形炸弹**
 
 换成「队列」架构后，只替换了判读链路，忘了改页面构建函数——
 它还在遍历上一代留下的 `loc-*.tsv`（3041 个），其中 1472 条指向去重副本，
@@ -280,14 +298,14 @@ mid = sha256("YM/F/NAME:SIZE")[0:16]    # 移动后仍可用
 
 > 教训：换架构时把所有读该数据的地方一次性找全，`grep -rn` 一遍。
 
-**22. 去重目录必须处处显式排除**
+**23. 去重目录必须处处显式排除**
 
 `_dup_backup/` 里的文件**永远存在**（它们就是被留在那儿的重复件）。
 任何「文件还在就列出」的逻辑都会把它们永久留在待判列表，还会反复触发 AI 计费。
 
 ### 进程与状态
 
-**23. 电池长期满电会把电池撑鼓**
+**24. 电池长期满电会把电池撑鼓**
 
 部分 MIUI/澎湃OS 有 `battery_charging_enabled` 节点：
 
@@ -299,7 +317,7 @@ echo 0 > /sys/class/power_supply/battery/battery_charging_enabled   # 停充
 比 `input_suspend` 好（后者内核约 3.5s 自动清零，必须 2s 重写）。
 策略：`>=80%` 停充，`<=65%` 恢复，`>45C` 停充。
 
-**24. WiFi 在深度休眠时会挂起，且不自愈**
+**25. WiFi 在深度休眠时会挂起，且不自愈**
 
 ```sh
 echo <名字> > /sys/power/wake_lock     # 阻止 suspend
@@ -307,7 +325,7 @@ dumpsys deviceidle disable             # 关 doze
 settings put global stay_on_while_plugged_in 3
 ```
 
-**25. 重启后无线 adb 端口会变，甚至 adb 开关被系统关掉**
+**26. 重启后无线 adb 端口会变，甚至 adb 开关被系统关掉**
 
 定时自愈：
 
@@ -320,13 +338,13 @@ stop adbd; sleep 1; start adbd
 
 判活不要用 `adb devices`，看 `/proc/net/tcp` 里有没有 `:15B3`（5555 的 hex）。
 
-**26. 别刷机**
+**27. 别刷机**
 
 - `ro.boot.flash.locked=1` → 要解 BL 锁
 - 换 ROM 必须 `format data` → 丢掉 `/data/misc/adb/adb_keys`
 - 那个文件是**唯一**的 adb 授权通道。屏幕坏了（常驻机很常见）就彻底失联
 
-**27. 屏保别让屏幕真灭**
+**28. 屏保别让屏幕真灭**
 
 ```sh
 settings put system screen_off_timeout 2147483647
@@ -336,17 +354,17 @@ settings put system screen_off_timeout 2147483647
 
 ### 判断与成本
 
-**28. AI 判读必须只跑「新增」，且要能重判**
+**29. AI 判读必须只跑「新增」，且要能重判**
 
 - 用 `mtime` 窗口卡住历史积压。手机照片的 mtime == 拍摄时间，所以窗口语义精确。
 - 熔断（连续失败）时**不要**写结果文件，否则该文件永久无法重判。
 - 失败计数必须是「连续」的，成功一次即归零。
 
-**29. 视频不要送 VLM**
+**30. 视频不要送 VLM**
 
 一帧画面判不出内容，纯烧钱。按扩展名直接归类，描述写「视频 N MB」。
 
-**30. 成本要先算**
+**31. 成本要先算**
 
 单图 2–6 秒 API 调用，几百张就是真金白银。先小批量试模型价格，
 再决定窗口多大、要不要降级到更小的模型。
@@ -401,15 +419,18 @@ adb push srv/scrcpy-server-1.19-ws8.jar /data/local/tmp/
 adb shell su -c 'cp /data/local/tmp/scrcpy-server-1.19-ws8.jar /data/adb/nasbak/srv/scrcpy-server.jar'
 adb push bin/scrcpy-serve.sh /data/local/tmp/
 adb shell su -c 'cp /data/local/tmp/scrcpy-serve.sh /data/adb/nasbak/bin/ && chmod 755 /data/adb/nasbak/bin/scrcpy-serve.sh'
-adb shell su -c 'sh /data/adb/nasbak/bin/scrcpy-serve.sh ensure'
+adb shell su -c 'sh /data/adb/nasbak/bin/scrcpy-serve.sh start'
 ```
 
 `scrcpy-serve.sh` 有 `start` / `stop` / `status` / `ensure`；
 `ensure` 会识别「进程在但 8886 没监听」并重启，适合挂 cron 看护。
-开机由 `service.d` 触发一次，之后 `cron` 每 5 分钟兜一次。
 
-**开销**：没人看的时候 `%CPU 0.0`，内存常驻约 143 MB。编码是硬件 H.264，
-不占 CPU；但屏幕常亮 + 长期编码还是会发热，建议按需 `stop`。
+**默认按需启用，不常驻**：开机自启和 crond 看护都已去掉，
+改由 `www/screen.html` 的「启动投屏 / 停止服务」按钮经 `www/cgi/scrcpy.cgi` 触发。
+没人看的时候手机不编码、不发热；`start` 约 2.5 秒起来，8886 开始监听。
+
+**开销**：进程在但没人连时 `%CPU 0.0`、内存约 143 MB；编码是硬件 H.264 不占 CPU，
+但屏幕常亮 + 长期编码会发热，所以默认就是「看完就停」。
 
 ---
 
@@ -422,7 +443,7 @@ adb shell su -c 'sh /data/adb/nasbak/bin/scrcpy-serve.sh ensure'
 │   ├── Camera/  ...            拍照手机固定上传目标
 │   └── _dup_backup/            去重副本（不进云盘、不判读）
 ├── archive/<YYYY-MM>/<事件夹>/  已归档
-├── _待删/                       回收区（绝不真删）
+├── _media_gc_trash/<YYYYMMDD>/  回收站（按目录名日期保留 30 天，到期由 trash-gc.sh 清）
 └── state/
     ├── pending.queue          待判队列  id<TAB>rel
     ├── analysis/<id>.json     AI 判读结果
@@ -431,13 +452,16 @@ adb shell su -c 'sh /data/adb/nasbak/bin/scrcpy-serve.sh ensure'
     ├── receipts.jsonl         执行回执
     ├── events.jsonl           事件夹登记
     ├── ledger.jsonl           操作台账 recv/mvdate/arc/dup
+    ├── thumb/<id>.jpg         视频首帧封面（ffmpeg 预生成，长边 320）
     └── status-cache.json      状态缓存（CGI 只读这个）
 ```
 
 **台账的意义**：每个文件的来龙去脉记一行。
 排查「这文件为什么在待判里」时 `grep` 一下就有答案，不用推理。
 
-**回收区而不是真删**：`mv → _待删/YYYYMMDD/<folder>/`，误操作可恢复。
+**回收站而不是真删**：`mv → _media_gc_trash/<YYYYMMDD>/`，保留 30 天可恢复。
+判断陈旧只看**目录名里的日期**，不看文件 mtime（`mv` 保留原 mtime，老照片会立刻被误删）；
+目录名解析不出日期的一律保留，宁可占空间也不误删。清理脚本默认干跑，`--apply` 才真删。
 
 ---
 
@@ -457,13 +481,19 @@ adb shell su -c 'sh /data/adb/nasbak/bin/scrcpy-serve.sh ensure'
 | `www/judge.html` | 文件判定页 |
 | `www/archive.html` | 存档管理页（类型-年份折叠） |
 | `www/cgi/*.cgi` | 判定 / 存档 / 状态接口 |
+| `www/cgi/apply.cgi` | 执行判定：`?a=preview` 只统计不动文件，`ids=` 限定范围（裸调会执行整个队列） |
+| `www/cgi/undo.cgi` | 操作记录与撤销（`a=last` 取最近 N 条，倒序，60 秒内同类动作合并） |
+| `www/cgi/scrcpy.cgi` | 投屏服务按需启停（`a=status/start/stop`） |
+| `bin/make-vthumb.sh` | ffmpeg 抽视频首帧当封面，幂等（已有封面跳过） |
+| `bin/notify.sh` | 备份完成后的微信推送（PushPlus），读 `notify.conf`，无 token 静默退出 |
+| `bin/trash-gc.sh` | 回收站 30 天清理（crond 每天 4:50，默认干跑） |
 | `bin/media-gc.sh` | 媒体副本回收（默认干跑，`--apply` 才删） |
 | `bin/lib-sidecar.sh` | 副本目录与硬链接辅助 |
 | `bin/ingest-backlog.sh` | 一次性补录历史积压（不做常驻） |
 | `srv/update-trackers.sh` | 每周刷新 BT tracker 并热改运行中的 aria2 |
 | `srv/bt-stall.sh` | 扫 RPC 找卡住的 BT 任务，输出 `bt-stall.json` |
 | `bin/thunder-confirm.sh` | 手机迅雷投递后的确认与结果回写 |
-| `bin/thunder-sync.sh` | 把迅雷下载完成的文件搬回下载目录 |
+| `bin/thunder-sync.sh` | 把迅雷下载完成的文件搬进系统下载目录 `Download/Thunder` |
 | `bin/scrcpy-serve.sh` | 投屏服务启停与看护（`start/stop/status/ensure`） |
 | `srv/scrcpy-server-1.19-ws8.jar` | scrcpy 内核，自带 WebSocket 服务（8886） |
 | `www/screen.html` | 「手机屏幕」页，同源 iframe 直嵌 `/remote/` |

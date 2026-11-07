@@ -1,10 +1,17 @@
 #!/system/bin/sh
-# apply.cgi — 「模拟执行」：把已判定的决策在沙箱内真实执行一遍，产出 receipts
-# 沙箱内动作，绝不碰 /data/media/0/DCIM 与真实 /data/adb/srv/data
+# apply.cgi — 执行已判定的决策，产出 receipts
+#
+# 注意：STG 指向真实 inbox，不是沙箱。del 会真删文件、arc 会真移文件。
+# （早期注释写"沙箱内动作"是错的，2026-11-06 更正。所以前端必须先预览再执行。）
+#
+# 两种模式：
+#   POST ?a=preview   只统计"将要发生什么"，不动任何文件 —— 前端用它弹确认框
+#   POST ?a=apply     真正执行（默认，兼容旧调用）
 DATA=/data/media/0/nasbak/state
 STG=/data/media/0/nasbak/inbox
 ARC=/data/media/0/nasbak/archive
 WWW=/data/adb/nasbak/www
+MEDIA=$WWW/media
 BB=/data/adb/magisk/busybox
 . /data/adb/nasbak/bin/lib-ledger.sh 2>/dev/null
 
@@ -13,6 +20,12 @@ printf 'Content-Type: application/json\r\nCache-Control: no-store\r\n\r\n'
 if [ "$REQUEST_METHOD" != "POST" ]; then
   echo '{"ok":false,"err":"POST only"}'; exit 0
 fi
+
+# 动作由 querystring 决定（POST 的 body 本脚本不使用）
+MODE=apply
+case "${QUERY_STRING:-}" in
+  *a=preview*) MODE=preview ;;
+esac
 
 touch "$DATA/decisions.jsonl" "$DATA/receipts.jsonl" "$DATA/events.jsonl" 2>/dev/null
 
@@ -23,12 +36,31 @@ has_done() { printf '%s\n' "$DONE" | grep -qx "$1"; }
 # 取出所有被判过的 id（去重，保持首次出现顺序）
 IDS=$(sed -n 's/.*"id":"\([0-9a-f]\{16\}\)".*/\1/p' "$DATA/decisions.jsonl" | awk '!seen[$0]++')
 
+# 安全阀（2026-11-06 血的教训）：支持 ids=<id,id,...> 只处理指定文件。
+# 不加这个参数就处理【整个队列】—— 我做端到端测试时就是因此误执行了
+# 26 条待判定（19 归档 + 7 删除），恢复花了很久。
+# 现在前端自动执行一律显式传 ids，绝不裸调。
+IDSEL=$(printf '%s' "${QUERY_STRING:-}" | tr '&' '\n' | sed -n 's/^ids=//p' | head -1)
+if [ -n "$IDSEL" ]; then
+  # 只保留合法 16 位 hex，并用换行拼成待处理列表
+  IDS=$(printf '%s' "$IDSEL" | tr ',' '\n' | sed -n 's/^\([0-9a-f]\{16\}\)$/\1/p')
+  [ -z "$IDS" ] && { echo '{"ok":false,"err":"ids 参数不含合法 id"}'; exit 0; }
+  RESTRICT=1
+else
+  RESTRICT=0
+fi
+
 NOW=$(date +%s)
 EXP=$((NOW + 2592000))
 CNT_D=0; CNT_K=0; CNT_H=0; CNT_A=0; CNT_S=0; CNT_E=0
 CNT_MISS=0
+# 预览模式用的累加器（事件夹名、涉及日期）
+AFOLDER=""; PDATES=""; APDATES=""
+# 分组累加器：GRP = "日期|事件|数量" 的行；GRPDEL = "日期|数量"
+# 目的：前端能说「11月5日备份的 12 个文件将移入 家庭 › 2024 生日」
+GRP=""; GRPDEL=""; GRPKEEP=""; GRPHOLD=""
 FIRST=1
-printf '{"ok":true,"items":['
+[ "$MODE" = "apply" ] && printf '{"ok":true,"items":['
 
 for ID in $IDS; do
   if has_done "$ID"; then CNT_S=$((CNT_S+1)); continue; fi
@@ -37,6 +69,9 @@ for ID in $IDS; do
   LINE=$(grep -F "\"id\":\"$ID\"" "$DATA/decisions.jsonl" 2>/dev/null | tail -1)
   [ -z "$LINE" ] && continue
   ACT=$(printf '%s' "$LINE" | sed -n 's/.*"action":"\([a-z]*\)".*/\1/p')
+  # 撤销记录（action=none）不是真实判定，直接跳过，不能当成"待执行动作"
+  [ "$ACT" = "none" ] && continue
+  case "$ACT" in del|keep|hold|arc) ;; *) continue ;; esac
   EV=$(printf '%s' "$LINE" | sed -n 's/.*"event":"\([^"]*\)".*/\1/p')
   TOPIC=$(printf '%s' "$LINE" | sed -n 's/.*"topic":"\([^"]*\)".*/\1/p')
   DCAT=$(printf '%s' "$LINE" | sed -n 's/.*"cat":"\([^"]*\)".*/\1/p')
@@ -86,11 +121,97 @@ for ID in $IDS; do
 
   RES=""; PATHOUT=""; NOTE=""
 
+  # ---------- 预览模式：只统计，不动任何文件 ----------
+  # 前端用它拼出「X 月 X 日备份的 N 个文件将移入 XXX 事件」这样的确认文案
+  if [ "$MODE" = "preview" ]; then
+    case "$ACT" in
+      del)
+        CNT_D=$((CNT_D+1))
+        # 记录该文件所属的日期目录，前端按日期分组展示
+        PDATE=$(printf '%s' "$REL" | cut -d/ -f1)
+        PDATES="$PDATES $PDATE"
+        GRPDEL="${GRPDEL}${PDATE}"$'\n'
+        ;;
+      keep)
+        CNT_K=$((CNT_K+1))
+        GRPKEEP="${GRPKEEP}$(printf '%s' "$REL" | cut -d/ -f1)"$'\n'
+        ;;
+      hold)
+        CNT_H=$((CNT_H+1))
+        GRPHOLD="${GRPHOLD}$(printf '%s' "$REL" | cut -d/ -f1)"$'\n'
+        ;;
+      arc)
+        CNT_A=$((CNT_A+1))
+        FOLDER=""
+        if [ -n "$EV" ]; then
+          # 用整行 grep 定位事件，再逐字段 sed —— 避免贪婪匹配串到别的字段
+          EL=$(grep -F "\"event_id\":\"$EV\"" "$DATA/events.jsonl" 2>/dev/null | head -1)
+          if [ -n "$EL" ]; then
+            FOLDER=$(printf '%s' "$EL" | sed -n 's/.*"folder":"\([^"]*\)".*/\1/p')
+            # 归入已有事件时，分类与主题以事件本身的 slug/topic 为准
+            # （决策行里的 cat 是 AI 对单文件的判断，可能和事件分类不一致）
+            ET=$(printf '%s' "$EL" | sed -n 's/.*"topic":"\([^"]*\)".*/\1/p')
+            ES=$(printf '%s' "$EL" | sed -n 's/.*"slug":"\([^"]*\)".*/\1/p')
+            [ -n "$ET" ] && TOPIC="$ET"
+            [ -n "$ES" ] && DCAT="$ES"
+          fi
+        fi
+        if [ -z "$FOLDER" ]; then
+          CNT_E=$((CNT_E+1))   # 将新建事件
+          [ -z "$TOPIC" ] && continue
+          FOLDER="$TOPIC"
+          AFOLDER="${AFOLDER}${TOPIC}|"
+        else
+          AFOLDER="${AFOLDER}${FOLDER}|"
+        fi
+        APDATE=$(printf '%s' "$REL" | cut -d/ -f1)
+        APDATES="$APDATES $APDATE"
+        # 记下 folder/topic/cat，前端才能显示「工作 › project-survey」而不是文件夹原名
+        # topic 为空（归入已有事件）时退化成 folder 名
+        GRP="${GRP}${APDATE}|${FOLDER}|${TOPIC}|${DCAT}"$'\n'
+        ;;
+    esac
+    continue
+  fi
+
   case "$ACT" in
     del)
-      rm -f "$STG/$REL"
-      RES="deleted"; PATHOUT=""; NOTE="staging 副本已删；K80 本地待下次回家执行"
-      CNT_D=$((CNT_D+1))
+      # 「删除」= 移进回收站，不是真删（2026-11-06 用户明确要求：
+      # 隔离区当回收站用，暂存 30 天后自动清理）。
+      #
+      # 关键发现：media/ 里的副本是【硬链接】（实测 nlink=2、inode 相同），
+      # 所以只要把其中一个链接 mv 进回收站，内容就完整保留了。
+      # 之前的写法是先 rm 源文件、再 mv 副本 —— 中间那一刻只剩一个链接，
+      # 如果 mv 失败文件就真没了。现在改成：先把【源文件】mv 进回收站，
+      # 成功后再处理 media 副本（两者本是同一 inode，mv 任何一个都够）。
+      #
+      # 回收站路径带日期分组，30 天后由 trash-gc.sh 清理。
+      TRASHD="$DATA/_media_gc_trash/$(date +%Y%m%d)"
+      mkdir -p "$TRASHD" 2>/dev/null
+      SRC_FILE="$STG/$REL"
+      if [ -f "$SRC_FILE" ]; then
+        # 保留原文件名，同时把 id 前缀写进名字，方便撤销时反查。
+        # 必须用 ${ID}__${NAME} 花括号形式：写成 $ID__$NAME 时 shell 会把
+        # "ID__" 当成一个变量名（下划线是合法变量字符），结果前缀变成空（2026-11-06 实测）。
+        BNKEEP="$TRASHD/${ID}__${NAME}"
+        if mv -f "$SRC_FILE" "$BNKEEP" 2>/dev/null; then
+          RES="deleted"
+          # 记录回收站相对路径，撤销时据此找回
+          PATHOUT=$(printf '%s' "$BNKEEP" | sed "s#^$DATA/##")
+          NOTE="已移入回收站（30 天后自动清理）"
+          CNT_D=$((CNT_D+1))
+        else
+          RES="failed"; PATHOUT=""; NOTE="移入回收站失败，文件保持原状"
+        fi
+        # media 里的硬链接：源文件已经 mv 走，剩下的这个链接也移进回收站，
+        # 否则会变成孤儿（页面上缩略图还会显示）。mv 失败无所谓，内容已在回收站。
+        EXT="${NAME##*.}"
+        if [ -f "$MEDIA/$ID.$EXT" ]; then
+          mv -f "$MEDIA/${ID}.${EXT}" "$TRASHD/${ID}.thumb.${EXT}" 2>/dev/null
+        fi
+      else
+        RES="missing"; PATHOUT=""; NOTE="inbox 里已无此文件"
+      fi
       ;;
     keep)
       RES="kept"; PATHOUT="$REL"; NOTE="K40 保留，K80 不动"
@@ -189,6 +310,65 @@ for ID in $IDS; do
   printf '{"id":"%s","action":"%s","result":"%s","path":"%s","ts":%s}\n' \
     "$ID" "$ACT" "$RES" "$PATHOUT" "$NOW" >> "$DATA/receipts.jsonl"
 done
+
+# ---------- 输出 ----------
+if [ "$MODE" = "preview" ]; then
+  # 预览：返回统计 + 涉及的事件夹名 + 涉及日期，供前端拼确认文案
+  # 事件名同理去重（同一事件可能被多个文件引用）
+  AFU=""
+  _old=$IFS; IFS='|'
+  for _x in $AFOLDER; do
+    [ -z "$_x" ] && continue
+    case "|$AFU|" in *"|$_x|"*) ;; *) AFU="${AFU}${_x}|" ;; esac
+  done
+  IFS=$_old
+
+  # 日期去重并排序
+  ADS=$(printf '%s\n' $PDATES $APDATES | grep -v '^$' | sort -u | tr '\n' ' ')
+
+  # 聚合分组 → {"kind":"arc","date":"2024-11-05","event":"家庭/生日","n":12}
+  # 前端拿这个直接生成「11月5日备份的 12 个文件将移入 家庭 › 生日」，
+  # 比给一堆散日期和散事件名有用得多（用户明确要求这一句，2026-11-06）。
+  GRPS=""
+  if [ -n "$GRP" ]; then
+    # 按 日期+事件夹 聚合，带出 cat/topic 供前端显示人话名称
+    printf '%s' "$GRP" | grep -v '^$' \
+    | $BB awk -F'|' '
+        { k=$1"|"$2; n[k]++; if($3!="") tp[k]=$3; if($4!="") ct[k]=$4;
+          if(!(k in seen)){ seen[k]=1; ord[++m]=k } }
+        END{ for(i=1;i<=m;i++){ k=ord[i]; split(k,a,"|");
+               printf "{\"kind\":\"arc\",\"date\":\"%s\",\"event\":\"%s\",\"cat\":\"%s\",\"topic\":\"%s\",\"n\":%d}\n",
+                      a[1], a[2], ct[k], tp[k], n[k] } }' \
+    > "$DATA/.preview_grp.$$"
+    while IFS= read -r _g; do
+      [ -z "$_g" ] && continue
+      [ -z "$GRPS" ] || GRPS="${GRPS},"
+      GRPS="${GRPS}${_g}"
+    done < "$DATA/.preview_grp.$$"
+    rm -f "$DATA/.preview_grp.$$"
+  fi
+  for _pair in "del:$GRPDEL" "keep:$GRPKEEP" "hold:$GRPHOLD"; do
+    _k=${_pair%%:*}; _v=${_pair#*:}
+    [ -z "$_v" ] && continue
+    printf '%s' "$_v" | grep -v '^$' | sort | uniq -c \
+    | while read -r _n _d; do
+        printf '{"kind":"%s","date":"%s","event":"","n":%s}\n' "$_k" "$_d" "$_n"
+      done > "$DATA/.preview_grp2.$$"
+    while IFS= read -r _g; do
+      [ -z "$_g" ] && continue
+      [ -z "$GRPS" ] || GRPS="${GRPS},"
+      GRPS="${GRPS}${_g}"
+    done < "$DATA/.preview_grp2.$$"
+    rm -f "$DATA/.preview_grp2.$$"
+  done
+
+  printf '{"ok":true,"preview":true,"summary":{"executed":%s,"archived":%s,"deleted":%s,"kept":%s,"held":%s,"new_events":%s,"missing":%s},' \
+    $((CNT_A+CNT_D+CNT_K+CNT_H)) "$CNT_A" "$CNT_D" "$CNT_K" "$CNT_H" "$CNT_E" "$CNT_MISS"
+  printf '"dates":"%s","events":"%s","groups":[%s]}' \
+    "$(printf '%s' "$ADS" | sed 's/ *$//')" "$(printf '%s' "$AFU" | sed 's/|$//')" "$GRPS"
+  exit 0
+fi
+
 printf '],"summary":{"executed":%s,"archived":%s,"deleted":%s,"kept":%s,"held":%s,"new_events":%s,"missing":%s}}' \
   $((CNT_A+CNT_D+CNT_K+CNT_H)) "$CNT_A" "$CNT_D" "$CNT_K" "$CNT_H" "$CNT_E" "$CNT_MISS"
 

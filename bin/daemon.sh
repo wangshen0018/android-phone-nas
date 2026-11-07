@@ -58,6 +58,9 @@ while true; do
     printf '%s\n' "$OUT" >> "$LOG"
     MOVED=$(printf '%s\n' "$OUT" | tail -1 | sed -n 's/.*moved=\([0-9]\{1,\}\).*/\1/p')
     [ -z "$MOVED" ] && MOVED=0
+    # 来源明细：move-by-date.sh 最后一行形如
+    #   moved=9 dup=0 fail=0 skip=0 src=相机 7 · 扫描 2
+    SRCTXT=$(printf '%s\n' "$OUT" | tail -1 | sed -n 's/.*src=//p')
 
     # 2) 登记（幂等，不调模型）
     Q0=$(qlen)
@@ -67,7 +70,39 @@ while true; do
     # 3) 只有真的来了新文件才判读：判读只读队列，队列里就是这批新的
     if [ "$MOVED" -gt 0 ] || [ "$Q1" -gt "$Q0" ]; then
       echo "$(date '+%F %T') 归位 $MOVED 个，队列 $Q0->$Q1，开始判读" >> "$LOG"
+
+      # 记下这批新件的总体积与耗时，推送给用户看（2026-11-06 新增）
+      # 体积：直接从本轮归位日志里拿不到大小，改用 du 对比前后太慢，
+      # 改为统计新登记文件的 size —— judge.sh --ingest 会把新 id 写进 analysis.jsonl，
+      # 这里按本轮新增条数取最后 N 行的 size 求和。
+      NEWN=$((Q1 - Q0))
+      [ "$MOVED" -gt "$NEWN" ] && NEWN=$MOVED
+      T0=$NOW
+
       sh "$BIN/judge.sh" --judge >> "$LOG" 2>&1
+
+      T1=$(date +%s)
+      SEC=$((T1 - T0))
+
+      # 补抽视频封面：make-vthumb.sh 是幂等的（已有封面就跳过），
+      # 所以每轮跑一次即可，只处理新进来的视频，老视频不会重复解码。
+      # 为什么放这里：判定页的视频卡片靠 state/thumb/<id>.jpg 显示封面，
+      # 之前是手工跑，新视频会一直没有封面（2026-11-06 接进自动流程）。
+      if [ -x "$BIN/make-vthumb.sh" ]; then
+        VT=$(sh "$BIN/make-vthumb.sh" 2>&1 | tail -1)
+        echo "$(date '+%F %T') 视频封面: $VT" >> "$LOG"
+      fi
+
+      # 推送：只有真的新增了文件才推，避免每 30 分钟骚扰
+      if [ "$NEWN" -gt 0 ] && [ -x "$BIN/notify.sh" ]; then
+        # 体积：本轮新登记的 id 从 pending.queue 拿不到（已被判读消费），
+        # 改用 analysis.jsonl 末尾 NEWN 条的 size 之和 —— 判读刚写入，位置在前。
+        SZ=$(tail -n "$NEWN" "$BASE/state/analysis.jsonl" 2>/dev/null \
+             | sed -n 's/.*"size":\([0-9]*\).*/\1/p' \
+             | awk '{s+=$1} END{print s+0}')
+        [ -z "$SZ" ] && SZ=0
+        sh "$BIN/notify.sh" --backup "$NEWN" "$SZ" "$SEC" "$SRCTXT" >> "$LOG" 2>&1
+      fi
     else
       echo "$(date '+%F %T') 无新文件（moved=0，队列 $Q1），跳过判读" >> "$LOG"
     fi
