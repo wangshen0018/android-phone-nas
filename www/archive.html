@@ -67,9 +67,15 @@ body.cols2 .evh .fn{font-size:12.5px;min-width:120px}
 .it{position:relative;background:#eef0f2;border:1px solid var(--bd);border-radius:5px;overflow:hidden;aspect-ratio:1;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .it img{width:100%;height:100%;object-fit:cover;display:block}
 .it.picked{border:2px solid var(--pr);box-shadow:0 0 0 2px rgba(37,99,235,.18)}
-.it.picked::after{content:"✓";position:absolute;right:4px;top:3px;background:var(--pr);color:#fff;width:17px;height:17px;border-radius:50%;font-size:11px;display:flex;align-items:center;justify-content:center;line-height:1}
 .it .vf{font-size:22px;color:#9aa1a9;flex-direction:column;display:flex;align-items:center;gap:2px}
 .it .vf small{font-size:10px;color:var(--mu)}
+/* 勾选框：左下角，专门负责"选中"，跟"点开看"分开。
+   以前整张卡点一下就是选中，想看大图没有入口，这是被吐槽的主要点。 */
+.it .ck{position:absolute;left:4px;top:4px;z-index:2;width:17px;height:17px;border-radius:4px;
+  background:rgba(255,255,255,.82);border:1px solid rgba(0,0,0,.22);color:transparent;
+  display:flex;align-items:center;justify-content:center;font-size:10.5px;line-height:1;cursor:pointer}
+.it .ck:hover{background:#fff;border-color:var(--pr)}
+.it.picked .ck{background:var(--pr);border-color:var(--pr);color:#fff}
 .it .nm{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(transparent,rgba(0,0,0,.72));color:#fff;font-size:10px;padding:8px 4px 3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none}
 .it.selmode .nm{display:none}
 
@@ -139,6 +145,57 @@ body.cols2 .evh .fn{font-size:12.5px;min-width:120px}
   padding:9px 18px;border-radius:6px;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none;max-width:90vw}
 #toast.on{opacity:1}
 #toast.err{background:#991b1b}
+
+/* ---- 年份折叠条 ----
+   原来年份只是类型分组里的一行小字，看得见但点不动。
+   现在做成可折叠：整年收起后只留标题，事件的量和体积一眼可比较。 */
+.yrbar{display:flex;align-items:center;gap:7px;font-size:12.5px;color:#3f4956;font-weight:700;
+  padding:7px 9px 6px;margin:2px 0 6px;cursor:pointer;user-select:none;border-radius:5px;
+  background:#f2f4f6;border:1px solid #e2e6ea}
+.yrbar:hover{background:#eceff2}
+.yrbar .arw{width:11px;color:#6b7280;font-size:10px;transition:transform .15s;display:inline-block}
+.yrbar.closed .arw{transform:rotate(-90deg)}
+.yrbar .n{font-weight:400;color:#7b8494;font-variant-numeric:tabular-nums}
+.yrbar .cl{color:#9aa1a9;font-size:11px;font-weight:400;margin-left:auto}
+.evwrap.closed .evlist{display:none}
+
+/* ---- 存入批次分组 ----
+   同一事件里的文件可能分好几次存进来（第一次 30 张、隔天补 10 张）。
+   按回执里的归档时刻分组，才能看出"这批是什么时候进的"。 */
+.bat{margin-bottom:13px}
+.bath{display:flex;align-items:baseline;gap:8px;font-size:12.5px;font-weight:600;color:#4b5563;
+  padding:0 0 7px;margin-bottom:8px;border-bottom:1px dashed #d8dce1}
+.bath .bts{color:#1f2937}
+.bath .n{font-weight:400;color:#7b8494;font-variant-numeric:tabular-nums}
+.bath .tag{font-size:10.5px;font-weight:400;color:#9aa1a9;border:1px solid #e2e6ea;border-radius:3px;padding:0 5px}
+
+/* ---- 卡片上的时间与播放角标 ---- */
+.it .dt{position:absolute;right:4px;bottom:17px;font-size:9.5px;line-height:1.5;color:#fff;
+  background:rgba(0,0,0,.5);border-radius:3px;padding:0 4px;pointer-events:none;
+  font-variant-numeric:tabular-nums;letter-spacing:.2px}
+.it .pl{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:32px;height:32px;
+  border-radius:50%;background:rgba(0,0,0,.52);color:#fff;display:flex;align-items:center;justify-content:center;
+  font-size:13px;padding-left:2px;pointer-events:none;box-shadow:0 1px 5px rgba(0,0,0,.3)}
+.it:hover .pl{background:rgba(37,99,235,.85)}
+
+/* ---- 全屏预览 / 播放 ---- */
+#pv{position:fixed;inset:0;z-index:260;display:none;background:rgba(0,0,0,.9)}
+#pv.on{display:flex;align-items:center;justify-content:center}
+#pv img,#pv video{max-width:96vw;max-height:90vh;object-fit:contain;background:#000;display:block}
+#pv .pvh{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;gap:10px;
+  padding:10px 16px;color:#e8eaed;font-size:12.5px;background:linear-gradient(rgba(0,0,0,.62),transparent)}
+#pv .pvh .f1{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#pv .pvh .x{background:none;border:none;color:#e8eaed;font-size:22px;cursor:pointer;line-height:1;padding:0 4px}
+#pv .pvh .x:hover{color:#fff}
+#pv .pvf{position:absolute;bottom:14px;left:0;right:0;text-align:center;color:#c7ccd3;font-size:11.5px}
+#pv .pvn{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:64px;
+  background:rgba(255,255,255,.1);border:none;color:#fff;font-size:26px;line-height:1;cursor:pointer;
+  border-radius:6px;display:flex;align-items:center;justify-content:center}
+#pv .pvn:hover{background:rgba(255,255,255,.22)}
+#pv #pvPrev{left:10px}
+#pv #pvNext{right:10px}
+#pvBody img{cursor:zoom-in}
+
 </style>
 </head>
 <body>
@@ -225,6 +282,15 @@ body.cols2 .evh .fn{font-size:12.5px;min-width:120px}
   </div>
 </div>
 
+<!-- 全屏预览 / 播放（点缩略图上的角标或双击卡片） -->
+<div id="pv">
+  <div class="pvh"><span class="f1" id="pvName"></span><button class="x" onclick="closePv()" title="关闭 (Esc)">×</button></div>
+  <div id="pvBody"></div>
+  <button class="pvn" id="pvPrev" title="上一个 (←)">‹</button>
+  <button class="pvn" id="pvNext" title="下一个 (→)">›</button>
+  <div class="pvf" id="pvMeta"></div>
+</div>
+
 <div id="toast"></div>
 
 <script>
@@ -235,6 +301,12 @@ let OPEN={};            // folder -> bool
 let PICK=new Set();     // {folder} + '|' + name  组成的键
 let SELMODE=false;      // 是否处于选择模式
 let GRPOPEN={};         // slug -> bool（类型分组展开状态，默认展开）
+let YRCLOSED={};        // 'slug|year' -> true（年份收起状态）
+let CURFILES={};        // folder -> 上一次 loadFiles 的完整数组（预览翻页要用）
+
+/* 浏览器能直接播的容器。mkv/webm 在 Chrome 里看编码，放进来会直接报错，
+   所以只有这几种走 <video>，其余仍按普通文件处理。 */
+const VIDEXT=['mp4','m4v','mov','3gp'];
 
 /* 分类显示名，与判定页保持一致 */
 const CATNAME={work:'工地施工',home:'家庭生活',screenshot:'手机截图',video:'视频',other:'其他',unclassified:'未识别'};
@@ -276,7 +348,7 @@ function evCard(e){
       <span class="fn">${esc(e.folder)}</span>
       <span class="ym">${esc(e.ym)}</span>
       <span class="cnt">${e.count} 个 · ${fmtSize(e.size)}</span>
-      ${e.last?`<span class="lz" title="文件最近变动 ${esc(fullLast(e.last))}">更新 ${esc(fmtLast(e.last))}</span>`:''}
+      ${lastTag(e)}
       <span class="acts">
         <button class="btn sm" data-a="sel">选择</button>
         <button class="btn sm" data-a="ren">改名</button>
@@ -317,6 +389,18 @@ function fmtLast(sec){
   return d.getFullYear()===now.getFullYear()?md:(d.getFullYear()+'-'+md);
 }
 function pad2d(n){ return String(n).padStart(2,'0'); }
+/* 秒级时间戳 → YYYY-MM-DD（本地时区） */
+function fmtDay(sec){
+  const t=Number(sec||0); if(!t) return '';
+  const d=new Date(t*1000);
+  return d.getFullYear()+'-'+pad2d(d.getMonth()+1)+'-'+pad2d(d.getDate());
+}
+/* 秒级时间戳 → YYYY-MM-DD HH:MM */
+function fullDay(sec){
+  const t=Number(sec||0); if(!t) return '';
+  const d=new Date(t*1000);
+  return fmtDay(t)+' '+pad2d(d.getHours())+':'+pad2d(d.getMinutes());
+}
 /* 精确到分钟的完整时间，用于 title 悬浮提示 */
 function fullLast(sec){
   const t=Number(sec||0);
@@ -325,13 +409,18 @@ function fullLast(sec){
   return d.getFullYear()+'-'+pad2d(d.getMonth()+1)+'-'+pad2d(d.getDate())+' '+
          pad2d(d.getHours())+':'+pad2d(d.getMinutes());
 }
-/* 卡片上的"最近变动"标签：超过 30 天标暖色，一眼看出老夹 */
+/* 卡片上的时间标签：优先说「存入」（回执里的归档时刻），没有回执才退回「拍摄」。
+ * 两者语义完全不同，所以文案必须区分开，不能都写「更新」，
+ * 否则用户会以为文件是那天拍/那天进的，其实可能差好几个月。 */
 function lastTag(e){
   const s=fmtLast(e.last);
   if(!s) return '';
   const days=e.last?(Date.now()/1000-Number(e.last))/86400:0;
   const cls=days>30?'lz old':'lz';
-  return `<span class="${cls}" title="文件最近变动 ${esc(fullLast(e.last))}">更新 ${esc(s)}</span>`;
+  const isShot=e.lastSrc==='file';
+  const label=isShot?'拍摄':'存入';
+  const tip=isShot?'最新一张的拍摄时间':'最近一次存入时间';
+  return `<span class="${cls}" title="${tip} ${esc(fullLast(e.last))}">${label} ${esc(s)}</span>`;
 }
 function closeM(id){ document.getElementById(id).classList.remove('on'); }
 
@@ -398,9 +487,13 @@ function renderList(trash){
       const evs=groups[sl][yr];
       const yN=evs.reduce((a,e)=>a+(e.count||0),0);
       const yS=evs.reduce((a,e)=>a+(e.size||0),0);
-      return `<div class="evwrap" data-yr="${esc(yr)}">
-        <div class="yrbar" style="font-size:12px;color:#5b6472;padding:7px 2px 6px;font-weight:600">
-          ${esc(yr)} 年 <span style="font-weight:400;color:#7b8494">· ${evs.length} 个事件 · ${yN} 个文件 · ${fmtSize(yS)}</span>
+      const yk=sl+'|'+yr;
+      const closed=YRCLOSED[yk]?' closed':'';
+      return `<div class="evwrap${closed}" data-yr="${esc(yr)}" data-yk="${esc(yk)}">
+        <div class="yrbar${closed}" title="点一下收起或展开这一年的全部事件">
+          <span class="arw">▶</span><span>${esc(yr)} 年</span>
+          <span class="n">${evs.length} 个事件 · ${yN} 个文件 · ${fmtSize(yS)}</span>
+          <span class="cl">${closed?'已收起':'收起'}</span>
         </div>
         <div class="evlist">${evs.map(e=>evCard(e)).join('')}</div>
       </div>`;
@@ -422,6 +515,21 @@ function renderList(trash){
       const g=h.parentNode;
       g.classList.toggle('open');
       GRPOPEN[g.dataset.g]=g.classList.contains('open');
+    });
+  });
+
+  // 年份条折叠：点一下把整年的事件收起来，只留汇总行。
+  // 事件夹本身可能很多，逐个月份滚很累；按年收起后能横向比各年体量。
+  el.querySelectorAll('.yrbar').forEach(bar=>{
+    bar.addEventListener('click',()=>{
+      const wrap=bar.parentNode;
+      const k=wrap.dataset.yk;
+      const nowClosed=!wrap.classList.contains('closed');
+      wrap.classList.toggle('closed',nowClosed);
+      bar.classList.toggle('closed',nowClosed);
+      YRCLOSED[k]=nowClosed;
+      const cl=bar.querySelector('.cl');
+      if(cl) cl.textContent=nowClosed?'已收起':'收起';
     });
   });
 
@@ -459,25 +567,89 @@ async function fillFiles(ev,folder){
   const body=ev.querySelector('.evb');
   try{
     const files=await loadFiles(folder);
+    CURFILES[folder]=files;
     if(!files.length){ body.innerHTML='<div class="empty" style="padding:16px 0">此事件夹为空</div>'; return; }
-    body.innerHTML='<div class="grid">'+files.map(f=>{
-      const key=folder+'|'+f.name;
-      const isVid=['mp4','mov','3gp','m4v'].includes(f.ext);
-      const pk=PICK.has(key)?' picked':'';
-      const mediaSrc='/media/'+encodeURIComponent(f.mid)+'.'+f.ext;
-      const inner=isVid
-        ? `<div class="vf">▶<small>${f.ext.toUpperCase()} ${fmtSize(f.size)}</small></div>`
-        : `<img loading="lazy" src="${mediaSrc}" onerror="this.style.display='none';const v=this.parentNode.querySelector('.vf');if(v)v.style.display='flex';"><div class="vf" style="display:none">⚠<small>${fmtSize(f.size)}</small></div>`;
-      return `<div class="it${pk}${SELMODE?' selmode':''}" data-k="${esc(key)}" title="${esc(f.name)}">
-        ${inner}<div class="nm">${esc(f.name)}</div>
-      </div>`;
-    }).join('')+'</div>';
+    body.innerHTML=renderFiles(folder,files);
     body.querySelectorAll('.it').forEach(it=>{
-      it.addEventListener('click',()=>togglePick(it));
+      const name=it.dataset.k.split('|').slice(1).join('|');
+      // 勾选框：始终可点，专门用来多选
+      const ck=it.querySelector('.ck');
+      if(ck) ck.addEventListener('click',e2=>{ e2.stopPropagation(); togglePick(it); });
+      // 卡片主体：选择模式下=勾选；平时=全屏预览/播放（和 alist 一致）
+      it.addEventListener('click',()=>{
+        if(SELMODE) togglePick(it);
+        else openPv(folder,name);
+      });
     });
   }catch(e){
     body.innerHTML='<div class="empty" style="color:#dc2626">加载失败：'+esc(e.message)+'</div>';
   }
+}
+
+/* 按「存入日期」分批显示。
+   同一事件夹的文件往往不是一次存进来的：先存 30 张，隔几天补 10 张。
+   回执里每条 arc 记录都带 ts，据此分组才看得出批次；
+   没有回执的老文件统一归到「更早归档」，并用小标签说明来由。 */
+function renderFiles(folder,files){
+  const groups=[], idx={};
+  files.forEach(f=>{
+    const k=f.arcTs?fmtDay(f.arcTs):'';
+    if(!(k in idx)){ idx[k]=groups.length; groups.push({k:k,items:[]}); }
+    groups[idx[k]].items.push(f);
+  });
+  groups.sort((a,b)=>{
+    if(!a.k) return 1;
+    if(!b.k) return -1;
+    return b.k.localeCompare(a.k);   // 新批次在上
+  });
+  return groups.map(g=>{
+    const sz=g.items.reduce((a,f)=>a+(f.size||0),0);
+    const label=g.k?(g.k+' 存入'):'更早归档';
+    const tag=g.k?'':'<span class="tag">无存档回执</span>';
+    return `<div class="bat">
+      <div class="bath"><span class="bts">${esc(label)}</span>
+        <span class="n">${g.items.length} 个 · ${fmtSize(sz)}</span>${tag}</div>
+      <div class="grid">${g.items.map(f=>fileCard(folder,f)).join('')}</div>
+    </div>`;
+  }).join('');
+}
+
+/* 视频封面地址：已有静态图就直连，没有就让 vthumb.cgi 现生成一帧 */
+function vPoster(f){
+  return f.thumb?('/thumb/'+encodeURIComponent(f.mid)+'.jpg')
+                :('/cgi/vthumb.cgi?mid='+encodeURIComponent(f.mid));
+}
+
+function fileCard(folder,f){
+  const key=folder+'|'+f.name;
+  const pk=PICK.has(key)?' picked':'';
+  const isVid=VIDEXT.includes(f.ext);
+  const mediaSrc='/media/'+encodeURIComponent(f.mid)+'.'+encodeURIComponent(f.ext);
+  let inner;
+  if(isVid){
+    // 封面优先用已生成的静态图；还没有就走 vthumb.cgi 现生成（它会 302 到 /thumb/<mid>.jpg）。
+    // 绝不能让浏览器用 <video preload> 抽帧：那是把 10MB 视频整体读一遍，单线程 httpd 直接堵死。
+    const th=vPoster(f);
+    inner=`<img loading="lazy" src="${th}" alt="" onerror="this.style.display='none';var v=this.parentNode.querySelector('.vf');if(v)v.style.display='flex';">
+      <div class="vf" style="display:none">▶<small>${esc(f.ext.toUpperCase())} ${fmtSize(f.size)}</small></div>
+      <div class="pl">▶</div>`;
+  }else{
+    inner=`<img loading="lazy" src="${mediaSrc}" alt="" onerror="this.style.display='none';var v=this.parentNode.querySelector('.vf');if(v)v.style.display='flex';">
+      <div class="vf" style="display:none">⚠<small>${fmtSize(f.size)}</small></div>`;
+  }
+  const dt=f.shot?`<div class="dt">${esc(f.shot.slice(5))}</div>`:'';
+  return `<div class="it${pk}${SELMODE?' selmode':''}" data-k="${esc(key)}" title="${esc(fileTip(f))}">
+    ${inner}${dt}<div class="ck">✓</div><div class="nm">${esc(f.name)}</div>
+  </div>`;
+}
+
+/* 悬浮提示：把拍摄时间、存入时间、体积一次说清 */
+function fileTip(f){
+  const p=[f.name];
+  if(f.shot) p.push('拍摄 '+f.shot);
+  if(f.arcTs) p.push('存入 '+fullDay(f.arcTs));
+  p.push(fmtSize(f.size));
+  return p.join(' · ');
 }
 
 function togglePick(it){
@@ -486,6 +658,73 @@ function togglePick(it){
   else{ PICK.add(k); it.classList.add('picked'); }
   updBulk();
 }
+
+// ---------- 全屏预览 / 播放 ----------
+// 和大厂相册一样的习惯：点开就是全屏，左右键翻同一事件内的文件，Esc 退出，图片再点一下放大。
+// 翻页范围限定在「当前事件夹的完整文件列表」，跨批次也能连续翻。
+let PVLIST=[];   // [{folder,f}]
+let PVIDX=0;
+let PVZOOM=1;
+
+function openPv(folder,name){
+  const files=(CURFILES[folder]||[]);
+  const i=files.findIndex(f=>f.name===name);
+  if(i<0) return;
+  PVLIST=files.map(f=>({folder:folder,f:f}));
+  document.getElementById('pv').classList.add('on');
+  showPv(i);
+}
+
+function showPv(i){
+  if(!PVLIST.length) return;
+  PVIDX=(i+PVLIST.length)%PVLIST.length;
+  const f=PVLIST[PVIDX].f;
+  const src='/media/'+encodeURIComponent(f.mid)+'.'+encodeURIComponent(f.ext);
+  const isVid=VIDEXT.includes(f.ext);
+  document.getElementById('pvName').textContent=f.name;
+  // 视频用原生 <video>：mp4/mov 都是 H.264，Chrome/Edge/Safari 直接能解；
+  // 遇到解不了的容器会显示浏览器自己的错误层，不会把整个预览卡住。
+  document.getElementById('pvBody').innerHTML = isVid
+    ? '<video src="'+esc(src)+'" controls autoplay playsinline preload="metadata" poster="'+esc(vPoster(f))+'"></video>'
+    : '<img src="'+esc(src)+'" alt="" title="再点一下放大/还原">';
+  PVZOOM=1;
+  const meta=[(PVIDX+1)+' / '+PVLIST.length, fmtSize(f.size)];
+  if(f.shot) meta.push('拍摄 '+f.shot);
+  if(f.arcTs) meta.push('存入 '+fullDay(f.arcTs));
+  document.getElementById('pvMeta').textContent=meta.join(' · ');
+}
+
+function closePv(){
+  document.getElementById('pv').classList.remove('on');
+  document.getElementById('pvBody').innerHTML='';   // 清空才能停掉视频声音
+}
+
+function pvStep(d){
+  if(PVLIST.length<2) return;
+  showPv(PVIDX+d);
+}
+
+function pvBind(){
+  const pv=document.getElementById('pv');
+  // 点黑色背景关闭（点图片/视频不关）
+  pv.addEventListener('click',e=>{ if(e.target===pv) closePv(); });
+  document.getElementById('pvPrev').addEventListener('click',e=>{ e.stopPropagation(); pvStep(-1); });
+  document.getElementById('pvNext').addEventListener('click',e=>{ e.stopPropagation(); pvStep(1); });
+  // 图片点一下在「适应窗口 / 2 倍」之间切换
+  document.getElementById('pvBody').addEventListener('click',e=>{
+    if(e.target.tagName!=='IMG') return;
+    PVZOOM=PVZOOM>1?1:2;
+    e.target.style.transform=PVZOOM>1?'scale(2)':'none';
+    e.target.style.cursor=PVZOOM>1?'zoom-out':'zoom-in';
+  });
+  window.addEventListener('keydown',e=>{
+    if(!pv.classList.contains('on')) return;
+    if(e.key==='Escape'){ closePv(); }
+    else if(e.key==='ArrowLeft'){ pvStep(-1); }
+    else if(e.key==='ArrowRight'){ pvStep(1); }
+  });
+}
+pvBind();
 
 function toggleSelMode(ev,folder){
   SELMODE=true;

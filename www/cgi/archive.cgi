@@ -74,12 +74,53 @@ evym() { _f=$(evfield "$1" folder); printf '%s' "$_f" | cut -c1-7; }
 # JSON 转义
 jesc() { printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g' | tr -d '\r\n\t'; }
 
+# ---------- 归档时间（存入批次）----------
+# receipts.jsonl 是执行回执，每条 {"id","action":"arc","result":"archived","path":"<YM>/<夹>/<文件>","ts":...}
+# 这里把它压成 "路径<TAB>时间戳" 的索引，供 files / list 查「某文件是什么时候存进来的」。
+# 为什么要这个：文件 mtime 是拍摄时间（mv 保留），目录 mtime 会被批量操作抹平，
+# 只有回执的 ts 才是真正的"存入"时刻。台账 ledger.jsonl 里也有 arc 记录，
+# 但只有 38 条（部分批次），回执覆盖更全，所以以回执为准。
+# 一次构建、多次查表，比每个文件 grep 一遍快一个量级。
+ARCTSV=/data/local/tmp/_arcts_$$.tsv
+build_arcidx() {
+  : > "$ARCTSV" 2>/dev/null
+  [ -f "$DATA/receipts.jsonl" ] || return 0
+  grep -F '"action":"arc"' "$DATA/receipts.jsonl" 2>/dev/null \
+    | sed -n 's/.*"path":"\([^"]*\)".*"ts":\([0-9]*\).*/\1\t\2/p' > "$ARCTSV" 2>/dev/null
+}
+# 查某归档相对路径的存入时间（多条回执取最后一条）；查不到返回空
+arcts_of() {
+  [ -s "$ARCTSV" ] || return 0
+  grep -F "$1	" "$ARCTSV" 2>/dev/null | tail -1 | cut -f2
+}
+# 拍摄日期：优先从文件名解析（IMG_20261102_103213 / VID_20261105_070508 / 微信 mmexport<13位>）
+# 解析不出就退回文件 mtime 的日期。输出 YYYY-MM-DD。
+shot_of() {
+  _n="$1"; _mt="$2"
+  _d=$(printf '%s' "$_n" | sed -n 's/^[A-Za-z]*_\(20[0-9][0-9]\)\([0-9][0-9]\)\([0-9][0-9]\)_.*/\1-\2-\3/p')
+  if [ -z "$_d" ]; then
+    # 微信导出的 mmexport<毫秒时间戳>
+    _ms=$(printf '%s' "$_n" | sed -n 's/^mmexport\(1[0-9]\{12\}\).*/\1/p')
+    if [ -n "$_ms" ]; then
+      # mksh 的 $(( )) 是 32 位有符号，13 位毫秒直接除会溢出成负值（坑 2.11），
+      # 交给 awk 走双精度再传给 date。
+      _sec=$(printf '%s' "$_ms" | awk '{printf "%.0f", $1/1000}')
+      _d=$($BB date -d "@$_sec" +%Y-%m-%d 2>/dev/null)
+    fi
+  fi
+  [ -z "$_d" ] && [ -n "$_mt" ] && _d=$($BB date -d "@$_mt" +%Y-%m-%d 2>/dev/null)
+  # busybox date 不支持 -d 时（Android 自带的不支持）退回 stat 的 %y 前 10 位
+  [ -z "$_d" ] && _d=$(printf '%s' "$3" | cut -c1-10)
+  printf '%s' "$_d"
+}
+
 ACTN=$(getp action)
 
 case "$ACTN" in
 
 # ---------- 列表 ----------
 list)
+  build_arcidx
   printf '{"ok":true,"events":['
   FIRST=1
   if [ -f "$DATA/events.jsonl" ]; then
@@ -90,15 +131,21 @@ list)
       YM=$(printf '%s' "$F" | cut -c1-7)
       D="$ARC/$YM/$F"
       [ -d "$D" ] || continue
-      N=$(find "$D" -maxdepth 1 -type f 2>/dev/null | wc -l | tr -d ' ')
+      # 计数要排除 _manifest.jsonl 这类元数据，否则和 files 返回的条数对不上
+      N=$(find "$D" -maxdepth 1 -type f ! -name '_*' 2>/dev/null | wc -l | tr -d ' ')
       SZ=$($BB du -sb "$D" 2>/dev/null | awk '{print $1}')
       [ -z "$SZ" ] && SZ=0
-      # 最近变动时间：取事件夹内文件的 mtime 最大值。
-      # 不能用目录 mtime —— 实测 6 个事件夹的目录 mtime 全等于同一次批量操作的时间
-      # （1793545219），完全没有区分度。文件 mtime 才反映"这个事件最后一次进/出文件"。
-      # 用 find -exec stat + 一次批量 stat，6 个夹共 0.2 秒，比逐文件 fork 快一个量级。
-      LAST=$($BB find "$D" -maxdepth 1 -type f -exec $BB stat -c %Y {} + 2>/dev/null | sort -n | tail -1)
-      [ -z "$LAST" ] && LAST=0
+      # 最近存入时间：优先取回执里该事件夹所有文件的最大 ts（真正的"存入"），
+      # 没有回执才退回文件 mtime 最大值（那是拍摄时间，语义不同，前端会标出来）。
+      # 不能用目录 mtime —— 实测 6 个事件夹的目录 mtime 全等于同一次批量操作的时间。
+      LAST=$(awk -F'\t' -v p="$YM/$F/" 'index($1,p)==1 && $2+0>m {m=$2+0} END{print m+0}' "$ARCTSV" 2>/dev/null)
+      LASTSRC=arc
+      case "$LAST" in ''|0)
+        LAST=$($BB find "$D" -maxdepth 1 -type f -exec $BB stat -c %Y {} + 2>/dev/null | sort -n | tail -1)
+        [ -z "$LAST" ] && LAST=0
+        LASTSRC=file
+        ;;
+      esac
       # 封面：取事件夹内第一张图片，按归档 mid 公式生成预览链接。
       # 供存档页的图形化事件选择器显示缩略图，避免逐个事件再拉一次 files。
       # mid 公式必须与 files 动作完全一致，否则 media-gc 的归档 mid 集合对不上。
@@ -119,8 +166,8 @@ list)
         break
       done
       [ "$FIRST" = "1" ] || printf ','
-      printf '{"folder":"%s","ym":"%s","count":%s,"size":%s,"last":%s,"cover":"%s","coverExt":"%s","meta":%s}' \
-        "$(jesc "$F")" "$YM" "$N" "$SZ" "$LAST" "$CVMID" "$CVEXT" "$ln"
+      printf '{"folder":"%s","ym":"%s","count":%s,"size":%s,"last":%s,"lastSrc":"%s","cover":"%s","coverExt":"%s","meta":%s}' \
+        "$(jesc "$F")" "$YM" "$N" "$SZ" "$LAST" "$LASTSRC" "$CVMID" "$CVEXT" "$ln"
       FIRST=0
     done < "$DATA/events.jsonl"
   fi
@@ -133,6 +180,7 @@ list)
     printf '{"count":0,"size":0}'
   fi
   printf '}\n'
+  rm -f "$ARCTSV"
   ;;
 
 # ---------- 事件夹内文件列表 ----------
@@ -144,13 +192,19 @@ files)
   [ -z "$YM" ] && { echo '{"ok":false,"err":"event not found"}'; exit 0; }
   D="$ARC/$YM/$F"
   [ -d "$D" ] || { echo '{"ok":false,"err":"folder not exists"}'; exit 0; }
-  printf '{"ok":true,"folder":"%s","files":[' "$F"
-  FIRST=1
+  build_arcidx
   WWMDIR=/data/media/0/nasbak/state/media   # 实体目录与照片同挂载，ln 必成（旧版在 /data/adb 下必失败）
-  mkdir -p "$WWMDIR" 2>/dev/null
+  THUMBDIR=/data/media/0/nasbak/state/thumb
+  mkdir -p "$WWMDIR" "$THUMBDIR" 2>/dev/null
+  # 先收到临时表再排序：按拍摄时间正序（mt），同一时刻按文件名，观感与手机相册一致。
+  # 直接边遍历边输出会得到 glob 顺序（jpg/mp4 混杂），看不出时间线。
+  TMPF=/data/local/tmp/_files_$$.tsv
+  : > "$TMPF"
   for fp in "$D"/*; do
     [ -f "$fp" ] || continue
     N=$(basename "$fp")
+    # 归档时写的 _manifest.jsonl 之类的元数据不是媒体，别混进缩略图网格
+    case "$N" in _*) continue ;; esac
     S=$(stat -c %s "$fp" 2>/dev/null); [ -z "$S" ] && S=0
     E=$(printf '%s' "${N##*.}" | tr 'A-Z' 'a-z')
     # 为该文件准备一个媒体硬链接（按 事件夹相对路径:大小 生成确定 id）
@@ -158,11 +212,28 @@ files)
     if [ ! -f "$WWMDIR/$MID.$E" ]; then
       ln -f "$fp" "$WWMDIR/$MID.$E" 2>/dev/null || cp -f "$fp" "$WWMDIR/$MID.$E" 2>/dev/null
     fi
+    MT=$(stat -c %Y "$fp" 2>/dev/null); [ -z "$MT" ] && MT=0
+    MY=$(stat -c %y "$fp" 2>/dev/null)
+    SHOT=$(shot_of "$N" "$MT" "$MY")
+    AR=$(arcts_of "$YM/$F/$N")
+    # 别写成 `TH=0; [ -f x ] && TH=1`：条件为假时整行返回非 0，
+    # 在部分 sh 下会让后续 read 拿不到第 8 个字段（实测 _manifest 那行 thumb 输出为空）。
+    TH=0
+    if [ -f "$THUMBDIR/$MID.jpg" ]; then TH=1; fi
+    printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "$N" "$S" "$E" "$MID" "$MT" "$SHOT" "$AR" "$TH" >> "$TMPF"
+  done
+  printf '{"ok":true,"folder":"%s","files":[' "$(jesc "$F")"
+  FIRST=1
+  # -k5,5n 按 mt 升序；文件名含空格/中文都安全，因为字段用 TAB 分隔
+  LC_ALL=C sort -t "$(printf '\t')" -k5,5n "$TMPF" 2>/dev/null | while IFS="$(printf '\t')" read -r N S E MID MT SHOT AR TH; do
+    [ -z "$N" ] && continue
     [ "$FIRST" = "1" ] || printf ','
-    printf '{"name":"%s","size":%s,"ext":"%s","mid":"%s"}' "$(jesc "$N")" "$S" "$E" "$MID"
+    printf '{"name":"%s","size":%s,"ext":"%s","mid":"%s","mt":%s,"shot":"%s","arcTs":%s,"thumb":%s}' \
+      "$(jesc "$N")" "${S:-0}" "$E" "$MID" "${MT:-0}" "$SHOT" "${AR:-0}" "${TH:-0}"
     FIRST=0
   done
   printf ']}\n'
+  rm -f "$TMPF" "$ARCTSV"
   ;;
 
 # ---------- 重命名事件夹 ----------

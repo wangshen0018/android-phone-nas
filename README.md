@@ -64,7 +64,7 @@
 | 入口 | 功能 |
 |---|---|
 | 文件判定 | 缩略图列表、就地放大、视频页内播放（封面由服务端预生成）、分类/事件夹选择、顶部操作记录条可撤销 |
-| 存档管理 | 按「类型-年份」折叠分组、单列/双列切换、批量重命名/移动、回收站 |
+| 存档管理 | 类型 / 年份逐级折叠、事件内按**存入批次**分组、图片全屏放大、视频封面与页内播放、单列/双列、批量重命名/移动、回收站 |
 | 磁力搜索 | 多站聚合搜索，一键推给 aria2 |
 | 下载管理 | AriaNg（RPC 免配置预置） |
 | 网络服务管理 | 服务状态、访问入口、定时任务 |
@@ -108,7 +108,7 @@ $env:ADB_DEVICE = "<NAS_LAN_IP>:5555"
 
 ---
 
-## 三十一个坑
+## 三十二个坑
 
 这部分是真正花时间的地方。
 
@@ -370,6 +370,36 @@ settings put system screen_off_timeout 2147483647
 单图 2–6 秒 API 调用，几百张就是真金白银。先小批量试模型价格，
 再决定窗口多大、要不要降级到更小的模型。
 
+### 存档与媒体
+
+**32. `busybox httpd` 不认 CGI 的 `Status:` 头**
+
+想在 CGI 里做重定向（比如生成封面后 302 跳到静态图），输出 `Status: 302 Found` 加 `Location:` ——
+**httpd 把它当普通响应头原样吐出去**，状态行仍是 `200 OK`、body 为空，浏览器不会跟跳，图永远不出来。
+
+实际收到的响应长这样：
+
+```
+HTTP/1.1 200 OK
+Status: 302 Found
+Location: /thumb/xxxx.jpg
+Content-Length: 0
+```
+
+正确做法是 CGI **直接输出内容**：
+
+```sh
+printf 'Content-Type: image/jpeg\r\nContent-Length: %s\r\n\r\n' "$(stat -c %s "$F")"
+cat "$F"
+```
+
+错误分支也别指望 404 —— 直接返回非图片内容，让 `<img>` 的 `onerror` 兜住就行。
+
+**顺带一个反直觉现象**：静态 `.mp4` 的普通 GET 给的是 `video/mp4`，
+但浏览器发 `Range` 请求（`206`）时 `Content-Type` 会变成 `text/html`。
+实测 Chrome/Edge 照样能播（`readyState=4`、`canplay`、`duration` 正确），所以不用特殊处理；
+但排查视频问题时别被这个头带偏。
+
 ---
 
 ## 附：网页里看手机实时画面（含反向操作）
@@ -480,7 +510,9 @@ adb shell su -c 'sh /data/adb/nasbak/bin/scrcpy-serve.sh start'
 | `service.d/srv.sh` | aria2 / alist / AdGuard 自启 + adb 自愈 |
 | `www/index.html` | 左侧导航壳 |
 | `www/judge.html` | 文件判定页 |
-| `www/archive.html` | 存档管理页（类型-年份折叠） |
+| `www/archive.html` | 存档管理页（类型-年份折叠、存入批次分组、全屏预览/播放） |
+| `www/cgi/archive.cgi` | 存档接口：`list` 事件汇总、`files` 文件清单（带拍摄/存入时间）、改名/移动/删除 |
+| `www/cgi/vthumb.cgi` | 按 `mid` 现生成视频封面帧（`<img>` 直接取图，见坑 32） |
 | `www/cgi/*.cgi` | 判定 / 存档 / 状态接口 |
 | `www/cgi/apply.cgi` | 执行判定：`?a=preview` 只统计不动文件，`ids=` 限定范围（裸调会执行整个队列） |
 | `www/cgi/undo.cgi` | 操作记录与撤销（`a=last` 取最近 N 条，倒序，60 秒内同类动作合并） |
