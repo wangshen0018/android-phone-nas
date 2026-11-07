@@ -377,6 +377,11 @@ const catOpts=cur=>{
 const ACTNAME={del:'删除',keep:'留存',hold:'暂存',arc:'存档'};
 const isVid=it=>['mp4','mov','3gp','m4v'].includes(it.type);
 const mediaURL=it=>'media/'+it.id+'.'+it.type;
+/* 网格缩略图（2026-11-07 加）：网格格子只有一百来像素，却一直直接拉原图，
+   平均 4.7 MB/张，一屏几十张就是上百 MB，手机上是肉眼可见的卡。
+   改用 thumb.cgi：已有 /thumb/<id>.jpg 就直接吐，没有才现做一张 320px 的（约 9 KB）。
+   灯箱大图（#lbImg）仍然用 mediaURL 拉原图，这里不要混。 */
+const thumbURL=it=>'cgi/thumb.cgi?mid='+it.id;
 
 /* HEVC 解码能力：装了「HEVC 视频扩展」且硬件支持时，Chrome/Edge 能解 H.265。
    三个检测口径取任一通过即认为可播，因为不同版本/平台返回值不一致。 */
@@ -611,12 +616,12 @@ function cardHTML(it,i){
      onerror 时退回 ▶ 占位，保证老视频（还没抽过帧的）不显示破图。 */
   const thumb=v
     ? `<div class="vph vthumb" data-view="${i}" data-vsrc="${mediaURL(it)}">
-         <img src="thumb/${it.id}.jpg" loading="lazy" alt=""
+         <img src="${thumbURL(it)}" loading="lazy" alt=""
               onerror="this.closest('.vthumb').classList.add('noframe');this.remove()">
          <span class="vplay">▶</span>
          <span class="vmeta">视频 ${fmt(it.size)}</span>
        </div>`
-    : `<img src="${mediaURL(it)}" loading="lazy" data-view="${i}" alt="">`;
+    : `<img src="${thumbURL(it)}" loading="lazy" data-view="${i}" alt="">`;
   const tagCat=`<span class="tag tagcat ${it.cat==='work'?'w':(it.cat==='screenshot'?'d':'')}">${CATNAME[it.cat]||it.cat}</span>`;
   // AI建议已移除：判读只出描述，不给删除/留存建议
   const tagCd=v?`<span class="tag" data-cd="${it.id}">编码…</span>`:'';
@@ -821,11 +826,15 @@ function openLB(i){
   if(LBURL){ URL.revokeObjectURL(LBURL); LBURL=null; }
 
   if(!isVid(it)){
-    body.innerHTML=`<img id="lbImg" src="${mediaURL(it)}" alt="">`;
+    // 先铺缩略图立刻出画，原图在后台加载完再换上（大图要一两秒，中间空屏很难受）
+    const full=mediaURL(it);
+    body.innerHTML=`<img id="lbImg" src="${thumbURL(it)}" data-full="${full}" alt="">`;
     const img=$('#lbImg');
     img.onclick=()=>body.classList.toggle('zoom');
-    img.onload=()=>{ /* 小图不必放大 */ };
-    img.onerror=()=>{ body.innerHTML='<div class="err">图片加载失败<br>可能是归档后副本已被移走</div>'; };
+    const pre=new Image();
+    pre.onload=()=>{ if(img.dataset.full===full) img.src=full; };
+    pre.onerror=()=>{ body.innerHTML='<div class="err">图片加载失败<br>可能是归档后副本已被移走</div>'; };
+    pre.src=full;
     return;
   }
   body.innerHTML='<div class="ld">正在检测编码…</div>';
@@ -1369,7 +1378,7 @@ function startBulkArc(ids, opts){
   const filesHTML = ids.map(id=>{
     const it=ITEMS.find(x=>x.id===id) || {};
     const v=isVid(it);
-    const thumb = v ? '<div class="vico">▶</div>' : `<img src="${mediaURL(it)}" loading="lazy" alt="">`;
+    const thumb = v ? '<div class="vico">▶</div>' : `<img src="${thumbURL(it)}" loading="lazy" alt="">`;
     return `<div class="am-f" data-id="${esc(id)}" title="${esc(it.name||'')}">
       ${thumb}
       <span class="nm3">${esc(it.name||id)}</span>

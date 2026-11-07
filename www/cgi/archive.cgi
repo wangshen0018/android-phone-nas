@@ -75,18 +75,29 @@ evym() { _f=$(evfield "$1" folder); printf '%s' "$_f" | cut -c1-7; }
 jesc() { printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g' | tr -d '\r\n\t'; }
 
 # ---------- 归档时间（存入批次）----------
-# receipts.jsonl 是执行回执，每条 {"id","action":"arc","result":"archived","path":"<YM>/<夹>/<文件>","ts":...}
-# 这里把它压成 "路径<TAB>时间戳" 的索引，供 files / list 查「某文件是什么时候存进来的」。
-# 为什么要这个：文件 mtime 是拍摄时间（mv 保留），目录 mtime 会被批量操作抹平，
-# 只有回执的 ts 才是真正的"存入"时刻。台账 ledger.jsonl 里也有 arc 记录，
-# 但只有 38 条（部分批次），回执覆盖更全，所以以回执为准。
-# 一次构建、多次查表，比每个文件 grep 一遍快一个量级。
+# 「这个文件是什么时候进到这个事件夹的」有两个来源：
+#   1) receipts.jsonl 的 action=arc —— judge 正常归档，path = 归档相对路径
+#   2) ledger.jsonl 的 act=arc-move / arc-renamefile —— 在页面里手工跨事件移动或改名，
+#      文件换了目录，path 变了，必须用台账里的 `to` 重新对上
+#   只看回执会漏掉手工移动过的文件，表现就是明明在事件里却显示「无存档回执」（2026-11-07 反馈）。
+#
+# 同一文件可能有多条记录（先归档、后移动），取 ts 最大的一条，即「最后一次进入当前位置的时间」。
+# 这一步用 awk 一次聚合，避免逐条 grep（87 个文件 × N 条记录会拖慢接口）。
 ARCTSV=/data/local/tmp/_arcts_$$.tsv
 build_arcidx() {
   : > "$ARCTSV" 2>/dev/null
-  [ -f "$DATA/receipts.jsonl" ] || return 0
-  grep -F '"action":"arc"' "$DATA/receipts.jsonl" 2>/dev/null \
-    | sed -n 's/.*"path":"\([^"]*\)".*"ts":\([0-9]*\).*/\1\t\2/p' > "$ARCTSV" 2>/dev/null
+  {
+    if [ -f "$DATA/receipts.jsonl" ]; then
+      grep -F '"action":"arc"' "$DATA/receipts.jsonl" 2>/dev/null \
+        | sed -n 's/.*"path":"\([^"]*\)".*"ts":\([0-9]*\).*/\1\t\2/p'
+    fi
+    if [ -f "$DATA/ledger.jsonl" ]; then
+      # 台账里的 to 带 "archive/" 前缀（回执里的 path 不带），要剥掉才能对上同一个键
+      grep -E '"act":"arc-move"|"act":"arc-renamefile"' "$DATA/ledger.jsonl" 2>/dev/null \
+        | sed -n 's/.*"ts":\([0-9]*\).*"to":"\([^"]*\)".*/\2\t\1/p' \
+        | sed 's|^archive/||'
+    fi
+  } | awk -F'\t' 'NF>=2 && $1!="" { if($2+0>m[$1]) m[$1]=$2+0 } END{ for(k in m) printf "%s\t%d\n", k, m[k] }' > "$ARCTSV" 2>/dev/null
 }
 # 查某归档相对路径的存入时间（多条回执取最后一条）；查不到返回空
 arcts_of() {

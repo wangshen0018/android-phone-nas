@@ -334,9 +334,11 @@ function dateOf(e){
   const m=String(e.folder||'').match(/^(\d{4}-\d{2}-\d{2})/);
   return m?m[1]:'';
 }
+/* 事件卡封面：同样不能拉原图（一个封面 4.7 MB，列表一屏就十几 MB）。
+   统一走 thumb.cgi，它会先查 /thumb/ 有没有现成的，没有才现做一张。 */
 function coverSrc(e){
   if(!e.cover) return '';
-  return '/media/'+encodeURIComponent(e.cover)+'.'+encodeURIComponent(e.coverExt||'jpg');
+  return '/cgi/thumb.cgi?mid='+encodeURIComponent(e.cover);
 }
 
 /* 单个事件夹卡片 */
@@ -614,29 +616,27 @@ function renderFiles(folder,files){
   }).join('');
 }
 
-/* 视频封面地址：已有静态图就直连，没有就让 vthumb.cgi 现生成一帧 */
-function vPoster(f){
+/* 缩略图地址（图片和视频共用一套）：
+   已生成过静态图就直连 /thumb/<mid>.jpg，没有就让 thumb.cgi 现做一张。
+   绝对不能让网格直接拉 /media/<mid>.jpg —— 那是原图，平均 4.7 MB，
+   一个 34 张的事件就是 158 MB，手机上要几十秒（2026-11-07 实测）。 */
+function thumbSrc(f){
   return f.thumb?('/thumb/'+encodeURIComponent(f.mid)+'.jpg')
-                :('/cgi/vthumb.cgi?mid='+encodeURIComponent(f.mid));
+                :('/cgi/thumb.cgi?mid='+encodeURIComponent(f.mid));
+}
+/* 原图地址：只在全屏预览时用 */
+function fullSrc(f){
+  return '/media/'+encodeURIComponent(f.mid)+'.'+encodeURIComponent(f.ext);
 }
 
 function fileCard(folder,f){
   const key=folder+'|'+f.name;
   const pk=PICK.has(key)?' picked':'';
   const isVid=VIDEXT.includes(f.ext);
-  const mediaSrc='/media/'+encodeURIComponent(f.mid)+'.'+encodeURIComponent(f.ext);
-  let inner;
-  if(isVid){
-    // 封面优先用已生成的静态图；还没有就走 vthumb.cgi 现生成（它会 302 到 /thumb/<mid>.jpg）。
-    // 绝不能让浏览器用 <video preload> 抽帧：那是把 10MB 视频整体读一遍，单线程 httpd 直接堵死。
-    const th=vPoster(f);
-    inner=`<img loading="lazy" src="${th}" alt="" onerror="this.style.display='none';var v=this.parentNode.querySelector('.vf');if(v)v.style.display='flex';">
-      <div class="vf" style="display:none">▶<small>${esc(f.ext.toUpperCase())} ${fmtSize(f.size)}</small></div>
-      <div class="pl">▶</div>`;
-  }else{
-    inner=`<img loading="lazy" src="${mediaSrc}" alt="" onerror="this.style.display='none';var v=this.parentNode.querySelector('.vf');if(v)v.style.display='flex';">
-      <div class="vf" style="display:none">⚠<small>${fmtSize(f.size)}</small></div>`;
-  }
+  const th=thumbSrc(f);
+  let inner=`<img loading="lazy" src="${th}" alt="" onerror="this.style.display='none';var v=this.parentNode.querySelector('.vf');if(v)v.style.display='flex';">
+      <div class="vf" style="display:none">${isVid?'▶':'⚠'}<small>${isVid?esc(f.ext.toUpperCase())+' ':''}${fmtSize(f.size)}</small></div>`;
+  if(isVid) inner+='<div class="pl">▶</div>';
   const dt=f.shot?`<div class="dt">${esc(f.shot.slice(5))}</div>`:'';
   return `<div class="it${pk}${SELMODE?' selmode':''}" data-k="${esc(key)}" title="${esc(fileTip(f))}">
     ${inner}${dt}<div class="ck">✓</div><div class="nm">${esc(f.name)}</div>
@@ -679,14 +679,25 @@ function showPv(i){
   if(!PVLIST.length) return;
   PVIDX=(i+PVLIST.length)%PVLIST.length;
   const f=PVLIST[PVIDX].f;
-  const src='/media/'+encodeURIComponent(f.mid)+'.'+encodeURIComponent(f.ext);
+  const full=fullSrc(f);
   const isVid=VIDEXT.includes(f.ext);
+  const body=document.getElementById('pvBody');
   document.getElementById('pvName').textContent=f.name;
-  // 视频用原生 <video>：mp4/mov 都是 H.264，Chrome/Edge/Safari 直接能解；
-  // 遇到解不了的容器会显示浏览器自己的错误层，不会把整个预览卡住。
-  document.getElementById('pvBody').innerHTML = isVid
-    ? '<video src="'+esc(src)+'" controls autoplay playsinline preload="metadata" poster="'+esc(vPoster(f))+'"></video>'
-    : '<img src="'+esc(src)+'" alt="" title="再点一下放大/还原">';
+  if(isVid){
+    // 视频用原生 <video>：mp4/mov 都是 H.264，Chrome/Edge/Safari 直接能解。
+    // poster 用缩略图，避免解码首帧前一片黑。
+    body.innerHTML='<video src="'+esc(full)+'" controls autoplay playsinline preload="metadata" poster="'+esc(thumbSrc(f))+'"></video>';
+  }else{
+    // 先铺缩略图（瞬间出画），原图在后台加载，好了再无缝换上去。
+    // 直接等原图要一两秒，加载期间全屏是空的，体验很差。
+    body.innerHTML='<img src="'+esc(thumbSrc(f))+'" alt="" data-full="'+esc(full)+'" title="再点一下放大/还原">';
+    const im=body.querySelector('img');
+    const pre=new Image();
+    pre.onload=function(){
+      if(im.dataset.full===full){ im.src=full; }   // 期间翻页了就丢弃这次结果
+    };
+    pre.src=full;
+  }
   PVZOOM=1;
   const meta=[(PVIDX+1)+' / '+PVLIST.length, fmtSize(f.size)];
   if(f.shot) meta.push('拍摄 '+f.shot);

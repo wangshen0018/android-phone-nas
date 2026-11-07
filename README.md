@@ -52,7 +52,7 @@
    ↓ move-by-date.sh    按拍摄日期归位到 inbox/<YYYY-MM-DD>/（顺手统计来源：相机 9 · 扫描 2）
    ↓ judge.sh --ingest  新文件入 pending.queue
    ↓ judge.sh --judge   VLM 判读（夜间窗口）
-   ↓ make-vthumb.sh     ffmpeg 抽视频首帧存 state/thumb/
+   ↓ make-thumb.sh      ffmpeg 批量生成 320px 缩略图（图片和视频）
    ↓ 人工判定（web 面板）
    ↓ apply.cgi          归档到 archive/<YYYY-MM>/<事件夹>/
    ↓ gyp-backup.sh      rclone 同步到云盘
@@ -108,7 +108,7 @@ $env:ADB_DEVICE = "<NAS_LAN_IP>:5555"
 
 ---
 
-## 三十二个坑
+## 三十三个坑
 
 这部分是真正花时间的地方。
 
@@ -400,6 +400,32 @@ cat "$F"
 实测 Chrome/Edge 照样能播（`readyState=4`、`canplay`、`duration` 正确），所以不用特殊处理；
 但排查视频问题时别被这个头带偏。
 
+**33. 网格里千万别直接放原图**
+
+这条是「页面加载特别慢」最常见的真凶，而且看不出是代码问题——因为代码确实没错。
+
+实测数据：一个事件夹 34 张照片共 **158.6 MB**，平均 4.7 MB/张；
+而缩略图格子只有 112px 宽。等于拿 4000px 的原图去填 112px 的洞，白白多传 350 倍。
+
+```html
+<!-- 错：直接拉原图 -->
+<img src="/media/<id>.jpg" loading="lazy">
+```
+
+改成服务端生成 320px 缩略图后，单张 **9.2 KB**（1/354），整页从 158 MB 降到 450 KB：
+
+```sh
+ffmpeg -v error -i "$SRC" -frames:v 1 -vf "scale='min(320,iw)':-2" -q:v 5 -y "$THUMB/$id.jpg"
+```
+
+三条配套原则：
+
+- **`loading="lazy"` 救不了你**。它只管「什么时候开始下载」，不管「下载多大」。
+- **全屏预览才用原图**，而且是先把缩略图铺上去、原图在后台加载完再替换，
+  否则点开要空屏一两秒。
+- **视频不要靠 `<video preload>` 抽首帧**。那是把 10 MB+ 整个读一遍，
+  单线程 httpd 直接堵死；用同一套服务端缩略图逻辑抽一帧即可。
+
 ---
 
 ## 附：网页里看手机实时画面（含反向操作）
@@ -483,7 +509,7 @@ adb shell su -c 'sh /data/adb/nasbak/bin/scrcpy-serve.sh start'
     ├── receipts.jsonl         执行回执
     ├── events.jsonl           事件夹登记
     ├── ledger.jsonl           操作台账 recv/mvdate/arc/dup
-    ├── thumb/<id>.jpg         视频首帧封面（ffmpeg 预生成，长边 320）
+    ├── thumb/<id>.jpg         缩略图（图片和视频，长边 320，约 9 KB —— 页面网格只加载这个）
     └── status-cache.json      状态缓存（CGI 只读这个）
 ```
 
@@ -512,12 +538,12 @@ adb shell su -c 'sh /data/adb/nasbak/bin/scrcpy-serve.sh start'
 | `www/judge.html` | 文件判定页 |
 | `www/archive.html` | 存档管理页（类型-年份折叠、存入批次分组、全屏预览/播放） |
 | `www/cgi/archive.cgi` | 存档接口：`list` 事件汇总、`files` 文件清单（带拍摄/存入时间）、改名/移动/删除 |
-| `www/cgi/vthumb.cgi` | 按 `mid` 现生成视频封面帧（`<img>` 直接取图，见坑 32） |
+| `www/cgi/thumb.cgi` | 按 `mid` 出 320px 缩略图（图片缩放 / 视频抽帧），页面网格都走它 |
 | `www/cgi/*.cgi` | 判定 / 存档 / 状态接口 |
 | `www/cgi/apply.cgi` | 执行判定：`?a=preview` 只统计不动文件，`ids=` 限定范围（裸调会执行整个队列） |
 | `www/cgi/undo.cgi` | 操作记录与撤销（`a=last` 取最近 N 条，倒序，60 秒内同类动作合并） |
 | `www/cgi/scrcpy.cgi` | 投屏服务按需启停（`a=status/start/stop`） |
-| `bin/make-vthumb.sh` | ffmpeg 抽视频首帧当封面，幂等（已有封面跳过） |
+| `bin/make-thumb.sh` | 批量生成 320px 缩略图（图片缩放 / 视频抽帧），幂等，daemon 每轮调用 |
 | `bin/notify.sh` | 备份完成后的微信推送（PushPlus），读 `notify.conf`，无 token 静默退出 |
 | `bin/trash-gc.sh` | 回收站 30 天清理（crond 每天 4:50，默认干跑） |
 | `bin/media-gc.sh` | 媒体副本回收（默认干跑，`--apply` 才删） |

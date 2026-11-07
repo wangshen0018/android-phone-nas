@@ -84,13 +84,13 @@ while true; do
       T1=$(date +%s)
       SEC=$((T1 - T0))
 
-      # 补抽视频封面：make-vthumb.sh 是幂等的（已有封面就跳过），
-      # 所以每轮跑一次即可，只处理新进来的视频，老视频不会重复解码。
-      # 为什么放这里：判定页的视频卡片靠 state/thumb/<id>.jpg 显示封面，
-      # 之前是手工跑，新视频会一直没有封面（2026-11-06 接进自动流程）。
-      if [ -x "$BIN/make-vthumb.sh" ]; then
-        VT=$(sh "$BIN/make-vthumb.sh" 2>&1 | tail -1)
-        echo "$(date '+%F %T') 视频封面: $VT" >> "$LOG"
+      # 补缩略图：make-thumb.sh 幂等（已有就跳过），每轮跑一次只处理新文件。
+      # 图片和视频都要做 —— 页面网格原来直接拉原图（平均 4.7 MB/张），
+      # 一个 34 张的事件就是 158 MB；有了 320px 缩略图后整页降到几百 KB。
+      # 2026-11-07 把 make-vthumb.sh 合并进来，不再只处理视频。
+      if [ -x "$BIN/make-thumb.sh" ]; then
+        VT=$(sh "$BIN/make-thumb.sh" 2>&1 | tail -1)
+        echo "$(date '+%F %T') 缩略图: $VT" >> "$LOG"
       fi
 
       # 推送：只有真的新增了文件才推，避免每 30 分钟骚扰
