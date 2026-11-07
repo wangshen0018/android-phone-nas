@@ -83,6 +83,7 @@ const PAGES=[
   {id:'down',    name:'下载管理',    icon:'⬇',  url:'/ariang-setup.html'},
   {id:'network', name:'网络服务管理', icon:'🌐',  url:'/network.html'},
   {id:'screen',  name:'手机屏幕',    icon:'📱',  url:'/screen.html'},
+  {id:'files',   name:'文件管理',    icon:'📁',  url:'//'+location.hostname+':5244/', noBust:true},
   {id:'stats',   name:'统计',        icon:'📊',  url:'/stats.html'},
 ];
 
@@ -105,14 +106,15 @@ function renderNav(){
 /* busybox httpd 对 .html 不发 Cache-Control，浏览器走启发式缓存，
    页面更新后不硬刷就拿旧版（判定页"没按钮"的实际原因）。
    iframe 每次装载都带时间戳参数，彻底绕开 HTML 缓存。
-   查询参数不影响页面内相对路径（media/、cgi/ 仍按目录解析）。 */
-const bust=u=>u+(u.includes('?')?'&':'?')+'_='+Date.now();
+   查询参数不影响页面内相对路径（media/、cgi/ 仍按目录解析）。
+   带 noBust 的页面（如 alist）跳过：它是 1.1MB 的 SPA，重载会丢当前目录现场。 */
+const bust=(u,p)=>(p&&p.noBust)?u:u+(u.includes('?')?'&':'?')+'_='+Date.now();
 
 function go(id,url){
   if(cur===id) return;
   cur=id;
   renderNav();
-  frame.src=bust(url);
+  frame.src=bust(url,PAGES.find(x=>x.id===id));
   try{ history.replaceState(null,'','#'+id); }catch(e){}
 }
 
@@ -146,7 +148,7 @@ window.addEventListener('message',e=>{
 // 初始化
 const hash=(location.hash||'').replace('#','');
 const init=PAGES.find(p=>p.id===hash)||PAGES[0];
-cur=init.id; renderNav(); frame.src=bust(init.url);
+cur=init.id; renderNav(); frame.src=bust(init.url,init);
 pullSummary();
 setInterval(pullSummary,30000);
 </script>
