@@ -1,0 +1,77 @@
+name: build-apk
+
+# 本机不装 Android SDK / JDK / gradle，全部构建在 GitHub 托管的 runner 上完成。
+# 手动触发，或 app/ 目录有改动时自动跑。
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'app/**'
+      - '.github/workflows/build-apk.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      # 不装 android-actions/setup-android：它会去 sdkmanager 装名为 "tools" 的包，
+      # 而新版 cmdline-tools 已删掉该包，直接 exit 1。runner 镜像本身预装了 SDK。
+      - name: Inspect preinstalled Android SDK
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          echo "--- platforms ---"; ls "$ANDROID_HOME/platforms" 2>/dev/null || true
+          echo "--- build-tools ---"; ls "$ANDROID_HOME/build-tools" 2>/dev/null || true
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
+      - name: Ensure signing keystore
+        run: |
+          # 仓库里还没有就生成一个（首次运行），随后作为产物导出、回填仓库固定下来。
+          if [ ! -f app/keystore/nasbak.p12 ]; then
+            mkdir -p app/keystore
+            keytool -genkeypair -v \
+              -keystore app/keystore/nasbak.p12 -storetype PKCS12 \
+              -alias nasbak -keyalg RSA -keysize 2048 -validity 10950 \
+              -storepass nasbak123 -keypass nasbak123 \
+              -dname "CN=NasBak, OU=Home, O=NasBak, L=Feicheng, ST=Shandong, C=CN"
+          fi
+          ls -la app/keystore/
+
+      - name: Build debug APK
+        working-directory: app
+        run: gradle assembleDebug --no-daemon --stacktrace
+
+      - name: Show output
+        working-directory: app
+        run: ls -la app/build/outputs/apk/debug/
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: nasbak-apk
+          path: app/app/build/outputs/apk/debug/*.apk
+          retention-days: 30
+
+      # 把 CI 生成的密钥库导出，回填进仓库后签名就固定了。
+      # 这一步只为首次初始化服务，回填后可以删掉。
+      - name: Export signing keystore
+        run: cp app/keystore/nasbak.p12 "$GITHUB_WORKSPACE/signing-keystore.p12"
+
+      - name: Upload keystore
+        uses: actions/upload-artifact@v4
+        with:
+          name: signing-keystore
+          path: signing-keystore.p12
+          retention-days: 5

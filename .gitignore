@@ -1,3 +1,12 @@
 # 历史回滚备份，只留在设备/本地，不入库
 # 命名规范：<原文件名>.bak-<改动名>-<时间戳>
 *.bak-*
+
+# Android 构建产物：由 GitHub Actions 在云端生成，本机与仓库都不留
+app/.gradle/
+app/build/
+app/app/build/
+app/local.properties
+*.apk
+*.keystore
+*.jks

@@ -498,6 +498,37 @@ fetch('cgi/decide.cgi', {method:'POST', body: JSON.stringify({
 
 ---
 
+## 附：做成手机 App（本机零安装构建）
+
+面板是个网页，套一层 WebView 就是 App。难点不在代码，在**构建环境**：
+APK 需要 JDK + Android SDK + Gradle，本机一样没有。
+
+做法是把构建交给云端：
+
+```
+app/                          Java WebView 壳（无 AndroidX、无第三方依赖）
+.github/workflows/build-apk.yml   在 GitHub runner 上 gradle assembleDebug
+```
+
+本机只做两件事：`git push`，然后从 Actions artifact 取 APK。
+改一行代码到手机上能打开，约 2–3 分钟，全程不装任何安卓开发工具。
+
+壳的能力：加载 `127.0.0.1:8083`、全屏、返回键回退、连不上时给「设置地址」入口、
+alist 上传（`onShowFileChooser`）、下载走系统下载管理器、前端报错写 logcat。
+
+**三个坑**（详见 `docs/APP-构建方案.md`）：
+
+- `android-actions/setup-android` 会去装已删除的 `tools` 包而失败；
+  runner 本就预装 SDK，这一步要删掉
+- runner 每次是干净环境，AGP 会现场随机生成 debug keystore，
+  于是**每次构建签名都不同，第二版无法覆盖安装**；必须把 keystore 固定进仓库
+- 手机访问**自己的** Tailscale IP 不通（Android VPN 不回环），壳里只能用 `127.0.0.1`
+
+**已知局限**：页面没做移动端适配，WebView 里左侧 208 px 固定导航占掉一半宽度，
+判读卡片右侧会被裁。这是页面问题，加媒体查询即可解决。
+
+---
+
 ## 附：网页里看手机实时画面（含反向操作）
 
 管理面板上加了一个「手机屏幕」页，直接在页面里显示手机实时画面，
@@ -617,6 +648,9 @@ adb shell su -c 'sh /data/adb/nasbak/bin/scrcpy-serve.sh start'
 | `bin/notify.sh` | 备份完成后的微信推送（PushPlus），读 `notify.conf`，无 token 静默退出 |
 | `bin/trash-gc.sh` | 回收站 30 天清理（crond 每天 4:50，默认干跑） |
 | `bin/media-gc.sh` | 媒体副本回收（默认干跑，`--apply` 才删） |
+| `app/` | Android WebView 壳工程（Java，无 AndroidX），由云端 CI 构建 APK |
+| `.github/workflows/build-apk.yml` | APK 云端构建流水线（push 或手动触发） |
+| `docs/APP-构建方案.md` | 不装安卓开发工具做 APK 的四条路径、实测与坑 |
 | `bin/lib-sidecar.sh` | 副本目录与硬链接辅助 |
 | `bin/ingest-backlog.sh` | 一次性补录历史积压（不做常驻） |
 | `srv/update-trackers.sh` | 每周刷新 BT tracker 并热改运行中的 aria2 |
