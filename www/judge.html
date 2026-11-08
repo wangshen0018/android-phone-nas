@@ -1370,47 +1370,103 @@ function updBgPanel(){
   }
 }
 
+/* 处理单条判定：一个 POST + 就地更新卡片。
+   抽成函数是为了让 runBgQueue 能并发调用（原来整段写在 while 里）。 */
+async function decideOne(item,cfg,isFirst){
+  // 新建事件模式：只有第一条带主题，拿到 event_id 后其余复用
+  const useEv   = (cfg.mode==='new') ? (isFirst ? '' : (BG.newEvId||'')) : cfg.evId;
+  const useTopic= (cfg.mode==='new'&&isFirst) ? cfg.topic : '';
+  const useCat  = (cfg.mode==='new'&&isFirst) ? cfg.cat   : '';
+  try{
+    const body=JSON.stringify({id:item.id,action:'arc',event:useEv,topic:useTopic,cat:useCat});
+    const r=await fetch('cgi/decide.cgi',{method:'POST',headers:{'Content-Type':'application/json'},body});
+    const j=await r.json();
+    if(j.ok){
+      BG.ok++; CUR[item.id]='arc'; PICK.delete(item.id);
+      if(isFirst && cfg.mode==='new' && j.event_id) BG.newEvId=j.event_id;
+      // 实时把卡片标记为已判（不整页重绘，避免打断浏览）
+      const card=document.getElementById('c-'+item.id);
+      if(card){
+        card.classList.add('done'); card.classList.remove('picked');
+        const mk=card.querySelector('.mark'); if(mk) mk.textContent='已判：存档';
+        card.querySelectorAll('[data-act]').forEach(b=>b.disabled=true);
+        const cb=card.querySelector('[data-pick]'); if(cb){ cb.checked=false; cb.disabled=true; }
+      }
+      return true;
+    }
+    BG.fail++; BG.lastErr=j.err||'';
+    const it=ITEMS.find(x=>x.id===item.id);
+    BG.failNames.push(it?it.name:item.id);
+    BG.failIds.push(item.id);
+    return false;
+  }catch(e){
+    BG.fail++; BG.lastErr=e.message||'';
+    const it=ITEMS.find(x=>x.id===item.id);
+    BG.failNames.push(it?it.name:item.id);
+    BG.failIds.push(item.id);
+    return false;
+  }
+}
+
+/* 队列执行：分批提交（每批 20 条一个请求）。
+   为什么改批量（2026-11-08 实测）：
+   · 单条判定 480 ms，而"只输出一行"的最小 CGI 只要 50 ms ——
+     差的 430 ms 全在 decide.cgi 内部近 30 处管道 fork（旧手机每个 10~20 ms）。
+   · busybox httpd 是单线程，前端并发只会让请求排队，救不了。
+   · 所以只能减少请求数：一批 20 条共用一次 CGI 启动和一次全文件扫描，
+     摊到每条约 10~20 ms。
+   失败时回退成逐条提交，保证不会把"没写进去"报成成功。 */
 async function runBgQueue(){
   BG.running=true;
   const cfg=BG.cfg;
+  const BATCH=20;
+  let evId=(cfg.mode==='new')?'':cfg.evId;
+  let first=true;
+
   while(BG.queue.length){
-    const item=BG.queue.shift();
-    const i=BG.ok+BG.fail;
-    const useEv=(cfg.mode==='new'&&i>0&&BG.newEvId)?BG.newEvId:cfg.evId;
-    const useTopic=(cfg.mode==='new'&&i===0)?cfg.topic:'';
-    const useCat=(cfg.mode==='new'&&i===0)?cfg.cat:'';
+    const batch=BG.queue.splice(0,BATCH);
+    const ids=batch.map(x=>x.id);
+    // 顺带把每条的分类带上：CGI 就不用再扫一遍 analysis.jsonl 查 AI 分类，
+    // 20 条约省 200~300 ms（旧手机上扫 370KB 不便宜）。
+    const cats=batch.map(x=>(x.cat||''));
+    const useTopic=(cfg.mode==='new'&&first)?cfg.topic:'';
+    const useCat  =(cfg.mode==='new'&&first)?cfg.cat  :'';
+    let ok=false, newEv=evId;
     try{
-      const body=JSON.stringify({id:item.id,action:'arc',event:useEv,topic:useTopic,cat:useCat});
-      const r=await fetch('cgi/decide.cgi',{method:'POST',headers:{'Content-Type':'application/json'},body});
+      const r=await fetch('cgi/decide.cgi',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        cache:'no-store',
+        body:JSON.stringify({ids:ids.join(','),cats:cats.join(','),action:'arc',event:evId,topic:useTopic,cat:useCat})
+      });
       const j=await r.json();
-      if(j.ok){
-        BG.ok++; CUR[item.id]='arc'; PICK.delete(item.id);
-        if(cfg.mode==='new'&&i===0&&j.event_id) BG.newEvId=j.event_id;
-        // 实时把卡片标记为已判（不整页重绘，避免打断浏览）
-        const card=document.getElementById('c-'+item.id);
+      if(j.ok){ ok=true; if(j.event_id) newEv=j.event_id; }
+      else{ BG.lastErr=j.err||''; }
+    }catch(e){ BG.lastErr=e.message||''; }
+
+    if(ok){
+      evId=newEv;
+      if(cfg.mode==='new'&&first) BG.newEvId=newEv;
+      batch.forEach(it=>{
+        BG.ok++; CUR[it.id]='arc'; PICK.delete(it.id);
+        const card=document.getElementById('c-'+it.id);
         if(card){
           card.classList.add('done'); card.classList.remove('picked');
           const mk=card.querySelector('.mark'); if(mk) mk.textContent='已判：存档';
           card.querySelectorAll('[data-act]').forEach(b=>b.disabled=true);
           const cb=card.querySelector('[data-pick]'); if(cb){ cb.checked=false; cb.disabled=true; }
         }
-      }else{
-        BG.fail++; BG.lastErr=j.err||'';
-        // 记下失败的是哪个文件，完成后列出来
-        const it=ITEMS.find(x=>x.id===item.id);
-        BG.failNames.push(it?it.name:item.id);
-        BG.failIds.push(item.id);
+      });
+    }else{
+      // 整批失败：逐条再试一遍，逐条能定位到具体哪个文件出错
+      for(const it of batch){
+        await decideOne(it,{mode:'exist',evId:evId,topic:'',cat:''},false);
       }
-    }catch(e){
-      BG.fail++; BG.lastErr=e.message||'';
-      const it=ITEMS.find(x=>x.id===item.id);
-      BG.failNames.push(it?it.name:item.id);
-      BG.failIds.push(item.id);
     }
+    first=false;
     updBgPanel();
-    // 让出主线程，保证界面可交互
-    await new Promise(r=>setTimeout(r,0));
   }
+
   BG.running=false;
   BG.newEvId='';
   await syncState();
