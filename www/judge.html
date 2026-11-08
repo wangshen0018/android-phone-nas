@@ -321,6 +321,23 @@ input{width:150px}
 .daygrp.folded .daybar .dt{font-weight:600;font-size:13px;color:#4b5563}
 .daygrp.folded .daybar .cnt{font-size:11.5px;color:#6b7280}
 .daygrp.folded .daybar .selbox{display:none}
+/* ── 已完成回顾：全部判定完的日期统一收进这里，整体收起时只占一行 ──
+   之前每个已判完的日期各占一条灰条，判过几批就堆满一屏，
+   把还没判的日期挤到下面，看着像列表坏了（2026-11-08 用户反馈）。 */
+.donebox{max-width:1080px;margin:18px auto 30px;padding:0 14px;grid-column:1/-1}
+.donehd{display:flex;align-items:center;gap:9px;padding:9px 12px;background:#f2f4f6;
+  border:1px solid var(--bd);border-left:3px solid #9ca3af;border-radius:5px;
+  cursor:pointer;font-size:12.5px;color:#4b5563;user-select:none}
+.donehd:hover{background:#eceff2}
+.donehd .arw{font-size:9px;color:#9aa1a9;transition:transform .15s;display:inline-block}
+.donebox.open .donehd .arw{transform:rotate(90deg)}
+.donehd b{font-weight:600;color:#374151}
+.donehd .sum{color:#7b8494;font-size:11.5px;font-variant-numeric:tabular-nums}
+.donehd .sp{flex:1}
+.donehd .tog{color:var(--pr)}
+.donebody{display:none}
+.donebox.open .donebody{display:block}
+.donebody .daygrp .daybar{margin-top:10px}
 </style>
 </head>
 <body>
@@ -605,6 +622,11 @@ async function syncState(){
 const PICK=new Set();
 const FOLDED=new Set();   // 已折叠的日期（全部判定完的自动折叠，也可手动展开/收起）
 const UNFOLD=new Set();   // 手动展开过的（优先级高于自动折叠）
+/* 已全部判定完的日期不再各占一行堆在列表里，统一收进底部的「已完成」容器。
+   原因（2026-11-08 用户反馈）：判过几个批次后会攒出十几条灰色折叠条，
+   占满一屏、把还没判的日期挤到下面，看着像列表坏了。
+   容器整体收起时只占一行，要回顾再展开。状态存 localStorage。 */
+let DONEOPEN=(localStorage.getItem('judge-doneopen')==='1');
 
 /* 卡片 HTML（保持原有全部字段与按钮） */
 function cardHTML(it,i){
@@ -667,35 +689,83 @@ function render(){
   });
   const days=Object.keys(groups).sort().reverse();
 
-  let html='';
+  // 分成两堆：还没判完的按日期倒序排前面；全部判完的收进底部容器
+  const todoDays=[], doneDays=[];
   days.forEach(day=>{
     const arr=groups[day];
+    const allDone=(arr.length>0 && arr.every(x=>CUR[x.id]));
+    (allDone?doneDays:todoDays).push(day);
+  });
+
+  /* 单日渲染。isDone=true 表示这组已全部判定，默认折叠（除非手动展开过）；
+     否则看 FOLDED（用户手动收起某天）。 */
+  function dayBlock(day,arr,isDone){
     const doneN=arr.filter(x=>CUR[x.id]).length;
-    const allDone=(doneN===arr.length && arr.length>0);
-    // 折叠判定：全部判定完 && 没被手动展开；或者被手动收起
-    const folded = FOLDED.has(day) || (allDone && !UNFOLD.has(day));
+    const allDone=isDone;
+    const folded = allDone ? !UNFOLD.has(day) : FOLDED.has(day);
     const allPicked=arr.every(x=>PICK.has(x.id)||CUR[x.id]);
-    html+=`<div class="daygrp${folded?' folded':''}" id="dg-${esc(day)}"><div class="daybar">
+    let h=`<div class="daygrp${folded?' folded':''}" id="dg-${esc(day)}"><div class="daybar">
       <input type="checkbox" class="selbox" style="margin:0" data-pickday="${esc(day)}" ${allPicked?'checked':''} ${allDone?'disabled':''}>
       <span class="dt">${esc(day)}</span>
       <span class="cnt">${arr.length} 项${allDone?' · 已全部判定':(' · 已判 '+doneN)}</span>
       <span class="sp"></span>`;
     if(folded){
-      html+=`<button class="btn" data-unfold="${esc(day)}">展开</button>`;
+      h+=`<button class="btn" data-unfold="${esc(day)}">展开</button>`;
     }else{
       if(allDone){
-        html+=`<button class="btn" data-fold="${esc(day)}">收起</button>`;
+        h+=`<button class="btn" data-fold="${esc(day)}">收起</button>`;
       }else{
-        html+=`<button class="btn" data-dayall="${esc(day)}">全选本日</button>
+        h+=`<button class="btn" data-dayall="${esc(day)}">全选本日</button>
         <button class="btn dn" data-daybulk="del|${esc(day)}">本日全删</button>
         <button class="btn" data-daybulk="keep|${esc(day)}">本日留存</button>
         <button class="btn" data-daybulk="hold|${esc(day)}">本日暂存</button>`;
       }
     }
-    html+=`</div></div>`;
-    if(!folded) arr.forEach(it=>{ html+=cardHTML(it,ITEMS.indexOf(it)); });
-  });
+    h+=`</div></div>`;   // 关 daybar、关 daygrp（卡片放在 daygrp 外面，和原结构一致）
+    if(!folded) h+=arr.map(it=>cardHTML(it,ITEMS.indexOf(it))).join('');
+    return h;
+  }
+
+  let html='';
+  todoDays.forEach(day=>{ html+=dayBlock(day,groups[day],false); });
+
+  if(doneDays.length){
+    // 头部摘要：多少天、多少项，以及各动作的分布（回顾时一眼知道做过什么）
+    const dd=d=>/^\d{4}-\d{2}-\d{2}$/.test(d)?d.slice(5):d;   // '未知日期' 之类原样显示
+    const act={}; let cnt=0;
+    doneDays.forEach(day=>groups[day].forEach(x=>{
+      const a=CUR[x.id]; if(a){ act[a]=(act[a]||0)+1; cnt++; }
+    }));
+    const sum=['arc','del','keep','hold'].filter(k=>act[k])
+      .map(k=>`${ACTNAME[k]} ${act[k]}`).join(' · ');
+    // 已完成落在列表最底部，日期比上面的待判组还新，容易让人以为排序坏了。
+    // 头部标出日期范围（doneDays 是倒序，首尾即最新/最旧），一眼就能对上。
+    const rng=doneDays.length>1
+      ? `（${dd(doneDays[doneDays.length-1])} ~ ${dd(doneDays[0])}）`
+      : `（${dd(doneDays[0])}）`;
+    html+=`<div class="donebox${DONEOPEN?' open':''}" id="doneBox">
+      <div class="donehd" id="doneHd" title="点一下${DONEOPEN?'收起':'展开'}回顾">
+        <span class="arw">▶</span>
+        <b>已完成 ${doneDays.length} 天</b>
+        <span class="sum">${rng} · ${cnt} 项${sum?'（'+sum+'）':''}</span>
+        <span class="sp"></span>
+        <span class="sum tog">${DONEOPEN?'收起':'展开回顾'}</span>
+      </div>
+      <div class="donebody">${doneDays.map(day=>dayBlock(day,groups[day],true)).join('')}</div>
+    </div>`;
+  }
   $('#list').innerHTML=html;
+
+  // 已完成容器的展开/收起：只切 class，不重渲染，避免列表跳一下
+  const doneHd=document.getElementById('doneHd');
+  if(doneHd){
+    doneHd.onclick=()=>{
+      DONEOPEN=!DONEOPEN;
+      document.getElementById('doneBox').classList.toggle('open',DONEOPEN);
+      localStorage.setItem('judge-doneopen',DONEOPEN?'1':'0');
+      const tg=doneHd.querySelector('.tog'); if(tg) tg.textContent=DONEOPEN?'收起':'展开回顾';
+    };
+  }
 
   // 原有事件绑定
   document.querySelectorAll('[data-view]').forEach(el=>el.onclick=()=>openLB(+el.dataset.view));
