@@ -204,6 +204,7 @@ body.cols2 .evh .fn{font-size:12.5px;min-width:120px}
     <b>已存档管理</b>
     <span class="stat" id="hstat">加载中…</span>
     <span style="flex:1"></span>
+    <button class="btn sm" id="batchBtn" title="切换事件内分批依据">按存入时间</button>
     <button class="btn sm" id="colBtn" title="切换单列/双列显示">双列</button>
     <a href="/">← 返回导航</a>
     <button class="btn sm" onclick="loadAll()">刷新</button>
@@ -303,6 +304,10 @@ let SELMODE=false;      // 是否处于选择模式
 let GRPOPEN={};         // slug -> bool（类型分组展开状态，默认展开）
 let YRCLOSED={};        // 'slug|year' -> true（年份收起状态）
 let CURFILES={};        // folder -> 上一次 loadFiles 的完整数组（预览翻页要用）
+/* 事件内分批的依据：'arc' = 按存入时间（默认），'shot' = 按拍摄时间。
+   两种视角各有用途：存入时间看「这批是什么时候进来的」，
+   拍摄时间看「这件事是哪几天发生的」——一次补传的老照片会按真实日期散开。 */
+let BATCHBY='arc';
 
 /* 浏览器能直接播的容器。mkv/webm 在 Chrome 里看编码，放进来会直接报错，
    所以只有这几种走 <video>，其余仍按普通文件处理。 */
@@ -565,6 +570,22 @@ function toggleEv(ev,folder){
   if(OPEN[folder]) fillFiles(ev,folder);
 }
 
+/* 给网格里的卡片绑事件。抽出来是因为切换分组方式时要原地重渲染，
+   不能走 fillFiles（那会重新请求接口，还会冲掉滚动位置）。 */
+function bindItems(body,folder){
+  body.querySelectorAll('.it').forEach(it=>{
+    const name=it.dataset.k.split('|').slice(1).join('|');
+    // 勾选框：始终可点，专门用来多选
+    const ck=it.querySelector('.ck');
+    if(ck) ck.addEventListener('click',e2=>{ e2.stopPropagation(); togglePick(it); });
+    // 卡片主体：选择模式下=勾选；平时=全屏预览/播放（和 alist 一致）
+    it.addEventListener('click',()=>{
+      if(SELMODE) togglePick(it);
+      else openPv(folder,name);
+    });
+  });
+}
+
 async function fillFiles(ev,folder){
   const body=ev.querySelector('.evb');
   try{
@@ -572,30 +593,28 @@ async function fillFiles(ev,folder){
     CURFILES[folder]=files;
     if(!files.length){ body.innerHTML='<div class="empty" style="padding:16px 0">此事件夹为空</div>'; return; }
     body.innerHTML=renderFiles(folder,files);
-    body.querySelectorAll('.it').forEach(it=>{
-      const name=it.dataset.k.split('|').slice(1).join('|');
-      // 勾选框：始终可点，专门用来多选
-      const ck=it.querySelector('.ck');
-      if(ck) ck.addEventListener('click',e2=>{ e2.stopPropagation(); togglePick(it); });
-      // 卡片主体：选择模式下=勾选；平时=全屏预览/播放（和 alist 一致）
-      it.addEventListener('click',()=>{
-        if(SELMODE) togglePick(it);
-        else openPv(folder,name);
-      });
-    });
+    bindItems(body,folder);
   }catch(e){
     body.innerHTML='<div class="empty" style="color:#dc2626">加载失败：'+esc(e.message)+'</div>';
   }
 }
 
-/* 按「存入日期」分批显示。
-   同一事件夹的文件往往不是一次存进来的：先存 30 张，隔几天补 10 张。
-   回执里每条 arc 记录都带 ts，据此分组才看得出批次；
-   没有回执的老文件统一归到「更早归档」，并用小标签说明来由。 */
+/* 按日期分批显示，依据由 BATCHBY 决定：
+     · 存入时间（默认）—— 同一事件夹的文件往往不是一次存进来的，先存 30 张、
+       隔几天补 10 张；回执里每条 arc 记录都带 ts，据此分组才看得出批次，
+       没有回执的老文件统一归到「更早归档」。
+     · 拍摄时间 —— 文件名里的日期（IMG_/VID_/微信 mmexport）。一次补传一堆
+       老照片时，按拍摄日期会散成多天，更贴近「这件事是哪几天发生的」。
+       解析不出日期的归到最后一组，不假装有日期。 */
+function batchKey(f){
+  if(BATCHBY==='shot') return f.shot||'';
+  return f.arcTs?fmtDay(f.arcTs):'';
+}
 function renderFiles(folder,files){
+  const shot=(BATCHBY==='shot');
   const groups=[], idx={};
   files.forEach(f=>{
-    const k=f.arcTs?fmtDay(f.arcTs):'';
+    const k=batchKey(f);
     if(!(k in idx)){ idx[k]=groups.length; groups.push({k:k,items:[]}); }
     groups[idx[k]].items.push(f);
   });
@@ -606,8 +625,9 @@ function renderFiles(folder,files){
   });
   return groups.map(g=>{
     const sz=g.items.reduce((a,f)=>a+(f.size||0),0);
-    const label=g.k?(g.k+' 存入'):'更早归档';
-    const tag=g.k?'':'<span class="tag">无存档回执</span>';
+    const label=g.k?(g.k+(shot?' 拍摄':' 存入')):(shot?'拍摄时间未知':'更早归档');
+    const tag=g.k?'':(shot?'<span class="tag">文件名里没有日期</span>'
+                          :'<span class="tag">无存档回执</span>');
     return `<div class="bat">
       <div class="bath"><span class="bts">${esc(label)}</span>
         <span class="n">${g.items.length} 个 · ${fmtSize(sz)}</span>${tag}</div>
@@ -1057,8 +1077,37 @@ document.getElementById('newOk').addEventListener('click',async()=>{
   }catch(e){ toast('失败：'+e.message,true); }
 });
 
-// 初始化
-loadAll();
+// 初始化放在两个切换器之后：它们要先从 localStorage 恢复状态，
+// 否则首次渲染会按默认值画一遍再被覆盖。
+/* 分批依据切换：存入时间 ↔ 拍摄时间。
+   状态记 localStorage，刷新后保持；切换时只重渲染已经展开的事件夹
+   （用 CURFILES 缓存，不重新请求接口），收起的事件等展开时自然按新规则分组。
+   展开状态(OPEN)、勾选(PICK)、选择模式(SELMODE) 都不受影响。 */
+(function(){
+  const KEY='archive-batchby';
+  const btn=document.getElementById('batchBtn');
+  function apply(m){
+    BATCHBY=(m==='shot')?'shot':'arc';
+    const shot=BATCHBY==='shot';
+    btn.textContent=shot?'按拍摄时间':'按存入时间';
+    btn.title=shot?'当前按拍摄日期分批，点击改为按存入日期'
+                  :'当前按存入日期分批，点击改为按拍摄日期';
+  }
+  apply(localStorage.getItem(KEY)||'arc');
+  btn.onclick=()=>{
+    apply(BATCHBY==='shot'?'arc':'shot');
+    localStorage.setItem(KEY,BATCHBY);
+    document.querySelectorAll('.ev.open').forEach(ev=>{
+      const folder=ev.dataset.f;
+      const files=CURFILES[folder];
+      if(!files||!files.length) return;
+      const body=ev.querySelector('.evb');
+      body.innerHTML=renderFiles(folder,files);
+      bindItems(body,folder);
+    });
+    updBulk();
+  };
+})();
 
 /* 单列/双列切换：状态记在 localStorage，刷新后保持。
    纯 CSS 类切换，不碰渲染逻辑，展开状态(OPEN)和勾选(PICK)都不受影响 */
@@ -1078,6 +1127,9 @@ loadAll();
     apply(next);
   };
 })();
+
+// 两个切换器都恢复好状态了，再拉数据
+loadAll();
 </script>
 </body>
 </html>
