@@ -244,7 +244,10 @@ input{width:150px}
   font-variant-numeric:tabular-nums;max-width:52%;line-height:1.4}
 #arcmodal .am-ok{background:var(--pr);color:#fff;border-color:var(--pr)}
 #arcmodal .am-ok:hover{filter:brightness(1.08)}
-#arcmodal .am-ok:disabled{opacity:.5;cursor:default}
+/* 禁用态要一眼看出来：之前只有 opacity .5，在蓝底上跟可点状态几乎没差别，
+   用户会一直点一个根本不响应的按钮（2026-11-08 排查了很久才想到是 disabled）。 */
+#arcmodal .am-ok:disabled{opacity:.5;cursor:not-allowed;filter:grayscale(.6);box-shadow:none}
+#arcmodal .am-ok:disabled:hover{filter:grayscale(.6)}
 /* 被归档文件清单（横向滚动条，节省纵向空间） */
 #arcmodal .am-files{display:flex;gap:7px;overflow-x:auto;padding:9px 15px;
   border-bottom:1px solid var(--bd);background:#fafbfc;flex-shrink:0}
@@ -285,7 +288,7 @@ input{width:150px}
 #arcmodal .am-ft #am-stat{margin-right:auto;font-size:12px;color:var(--mu);font-variant-numeric:tabular-nums}
 #arcmodal .am-ok{background:var(--pr);color:#fff;border-color:var(--pr)}
 #arcmodal .am-ok:hover{filter:brightness(1.08)}
-#arcmodal .am-ok:disabled{opacity:.6}
+#arcmodal .am-ok:disabled{opacity:.5;cursor:not-allowed;filter:grayscale(.6);box-shadow:none}
 /* ── 后台归档进度面板（右下角） ── */
 #bgjob{position:fixed;right:16px;bottom:16px;z-index:90;width:min(88vw,270px);
   background:#1a1d21;color:#e8eaed;border-radius:8px;padding:10px 12px;
@@ -1463,7 +1466,15 @@ function startBulkArc(ids, opts){
 
   /* ---------- 九宫格 ---------- */
   function renderTiles(){
-    if(mode==='new'){ tilesEl.style.display='none'; newPanel.style.display=''; return; }
+    /* 新建模式：切隐藏九宫格、显示表单，但**必须照样刷新面包屑和底部状态**。
+       否则 updStat() 不跑，okBtn 会保留上一个模式的 disabled 值 ——
+       从「归入已有」（没选事件 → 按钮 disabled）切到「新建事件」后，
+       确认归档按钮一直是灰的，点了完全没反应（2026-11-08 用户报障）。
+       底栏那句"请点选一个事件"就是当时没刷新的残留。 */
+    if(mode==='new'){
+      tilesEl.style.display='none'; newPanel.style.display='';
+      renderCrumb(); updStat(); return;
+    }
     tilesEl.style.display=''; newPanel.style.display='none';
 
     if(!EVENTS.length){
