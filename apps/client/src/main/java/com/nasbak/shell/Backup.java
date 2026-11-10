@@ -16,8 +16,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -27,6 +32,8 @@ import java.util.Set;
  * 不常驻、不开前台服务、不引 AndroidX —— 打开 App 时跑一轮，跑完就结束。
  * 国产 ROM 的后台限制躲不掉，与其假装能 7x24 自动备份，不如让用户看得见地传一次。
  *
+ * 备份范围由用户勾选的文件夹（MediaStore 的 bucket_display_name）决定，
+ * 不勾选就一张都不传；截图、微信缓存图那些文件夹不会被悄悄搬走。
  * 开关默认关：装到家人手机上只是看照片，不能悄悄把人家相册搬走。
  */
 public class Backup {
@@ -34,6 +41,9 @@ public class Backup {
     public static final String PREF = "nasbak";
     public static final String KEY_ON = "backupOn";
     public static final String KEY_DONE = "backupDone";
+    public static final String KEY_BUCKETS = "backupBuckets";
+    /** 不用常量，minSdk 24 上 MediaColumns 里不一定有 BUCKET_* */
+    private static final String COL_BUCKET = "bucket_display_name";
 
     private static final String[] PERM_NEW = {
             "android.permission.READ_MEDIA_IMAGES",
@@ -61,6 +71,79 @@ public class Backup {
             }
         }
         return true;
+    }
+
+    public static class Bucket {
+        public String name;
+        public int count;
+        public long bytes;
+    }
+
+    /** 列出本机相册文件夹，按张数降序；只统计够大、会被备份的文件 */
+    public static List<Bucket> listBuckets(Context c) {
+        Map<String, Bucket> map = new LinkedHashMap<String, Bucket>();
+        String[] proj = {"_id", MediaStore.MediaColumns.SIZE, COL_BUCKET};
+        Uri[] tables = {MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                         MediaStore.Video.Media.EXTERNAL_CONTENT_URI};
+        for (Uri table : tables) {
+            Cursor cur = null;
+            try {
+                cur = c.getContentResolver().query(table, proj, null, null, null);
+                if (cur == null) continue;
+                int iBucket = cur.getColumnIndex(COL_BUCKET);
+                int iSize = cur.getColumnIndex(MediaStore.MediaColumns.SIZE);
+                while (cur.moveToNext()) {
+                    long sz = iSize >= 0 ? cur.getLong(iSize) : 0;
+                    if (sz < MIN_SIZE) continue;
+                    String bn = iBucket >= 0 ? cur.getString(iBucket) : null;
+                    if (bn == null || bn.isEmpty()) bn = "（未命名）";
+                    Bucket b = map.get(bn);
+                    if (b == null) {
+                        b = new Bucket();
+                        b.name = bn;
+                        map.put(bn, b);
+                    }
+                    b.count++;
+                    b.bytes += sz;
+                }
+            } catch (Exception ignored) {
+                // 某个表读不到就跳过，另一个还能列
+            } finally {
+                if (cur != null) try { cur.close(); } catch (Exception ignored) { }
+            }
+        }
+        List<Bucket> out = new ArrayList<Bucket>(map.values());
+        Collections.sort(out, new Comparator<Bucket>() {
+            @Override
+            public int compare(Bucket a, Bucket b) { return b.count - a.count; }
+        });
+        return out;
+    }
+
+    public static Set<String> loadBuckets(SharedPreferences sp) {
+        Set<String> set = new HashSet<String>();
+        String raw = sp.getString(KEY_BUCKETS, "");
+        if (raw == null || raw.isEmpty()) return set;
+        for (String k : raw.split("\n")) {
+            if (!k.isEmpty()) set.add(k);
+        }
+        return set;
+    }
+
+    public static void saveBuckets(SharedPreferences sp, Set<String> set) {
+        StringBuilder sb = new StringBuilder();
+        for (String k : set) {
+            if (sb.length() > 0) sb.append('\n');
+            sb.append(k);
+        }
+        sp.edit().putString(KEY_BUCKETS, sb.toString()).apply();
+    }
+
+    public static String fmtSize(long b) {
+        if (b < 1024) return b + " B";
+        if (b < 1024L * 1024) return String.format(Locale.US, "%.0f KB", b / 1024.0);
+        if (b < 1024L * 1024 * 1024) return String.format(Locale.US, "%.1f MB", b / (1024.0 * 1024));
+        return String.format(Locale.US, "%.1f GB", b / (1024.0 * 1024 * 1024));
     }
 
     /** 从面板地址推出服务端 origin：http://192.168.x.x:8083/index.html -> http://192.168.x.x:8083 */
@@ -101,14 +184,16 @@ public class Backup {
         long modified;
         long size;
         String key;
+        String bucket;
     }
 
-    private static void collect(ContentResolver cr, Uri table, List<Item> out) {
+    private static void collect(ContentResolver cr, Uri table, Set<String> buckets, List<Item> out) {
         String[] proj = {
                 MediaStore.MediaColumns._ID,
                 MediaStore.MediaColumns.DISPLAY_NAME,
                 MediaStore.MediaColumns.DATE_MODIFIED,
-                MediaStore.MediaColumns.SIZE
+                MediaStore.MediaColumns.SIZE,
+                COL_BUCKET
         };
         Cursor cur = null;
         try {
@@ -119,17 +204,22 @@ public class Backup {
             int iName = cur.getColumnIndexOrThrow(MediaStore.MediaColumns.DISPLAY_NAME);
             int iMod = cur.getColumnIndexOrThrow(MediaStore.MediaColumns.DATE_MODIFIED);
             int iSize = cur.getColumnIndexOrThrow(MediaStore.MediaColumns.SIZE);
+            int iBucket = cur.getColumnIndex(COL_BUCKET);
             while (cur.moveToNext()) {
                 long size = cur.getLong(iSize);
                 if (size < MIN_SIZE) continue;
                 String name = cur.getString(iName);
                 if (name == null || name.isEmpty()) continue;
+                String bk = iBucket >= 0 ? cur.getString(iBucket) : null;
+                if (bk == null || bk.isEmpty()) bk = "（未命名）";
+                if (!buckets.contains(bk)) continue;
                 Item it = new Item();
                 it.uri = ContentUris.withAppendedId(table, cur.getLong(iId));
                 it.name = name;
                 it.modified = cur.getLong(iMod);
                 it.size = size;
                 it.key = cur.getLong(iId) + ":" + it.modified;
+                it.bucket = bk;
                 out.add(it);
             }
         } catch (Exception e) {
@@ -150,10 +240,15 @@ public class Backup {
             @Override
             public void run() {
                 final SharedPreferences sp = ctx.getSharedPreferences(PREF, Context.MODE_PRIVATE);
+                Set<String> buckets = loadBuckets(sp);
+                if (buckets.isEmpty()) {
+                    cb.onDone(0, 0, 0, "还没选要备份的文件夹");
+                    return;
+                }
                 Set<String> done = loadDone(sp);
                 List<Item> all = new ArrayList<Item>();
-                collect(ctx.getContentResolver(), MediaStore.Images.Media.EXTERNAL_CONTENT_URI, all);
-                collect(ctx.getContentResolver(), MediaStore.Video.Media.EXTERNAL_CONTENT_URI, all);
+                collect(ctx.getContentResolver(), MediaStore.Images.Media.EXTERNAL_CONTENT_URI, buckets, all);
+                collect(ctx.getContentResolver(), MediaStore.Video.Media.EXTERNAL_CONTENT_URI, buckets, all);
 
                 String url = origin + "/cgi/upload.cgi";
                 int uploaded = 0, skipped = 0, failed = 0;

@@ -31,7 +31,10 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 /**
  * Pantry 壳：把库房设备上的 8083 面板装进一个原生 WebView。
@@ -58,6 +61,8 @@ public class MainActivity extends Activity {
     private ValueCallback<Uri[]> filePathCb;
     /** 同步进行中，防重入 */
     private boolean syncing;
+    /** 权限回来后要接着弹文件夹选择框 */
+    private boolean pendingBuckets, pendingBucketsSync;
 
     /** 正在扫描，防重入 */
     private boolean scanning;
@@ -389,15 +394,15 @@ public class MainActivity extends Activity {
     private void askBackupOnce() {
         new AlertDialog.Builder(this)
                 .setTitle("把这台手机的照片也存进去？")
-                .setMessage("开启后，每次打开 Pantry 会把本机相册里新增的照片和视频传到库房，"
-                        + "只传一次，以后增量。只是看家里照片的话选「不用」，"
+                .setMessage("开启后先勾选要备份的文件夹（相机、截图、微信各是分开的），"
+                        + "只传勾选的那些，以后新增的照片增量补上。只是看家里照片的话选「不用」，"
                         + "以后按返回键随时能改。")
                 .setPositiveButton("开启备份", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface d, int w) {
                         getSharedPreferences(PREF, MODE_PRIVATE)
                                 .edit().putBoolean(Backup.KEY_ON, true).apply();
-                        startBackup(false);
+                        chooseBuckets(true);
                     }
                 })
                 .setNegativeButton("只是看看", new DialogInterface.OnClickListener() {
@@ -417,6 +422,95 @@ public class MainActivity extends Activity {
                 .show();
     }
 
+    /** 列出本机相册文件夹让用户勾选；权限没给就先申请，回来接着弹 */
+    private void chooseBuckets(final boolean thenSync) {
+        if (!Backup.hasPermission(this)) {
+            pendingBuckets = true;
+            pendingBucketsSync = thenSync;
+            requestPermissions(Backup.permissions(), REQ_PERM);
+            return;
+        }
+        toast("正在读相册列表…");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final List<Backup.Bucket> bs = Backup.listBuckets(MainActivity.this);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() { showBucketDialog(bs, thenSync); }
+                });
+            }
+        }, "pantry-buckets").start();
+    }
+
+    private void showBucketDialog(final List<Backup.Bucket> buckets, final boolean thenSync) {
+        if (buckets.isEmpty()) {
+            toast("没读到相册，确认已经给了相册权限");
+            return;
+        }
+        final SharedPreferences sp = getSharedPreferences(PREF, MODE_PRIVATE);
+        final boolean first = !sp.contains(Backup.KEY_BUCKETS);
+        final Set<String> saved = Backup.loadBuckets(sp);
+        final int n = buckets.size();
+        final CharSequence[] labels = new CharSequence[n];
+        final boolean[] checked = new boolean[n];
+        for (int i = 0; i < n; i++) {
+            Backup.Bucket b = buckets.get(i);
+            labels[i] = b.name + "   " + b.count + " 张 / " + Backup.fmtSize(b.bytes);
+            checked[i] = saved.contains(b.name);
+            // 第一次只预勾相机类文件夹，截图、微信缓存不给默认勾上
+            if (first && !checked[i]) {
+                String low = b.name.toLowerCase(Locale.US);
+                if (low.contains("camera") || low.contains("dcim") || low.contains("相机")) {
+                    checked[i] = true;
+                }
+            }
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle("选要备份的文件夹")
+                .setMultiChoiceItems(labels, checked, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface d, int i, boolean isChecked) {
+                        checked[i] = isChecked;
+                    }
+                })
+                .setPositiveButton("保存", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface d, int w) {
+                        Set<String> sel = new HashSet<String>();
+                        for (int i = 0; i < n; i++) {
+                            if (checked[i]) sel.add(buckets.get(i).name);
+                        }
+                        Backup.saveBuckets(sp, sel);
+                        if (sel.isEmpty()) {
+                            toast("一个都没选，不会传照片");
+                            return;
+                        }
+                        toast("已选 " + sel.size() + " 个文件夹");
+                        if (thenSync) startBackup(false);
+                    }
+                })
+                .setNegativeButton("取消", null)
+                .setNeutralButton("全选", null);
+        final AlertDialog dlg = builder.create();
+        // 中性按钮默认点完就关对话框，这里改成「全选」且不关闭
+        dlg.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface di) {
+                dlg.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        for (int i = 0; i < n; i++) {
+                            checked[i] = true;
+                            dlg.getListView().setItemChecked(i, true);
+                        }
+                    }
+                });
+            }
+        });
+        dlg.show();
+    }
+
     private void startBackup(final boolean quiet) {
         if (syncing) {
             if (!quiet) toast("正在同步，稍等一下");
@@ -424,6 +518,13 @@ public class MainActivity extends Activity {
         }
         if (!Backup.hasPermission(this)) {
             requestPermissions(Backup.permissions(), REQ_PERM);
+            return;
+        }
+        if (Backup.loadBuckets(getSharedPreferences(PREF, MODE_PRIVATE)).isEmpty()) {
+            if (!quiet) {
+                toast("先选要备份的文件夹");
+                chooseBuckets(true);
+            }
             return;
         }
         if (Backup.originOf(curUrl) == null) {
@@ -466,7 +567,12 @@ public class MainActivity extends Activity {
     public void onRequestPermissionsResult(int req, String[] perms, int[] res) {
         if (req == REQ_PERM) {
             if (Backup.hasPermission(this)) {
-                startBackup(false);
+                if (pendingBuckets) {
+                    pendingBuckets = false;
+                    chooseBuckets(pendingBucketsSync);
+                } else {
+                    startBackup(false);
+                }
             } else {
                 getSharedPreferences(PREF, MODE_PRIVATE)
                         .edit().putBoolean(Backup.KEY_ON, false).apply();
@@ -646,6 +752,7 @@ public class MainActivity extends Activity {
                     .setItems(new String[]{
                             "重新查找库房",
                             "手动填地址",
+                            "选择备份文件夹",
                             on ? "关闭本机照片备份（当前开）" : "开启本机照片备份（当前关）",
                             "立即同步一次",
                             "退出"
@@ -654,14 +761,16 @@ public class MainActivity extends Activity {
                         public void onClick(DialogInterface d, int i) {
                             if (i == 0) startFind(false);
                             else if (i == 1) askUrl();
-                            else if (i == 2) {
+                            else if (i == 2) chooseBuckets(false);
+                            else if (i == 3) {
                                 boolean next = !on;
-                                getSharedPreferences(PREF, MODE_PRIVATE)
-                                        .edit().putBoolean(Backup.KEY_ON, next).apply();
-                                if (next) startBackup(false);
-                                else toast("已关闭本机照片备份");
+                                SharedPreferences sp = getSharedPreferences(PREF, MODE_PRIVATE);
+                                sp.edit().putBoolean(Backup.KEY_ON, next).apply();
+                                if (!next) toast("已关闭本机照片备份");
+                                else if (Backup.loadBuckets(sp).isEmpty()) chooseBuckets(true);
+                                else startBackup(false);
                             }
-                            else if (i == 3) startBackup(false);
+                            else if (i == 4) startBackup(false);
                             else finish();
                         }
                     })
