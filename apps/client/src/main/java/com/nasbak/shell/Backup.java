@@ -29,6 +29,8 @@ import java.util.Set;
  * 把本机的照片/视频增量送进库房。
  *
  * 只做三件事：读 MediaStore、按 id+修改时间跳过已传的、HTTP POST 原始字节。
+ * 1.8 起把相册名、稳定去重键和真正的拍摄时间一起交给服务端：文件按相册分目录收，
+ * 归位脚本把文件搬走之后也不会被误判成「没传过」而让整批照片重传。
  * 不常驻、不开前台服务、不引 AndroidX —— 打开 App 时跑一轮，跑完就结束。
  * 国产 ROM 的后台限制躲不掉，与其假装能 7x24 自动备份，不如让用户看得见地传一次。
  *
@@ -42,6 +44,13 @@ public class Backup {
     public static final String KEY_ON = "backupOn";
     public static final String KEY_DONE = "backupDone";
     public static final String KEY_BUCKETS = "backupBuckets";
+    /** 最近一轮同步的结果，给「备份状态」页看 */
+    public static final String KEY_LAST_AT = "backupLastAt";
+    public static final String KEY_LAST_UP = "backupLastUp";
+    public static final String KEY_LAST_SKIP = "backupLastSkip";
+    public static final String KEY_LAST_FAIL = "backupLastFail";
+    public static final String KEY_LAST_ERR = "backupLastErr";
+    public static final String KEY_TOTAL = "backupTotal";
     /** 不用常量，minSdk 24 上 MediaColumns 里不一定有 BUCKET_* */
     private static final String COL_BUCKET = "bucket_display_name";
 
@@ -181,30 +190,44 @@ public class Backup {
     private static class Item {
         Uri uri;
         String name;
+        long id;
         long modified;
+        long taken;
         long size;
         String key;
         String bucket;
+        String stableId;
     }
 
-    private static void collect(ContentResolver cr, Uri table, Set<String> buckets, List<Item> out) {
+    private static void collect(ContentResolver cr, Uri table, String takenCol,
+                                Set<String> buckets, List<Item> out) {
         String[] proj = {
                 MediaStore.MediaColumns._ID,
                 MediaStore.MediaColumns.DISPLAY_NAME,
                 MediaStore.MediaColumns.DATE_MODIFIED,
                 MediaStore.MediaColumns.SIZE,
-                COL_BUCKET
+                COL_BUCKET,
+                takenCol
         };
+        String sort = MediaStore.MediaColumns.DATE_MODIFIED + " DESC";
         Cursor cur = null;
         try {
-            cur = cr.query(table, proj, null, null,
-                    MediaStore.MediaColumns.DATE_MODIFIED + " DESC");
+            try {
+                cur = cr.query(table, proj, null, null, sort);
+            } catch (IllegalArgumentException e1) {
+                // 少数 ROM 的 MediaProvider 不认拍摄时间列；去掉最后一列重查，
+                // 不能让一张照片都查不出来，拍摄时间退回用修改时间兜底
+                String[] proj2 = new String[proj.length - 1];
+                System.arraycopy(proj, 0, proj2, 0, proj2.length);
+                cur = cr.query(table, proj2, null, null, sort);
+            }
             if (cur == null) return;
             int iId = cur.getColumnIndexOrThrow(MediaStore.MediaColumns._ID);
             int iName = cur.getColumnIndexOrThrow(MediaStore.MediaColumns.DISPLAY_NAME);
             int iMod = cur.getColumnIndexOrThrow(MediaStore.MediaColumns.DATE_MODIFIED);
             int iSize = cur.getColumnIndexOrThrow(MediaStore.MediaColumns.SIZE);
             int iBucket = cur.getColumnIndex(COL_BUCKET);
+            int iTaken = cur.getColumnIndex(takenCol);
             while (cur.moveToNext()) {
                 long size = cur.getLong(iSize);
                 if (size < MIN_SIZE) continue;
@@ -214,12 +237,21 @@ public class Backup {
                 if (bk == null || bk.isEmpty()) bk = "（未命名）";
                 if (!buckets.contains(bk)) continue;
                 Item it = new Item();
-                it.uri = ContentUris.withAppendedId(table, cur.getLong(iId));
+                it.id = cur.getLong(iId);
+                it.uri = ContentUris.withAppendedId(table, it.id);
                 it.name = name;
                 it.modified = cur.getLong(iMod);
+                // DATE_TAKEN 是毫秒、DATE_MODIFIED 是秒；没有 EXIF 时间的视频会取到 0
+                long takenMs = iTaken >= 0 ? cur.getLong(iTaken) : 0;
+                it.taken = takenMs > 0 ? takenMs / 1000 : it.modified;
                 it.size = size;
-                it.key = cur.getLong(iId) + ":" + it.modified;
+                it.key = it.id + ":" + it.modified;
                 it.bucket = bk;
+                // 服务端的稳定去重键：换手机/清 App 数据也不会把已归档的照片重传一遍；
+                // 带上相册 hash 是为了让不同相册里的同名文件各自算一份
+                it.stableId = safeAscii(Build.MODEL) + "-"
+                        + Integer.toHexString(bk.hashCode()) + "-"
+                        + it.id + "-" + it.modified + "-" + it.size;
                 out.add(it);
             }
         } catch (Exception e) {
@@ -233,6 +265,7 @@ public class Backup {
     public static void run(final Context ctx, final String panelUrl, final Cb cb) {
         final String origin = originOf(panelUrl);
         if (origin == null) {
+            noteFailure(ctx, "面板地址不对，先找到库房");
             cb.onDone(0, 0, 0, "面板地址不对，先找到库房");
             return;
         }
@@ -242,13 +275,16 @@ public class Backup {
                 final SharedPreferences sp = ctx.getSharedPreferences(PREF, Context.MODE_PRIVATE);
                 Set<String> buckets = loadBuckets(sp);
                 if (buckets.isEmpty()) {
+                    noteFailure(ctx, "还没选要备份的文件夹");
                     cb.onDone(0, 0, 0, "还没选要备份的文件夹");
                     return;
                 }
                 Set<String> done = loadDone(sp);
                 List<Item> all = new ArrayList<Item>();
-                collect(ctx.getContentResolver(), MediaStore.Images.Media.EXTERNAL_CONTENT_URI, buckets, all);
-                collect(ctx.getContentResolver(), MediaStore.Video.Media.EXTERNAL_CONTENT_URI, buckets, all);
+                collect(ctx.getContentResolver(), MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        MediaStore.Images.Media.DATE_TAKEN, buckets, all);
+                collect(ctx.getContentResolver(), MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                        MediaStore.Video.Media.DATE_TAKEN, buckets, all);
 
                 String url = origin + "/cgi/upload.cgi";
                 int uploaded = 0, skipped = 0, failed = 0;
@@ -273,9 +309,28 @@ public class Backup {
                     cb.onProgress(fdone, ftotal, fup);
                 }
                 saveDone(sp, done);
+                // 结果落到 prefs，「备份状态」页随时能看；失败原因只留第一条，够定位问题
+                sp.edit()
+                        .putLong(KEY_LAST_AT, System.currentTimeMillis())
+                        .putInt(KEY_LAST_UP, uploaded)
+                        .putInt(KEY_LAST_SKIP, skipped)
+                        .putInt(KEY_LAST_FAIL, failed)
+                        .putString(KEY_LAST_ERR, firstErr == null ? "" : firstErr)
+                        .putInt(KEY_TOTAL, sp.getInt(KEY_TOTAL, 0) + uploaded)
+                        .apply();
                 cb.onDone(uploaded, skipped, failed, firstErr);
             }
         }, "pantry-backup").start();
+    }
+
+    /** 没跑起来也要留下痕迹，否则静默同步的失败在「备份状态」里查不到 */
+    private static void noteFailure(Context ctx, String err) {
+        SharedPreferences sp = ctx.getSharedPreferences(PREF, Context.MODE_PRIVATE);
+        sp.edit().putLong(KEY_LAST_AT, System.currentTimeMillis())
+                .putInt(KEY_LAST_UP, 0)
+                .putInt(KEY_LAST_SKIP, 0)
+                .putInt(KEY_LAST_FAIL, 1)
+                .putString(KEY_LAST_ERR, err).apply();
     }
 
     private static String uploadOne(Context ctx, String url, Item it) {
@@ -287,9 +342,12 @@ public class Backup {
             conn.setConnectTimeout(8000);
             conn.setReadTimeout(60000);
             conn.setRequestProperty("Content-Type", "application/octet-stream");
-            conn.setRequestProperty("X-Pantry-Name", Base64.encodeToString(
-                    it.name.getBytes(Charset.forName("UTF-8")), Base64.NO_WRAP));
+            conn.setRequestProperty("X-Pantry-Name", b64(it.name));
+            conn.setRequestProperty("X-Pantry-Bucket", b64(it.bucket));
+            conn.setRequestProperty("X-Pantry-Id", it.stableId);
             conn.setRequestProperty("X-Pantry-Dev", safeAscii(Build.MODEL));
+            conn.setRequestProperty("X-Pantry-Taken", String.valueOf(it.taken));
+            // 旧版 upload.cgi 只认 Shot，留着兼容；新版优先用 Taken 还原拍摄时间
             conn.setRequestProperty("X-Pantry-Shot", String.valueOf(it.modified));
             conn.setFixedLengthStreamingMode(it.size);
 
@@ -335,6 +393,11 @@ public class Backup {
         } finally {
             if (in != null) try { in.close(); } catch (Exception ignored) { }
         }
+    }
+
+    /** HTTP 头不能带中文，文件名和相册名统一转 base64 */
+    private static String b64(String s) {
+        return Base64.encodeToString(s.getBytes(Charset.forName("UTF-8")), Base64.NO_WRAP);
     }
 
     /** HTTP 头不能带中文/空格，型号名先折成安全 ASCII */

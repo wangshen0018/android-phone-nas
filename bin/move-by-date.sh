@@ -8,6 +8,10 @@
 #
 # 台账：每个文件记 recv（K80→inbox来源目录）+ mvdate（→日期目录）/dup（→_dup_backup）
 #
+# 2026-11-10：Pantry 来源支持一层相册子目录（用户端按文件夹备份）。
+#   其它来源仍只收第一层，不改变既有行为；点开头的 .album.txt、上传中的
+#   .part 半成品一律跳过，避免把没传完的文件搬进待判。
+#
 # 用法: sh move-by-date.sh           干跑
 #       sh move-by-date.sh --apply   真正移动并记台账
 
@@ -57,10 +61,17 @@ for SRC in Camera CamScanner scanner family-kid id-card Pantry; do
   [ "$SRC" = "Pantry" ] && DEVTAG=PantryApp
   [ -d "$D" ] || continue
   SRC_CNT=0
-  for F in "$D"/*; do
+  # Pantry 下还有 <相册>/ 一层；两段 glob 都展开成带引号的路径，无空格文件名不炸
+  for F in "$D"/* "$D"/*/*; do
     [ -f "$F" ] || continue
+    RELSUB=${F#"$D"/}
+    case "$RELSUB" in
+      */*) [ "$SRC" = "Pantry" ] || continue ;;
+    esac
     B=$(basename "$F")
-    case "$B" in .trashed-*|.pending-*|.nomedia|*.tmp) continue ;; esac
+    # 点开头的是元数据(.album.txt)或上传半成品(.xxx.part)，一律不搬；
+    # *.part 再挡一道，防止异常中断后遗留的半成品被当成照片归位
+    case "$B" in .*|.trashed-*|.pending-*|.nomedia|*.tmp|*.part) continue ;; esac
     S=$(stat -c %s "$F" 2>/dev/null)
     [ -z "$S" ] || [ "$S" = "0" ] && continue
     MT=$(stat -c %Y "$F" 2>/dev/null); [ -z "$MT" ] && MT=$(date +%s)
@@ -68,10 +79,10 @@ for SRC in Camera CamScanner scanner family-kid id-card Pantry; do
     [ -z "$DD" ] && { echo "SKIP(无日期): $B"; SKIPN=$((SKIPN+1)); continue; }
     DST="$INBOX/$DD/$B"
 
-    # ---- 补 recv 记录：K80 上传到 inbox/<来源> ----
+    # ---- 补 recv 记录：上传到 inbox/<来源>[/<相册>] ----
     if [ "$APPLY" = "1" ]; then
-      RELSRC="inbox/$SRC/$B"
-      ID=$(printf '%s:%s' "$DEVTAG:$SRC/$B" "$S" | "$BB" sha256sum | cut -c1-16)
+      RELSRC="inbox/$SRC/$RELSUB"
+      ID=$(printf '%s:%s' "$DEVTAG:$SRC/$RELSUB" "$S" | "$BB" sha256sum | cut -c1-16)
       # 同 id 已有 recv 记录就跳过，避免重复膨胀
       if ! grep -Fq "\"id\":\"$ID\"" "$LEDGER" 2>/dev/null; then
         ledger_add "$ID" "$B" "$S" "recv" "$DEVTAG/$SRC" "$RELSRC" "$DEVTAG 上传"
@@ -84,12 +95,15 @@ for SRC in Camera CamScanner scanner family-kid id-card Pantry; do
         M1=$("$BB" md5sum "$F" 2>/dev/null | cut -d' ' -f1)
         M2=$("$BB" md5sum "$DST" 2>/dev/null | cut -d' ' -f1)
         if [ -n "$M1" ] && [ "$M1" = "$M2" ]; then
-          echo "DUP-identical: $SRC/$B (已在 $DD/)"
+          echo "DUP-identical: $SRC/$RELSUB (已在 $DD/)"
           if [ "$APPLY" = "1" ]; then
-            mkdir -p "$DUPBK/$SRC" 2>/dev/null
-            mv -f "$F" "$DUPBK/$SRC/$B" 2>/dev/null
-            ID=$(printf '%s:%s' "$DEVTAG:$SRC/$B" "$S" | "$BB" sha256sum | cut -c1-16)
-            ledger_add "$ID" "$B" "$S" "dup" "inbox/$SRC/$B" "inbox/_dup_backup/$SRC/$B" "与 $DD/ 内同文件重复，md5 一致"
+            # 相册子目录要一起带过去，否则不同相册里的同名文件会互相覆盖
+            DUPD="$DUPBK/$SRC"
+            case "$RELSUB" in */*) DUPD="$DUPBK/$SRC/${RELSUB%/*}" ;; esac
+            mkdir -p "$DUPD" 2>/dev/null
+            mv -f "$F" "$DUPD/$B" 2>/dev/null
+            ID=$(printf '%s:%s' "$DEVTAG:$SRC/$RELSUB" "$S" | "$BB" sha256sum | cut -c1-16)
+            ledger_add "$ID" "$B" "$S" "dup" "inbox/$SRC/$RELSUB" "inbox/_dup_backup/$SRC/$RELSUB" "与 $DD/ 内同文件重复，md5 一致"
           fi
           DUPN=$((DUPN+1)); continue
         fi
@@ -103,16 +117,16 @@ for SRC in Camera CamScanner scanner family-kid id-card Pantry; do
       mkdir -p "$INBOX/$DD" 2>/dev/null
       if mv -f "$F" "$DST" 2>/dev/null; then
         RELDST=$(printf '%s' "$DST" | sed "s#^$INBOX/##")
-        ID=$(printf '%s:%s' "$DEVTAG:$SRC/$B" "$S" | "$BB" sha256sum | cut -c1-16)
-        ledger_add "$ID" "$B" "$S" "mvdate" "inbox/$SRC/$B" "$RELDST" "按拍摄日期 $DD 归位"
-        log "MOVED $SRC/$B -> $RELDST"
+        ID=$(printf '%s:%s' "$DEVTAG:$SRC/$RELSUB" "$S" | "$BB" sha256sum | cut -c1-16)
+        ledger_add "$ID" "$B" "$S" "mvdate" "inbox/$SRC/$RELSUB" "$RELDST" "按拍摄日期 $DD 归位"
+        log "MOVED $SRC/$RELSUB -> $RELDST"
         MOVED=$((MOVED+1))
         SRC_CNT=$((SRC_CNT+1))
       else
-        log "FAIL  $SRC/$B"; echo "FAIL  $F"; FAILN=$((FAILN+1))
+        log "FAIL  $SRC/$RELSUB"; echo "FAIL  $F"; FAILN=$((FAILN+1))
       fi
     else
-      echo "PLAN  $SRC/$B -> $DD/"
+      echo "PLAN  $SRC/$RELSUB -> $DD/"
     fi
   done
   # 本来源有搬动才记数，中文名给用户看。

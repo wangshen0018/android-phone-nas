@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.text.InputType;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,12 +30,16 @@ import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Pantry 壳：把库房设备上的 8083 面板装进一个原生 WebView。
@@ -57,6 +62,8 @@ public class MainActivity extends Activity {
 
     private WebView web;
     private ProgressBar bar;
+    /** 同步进度条，手动同步时才显示，贴在底部不挡面板 */
+    private TextView syncTip;
     private String curUrl;
     private ValueCallback<Uri[]> filePathCb;
     /** 同步进行中，防重入 */
@@ -83,6 +90,18 @@ public class MainActivity extends Activity {
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         root.addView(bar, new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, dp(3)));
+
+        syncTip = new TextView(this);
+        syncTip.setBackgroundColor(0xE6202937);
+        syncTip.setTextColor(0xFFFFFFFF);
+        syncTip.setTextSize(13);
+        syncTip.setPadding(dp(16), dp(9), dp(16), dp(9));
+        syncTip.setVisibility(View.GONE);
+        FrameLayout.LayoutParams tipLp = new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        tipLp.gravity = Gravity.BOTTOM;
+        root.addView(syncTip, tipLp);
+
         setContentView(root);
 
         WebSettings s = web.getSettings();
@@ -456,7 +475,8 @@ public class MainActivity extends Activity {
         final boolean[] checked = new boolean[n];
         for (int i = 0; i < n; i++) {
             Backup.Bucket b = buckets.get(i);
-            labels[i] = b.name + "   " + b.count + " 张 / " + Backup.fmtSize(b.bytes);
+            // 两行排版：长文件夹名不再和「N 张 / 大小」挤在一行里折得乱七八糟
+            labels[i] = b.name + "\n" + b.count + " 张 · " + Backup.fmtSize(b.bytes);
             checked[i] = saved.contains(b.name);
             // 第一次只预勾相机类文件夹，截图、微信缓存不给默认勾上
             if (first && !checked[i]) {
@@ -532,11 +552,24 @@ public class MainActivity extends Activity {
             return;
         }
         syncing = true;
-        if (!quiet) toast("开始传本机照片…");
+        final boolean show = !quiet;
+        if (show) {
+            syncTip.setText("正在读相册…");
+            syncTip.setVisibility(View.VISIBLE);
+        }
         Backup.run(this, curUrl, new Backup.Cb() {
             @Override
-            public void onProgress(int done, int total, int uploaded) {
-                // 不逐张刷 Toast，太吵；结束时一次汇总
+            public void onProgress(final int done, final int total, final int uploaded) {
+                if (!show) return;
+                // 每 10 张刷一次；几千张的首轮同步不把 UI 线程刷爆
+                if (done % 10 != 0 && done != total) return;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        syncTip.setText("正在传 " + done + " / " + total
+                                + "　本次已传 " + uploaded + " 张");
+                    }
+                });
             }
 
             @Override
@@ -545,18 +578,79 @@ public class MainActivity extends Activity {
                     @Override
                     public void run() {
                         syncing = false;
+                        if (show) {
+                            web.postDelayed(new Runnable() {
+                                @Override
+                                public void run() { syncTip.setVisibility(View.GONE); }
+                            }, 800);
+                        }
                         if (fail > 0) {
                             toast("传了 " + up + " 张，" + fail + " 张失败"
                                     + (err == null ? "" : "：" + err));
                         } else if (up > 0) {
                             toast("已传 " + up + " 张，其余 " + skip + " 张之前传过");
-                        } else if (!quiet) {
+                        } else if (show || fail > 0) {
                             toast("没有新照片要传（已传 " + skip + " 张）");
                         }
                     }
                 });
             }
         });
+    }
+
+    /** 「备份状态」：传没传、传到哪一步、失败在哪，一眼能看出来 */
+    private void showBackupStatus() {
+        final SharedPreferences sp = getSharedPreferences(PREF, MODE_PRIVATE);
+        boolean on = sp.getBoolean(Backup.KEY_ON, false);
+        Set<String> sel = Backup.loadBuckets(sp);
+        long at = sp.getLong(Backup.KEY_LAST_AT, 0);
+        int up = sp.getInt(Backup.KEY_LAST_UP, 0);
+        int skip = sp.getInt(Backup.KEY_LAST_SKIP, 0);
+        int fail = sp.getInt(Backup.KEY_LAST_FAIL, 0);
+        int total = sp.getInt(Backup.KEY_TOTAL, 0);
+        String err = sp.getString(Backup.KEY_LAST_ERR, "");
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("备份：").append(on ? "开" : "关").append('\n');
+        sb.append("已选文件夹：");
+        if (sel.isEmpty()) {
+            sb.append("（一个都没选，不会传照片）");
+        } else {
+            TreeSet<String> sorted = new TreeSet<String>(sel);
+            int n = 0;
+            for (String s : sorted) {
+                if (n >= 8) { sb.append(" 等 ").append(sorted.size()).append(" 个"); break; }
+                if (n++ > 0) sb.append("、");
+                sb.append(s);
+            }
+        }
+        sb.append("\n\n");
+        if (at == 0) {
+            sb.append("还没同步过。");
+        } else {
+            sb.append("上次同步：")
+                    .append(new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA)
+                            .format(new Date(at)))
+                    .append('\n')
+                    .append("那一轮：传 ").append(up).append(" 张 · 跳过 ").append(skip)
+                    .append(" 张 · 失败 ").append(fail).append(" 张");
+            if (fail > 0 && err != null && !err.isEmpty()) {
+                sb.append('\n').append("第一条失败：")
+                        .append(err.length() > 90 ? err.substring(0, 90) : err);
+            }
+        }
+        sb.append("\n累计已传：").append(total).append(" 张");
+        sb.append("\n\n取消勾选某个文件夹，库房里已收下的文件不会删，只是不再传新增的。");
+
+        new AlertDialog.Builder(this)
+                .setTitle("备份状态")
+                .setMessage(sb.toString())
+                .setPositiveButton("知道了", null)
+                .setNeutralButton("立即同步一次", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface d, int w) { startBackup(false); }
+                })
+                .show();
     }
 
     private void toast(String s) {
@@ -753,6 +847,7 @@ public class MainActivity extends Activity {
                             "重新查找库房",
                             "手动填地址",
                             "选择备份文件夹",
+                            "备份状态",
                             on ? "关闭本机照片备份（当前开）" : "开启本机照片备份（当前关）",
                             "立即同步一次",
                             "退出"
@@ -762,7 +857,8 @@ public class MainActivity extends Activity {
                             if (i == 0) startFind(false);
                             else if (i == 1) askUrl();
                             else if (i == 2) chooseBuckets(false);
-                            else if (i == 3) {
+                            else if (i == 3) showBackupStatus();
+                            else if (i == 4) {
                                 boolean next = !on;
                                 SharedPreferences sp = getSharedPreferences(PREF, MODE_PRIVATE);
                                 sp.edit().putBoolean(Backup.KEY_ON, next).apply();
@@ -770,7 +866,7 @@ public class MainActivity extends Activity {
                                 else if (Backup.loadBuckets(sp).isEmpty()) chooseBuckets(true);
                                 else startBackup(false);
                             }
-                            else if (i == 4) startBackup(false);
+                            else if (i == 5) startBackup(false);
                             else finish();
                         }
                     })
