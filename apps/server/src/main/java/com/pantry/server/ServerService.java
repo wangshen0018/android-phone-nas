@@ -15,10 +15,12 @@ import android.os.IBinder;
 import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 库房服务：前台常驻，跑 8083 面板，每 30 分钟把 inbox 里的新照片按拍摄日期归位。
@@ -41,6 +43,10 @@ public class ServerService extends Service {
     static volatile String STATE = "未启动";
     static volatile String DETAIL = "";
     static volatile boolean RUNNING = false;
+    /** 内置 aria2 是否真的跑起来了；首页 caps.cgi 据此决定显不显示下载菜单。 */
+    static volatile boolean DOWNLOAD_ON = false;
+    static volatile String NATIVE_INFO = "未自检";
+    static volatile String ARIA2_STATE = "未启动";
     static volatile long LAST_TICK_AT = 0;
     static volatile String LAST_TICK_RESULT = "";
 
@@ -50,6 +56,7 @@ public class ServerService extends Service {
     private static final long PERIOD_MS = 30 * 60 * 1000L;
 
     private Web web;
+    private Process aria2;
     private HandlerThread worker;
     private Handler ui;
     private long lastIngestAt;
@@ -132,6 +139,8 @@ public class ServerService extends Service {
         }
 
         try {
+            // Android 的 CA 是散装目录，先拼成一份 bundle，writeConf 才能把路径写进配置
+            Native.caBundle(this);
             Env.ensureStore(this);
             Env.writeConf(this);
         } catch (Exception e) {
@@ -160,6 +169,12 @@ public class ServerService extends Service {
         }
         notifyState();
 
+        // 内置程序自检 + 起下载引擎。两者都不影响 8083 主面板，
+        // 失败只是让磁力/下载菜单消失，并在状态区写明原因。
+        probeNative();
+        startAria2();
+        notifyState();
+
         // 首轮延迟 20 秒：让面板先能打开，别一进来就抢 CPU。
         // 这里要写成「已经满一个周期」，20 秒后的 tick(false) 才能通过周期判断；
         // 若写成 now - PERIOD + 20000，20 秒时只过了 20 秒，会被直接 return，
@@ -171,8 +186,124 @@ public class ServerService extends Service {
         }
     }
 
+    // ───────────────── 随包分发的静态程序 ─────────────────
+
+    /** 真跑一次 --version，并核对 SHA256；结果直接显示在 App 状态区。 */
+    private void probeNative() {
+        NATIVE_INFO = Native.verify(this)
+                + " | aria2 " + Native.version(this, Native.ARIA2)
+                + " | curl " + Native.version(this, Native.CURL);
+        Env.log(this, "内置程序自检：" + NATIVE_INFO);
+    }
+
+    /**
+     * 起内置 aria2。它是 nativeLibraryDir 里的静态 ELF，
+     * 由系统解压成只读可执行文件，普通 App 也能 exec。
+     * 起不来只降级「磁力/下载」两个菜单，8083 主面板照常。
+     */
+    private void startAria2() {
+        stopAria2();
+        if (!Native.available(this, Native.ARIA2)) {
+            ARIA2_STATE = "内置 aria2 不可用";
+            Env.log(this, ARIA2_STATE);
+            return;
+        }
+        try {
+            File dl = Env.downloadDir();
+            dl.mkdirs();
+            File st = Env.aria2StateDir();
+            st.mkdirs();
+            File sess = new File(st, "session");
+            if (!sess.exists()) sess.createNewFile();
+
+            List<String> cmd = new ArrayList<String>();
+            cmd.add(Native.bin(this, Native.ARIA2).getAbsolutePath());
+            cmd.add("--enable-rpc=true");
+            cmd.add("--rpc-listen-all=true");
+            cmd.add("--rpc-allow-origin-all=true");
+            cmd.add("--rpc-listen-port=" + Env.ARIA2_PORT);
+            cmd.add("--rpc-secret=" + Env.ARIA2_SECRET);
+            cmd.add("--dir=" + dl.getAbsolutePath());
+            cmd.add("--continue=true");
+            cmd.add("--max-concurrent-downloads=3");
+            cmd.add("--max-connection-per-server=8");
+            cmd.add("--split=8");
+            cmd.add("--min-split-size=1M");
+            cmd.add("--disk-cache=8M");
+            cmd.add("--async-dns=false");
+            cmd.add("--disable-ipv6=true");
+            cmd.add("--input-file=" + sess.getAbsolutePath());
+            cmd.add("--save-session=" + sess.getAbsolutePath());
+            cmd.add("--save-session-interval=30");
+            cmd.add("--log=" + new File(Env.logDir(this), "aria2.log").getAbsolutePath());
+            cmd.add("--log-level=warn");
+            File ca = Env.caFile(this);
+            if (ca.isFile()) cmd.add("--ca-certificate=" + ca.getAbsolutePath());
+
+            ProcessBuilder pb = new ProcessBuilder(cmd);
+            pb.directory(dl);
+            pb.redirectErrorStream(true);
+            pb.environment().put("HOME", Env.runtimeDir(this).getAbsolutePath());
+            aria2 = pb.start();
+            drainSilently(aria2.getInputStream());
+            Thread.sleep(800);
+            if (!processAlive(aria2)) {
+                ARIA2_STATE = "启动即退出，看 logs/aria2.log";
+                Env.log(this, ARIA2_STATE);
+                aria2 = null;
+                return;
+            }
+            DOWNLOAD_ON = true;
+            ARIA2_STATE = "运行中 :" + Env.ARIA2_PORT;
+            Env.log(this, "aria2 已启动 " + ARIA2_STATE);
+        } catch (Exception e) {
+            ARIA2_STATE = "启动失败：" + e.getClass().getSimpleName();
+            Env.log(this, "aria2 " + ARIA2_STATE + " " + e.getMessage());
+            if (aria2 != null) aria2.destroy();
+            aria2 = null;
+        }
+    }
+
+    private static boolean processAlive(Process p) {
+        if (p == null) return false;
+        try {
+            p.exitValue();
+            return false;
+        } catch (IllegalThreadStateException e) {
+            return true;
+        }
+    }
+
+    private static void drainSilently(final InputStream in) {
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                byte[] b = new byte[4096];
+                try {
+                    while (in.read(b) > 0) { /* 丢弃，避免管道写满把子进程卡死 */ }
+                } catch (Exception ignored) {
+                }
+            }
+        }, "pantry-aria2-out");
+        t.setDaemon(true);
+        t.start();
+    }
+
+    private void stopAria2() {
+        DOWNLOAD_ON = false;
+        if (aria2 != null) {
+            try {
+                aria2.destroy();
+            } catch (Exception ignored) {
+            }
+            aria2 = null;
+        }
+        ARIA2_STATE = "已停止";
+    }
+
     private void stopAll() {
         if (ui != null) ui.removeCallbacks(tickRun);
+        stopAria2();
         if (web != null) {
             web.stop();
             web = null;
@@ -264,8 +395,8 @@ public class ServerService extends Service {
             t.setDaemon(true);
             t.start();
 
-            if (!p.waitFor(timeoutSec, TimeUnit.SECONDS)) {
-                p.destroyForcibly();
+            // minSdk 24 上没有 Process.waitFor(long, TimeUnit)，用轮询 + 杀进程
+            if (Native.waitOrKill(p, timeoutSec)) {
                 Env.log(this, script + " 超时 " + timeoutSec + "s");
                 return "";
             }

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>网络服务管理 · 家庭文件储存管理</title>
+<style>
+:root{--bg:#f6f7f8;--card:#fff;--tx:#1a1d21;--mu:#6b7280;--bd:#dcdfe3;--pr:#2563eb;--dn:#dc2626;--ok:#16a34a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 -apple-system,"Segoe UI","Microsoft YaHei",sans-serif}
+header{position:sticky;top:0;z-index:10;background:var(--card);border-bottom:1px solid var(--bd);padding:11px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+header b{font-size:15px}
+.stat{font-size:12.5px;color:var(--mu);font-variant-numeric:tabular-nums}
+.btn{border:1px solid var(--bd);background:#fff;color:var(--tx);padding:5px 11px;border-radius:4px;font-size:13px;cursor:pointer}
+.btn:hover{border-color:#b9bec4}
+.btn.pr{border-color:var(--pr);color:var(--pr)}
+.btn:disabled{opacity:.45;cursor:default}
+main{max-width:980px;margin:0 auto;padding:16px}
+h2{font-size:14px;margin:0 0 11px;color:var(--tx);display:flex;align-items:center;gap:8px}
+h2 small{font-weight:400;color:var(--mu);font-size:12px}
+
+/* 服务卡片 */
+.svc{background:var(--card);border:1px solid var(--bd);border-radius:6px;padding:11px 14px;
+  display:flex;align-items:center;gap:12px;margin-bottom:9px}
+.svc .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;background:#cbd5e1}
+.svc.on .dot{background:var(--ok);box-shadow:0 0 0 3px rgba(22,163,74,.13)}
+.svc.off .dot{background:var(--dn);box-shadow:0 0 0 3px rgba(220,38,38,.12)}
+.svc .nm{font-weight:600;font-size:13.5px;min-width:132px}
+.svc .dt{font-size:12.5px;color:var(--mu);flex:1;font-variant-numeric:tabular-nums}
+.svc .st{font-size:11.5px;padding:1px 8px;border-radius:3px;border:1px solid var(--bd);color:var(--mu)}
+.svc.on .st{border-color:#86efac;color:#15803d;background:#f0fdf4}
+.svc.off .st{border-color:#fca5a5;color:#b91c1c;background:#fef2f2}
+
+/* 条目列表 */
+.panel{background:var(--card);border:1px solid var(--bd);border-radius:7px;padding:14px 16px;margin-bottom:14px}
+.row{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid #f0f2f4;font-size:13px}
+.row:last-child{border-bottom:0}
+.row .k{color:var(--mu)}
+.row .v{font-variant-numeric:tabular-nums;text-align:right;word-break:break-all}
+
+/* 定时任务 */
+.tk{display:flex;align-items:flex-start;gap:11px;padding:10px 0;border-bottom:1px solid #f0f2f4}
+.tk:last-child{border-bottom:0}
+.tk .ic2{width:20px;text-align:center;flex-shrink:0;font-size:15px;line-height:1.5}
+.tk .bd3{flex:1;min-width:0}
+.tk .n2{font-size:13px;font-weight:600;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.tk .d2{font-size:12px;color:var(--mu);margin-top:2px;line-height:1.65}
+.tk .raw{font-family:ui-monospace,Consolas,monospace;font-size:11px;color:#9aa1a9;margin-top:3px;
+  display:flex;flex-wrap:wrap;gap:2px 8px}
+.tk .raw .c1{white-space:nowrap}
+.tk .raw .c2{word-break:break-all;min-width:0}
+.tk .rt{text-align:right;flex-shrink:0;font-size:11.5px;color:var(--mu);font-variant-numeric:tabular-nums;line-height:1.6}
+.tk .rt b{color:var(--tx);font-weight:600}
+
+/* 上次执行留痕 */
+.tk .lx{font-size:11.5px;color:#6b7280;margin-top:6px;padding-top:5px;border-top:1px dashed #e8ebee;
+  display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;min-width:0}
+.tk .lx .dt2{width:6px;height:6px;border-radius:50%;background:#16a34a;flex-shrink:0;align-self:center}
+.tk .lx .tx3{flex-shrink:0;font-variant-numeric:tabular-nums}
+.tk .lx .tx3 b{color:#374151;font-weight:600}
+.tk .lx .ll2{font-family:ui-monospace,Consolas,monospace;font-size:11px;color:#9aa1a9;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0}
+.tk .lx.stale{color:#b45309}
+.tk .lx.stale .dt2{background:#d97706}
+.tk .lx.stale .tx3 b{color:#b45309}
+.tk .lx.none .dt2{background:#cbd5e1}
+.tk .lx.none .tx3{color:#9aa1a9}
+.tk .lx.idle .dt2{background:#cbd5e1}
+.tk .lx.idle .tx3{color:#6b7280}
+.tk .lx.idle .tx3 b{color:#4b5563;font-weight:600}
+
+/* 窄屏：日志尾行独占一行、最多两行，避免被挤成一小截看不清 */
+@media (max-width:620px){
+  .tk .raw{flex-direction:column;gap:1px}
+  .tk .raw .c2{font-size:10.5px}
+  .tk .lx .ll2{flex:1 0 100%;white-space:normal;word-break:break-all;margin-top:2px;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+}
+.fq{display:inline-block;font-size:11.5px;color:#1e40af;background:#eff6ff;border:1px solid #bfdbfe;
+  border-radius:3px;padding:0 6px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.fq.mu2{color:#4b5563;background:#f3f4f6;border-color:#e5e7eb}
+.mono{font-family:ui-monospace,Consolas,monospace;font-size:12px}
+.tip{font-size:12.5px;color:var(--mu);line-height:1.8}
+a.lk{color:var(--pr);text-decoration:none}
+a.lk:hover{text-decoration:underline}
+.empty{text-align:center;color:var(--mu);padding:26px 0;font-size:13px}
+#toast{position:fixed;left:50%;transform:translateX(-50%);top:14px;z-index:200;background:#1a1d21;color:#fff;
+  padding:9px 18px;border-radius:6px;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none}
+#toast.on{opacity:1}
+</style>
+</head>
+<body>
+<header>
+  <b>网络服务管理</b>
+  <span class="stat" id="hstat">加载中…</span>
+  <span style="flex:1"></span>
+  <button class="btn pr" id="refresh">刷新状态</button>
+</header>
+
+<main>
+  <h2>服务运行状态 <small id="svcAge"></small></h2>
+  <div id="svclist"><div class="empty">加载中…</div></div>
+
+  <h2>访问入口</h2>
+  <div class="panel" id="entries"></div>
+
+  <h2>网络与设备</h2>
+  <div class="panel" id="netinfo"></div>
+
+  <h2>定时任务 <small>自动读取 crontab，改完即生效显示</small></h2>
+  <div class="panel" id="tasksbox"><div class="empty">加载中…</div></div>
+  <div class="panel" style="padding:11px 16px">
+    <div class="tip">改 crontab 后必须重启 crond 才生效：<br>
+    <span class="mono">/data/adb/modules/GGAT_10007/busybox/crond -c /data/adb/modules/GGAT_10007/crond</span></div>
+  </div>
+</main>
+
+<div id="toast"></div>
+<script>
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function toast(m){ const t=document.getElementById('toast'); t.textContent=m; t.classList.add('on'); setTimeout(()=>t.classList.remove('on'),2200); }
+function fmtB(n){ n=Number(n||0); if(!n) return '—'; if(n<1073741824) return (n/1048576).toFixed(0)+' MB'; return (n/1073741824).toFixed(1)+' GB'; }
+
+/* 主机名取当前页面所在地址：局域网、Tailscale、换路由器换 IP 都不用手改。 */
+const H=location.hostname||'127.0.0.1';
+const ENTRIES=[
+  {n:'判定页',       u:'http://'+H+':8083/judge.html',        d:'照片判定主界面'},
+  {n:'存档管理',     u:'http://'+H+':8083/archive.html',      d:'已归档事件管理'},
+  {n:'磁力搜索',     u:'http://'+H+':8083/magnet/',           d:'同源集成 · 搜索后一键推给 aria2'},
+  {n:'下载管理',     u:'http://'+H+':8083/ariang-setup.html', d:'AriaNg · RPC 已预置，免手填'},
+  {n:'文件浏览器',   u:'http://'+H+':5244',                   d:'alist 挂载共享存储为根'},
+  {n:'WebDAV',       u:'http://'+H+':5244/dav',               d:'rclone / 系统文件管理器可用'},
+  {n:'aria2 RPC',    u:'http://'+H+':6800/jsonrpc',           d:'离线下载引擎'},
+  {n:'magnet 旧端口', u:'http://'+H+':8080',                  d:'独立的 8080 实例，保留可关'},
+  {n:'review 页面',  u:'http://'+H+':8081',                   d:'待审阅文件'},
+];
+
+async function load(){
+  try{
+    const r=await fetch('/cgi/status.cgi',{cache:'no-store'});
+    const j=await r.json();
+    if(!j.ok){ document.getElementById('svclist').innerHTML='<div class="empty">'+esc(j.err||'无数据')+'</div>'; return; }
+    renderServices(j);
+    renderNet(j);
+    renderTasks(j);
+    const age=Number(j.ageSec||0);
+    document.getElementById('svcAge').textContent=age?(age<60?('· '+age+' 秒前采集'):('· '+Math.round(age/60)+' 分钟前采集')):'';
+    document.getElementById('hstat').textContent=(j.services||[]).filter(s=>s.ok).length+'/'+(j.services||[]).length+' 服务正常';
+  }catch(e){
+    document.getElementById('svclist').innerHTML='<div class="empty" style="color:#dc2626">加载失败：'+esc(e.message)+'</div>';
+  }
+}
+
+function renderServices(j){
+  const svcs=j.services||[];
+  if(!svcs.length){ document.getElementById('svclist').innerHTML='<div class="empty">暂无数据（等待采集脚本运行）</div>'; return; }
+  document.getElementById('svclist').innerHTML=svcs.map(s=>`
+    <div class="svc ${s.ok?'on':'off'}">
+      <span class="dot"></span>
+      <span class="nm">${esc(s.name)}</span>
+      <span class="dt">${esc(s.detail)}</span>
+      <span class="st">${s.ok?'正常':'异常'}</span>
+    </div>`).join('');
+}
+
+function renderNet(j){
+  const d=j.disk||{};
+  const rows=[
+    ['K40 局域网地址','<K40_LAN_IP>',1],
+    ['Tailscale 地址','<K40_TAILSCALE_IP>',1],
+    ['adb 无线调试','<K40_LAN_IP>:5555',1],
+    ['磁盘总量',fmtB(d.total),0],
+    ['已用',fmtB(d.used),0],
+    ['剩余',fmtB(d.avail),0],
+  ];
+  document.getElementById('netinfo').innerHTML=rows.map(([k,v,mono])=>
+    `<div class="row"><span class="k">${esc(k)}</span><span class="v${mono?' mono':''}">${esc(v)}</span></div>`).join('');
+
+  document.getElementById('entries').innerHTML=ENTRIES.map(e=>
+    `<div class="row"><span class="k">${esc(e.n)}</span>
+     <span class="v"><a class="lk" href="${esc(e.u)}" target="_blank">${esc(e.u)}</a>
+     <br><span style="color:var(--mu);font-size:12px">${esc(e.d)}</span></span></div>`).join('');
+}
+
+document.getElementById('refresh').onclick=()=>{ load(); toast('已刷新'); };
+
+/* ============ 定时任务：把原始 cron 翻成人话 ============ */
+
+/* 脚本名 → 中文名 / 说明 / 图标。新增脚本时在这里补一行即可，未知脚本按文件名兜底
+ * quiet:1 = 幂等脚本，没事可做时直接退出、不写日志（如 fixadb 只在 5555 掉线时才记一笔），
+ *          这类任务的"日志很久没更新"是正常态，不能按超期告警。 */
+const TASKMAP={
+  'fixadb-run.sh':     {ic:'🔌', nm:'无线调试自愈',  quiet:1,
+                        ds:'检查 adb 无线调试是否掉线，掉线才重新拉起。5555 正常时直接退出、不留日志'},
+  'gyp-backup.sh':     {ic:'☁',  nm:'云盘同步',      ds:'把照片与状态目录增量同步到光鸭云盘；本地删除的文件进云端回收区，可恢复'},
+  'status-collect.sh': {ic:'📊', nm:'状态采集',      ds:'刷新「网络服务管理」和「统计」两个页面显示的数据，不采集则页面数据变旧'},
+  'media-gc.sh':       {ic:'🧹', nm:'媒体副本回收',  ds:'每周一凌晨回收 www/media 里源文件已不存在的预览副本，挪进隔离区不直接删；带互斥锁，不会与判读抢同一批文件'},
+  'move-by-date.sh':   {ic:'📅', nm:'按日期归位',    ds:'把新上传的文件按拍摄日期挪进 inbox/日期 目录'},
+  'judge.sh':          {ic:'🤖', nm:'AI 判读',       ds:'调视觉模型给照片打标签、判存废，结果写进判读页等人工确认'},
+
+  /* ---- 2026-11-06 补充：以下四个此前未登记，页面显示成"未登记说明的定时脚本" ---- */
+  'update-trackers.sh':{ic:'🧭', nm:'BT 服务器列表更新',
+                        ds:'每周给 aria2 拉一遍最新的公共 tracker 列表（国内+国外镜像），写回 aria2.conf 并热重载。冷门种子找不到节点时先看这里有没有更新过'},
+  'bt-stall.sh':       {ic:'🩺', nm:'BT 停滞检测',
+                        ds:'每 10 分钟扫一遍下载中的种子，把「迟迟拿不到种子信息」或「长时间零速度」的挑出来写进 bt-stall.json，磁力页顶部会显示这些卡住的任务。只检测不处理，不会动下载'},
+  'thunder-sync.sh':   {ic:'⚡', nm:'迅雷下载搬运',
+                        ds:'把迅雷下完的文件从 Android/data 搬进系统下载目录 Download/Thunder 并登记台账。判定「下完」的标准是文件连续多轮大小与 mtime 不变、且无分片索引，所以大文件通常会晚 10 分钟以上才被搬走'},
+  'scrcpy-serve.sh':   {ic:'📱', nm:'投屏服务守护', quiet:1,
+                        ds:'保证 K40 的 scrcpy 投屏服务（tcpip 模式）随时可用，掉了才重启。屏幕正常时不做任何事、不写日志'}
+};
+
+/* 纯常驻进程，不在 crontab 里，单独一行说明 */
+const DAEMONS=[
+  {ic:'⚙', nm:'判定调度 daemon',
+   ds:'常驻进程，每 30 分钟把新文件按拍摄日期归位并登记（不调模型）；本轮确实归位了新文件，才立刻只判这一批',
+   fq:'每 30 分钟（有新增才判读）'}
+];
+
+function pad2(n){ return String(n).padStart(2,'0'); }
+/* 取命令里的脚本名：优先第一个以 .sh 结尾的路径段。
+ * 不能直接取末尾词 —— 命令带参数时（如 media-gc.sh --apply）末尾是参数，
+ * 会导致 TASKMAP 匹配不上、页面上显示成"未登记说明的定时脚本"。 */
+function cmdKey(c){
+  const m=String(c||'').match(/([^\/\s]+\.sh)/);
+  if(m) return m[1];
+  const m2=String(c||'').match(/([^\/\s]+)\s*$/);
+  return m2?m2[1]:String(c||'');
+}
+/* 把 cron 字段展开成取值数组，支持星号、星号斜杠 n、逗号列表、区间 a-b */
+function expandField(f,max){
+  f=String(f||'').trim();
+  if(f==='*'){ const a=[]; for(let i=0;i<=max;i++) a.push(i); return a; }
+  if(/^\*\/\d+$/.test(f)){
+    const n=parseInt(f.slice(2),10); const a=[];
+    if(!n) return [];
+    for(let i=0;i<=max;i+=n) a.push(i);
+    return a;
+  }
+  if(/^\d+(,\d+)*$/.test(f)){
+    return f.split(',').map(Number).filter(x=>x>=0&&x<=max).sort((a,b)=>a-b);
+  }
+  if(/^\d+-\d+$/.test(f)){
+    const p=f.split('-').map(Number);
+    const a=[];
+    for(let i=p[0];i<=Math.min(p[1],max);i++) a.push(i);
+    return a;
+  }
+  return [];
+}
+/* 星期：cron 里 0 和 7 都是周日，统一折成 0-6 */
+function dowSet(f){
+  const a=expandField(f,7).map(x=>x%7);
+  return a;
+}
+/* 下次执行时间：暴力逐分钟找，最多找 8 天（够覆盖日/时/分钟级 + 每周） */
+function nextRun(t,now){
+  const mins=expandField(t.min,59), hrs=expandField(t.hour,23);
+  if(!mins.length||!hrs.length) return null;
+  /* 只支持「每天定点」与「每周某天定点」两类；
+   * 每月/每季这类目前没有任务，直接不显示下次时间。 */
+  if(t.dom!=='*'||t.mon!=='*') return null;
+  const weekly = t.dow!=='*';
+  if(weekly && !dowSet(t.dow).length) return null;
+  const d=new Date(now.getTime());
+  d.setSeconds(0,0); d.setMinutes(d.getMinutes()+1);
+  const hset={},mset={};
+  hrs.forEach(h=>hset[h]=1); mins.forEach(m=>mset[m]=1);
+  const dows=weekly?dowSet(t.dow):null;
+  for(let i=0;i<11520;i++){
+    if(hset[d.getHours()]&&mset[d.getMinutes()]){
+      if(!weekly || dows.indexOf(d.getDay())>=0) return new Date(d.getTime());
+    }
+    d.setMinutes(d.getMinutes()+1);
+  }
+  return null;
+}
+/* 频率白话 */
+function humanFreq(t){
+  const mn=String(t.min), hr=String(t.hour), dw=String(t.dow);
+  if(/^\*\/\d+$/.test(mn)&&hr==='*') return '每 '+mn.slice(2)+' 分钟';
+  if(mn==='*'&&hr==='*') return '每分钟';
+  if(/^\d+$/.test(mn)&&hr==='*') return '每小时第 '+mn+' 分';
+  /* 每周：星期几 + 定点时分 */
+  if(dw!=='*'&&/^\d+$/.test(mn)&&/^\d+$/.test(hr)){
+    const WDN=['日','一','二','三','四','五','六'];
+    const ds=dowSet(dw);
+    const wtxt=ds.length===1?('周'+WDN[ds[0]]):('周'+ds.map(x=>WDN[x]).join('、'));
+    return '每'+wtxt+' '+pad2(hr)+':'+pad2(mn);
+  }
+  if(/^\d+$/.test(mn)&&/^\d+(,\d+)*$/.test(hr)){
+    return '每天 '+hr.split(',').map(h=>pad2(h)+':'+pad2(mn)).join(' / ');
+  }
+  return '自定义';
+}
+function fmtNext(d,now){
+  if(!d) return '—';
+  const sameDay=d.toDateString()===now.toDateString();
+  const tm=pad2(d.getHours())+':'+pad2(d.getMinutes());
+  if(sameDay) return '今天 '+tm;
+  const t2=new Date(now.getTime()+86400000);
+  if(d.toDateString()===t2.toDateString()) return '明天 '+tm;
+  return pad2(d.getMonth()+1)+'-'+pad2(d.getDate())+' '+tm;
+}
+
+/* ===== 上次执行 =====
+ * 判据只有两条客观事实：日志文件的 mtime（多久没跑过）与最后一行（跑成什么样）。
+ * 超期阈值 = 预计间隔的 2 倍 + 10 分钟余量，避免一次正常抖动就报警。 */
+function intervalSec(lines){
+  const t=lines[0]||{};
+  const mn=String(t.min||''), hr=String(t.hour||''), dw=String(t.dow||'');
+  if(hr==='*' && /^\*\/\d+$/.test(mn)) return parseInt(mn.slice(2),10)*60;
+  if(hr==='*' && mn==='*') return 60;
+  if(hr==='*' && /^\d+$/.test(mn)) return 3600;
+  /* 每周固定某天 → 7 天 */
+  if(dw!=='*' && /^\d+$/.test(mn) && /^\d+$/.test(hr)) return 7*86400;
+  /* 定点任务：一天一到两次，按 12 小时估 */
+  return 43200;
+}
+function agoTxt(sec){
+  const d=Date.now()/1000-Number(sec||0);
+  if(d<0) return '刚刚';
+  if(d<120) return '刚刚';
+  if(d<3600) return Math.floor(d/60)+' 分钟前';
+  if(d<86400) return Math.floor(d/3600)+' 小时前';
+  const dd=Math.floor(d/86400);
+  return dd+(dd<30?' 天前':' 天前');
+}
+function fullT(sec){
+  const d=new Date(Number(sec)*1000);
+  return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate())+' '+
+         pad2(d.getHours())+':'+pad2(d.getMinutes());
+}
+function lastRunHtml(t){
+  const lt=Number(t.lt||0), ll=String(t.ll||''), iv=Number(t.iv||0);
+  if(!lt){
+    return `<div class="lx none" title="未找到该脚本的日志文件，无法判断是否执行过">
+      <span class="dt2"></span><span class="tx3">无执行记录</span></div>`;
+  }
+  const age=Date.now()/1000-lt;
+  const limit=iv?iv*2+600:86400*2;
+  const tip=`日志：${t.log||''}&#10;最后一行：${ll||'(空)'}&#10;写入时间：${fullT(lt)}`;
+  /* 幂等脚本：没有动作就不写日志，久未记录是正常态，只陈述事实、不告警 */
+  if(t.quiet){
+    const idle=age>limit;
+    return `<div class="lx${idle?' idle':''}" title="${esc(tip)}">
+      <span class="dt2"></span>
+      <span class="tx3">上次动作 <b>${esc(fmtNext(new Date(lt*1000),new Date()))}</b>${idle?' · 之后一直无需修复':''}</span>
+      ${ll?`<span class="ll2">${esc(ll)}</span>`:''}
+    </div>`;
+  }
+  const stale=age>limit;
+  return `<div class="lx${stale?' stale':''}" title="${esc(tip)}">
+    <span class="dt2"></span>
+    <span class="tx3">上次 <b>${esc(fmtNext(new Date(lt*1000),new Date()))}</b> · ${esc(agoTxt(lt))}${stale?'（超出预期未更新）':''}</span>
+    ${ll?`<span class="ll2">${esc(ll)}</span>`:''}
+  </div>`;
+}
+
+function renderTasks(j){
+  const now=new Date();
+  const raw=(j.tasks||[]).filter(t=>t&&t.cmd);
+
+  /* 同一命令的多行合并（如 03:00 与 12:00 各一行），合并后更好读 */
+  const groups={};
+  raw.forEach(t=>{
+    const k=cmdKey(t.cmd);
+    if(!groups[k]) groups[k]={key:k,cmd:t.cmd,lines:[]};
+    groups[k].lines.push(t);
+  });
+  const items=Object.values(groups).sort((a,b)=>a.key.localeCompare(b.key)).map(g=>{
+    const m=TASKMAP[g.key]||{ic:'🕘',nm:g.key,ds:'未登记说明的定时脚本'};
+    /* 分钟相同、小时都是定点数字 → 合并成「每天 03:00 / 12:00」 */
+    let fq,nextTxt='—';
+    const allFixed=g.lines.every(t=>/^\d+$/.test(t.min)&&/^\d+(,\d+)*$/.test(t.hour));
+    if(allFixed && g.lines.length>1){
+      const minsSet=[...new Set(g.lines.map(t=>t.min))];
+      const hrsAll=[...new Set(g.lines.flatMap(t=>t.hour.split(',')))].sort((a,b)=>a-b);
+      fq='每天 '+hrsAll.map(h=>pad2(h)+':'+pad2(minsSet[0])).join(' / ');
+      const cand=g.lines.map(t=>nextRun(t,now)).filter(Boolean).sort((a,b)=>a-b);
+      nextTxt=fmtNext(cand[0],now);
+    }else if(g.lines.length===1){
+      fq=humanFreq(g.lines[0]);
+      nextTxt=fmtNext(nextRun(g.lines[0],now),now);
+    }else{
+      fq=g.lines.map(t=>humanFreq(t)).join(' / ');
+      const cand=g.lines.map(t=>nextRun(t,now)).filter(Boolean).sort((a,b)=>a-b);
+      nextTxt=fmtNext(cand[0],now);
+    }
+    const spec=g.lines.map(t=>({f:[t.min,t.hour,t.dom,t.mon,t.dow].join(' '),c:t.cmd}));
+    /* 同组多行（如 03:00 与 12:00 各一条）共用同一份日志，取第一条即可 */
+    const L0=g.lines[0]||{};
+    const log={log:L0.log||'', lt:Number(L0.lt||0), ll:L0.ll||'', iv:intervalSec(g.lines), quiet:!!m.quiet};
+    return {...m, fq, next:nextTxt, spec, cmd:g.cmd, log};
+  });
+
+  /* 常驻进程排在最后，标灰 */
+  const daemonRows=DAEMONS.map(d=>`
+    <div class="tk">
+      <span class="ic2">${d.ic}</span>
+      <div class="bd3">
+        <div class="n2">${esc(d.nm)}<span class="fq mu2">常驻 · ${esc(d.fq)}</span></div>
+        <div class="d2">${esc(d.ds)}</div>
+      </div>
+      <div class="rt"><b>持续运行</b><br>不按点触发</div>
+    </div>`).join('');
+
+  if(!items.length && !DAEMONS.length){
+    document.getElementById('tasksbox').innerHTML='<div class="empty">没有读到定时任务</div>';
+    return;
+  }
+
+  document.getElementById('tasksbox').innerHTML=
+    items.map(t=>`
+      <div class="tk">
+        <span class="ic2">${t.ic}</span>
+        <div class="bd3">
+          <div class="n2">${esc(t.nm)}<span class="fq">${esc(t.fq)}</span></div>
+          <div class="d2">${esc(t.ds)}</div>
+          ${t.spec.map(x=>'<div class="raw"><span class="c1">'+esc(x.f)+'</span><span class="c2">'+esc(x.c)+'</span></div>').join('')}
+          ${lastRunHtml(t.log)}
+        </div>
+        <div class="rt">下次<br><b>${esc(t.next)}</b></div>
+      </div>`).join('') + daemonRows;
+}
+
+load();
+setInterval(load,30000);
+</script>
+</body>
+</html>

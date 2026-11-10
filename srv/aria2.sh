@@ -14,6 +14,22 @@
 MG_CURL=$(command -v curl 2>/dev/null)
 [ -z "$MG_CURL" ] && MG_CURL=/system/bin/curl
 
+# 服务端 App 版：路径库把内置 curl / rpc 端口 / secret 全写进了 NASBAK_CONF。
+# 配置文件本身就是 shell 赋值，直接 source 即可，不必再找 aria2.conf。
+# 注意 App 版的内置 curl 是 libcurl.so（静态 ELF），普通 App 不能直接 exec
+# /system/bin/curl 之外的路径，所以这里必须用绝对路径。
+if [ -n "$NASBAK_CONF" ] && [ -r "$NASBAK_CONF" ]; then
+  . "$NASBAK_CONF"
+  [ -n "$NASBAK_CURL" ] && [ -x "$NASBAK_CURL" ] && MG_CURL="$NASBAK_CURL"
+  MG_SECRET=${NASBAK_RPC_SECRET:-}
+  MG_PORT=${NASBAK_RPC_PORT:-6800}
+  MG_CONF="$NASBAK_CONF"
+  if [ -n "$NASBAK_CA" ] && [ -r "$NASBAK_CA" ]; then
+    CURL_CA_BUNDLE=$NASBAK_CA
+    export CURL_CA_BUNDLE
+  fi
+else
+
 # 找 aria2 配置文件：优先 ARIA2_CONF 环境变量，其次常见路径
 MG_CONF=""
 for c in "$ARIA2_CONF" \
@@ -34,6 +50,8 @@ if [ -n "$MG_CONF" ]; then
   MG_SECRET=$(sed -n 's/^[[:space:]]*rpc-secret[[:space:]]*=[[:space:]]*//p' "$MG_CONF" | tr -d '\r\n')
   _mgp=$(sed -n 's/^[[:space:]]*rpc-listen-port[[:space:]]*=[[:space:]]*//p' "$MG_CONF" | tr -d '\r\n')
   [ -n "$_mgp" ] && MG_PORT="$_mgp"
+fi
+
 fi
 
 # aria2_rpc <method> <params-json>

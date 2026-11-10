@@ -144,11 +144,12 @@ body{background:var(--bg);color:var(--tx);font:14px/1.55 -apple-system,"Segoe UI
 const PAGES=[
   {id:'judge',   name:'文件判定',    icon:'🖼',  url:'/judge.html',   badge:'pending', ownerOnly:true},
   {id:'archive', name:'存档管理',    icon:'📦',  url:'/archive.html'},
-  {id:'magnet',  name:'磁力搜索',    icon:'🧲',  url:'/magnet/index.html'},
-  {id:'down',    name:'下载管理',    icon:'⬇',  url:'/ariang-setup.html'},
-  {id:'network', name:'网络服务管理', icon:'🌐',  url:'/network.html'},
-  {id:'screen',  name:'手机屏幕',    icon:'📱',  url:'/screen.html'},
-  {id:'files',   name:'文件管理',    icon:'📁',  url:'//'+location.hostname+':5244/', noBust:true},
+  {id:'magnet',  name:'磁力搜索',    icon:'🧲',  url:'/magnet/index.html', need:'aria2'},
+  {id:'down',    name:'下载管理',    icon:'⬇',  url:'/ariang-setup.html', need:'aria2'},
+  {id:'network', name:'网络服务管理', icon:'🌐',  url:'/network.html', need:'alist'},
+  {id:'screen',  name:'手机屏幕',    icon:'📱',  url:'/screen.html', need:'screen'},
+  {id:'files',   name:'文件管理',    icon:'📁',  url:'/files.html', need:'files'},
+  {id:'alist',   name:'文件管理',    icon:'📁',  url:'//'+location.hostname+':5244/', noBust:true, need:'alist'},
   {id:'stats',   name:'统计',        icon:'📊',  url:'/stats.html'},
   {id:'setup',   name:'设置',        icon:'⚙',  url:'/wizard.html?force=1', ownerOnly:true, external:true},
 ];
@@ -158,8 +159,17 @@ let ROLE='owner', PIN_SET=false;
 const itemsEl=document.getElementById('items');
 const frame=document.getElementById('frame');
 
+/* 能力探测：Magisk 版由 www/cgi/caps.cgi（shell）报「全都有」，
+   服务端 App 版由 Java 直出，按内置程序真实自检结果报。
+   没有这项能力就把菜单藏起来，别让人点进去吃 404。
+   默认值按 Magisk 版给，老设备上就算还没部署 caps.cgi 也不会丢菜单。 */
+let CAPS={aria2:true,curl:true,files:false,screen:true,alist:true};
+fetch('/cgi/caps.cgi',{cache:'no-store'})
+  .then(r=>r.json()).then(c=>{CAPS=c;renderNav();}).catch(()=>{});
+
 /* 浏览模式看不到判定入口；直接访问 URL 仍能打开，接口层校验见架构文档待定问题 4 */
-const visible=()=>PAGES.filter(p=>!(p.ownerOnly && ROLE!=='owner'));
+const visible=()=>PAGES.filter(p=>
+  !(p.ownerOnly && ROLE!=='owner') && !(p.need && !CAPS[p.need]));
 
 function renderNav(){
   const chip = `<div class="it roleit${ROLE!=='owner'?' vw':''}" id="roleChip">

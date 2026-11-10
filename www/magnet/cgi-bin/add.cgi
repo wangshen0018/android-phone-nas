@@ -11,8 +11,12 @@ printf 'X-Content-Type-Options: nosniff\r\n'
 printf '\r\n'
 
 SELF_DIR=$(cd "$(dirname "$0")" 2>/dev/null && pwd)
-if [ -f "/data/adb/srv/magnet/lib/aria2.sh" ]; then
-  . "/data/adb/srv/magnet/lib/aria2.sh"
+# 服务端 App 版把库放在 运行时根/srv/aria2.sh（web 根之外，不会被静态下载）；
+# 设备版沿用 Magisk 部署的位置。两版 CGI 用同一份文件。
+A2LIB="$SELF_DIR/../../../srv/aria2.sh"
+[ -f "$A2LIB" ] || A2LIB=/data/adb/srv/magnet/lib/aria2.sh
+if [ -f "$A2LIB" ]; then
+  . "$A2LIB"
 else
   echo '{"error":"lib/aria2.sh not found, redeploy needed"}'
   exit 0

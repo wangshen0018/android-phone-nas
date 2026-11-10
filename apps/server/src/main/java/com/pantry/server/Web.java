@@ -21,7 +21,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 面板的 HTTP 服务，用来替代 busybox httpd。
@@ -196,6 +195,15 @@ final class Web {
                 if (name.isEmpty() || name.indexOf('/') >= 0 || name.startsWith(".")) {
                     skipFully(in, clen);
                     sendText(out, 404, "Not Found");
+                } else if (name.equals("caps.cgi")) {
+                    skipFully(in, clen);
+                    sendData(out, "application/json; charset=utf-8",
+                            Native.capsJson(ctx, ServerService.DOWNLOAD_ON)
+                                    .getBytes(StandardCharsets.UTF_8), "no-store");
+                } else if (name.equals("files.cgi")) {
+                    skipFully(in, clen);
+                    sendData(out, "application/json; charset=utf-8",
+                            Files.listJson(query).getBytes(StandardCharsets.UTF_8), "no-store");
                 } else if (name.equals("thumb.cgi") || name.equals("vthumb.cgi")) {
                     // 用 Java 出图，不需要 ffmpeg；接口、落盘路径与 thumb.cgi 一致
                     skipFully(in, clen);
@@ -205,6 +213,18 @@ final class Web {
                     if (!runCgi(out, method, name, query, headers, in, clen, clientIp)) {
                         return false;
                     }
+                }
+            } else if (path.startsWith("/magnet/cgi-bin/")) {
+                // 磁力搜索的 CGI 在 www/magnet/cgi-bin/，不在 www/cgi/。
+                // 早先只认 /cgi/ 时它们会被当静态文件吐出源码，既不工作也不安全。
+                String name = path.substring("/magnet/cgi-bin/".length());
+                if (name.isEmpty() || name.indexOf('/') >= 0 || name.startsWith(".")) {
+                    skipFully(in, clen);
+                    sendText(out, 404, "Not Found");
+                } else if (!runCgiIn(out, method,
+                        new File(Env.wwwDir(ctx), "magnet/cgi-bin"),
+                        "/magnet/cgi-bin/", name, query, headers, in, clen, clientIp)) {
+                    return false;
                 }
             } else {
                 skipFully(in, clen);
@@ -229,9 +249,18 @@ final class Web {
 
     private void serveStatic(OutputStream out, String method, String path,
                              Map<String, String> headers) throws IOException {
-        File www = Env.wwwDir(ctx);
-        File f = new File(www, path);
-        String base = www.getCanonicalPath();
+        // /dl/ 走共享存储的 Pantry/ 目录，其余走 www/。两者都做越界校验。
+        boolean fromStore = path.startsWith("/dl/");
+        File root = fromStore ? Env.storeDir() : Env.wwwDir(ctx);
+        String rel = fromStore ? path.substring(3) : path;
+        // 脚本和配置不能当静态文件下载：里面有 rpc secret、代理配置和源码。
+        if (!fromStore && (rel.endsWith(".cgi") || rel.endsWith(".sh")
+                || rel.endsWith(".conf") || rel.endsWith(".jsonl"))) {
+            sendText(out, 404, "Not Found");
+            return;
+        }
+        File f = new File(root, rel);
+        String base = root.getCanonicalPath();
         String canon = f.getCanonicalPath();
         if (!canon.equals(base) && !canon.startsWith(base + File.separator)) {
             sendText(out, 403, "Forbidden");
@@ -344,8 +373,16 @@ final class Web {
     private boolean runCgi(OutputStream out, String method, String name, String query,
                            Map<String, String> headers, InputStream bodyIn, long bodyLen,
                            String clientIp) throws IOException {
-        File script = new File(new File(Env.wwwDir(ctx), "cgi"), name);
-        String base = new File(Env.wwwDir(ctx), "cgi").getCanonicalPath();
+        return runCgiIn(out, method, new File(Env.wwwDir(ctx), "cgi"), "/cgi/",
+                name, query, headers, bodyIn, bodyLen, clientIp);
+    }
+
+    private boolean runCgiIn(OutputStream out, String method, File dir, String urlPrefix,
+                             String name, String query, Map<String, String> headers,
+                             InputStream bodyIn, long bodyLen, String clientIp)
+            throws IOException {
+        File script = new File(dir, name);
+        String base = dir.getCanonicalPath();
         if (!script.getCanonicalPath().startsWith(base + File.separator) || !script.isFile()) {
             skipFully(bodyIn, bodyLen);
             sendText(out, 404, "No such CGI");
@@ -362,7 +399,7 @@ final class Web {
         if (headers.containsKey("content-type")) {
             e.put("CONTENT_TYPE", headers.get("content-type"));
         }
-        e.put("SCRIPT_NAME", "/cgi/" + name);
+        e.put("SCRIPT_NAME", urlPrefix + name);
         e.put("SCRIPT_FILENAME", script.getAbsolutePath());
         e.put("DOCUMENT_ROOT", Env.wwwDir(ctx).getAbsolutePath());
         e.put("SERVER_PORT", String.valueOf(port));
@@ -373,6 +410,17 @@ final class Web {
         // lib-path.sh 第一优先级读这个，脚本因此不用关心自己在哪个目录
         e.put("NASBAK_CONF", Env.confFile(ctx).getAbsolutePath());
         e.put("HOME", Env.runtimeDir(ctx).getAbsolutePath());
+        // 内置静态 curl / CA bundle：magnet 系列 CGI 直接用这些变量，
+        // 不必自己 source lib-path.sh（它们历史上只用 command -v curl）。
+        File curlBin = Native.bin(ctx, Native.CURL);
+        if (Native.available(ctx, Native.CURL)) {
+            e.put("NASBAK_CURL", curlBin.getAbsolutePath());
+        }
+        File ca = Env.caFile(ctx);
+        if (ca.isFile()) {
+            e.put("NASBAK_CA", ca.getAbsolutePath());
+            e.put("CURL_CA_BUNDLE", ca.getAbsolutePath());
+        }
         // upload.cgi 的参数全在自定义头里，必须原样转成 HTTP_*
         for (Map.Entry<String, String> en : headers.entrySet()) {
             String k = en.getKey();
@@ -431,16 +479,10 @@ final class Web {
             writer.start();
         }
 
-        // 上传大文件时按 512 KB/s 额外放宽，别让慢速 WiFi 把正常上传判成超时
-        long waitSec = CGI_TIMEOUT_SEC + bodyLen / (512 * 1024);
-        boolean finished;
-        try {
-            finished = p.waitFor(waitSec, TimeUnit.SECONDS);
-        } catch (InterruptedException ie) {
-            finished = false;
-        }
-        if (!finished) {
-            p.destroyForcibly();
+        // 上传大文件时按 512 KB/s 额外放宽，别让慢速 WiFi 把正常上传判成超时。
+        // minSdk 24 没有 Process.waitFor(long, TimeUnit) / destroyForcibly()，统一走轮询。
+        int waitSec = (int) Math.min(CGI_TIMEOUT_SEC + bodyLen / (512 * 1024), 3600L);
+        if (Native.waitOrKill(p, waitSec)) {
             Env.log(ctx, "CGI 超时 " + name + " " + waitSec + "s");
             sendText(out, 504, "CGI timeout");
             return false;
@@ -451,7 +493,8 @@ final class Web {
             } catch (InterruptedException ignored) {
             }
             if (writer.isAlive() || sent[0] < bodyLen) {
-                p.destroyForcibly();
+                // destroyForcibly() 要到 API 26 才有，minSdk 24 上会 NoSuchMethodError
+                p.destroy();
                 Env.log(ctx, name + " 没读完请求体 " + sent[0] + "/" + bodyLen + "，断开连接");
                 sendText(out, 400, "request body not consumed");
                 return false;
@@ -508,6 +551,18 @@ final class Web {
             out.write(raw, sep + skip, respLen);
         }
         return true;
+    }
+
+    private void sendData(OutputStream out, String ctype, byte[] b, String cache)
+            throws IOException {
+        StringBuilder sb = new StringBuilder();
+        sb.append("HTTP/1.1 200 OK\r\n");
+        sb.append("Content-Type: ").append(ctype).append("\r\n");
+        sb.append("Content-Length: ").append(b.length).append("\r\n");
+        sb.append("Cache-Control: ").append(cache).append("\r\n");
+        sb.append("Connection: keep-alive\r\n\r\n");
+        out.write(sb.toString().getBytes(StandardCharsets.UTF_8));
+        out.write(b);
     }
 
     private void sendText(OutputStream out, int code, String text) throws IOException {

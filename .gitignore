@@ -19,3 +19,12 @@ dist/
 
 # 运行时打包产物（脚本/页面/二进制，不入库）
 apps/server/src/main/assets/runtime.zip
+
+# 第三方二进制与前端：CI 由 fetch-tools.py 下载并校验，绝不进 git
+apps/server/src/main/jniLibs/
+apps/server/src/main/assets/ariang/
+apps/server/src/main/assets/tools.sha256
+apps/server/thirdparty/
+apps/client/build/
+apps/server/build/
+apps/.gradle/

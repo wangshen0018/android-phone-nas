@@ -10,6 +10,8 @@ printf '\r\n'
 
 CURL=$(command -v curl 2>/dev/null)
 [ -z "$CURL" ] && CURL=/system/bin/curl
+# 服务端 App 版：内置静态 curl 在 nativeLibraryDir，路径由 Web.java 传进来
+[ -n "$NASBAK_CURL" ] && [ -x "$NASBAK_CURL" ] && CURL="$NASBAK_CURL"
 
 # 注意：这个源**故意不接代理**。btsow 实测国内直连 1~2 秒且从未失败，
 # 绕到境外节点不可能更快，还多一层节点故障风险。

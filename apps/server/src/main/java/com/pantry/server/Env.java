@@ -27,6 +27,9 @@ final class Env {
 
     static final String TAG = "PantryServer";
     static final int PORT = 8083;
+    static final int ARIA2_PORT = 6800;
+    /** 只在自家 WiFi 里用；8083 本身就无鉴权，这个 secret 不是安全边界。 */
+    static final String ARIA2_SECRET = "k40srv";
 
     /** 脚本、页面、配置：解压进 App 私有目录，升级 App 时整体替换。 */
     static File runtimeDir(Context c) {
@@ -124,7 +127,7 @@ final class Env {
      *
      * 版本戳 = APK versionCode + zip 字节数。戳变了就重解压，
      * 否则改了脚本却因为「已解压过」一直跑旧的，排查起来非常费劲。
-     * 只清 www/bin/etc，logs 和 daemon.pid 留着。
+     * 只清 www/bin/etc/srv，logs 和 daemon.pid 留着。
      */
     static boolean unpack(Context c, StringBuilder err) {
         File root = runtimeDir(c);
@@ -140,6 +143,7 @@ final class Env {
             deleteTree(wwwDir(c));
             deleteTree(binDir(c));
             deleteTree(new File(root, "etc"));
+            deleteTree(new File(root, "srv"));
 
             InputStream in = c.getAssets().open("runtime.zip");
             ZipInputStream zis = new ZipInputStream(in);
@@ -197,8 +201,28 @@ final class Env {
                 + "NASBAK_PORT=" + PORT + "\n"
                 + "NASBAK_BB=/system/bin/toybox\n"
                 + "NASBAK_LOGD=" + logDir(c).getAbsolutePath() + "\n"
-                + "NASBAK_TMP=" + tmpDir(c).getAbsolutePath() + "\n";
+                + "NASBAK_TMP=" + tmpDir(c).getAbsolutePath() + "\n"
+                + "NASBAK_CURL=" + (Native.available(c, Native.CURL)
+                        ? Native.bin(c, Native.CURL).getAbsolutePath() : "") + "\n"
+                + "NASBAK_ARIA2=" + (Native.available(c, Native.ARIA2)
+                        ? Native.bin(c, Native.ARIA2).getAbsolutePath() : "") + "\n"
+                + "NASBAK_CA=" + (caFile(c).exists() ? caFile(c).getAbsolutePath() : "") + "\n"
+                + "NASBAK_RPC_SECRET=" + ARIA2_SECRET + "\n"
+                + "NASBAK_RPC_PORT=" + ARIA2_PORT + "\n"
+                + "NASBAK_DOWNLOAD=" + downloadDir().getAbsolutePath() + "\n";
         writeSmall(f, s);
+    }
+
+    static File caFile(Context c) {
+        return new File(c.getFilesDir(), "cacert.pem");
+    }
+
+    static File downloadDir() {
+        return new File(storeDir(), "Downloads");
+    }
+
+    static File aria2StateDir() {
+        return new File(stateDir(), "aria2");
     }
 
     /** 共享存储下的目录骨架，缺哪个补哪个。 */
@@ -206,7 +230,8 @@ final class Env {
         String[] dirs = {
                 "state", "state/media", "state/thumb", "archive",
                 "inbox", "inbox/Camera", "inbox/CamScanner", "inbox/scanner",
-                "inbox/儿子", "inbox/身份证", "inbox/Pantry", "inbox/_dup_backup"
+                "inbox/儿子", "inbox/身份证", "inbox/Pantry", "inbox/_dup_backup",
+                "Downloads", "state/aria2"
         };
         for (String d : dirs) {
             File f = new File(storeDir(), d);

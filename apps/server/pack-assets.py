@@ -1,12 +1,15 @@
-"""把服务端运行时（脚本 / 页面 / 配置）打成 assets/runtime.zip。
+"""把服务端运行时（脚本 / 页面 / 配置 / 第三方前端）打成 assets/runtime.zip。
 
 App 首次启动解压到私有目录，之后由 Java 写的 HTTP 服务 + /system/bin/sh 跑起来。
 
-这个版本不需要任何外部二进制：
-  · HTTP 服务在 App 里实现，替代 busybox httpd
-  · 命令用 Android 自带 toybox（lib-path.sh 的 BB 会自动回退到 /system/bin/toybox）
-  · 缩略图由 App 用 BitmapFactory / MediaMetadataRetriever 生成，不需要 ffmpeg
-  · 定时归位由 Service 的 Handler 调度，不需要 crond
+体积换来的能力（0.3 起）：
+  · aria2c / curl 是随 APK 分发的静态 ELF，放在 jniLibs 里由系统解压到可执行目录；
+    fetch-tools.py 负责下载和校验，本脚本不碰它们。
+  · AriaNg 前端由 fetch-tools.py 放到 thirdparty/ariang/，这里收进 www/ariang/。
+  · srv/aria2.sh 是磁力 CGI 的公共库，放在 web 根之外，避免被当静态文件下载。
+
+HTTP 服务、缩略图仍由 Java 实现，不需要 busybox httpd 或 ffmpeg；
+命令走系统 toybox，定时归位由 Service 的 Handler 调度。
 
 用法：
     python apps/server/pack-assets.py
@@ -24,6 +27,9 @@ OUT = os.path.join(OUT_DIR, "runtime.zip")
 # 进包的内容。service.d 和 cron 是 Magisk 专用，App 版用自己的前台服务和 Handler。
 DIRS = ["www", "bin", "etc"]
 FILES = ["httpd.conf"]
+# 单独收：库放 web 根之外；AriaNg 是构建期下载的第三方前端
+EXTRA_FILES = [("srv/aria2.sh", "srv/aria2.sh")]
+ARIANG_SRC = os.path.join(ROOT, "apps", "server", "thirdparty", "ariang")
 
 SKIP_SUFFIX = (".bak", "~", ".pyc")
 SKIP_NAME = (".DS_Store", "Thumbs.db")
@@ -89,6 +95,28 @@ def main():
             if os.path.isfile(src):
                 z.write(src, f)
                 n += 1
+        for src_rel, arc in EXTRA_FILES:
+            src = os.path.join(ROOT, src_rel)
+            if os.path.isfile(src):
+                z.write(src, arc)
+                n += 1
+            else:
+                print("!! 缺少 " + src_rel)
+
+        # AriaNg：下载管理页跳 /ariang/index.html，缺了就 404
+        if os.path.isdir(ARIANG_SRC):
+            for base, dirs, files in os.walk(ARIANG_SRC):
+                dirs[:] = [x for x in dirs if not x.startswith(".")]
+                for fn in files:
+                    if should_skip(fn):
+                        continue
+                    full = os.path.join(base, fn)
+                    rel = os.path.relpath(full, ARIANG_SRC).replace("\\", "/")
+                    z.write(full, "www/ariang/" + rel)
+                    n += 1
+        else:
+            print("!! 没找到 AriaNg（先跑 fetch-tools.py），下载管理页会 404")
+
         z.writestr("etc/nasbak.conf",
                    CONF.format(home=APP_HOME, store=APP_STORE,
                                logd=APP_LOG, tmp=APP_TMP))
@@ -103,8 +131,11 @@ def main():
     else:
         print("路径检查：没有写死的 /data/adb/nasbak 或 /data/media/0/nasbak")
     print("")
-    print("说明：磁力搜索 / 迅雷 / 投屏 / 云盘同步依赖 aria2、alist、scrcpy 这些外部二进制，")
-    print("      服务端 App 版不带也不支持；要这些功能请按 README 用 Magisk 版部署。")
+    print("不支持：迅雷 P2SP、代理节点、投屏、alist/WebDAV。")
+    print("  · 投屏需要 shell 级截屏权限，普通 App 拿不到；")
+    print("  · 迅雷和代理要外部 App / sing-box 进程，随包分发的只是 aria2 与 curl；")
+    print("  · 文件管理改由 App 内置的只读浏览器提供（/files.html + /dl/），")
+    print("    不用 119 MB 的 alist。首页会按 /cgi/caps.cgi 隐藏没有的入口。")
 
 
 if __name__ == "__main__":

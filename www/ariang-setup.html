@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AriaNg 下载管理</title>
+<style>
+*{box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;margin:0;
+  display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f5f6f8;color:#222}
+.box{background:#fff;border-radius:10px;padding:26px 30px;box-shadow:0 4px 18px rgba(0,0,0,.08);
+  max-width:490px;width:92%}
+h2{margin:0 0 10px;font-size:17px}
+p{margin:0 0 8px;font-size:13px;color:#666;line-height:1.65}
+.mono{font-family:ui-monospace,Consolas,monospace;font-size:12px;color:#0b5ed7;
+  background:#eef3fb;border-radius:5px;padding:8px 11px;margin:12px 0;word-break:break-all}
+a.btn{display:inline-block;margin-top:6px;padding:11px 22px;background:#007bff;color:#fff;
+  border-radius:8px;text-decoration:none;font-size:14px}
+a.btn:active{background:#0056b3}
+a.alt{display:inline-block;margin-top:12px;font-size:12px;color:#8a94a6;text-decoration:none}
+a.alt:hover{color:#0b5ed7}
+.tip{margin-top:14px;padding-top:12px;border-top:1px solid #eef0f2;font-size:12px;color:#8a94a6;line-height:1.75}
+.tip code{font-family:ui-monospace,Consolas,monospace;background:#f3f5f8;padding:1px 4px;border-radius:3px}
+</style>
+</head>
+<body>
+<div class="box">
+  <h2>AriaNg 下载管理</h2>
+  <p>下面的入口会先把本机 aria2 的 RPC 地址写进 AriaNg，再自动跳到下载列表。第一次会闪一下，之后浏览器记住配置就直接进。</p>
+  <div class="mono" id="addr">…</div>
+  <a class="btn" id="go" href="#">进入下载管理</a>
+  <a class="alt" id="raw" href="/ariang/index.html">不带配置直接打开 AriaNg（需手动填 RPC）</a>
+    <div class="tip">
+      说明：走 AriaNg 官方 hash 路由
+      <code>#!/settings/rpc/set/http/&lt;host&gt;/6800/jsonrpc/&lt;base64(secret)&gt;</code>
+      完成免手填。secret 从 <code>/cgi/caps.cgi</code> 取，由服务端按实际配置给出，
+      不在页面里写死，换设备或改密钥都不用改这里。
+      主机名取当前页面所在地址，局域网和 Tailscale 下都自动对。
+    </div>
+</div>
+
+<script>
+/* AriaNg 在浏览器里跑，RPC 主机必须指向库房的真实 IP，
+   不能用 127.0.0.1（那是浏览器所在的设备自己）。
+   secret 由 /cgi/caps.cgi 按服务端实际配置给出 base64url，
+   Magisk 版和服务端 App 版共用这一个入口，不用各存一份密钥。
+   注意 AriaNg 本体在 /ariang/index.html，绝不能写成 ./index.html ——
+   本页位于 web 根目录，./index.html 会解析成导航页而不是 AriaNg。 */
+(function(){
+  var HOST=location.hostname||'127.0.0.1';
+  var PORT='6800', IFACE='jsonrpc', ARIANG='/ariang/index.html';
+  function jump(caps){
+    var S=caps.rpcSecretB64||'';
+    var TARGET=ARIANG+'#!/settings/rpc/set/http/'+HOST+'/'+PORT+'/'+IFACE+'/'+S;
+    document.getElementById('addr').textContent='http://'+HOST+':'+PORT+'/'+IFACE+' · RPC 已配置';
+    document.getElementById('go').href=TARGET;
+    setTimeout(function(){ location.replace(TARGET); }, 400);
+  }
+  fetch('/cgi/caps.cgi',{cache:'no-store'})
+    .then(function(r){return r.json();}).then(jump)
+    .catch(function(){ jump({}); });
+})();
+</script>
+</body>
+</html>

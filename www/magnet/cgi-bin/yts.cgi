@@ -13,6 +13,8 @@ printf '\r\n'
 
 CURL=$(command -v curl 2>/dev/null)
 [ -z "$CURL" ] && CURL=/system/bin/curl
+# 服务端 App 版：内置静态 curl 在 nativeLibraryDir，路径由 Web.java 传进来
+[ -n "$NASBAK_CURL" ] && [ -x "$NASBAK_CURL" ] && CURL="$NASBAK_CURL"
 
 for _l in /data/adb/srv/magnet/proxy-lib.sh /data/adb/magnet/proxy-lib.sh; do
   [ -f "$_l" ] && { . "$_l"; break; }

@@ -10,6 +10,8 @@ printf '\r\n'
 
 CURL=$(command -v curl 2>/dev/null)
 [ -z "$CURL" ] && CURL=/system/bin/curl
+# 服务端 App 版：内置静态 curl 在 nativeLibraryDir，路径由 Web.java 传进来
+[ -n "$NASBAK_CURL" ] && [ -x "$NASBAK_CURL" ] && CURL="$NASBAK_CURL"
 
 # ---- 本地代理感知：库在 web 根外（.sh 会被 httpd 当静态文件下载，不能放 www/）----
 # 库只在"开关为 on 且配置里有真实节点"时才给 PROXY_OPT 赋值；direct 透传不注入。

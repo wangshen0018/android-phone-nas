@@ -49,6 +49,11 @@ jobs:
           fi
           ls -la apps/keystore/
 
+      # 第三方静态程序（aria2c / curl / AriaNg）固定 tag + SHA256 校验后落盘，
+      # 二进制不入库；本地离线构建可设 PANTRY_BIN_CACHE 指向缓存目录。
+      - name: Fetch native tools
+        run: python3 apps/server/fetch-tools.py
+
       # 服务端 APK 里要带脚本和页面，否则装上去只有个空壳。
       # 这个 zip 不入库，每次构建现打，保证 APK 里的脚本就是当次提交的版本。
       - name: Build server runtime zip
@@ -62,6 +67,28 @@ jobs:
         run: |
           ls -la apps/client/build/outputs/apk/debug/
           ls -la apps/server/build/outputs/apk/debug/
+
+      # 静默丢过一次：禁用 strip 任务后 AGP 构建照样 success，
+      # 但 APK 里一个 lib/ 都没有。所以在上传前强制核一遍内置程序在包里。
+      - name: Verify server APK payload
+        run: |
+          python3 - <<'PY'
+          import glob, io, zipfile
+          apk = glob.glob('apps/server/build/outputs/apk/debug/*.apk')[0]
+          z = zipfile.ZipFile(apk)
+          names = z.namelist()
+          libs = [n for n in names if n.startswith('lib/')]
+          print('APK:', apk, '大小', round(len(open(apk,'rb').read())/1048576, 2), 'MB')
+          print('lib/ 条目:', libs)
+          for want in ('libaria2c.so', 'libcurl.so'):
+              assert any(want in n for n in libs), '!! ' + want + ' 没打进 APK'
+          assert 'assets/runtime.zip' in names, '!! 缺 runtime.zip'
+          rz = zipfile.ZipFile(io.BytesIO(z.read('assets/runtime.zip')))
+          rn = rz.namelist()
+          for want in ('www/ariang/index.html', 'srv/aria2.sh', 'www/files.html'):
+              assert want in rn, '!! runtime.zip 缺 ' + want
+          print('校验通过：内置二进制 + AriaNg + 磁力库 + 文件管理页齐全')
+          PY
 
       - name: Upload client APK
         uses: actions/upload-artifact@v4

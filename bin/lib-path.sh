@@ -35,6 +35,10 @@ done
 : "${NASBAK_ALIST_PORT:=5244}"
 # 临时文件和锁目录。/data/local/tmp 普通 App 不可写，服务端 App 版会指到私有目录。
 : "${NASBAK_TMP:=/data/local/tmp}"
+: "${NASBAK_RPC_PORT:=6800}"
+: "${NASBAK_RPC_SECRET:=CHANGE_ME}"
+: "${NASBAK_DOWNLOAD:=$NASBAK_ROOT/Downloads}"
+: "${NASBAK_CA:=}"
 
 # ---------- 派生路径，沿用原有变量名 ----------
 DATA=$NASBAK_ROOT/state
@@ -46,6 +50,9 @@ BIN=$NASBAK_HOME/bin
 : "${NASBAK_LOGD:=$NASBAK_HOME/logs}"
 LOGD=$NASBAK_LOGD
 LEDGER=$DATA/ledger.jsonl
+DOWNLOAD=$NASBAK_DOWNLOAD
+RPC_PORT=$NASBAK_RPC_PORT
+RPC_SECRET=$NASBAK_RPC_SECRET
 
 # ---------- 外部程序 ----------
 # BB 用来跑 date/stat/awk/grep/du/sha256sum 这些在 toybox 里也有实现的命令。
@@ -64,9 +71,29 @@ if [ -z "$FF" ] || [ ! -x "$FF" ]; then
 fi
 : "${FF:=}"
 
+# curl / aria2 在服务端 App 里是随 APK 分发的静态 ELF（jniLibs 里的 lib*.so）。
+# 配置里给了绝对路径就用，没给（Magisk 设备版）就回落到 PATH 上的同名命令。
+CURL=${NASBAK_CURL:-}
+if [ -z "$CURL" ] || [ ! -x "$CURL" ]; then
+  CURL=$(command -v curl 2>/dev/null || true)
+fi
+[ -n "$CURL" ] || CURL=/system/bin/curl
+# CA bundle：Android 的证书是散装目录，App 启动时会拼一份；curl 走 CURL_CA_BUNDLE，
+# aria2 走 --ca-certificate。设备版没有这个变量时留空，用系统默认。
+if [ -n "$NASBAK_CA" ] && [ -r "$NASBAK_CA" ]; then
+  CURL_CA_BUNDLE=$NASBAK_CA
+  export CURL_CA_BUNDLE
+fi
+ARIA2=${NASBAK_ARIA2:-}
+if [ -z "$ARIA2" ] || [ ! -x "$ARIA2" ]; then
+  ARIA2=$(command -v aria2c 2>/dev/null || true)
+fi
+: "${ARIA2:=}"
+
 TMPD=$NASBAK_TMP
 export NASBAK_CONF NASBAK_ROOT NASBAK_HOME NASBAK_PORT NASBAK_ALIST_PORT NASBAK_LOGD NASBAK_TMP TMPD
-export DATA ARC INBOX WWW BIN LOGD LEDGER BB FF
+export NASBAK_CURL NASBAK_ARIA2 NASBAK_CA NASBAK_RPC_PORT NASBAK_RPC_SECRET NASBAK_DOWNLOAD
+export DATA ARC INBOX WWW BIN LOGD LEDGER BB FF CURL ARIA2 DOWNLOAD RPC_PORT RPC_SECRET
 
 # 目录不存在时按需创建，避免各脚本重复 mkdir
 [ -d "$DATA" ] || mkdir -p "$DATA" 2>/dev/null

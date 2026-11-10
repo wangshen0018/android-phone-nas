@@ -2,6 +2,8 @@ package com.pantry.server;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -24,6 +26,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.RandomAccessFile;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -40,7 +44,7 @@ public class MainActivity extends Activity {
     private static final String KEY_AUTO = "autoStarted";
 
     private TextView stateText;
-    private Button btnPerm, btnStart, btnStop, btnOpen, btnCopy;
+    private Button btnPerm, btnStart, btnStop, btnOpen, btnCopy, btnTick, btnLog;
     private final Handler ui = new Handler(Looper.getMainLooper());
     private final Runnable refresh = new Runnable() {
         @Override
@@ -155,6 +159,32 @@ public class MainActivity extends Activity {
         });
         box.addView(btnCopy, buttonParams(dp(10)));
 
+        btnTick = makeButton("立即归位一次", "#7C3AED");
+        btnTick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!ServerService.RUNNING) {
+                    Toast.makeText(MainActivity.this, "服务还没起来", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Intent i = new Intent(MainActivity.this, ServerService.class);
+                i.setAction(ServerService.ACTION_TICK);
+                startServiceCompat(i);
+                Toast.makeText(MainActivity.this, "已触发一轮归位，稍后看「上次归位」",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+        box.addView(btnTick, buttonParams(dp(10)));
+
+        btnLog = makeButton("查看运行日志", "#334155");
+        btnLog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showLog();
+            }
+        });
+        box.addView(btnLog, buttonParams(dp(10)));
+
         TextView note = new TextView(this);
         note.setText("家人手机上装另一个 App（Pantry 用户端），首次打开会自动搜到这台设备。\n\n"
                 + "照片和账本都在 共享存储/Pantry 下，卸载这个 App 不会删。\n"
@@ -219,6 +249,10 @@ public class MainActivity extends Activity {
         sb.append("文件权限：").append(perm ? "已开启" : "未开启").append('\n');
         sb.append("局域网地址：").append(ip == null ? "没连上 WiFi" : ip + ":" + Env.PORT).append('\n');
         sb.append("存储位置：").append(Env.storeDir().getAbsolutePath()).append('\n');
+        sb.append("下载引擎：").append(ServerService.ARIA2_STATE).append('\n');
+        sb.append("下载目录：").append(Env.downloadDir().getAbsolutePath()).append('\n');
+        sb.append("内置程序：").append(ServerService.NATIVE_INFO).append('\n');
+        sb.append("开机自启：已启用\n");
         long last = ServerService.LAST_TICK_AT;
         if (last > 0) {
             sb.append("上次归位：")
@@ -230,6 +264,49 @@ public class MainActivity extends Activity {
             sb.append("上次归位：还没跑过");
         }
         stateText.setText(sb.toString());
+    }
+
+    /** 读 app.log 尾部 24 KB，够定位一次启动失败；不用 adb 也能把问题说出来。 */
+    private void showLog() {
+        String text;
+        try {
+            File f = new File(Env.logDir(this), "app.log");
+            if (!f.isFile()) {
+                text = "还没有日志。先点「启动 / 重启服务」。";
+            } else {
+                long len = f.length();
+                long start = Math.max(0, len - 24 * 1024);
+                RandomAccessFile raf = new RandomAccessFile(f, "r");
+                raf.seek(start);
+                StringBuilder b = new StringBuilder();
+                String line;
+                while ((line = raf.readLine()) != null) {
+                    b.append(new String(line.getBytes("ISO-8859-1"), "UTF-8")).append('\n');
+                }
+                raf.close();
+                text = b.toString().trim();
+                if (text.isEmpty()) text = "日志是空的。";
+            }
+        } catch (Exception e) {
+            text = "读日志失败：" + e;
+        }
+        TextView tv = new TextView(this);
+        tv.setText(text);
+        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
+        tv.setTextIsSelectable(true);
+        tv.setPadding(dp(16), dp(12), dp(16), dp(12));
+        ScrollView sv = new ScrollView(this);
+        sv.addView(tv);
+        new AlertDialog.Builder(this)
+                .setTitle("运行日志（尾部）")
+                .setView(sv)
+                .setPositiveButton("关闭", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface d, int w) {
+                        d.dismiss();
+                    }
+                })
+                .show();
     }
 
     private void startServiceCompat(Intent i) {

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>文件管理 · Pantry</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f6f7f8;color:#1a1d21;
+  font:14px/1.55 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+header{position:sticky;top:0;background:#fff;border-bottom:1px solid #dcdfe3;
+  padding:10px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+h1{font-size:16px;margin:0;font-weight:600}
+.crumb{flex:1;min-width:120px;color:#6b7280;font-size:12px;word-break:break-all}
+button{font:13px inherit;padding:5px 12px;border:1px solid #dcdfe3;border-radius:5px;
+  background:#fff;color:#1a1d21;cursor:pointer}
+button:hover{border-color:#9db5e8;color:#2563eb}
+button:disabled{opacity:.45;cursor:default}
+main{padding:10px 14px 40px}
+ul{list-style:none;margin:0;padding:0;background:#fff;border:1px solid #e5e7eb;border-radius:8px}
+li{display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid #f0f1f3}
+li:last-child{border-bottom:0}
+.ico{width:22px;text-align:center;color:#6b7280}
+.nm{flex:1;min-width:0;word-break:break-all}
+a.nm{color:#0b5ed7;text-decoration:none}
+a.nm:hover{text-decoration:underline}
+.meta{color:#8a94a6;font-size:12px;white-space:nowrap}
+.empty{padding:26px;text-align:center;color:#8a94a6}
+.err{padding:14px;background:#fef2f2;color:#b91c1c;border-radius:6px;margin-bottom:10px}
+.tip{color:#8a94a6;font-size:12px;margin:12px 2px}
+</style>
+</head>
+<body>
+<header>
+  <h1>文件管理</h1>
+  <div class="crumb" id="crumb">Pantry/</div>
+  <button id="up">上一级</button>
+  <button id="reload">刷新</button>
+</header>
+<main>
+  <div id="err" class="err" style="display:none"></div>
+  <ul id="list"></ul>
+  <div class="tip">这里只读：看目录、点文件下载。删除和归位请在「文件判定」「存档管理」里做，避免误删账本。</div>
+</main>
+<script>
+var cur='';
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function fmt(n){
+  if(n<1024)return n+' B';
+  if(n<1048576)return (n/1024).toFixed(1)+' KB';
+  if(n<1073741824)return (n/1048576).toFixed(1)+' MB';
+  return (n/1073741824).toFixed(2)+' GB';
+}
+function date(ts){ if(!ts)return '';
+  var d=new Date(ts*1000), p=function(x){return x<10?'0'+x:''+x;};
+  return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes());}
+function go(p){
+  cur=p||'';
+  var box=document.getElementById('err'); box.style.display='none';
+  document.getElementById('crumb').textContent='Pantry/'+(cur?cur+'/':'');
+  document.getElementById('up').disabled=!cur;
+  fetch('/cgi/files.cgi?d='+encodeURIComponent(cur),{cache:'no-store'})
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d.error){box.textContent=d.error;box.style.display='block';
+        document.getElementById('list').innerHTML='';return;}
+      var h='';
+      (d.items||[]).forEach(function(it){
+        if(it.dir){
+          h+='<li><span class="ico">📁</span><a class="nm" href="#" data-d="'+
+             esc(it.url.replace(/^\/dl\//,''))+'">'+esc(it.name)+'</a>'+
+             '<span class="meta">文件夹</span></li>';
+        }else{
+          h+='<li><span class="ico">📄</span><a class="nm" href="'+
+             encodeURI(it.url)+'" target="_blank">'+esc(it.name)+'</a>'+
+             '<span class="meta">'+fmt(it.size)+' · '+date(it.mtime)+'</span></li>';
+        }
+      });
+      if(!h)h='<li class="empty">这个目录是空的</li>';
+      var ul=document.getElementById('list'); ul.innerHTML=h;
+      [].forEach.call(ul.querySelectorAll('a[data-d]'),function(a){
+        a.onclick=function(e){e.preventDefault();go(a.getAttribute('data-d'));};
+      });
+    })
+    .catch(function(e){box.textContent='读取失败：'+e;box.style.display='block';});
+}
+document.getElementById('up').onclick=function(){
+  var i=cur.lastIndexOf('/'); go(i<0?'':cur.substring(0,i));};
+document.getElementById('reload').onclick=function(){go(cur);};
+go('');
+</script>
+</body>
+</html>
