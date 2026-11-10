@@ -1,4 +1,5 @@
 #!/system/bin/sh
+. "$(dirname "$0")/../../bin/lib-path.sh"
 # vthumb.cgi — 兼容层，实际逻辑已合并到 thumb.cgi
 #
 # 2026-11-07：缩略图接口不再区分图片/视频，统一走 thumb.cgi。

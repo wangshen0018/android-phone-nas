@@ -1,4 +1,5 @@
 #!/system/bin/sh
+. "$(dirname "$0")/../../bin/lib-path.sh"
 # apply.cgi — 执行已判定的决策，产出 receipts
 #
 # 注意：STG 指向真实 inbox，不是沙箱。del 会真删文件、arc 会真移文件。
@@ -7,13 +8,12 @@
 # 两种模式：
 #   POST ?a=preview   只统计"将要发生什么"，不动任何文件 —— 前端用它弹确认框
 #   POST ?a=apply     真正执行（默认，兼容旧调用）
-DATA=/data/media/0/nasbak/state
-STG=/data/media/0/nasbak/inbox
-ARC=/data/media/0/nasbak/archive
-WWW=/data/adb/nasbak/www
+DATA=$NASBAK_ROOT/state
+STG=$NASBAK_ROOT/inbox
+ARC=$NASBAK_ROOT/archive
+WWW=$NASBAK_HOME/www
 MEDIA=$WWW/media
-BB=/data/adb/magisk/busybox
-. /data/adb/nasbak/bin/lib-ledger.sh 2>/dev/null
+. $NASBAK_HOME/bin/lib-ledger.sh 2>/dev/null
 
 printf 'Content-Type: application/json\r\nCache-Control: no-store\r\n\r\n'
 
@@ -287,7 +287,7 @@ for ID in $IDS; do
           if [ "$OLD" = "$NEW" ]; then
             RES="archived"; PATHOUT="$YM/$FOLDER/$NAME"
             ledger_add "$ID" "$NAME" "$OLD" "arc" "inbox/$REL" "$PATHOUT" 2>/dev/null
-            . /data/adb/nasbak/bin/lib-sidecar.sh 2>/dev/null; sidecar_append 2>/dev/null
+            . $NASBAK_HOME/bin/lib-sidecar.sh 2>/dev/null; sidecar_append 2>/dev/null
             CNT_A=$((CNT_A+1))
           else
             mv -f "$ARC/$YM/$FOLDER/$NAME" "$SRC_FILE" 2>/dev/null

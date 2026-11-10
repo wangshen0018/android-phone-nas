@@ -1,26 +1,26 @@
 #!/system/bin/sh
+. "$(dirname "$0")/lib-path.sh"
 # status-collect.sh — 后台采集系统状态，写入缓存 JSON
 # 由 daemon 或 crond 周期调用，CGI 只读缓存（避免 CGI 里做重活导致 httpd 超时）
 
-DATA=/data/media/0/nasbak/state
-BASE=/data/media/0/nasbak
+DATA=$NASBAK_ROOT/state
+BASE=$NASBAK_ROOT
 INBOX=$BASE/inbox
 ARC=$BASE/archive
-BB=/data/adb/magisk/busybox
 OUT=$DATA/status-cache.json
 TMP=$OUT.$$.tmp
 
 # 锁库缺失就不跑：并发下的半截 JSON 比旧缓存更难排查
-if [ -r /data/adb/nasbak/bin/lib-lock.sh ]; then
-  . /data/adb/nasbak/bin/lib-lock.sh
+if [ -r $NASBAK_HOME/bin/lib-lock.sh ]; then
+  . $NASBAK_HOME/bin/lib-lock.sh
 else
-  echo "$(date '+%F %T') 缺少 lib-lock.sh，本次退出" >> /data/adb/nasbak/logs/status-collect.log
+  echo "$(date '+%F %T') 缺少 lib-lock.sh，本次退出" >> $NASBAK_HOME/logs/status-collect.log
   exit 1
 fi
 # 每 2 分钟跑一次，若上一轮还没跑完（采集慢）就会被 crond 拉起第二个实例，
 # 两个实例抢同一个 status-cache.json.tmp，会写出半截 JSON。
 if ! lock_acquire status-collect; then
-  echo "$(date '+%F %T') 已有实例在运行，本次退出" >> /data/adb/nasbak/logs/status-collect.log
+  echo "$(date '+%F %T') 已有实例在运行，本次退出" >> $NASBAK_HOME/logs/status-collect.log
   exit 0
 fi
 trap 'lock_release status-collect' 0
@@ -38,7 +38,7 @@ SELF=$$
 (
   sleep "$WATCHDOG_MAX"
   if [ -d "/proc/$SELF" ]; then
-    echo "$(date '+%F %T') 看门狗超时 ${WATCHDOG_MAX}s，强制终止 pid=$SELF" >> /data/adb/nasbak/logs/status-collect.log
+    echo "$(date '+%F %T') 看门狗超时 ${WATCHDOG_MAX}s，强制终止 pid=$SELF" >> $NASBAK_HOME/logs/status-collect.log
     kill -9 "$SELF" 2>/dev/null
     rm -rf "$LOCKDIR/status-collect.lock" 2>/dev/null
   fi
@@ -61,12 +61,12 @@ task_log() {
   [ -z "$_n" ] && return 1
   _b=$(printf '%s' "$_n" | cut -d- -f1)
   for _f in \
-    "/data/adb/nasbak/logs/$_n.log" \
-    "/data/local/tmp/$_n/$_n.log" \
+    "$NASBAK_HOME/logs/$_n.log" \
+    "$NASBAK_TMP/$_n/$_n.log" \
     "/data/adb/srv/data/$_n.log" \
     "/data/adb/srv/data/$_b.log" \
-    "/data/local/tmp/$_b/$_b.log" \
-    "/data/media/0/nasbak/state/$_n.log" ; do
+    "$NASBAK_TMP/$_b/$_b.log" \
+    "$NASBAK_ROOT/state/$_n.log" ; do
     [ -f "$_f" ] && { printf '%s' "$_f"; return 0; }
   done
   return 1
@@ -109,7 +109,7 @@ task_log() {
   printf ',{"name":"crond 定时任务","ok":%s,"detail":"%s"}' "$S" "$(jesc "$D")"
 
   # daemon
-  DPID=$(cat /data/adb/nasbak/daemon.pid 2>/dev/null | tr -d ' \r\n')
+  DPID=$(cat $NASBAK_HOME/daemon.pid 2>/dev/null | tr -d ' \r\n')
   if [ -n "$DPID" ] && [ -d "/proc/$DPID" ]; then S=true; D="运行中 · pid $DPID"; else S=false; D="未运行"; fi
   printf ',{"name":"判定调度 daemon","ok":%s,"detail":"%s"}' "$S" "$(jesc "$D")"
 
@@ -118,7 +118,7 @@ task_log() {
   printf ',{"name":"tailscale","ok":%s,"detail":"%s"}' "$S" "$(jesc "$D")"
 
   # 光鸭云盘同步
-  GYP_LOG=/data/local/tmp/gyp/gyp.log
+  GYP_LOG=$NASBAK_TMP/gyp/gyp.log
   if [ -f "$GYP_LOG" ]; then
     LAST=$(tail -1 "$GYP_LOG" 2>/dev/null | cut -c1-19)
     D="最近同步 $LAST"
@@ -127,13 +127,13 @@ task_log() {
   printf ',{"name":"云盘同步","ok":%s,"detail":"%s"}' "$S" "$(jesc "$D")"
 
   # 磁力搜索：与判定页共用 8083 httpd，检查子目录是否已部署
-  if [ -f /data/adb/nasbak/www/magnet/index.html ]; then
+  if [ -f $NASBAK_HOME/www/magnet/index.html ]; then
     S=true; D="同源 /magnet/ · 与 8083 共用"
   else S=false; D="未部署"; fi
   printf ',{"name":"磁力搜索","ok":%s,"detail":"%s"}' "$S" "$(jesc "$D")"
 
   # AriaNg 下载管理：静态页 + 依赖 6800 RPC
-  if [ -f /data/adb/nasbak/www/ariang/index.html ]; then
+  if [ -f $NASBAK_HOME/www/ariang/index.html ]; then
     if port_open 6800; then S=true; D="页面就绪 · RPC 6800 可连"; else S=false; D="页面就绪 · RPC 未连"; fi
   else S=false; D="未部署"; fi
   printf ',{"name":"下载管理 AriaNg","ok":%s,"detail":"%s"}' "$S" "$(jesc "$D")"
@@ -144,7 +144,7 @@ task_log() {
   # 最近一次投递结果由 thunder-confirm.sh 回写，顺手带出来便于排障。
   XP=com.xunlei.downloadprovider
   XDL=/sdcard/Android/data/$XP/files/ThunderDownload
-  XLAST=/data/media/0/nasbak/state/thunder-last.json
+  XLAST=$NASBAK_ROOT/state/thunder-last.json
   if pm list packages 2>/dev/null | grep -q "^package:$XP$"; then
     S=true
     if $BB pgrep -f xunlei >/dev/null 2>&1; then XR="运行中"; else XR="未运行（按需拉起属正常）"; fi
@@ -271,8 +271,8 @@ kill -9 "$WATCHDOG_PID" 2>/dev/null
 # 校验 JSON 完整性再落地
 if [ -s "$TMP" ] && [ "$(tail -c 1 "$TMP")" = "}" ]; then
   mv -f "$TMP" "$OUT"
-  echo "$(date '+%F %T') 状态已更新 $(wc -c < "$OUT") 字节" >> /data/adb/nasbak/logs/status-collect.log
+  echo "$(date '+%F %T') 状态已更新 $(wc -c < "$OUT") 字节" >> $NASBAK_HOME/logs/status-collect.log
 else
-  echo "$(date '+%F %T') 采集失败(JSON不完整)" >> /data/adb/nasbak/logs/status-collect.log
+  echo "$(date '+%F %T') 采集失败(JSON不完整)" >> $NASBAK_HOME/logs/status-collect.log
   rm -f "$TMP"
 fi

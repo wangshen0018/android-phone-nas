@@ -1,7 +1,8 @@
 #!/system/bin/sh
+. "$(dirname "$0")/../../bin/lib-path.sh"
 # status.cgi — 只读状态缓存，不做任何重活
 printf 'Content-Type: application/json\r\nCache-Control: no-store\r\n\r\n'
-CACHE=/data/media/0/nasbak/state/status-cache.json
+CACHE=$NASBAK_ROOT/state/status-cache.json
 
 if [ ! -f "$CACHE" ]; then
   echo '{"ok":false,"err":"暂无状态缓存，请等待采集脚本运行","services":[],"files":{},"judge":{},"cats":{},"models":{},"disk":{},"ledger":{},"events":0}'

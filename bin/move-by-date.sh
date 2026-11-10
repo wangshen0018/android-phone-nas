@@ -1,4 +1,5 @@
 #!/system/bin/sh
+. "$(dirname "$0")/lib-path.sh"
 # move-by-date.sh — 把 inbox 各来源目录里的新文件按「拍摄日期」移入 inbox/<拍摄日期>/
 #
 # 设计（用户 2026-11-01/02 确认）：
@@ -15,15 +16,14 @@
 # 用法: sh move-by-date.sh           干跑
 #       sh move-by-date.sh --apply   真正移动并记台账
 
-BASE=/data/media/0/nasbak
+BASE=$NASBAK_ROOT
 INBOX=$BASE/inbox
 DUPBK=$INBOX/_dup_backup
-BB=/data/adb/magisk/busybox
 LOG=$BASE/state/move-by-date.log
 APPLY=0
 [ "${1:-}" = "--apply" ] && APPLY=1
 
-. /data/adb/nasbak/bin/lib-ledger.sh
+. $NASBAK_HOME/bin/lib-ledger.sh
 mkdir -p "$BASE/state" 2>/dev/null
 log() { echo "$(date '+%Y-%m-%d %H:%M:%S') $*" >> "$LOG"; }
 

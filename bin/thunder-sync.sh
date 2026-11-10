@@ -1,4 +1,5 @@
 #!/system/bin/sh
+. "$(dirname "$0")/lib-path.sh"
 # thunder-sync.sh — 把迅雷下完的文件搬进 /sdcard/Download/Thunder（系统下载目录）
 #
 # 为什么需要（2026-11-05）：
@@ -32,7 +33,7 @@
 #
 # 可调环境变量：MINBYTES / STABLE_ROUNDS / MIN_AGE_SEC / KEEP_HOURS
 
-BASE=/data/media/0/nasbak
+BASE=$NASBAK_ROOT
 ST=$BASE/state
 DLDIR=/sdcard/Android/data/com.xunlei.downloadprovider/files/ThunderDownload
 # 2026-11-07 用户要求：搬到系统「下载」目录，别埋在 nasbak/downloads/Thunder 三层里。
@@ -47,7 +48,6 @@ LOG=$ST/thunder-sync.log
 STATEF=$ST/_thunder_sizes.tsv
 DONEF=$ST/_thunder_done.tsv
 LEDGER=$ST/ledger.jsonl
-BB=/data/adb/magisk/busybox
 MINBYTES=${MINBYTES:-65536}
 STABLE_ROUNDS=${STABLE_ROUNDS:-3}
 MIN_AGE_SEC=${MIN_AGE_SEC:-300}
@@ -61,8 +61,8 @@ case "${1:-}" in
 esac
 
 # 单实例锁（复用统一锁库；缺库就不跑，宁可不动也不能并发搬错）
-if [ -r /data/adb/nasbak/bin/lib-lock.sh ]; then
-  . /data/adb/nasbak/bin/lib-lock.sh
+if [ -r $NASBAK_HOME/bin/lib-lock.sh ]; then
+  . $NASBAK_HOME/bin/lib-lock.sh
 else
   echo "缺少 lib-lock.sh，本次退出" >&2
   exit 1
@@ -72,7 +72,7 @@ if ! lock_acquire thunder-sync; then
   exit 0
 fi
 
-LIST=/data/local/tmp/_xl_sync.$$.list
+LIST=$NASBAK_TMP/_xl_sync.$$.list
 PREV=$STATEF.prev.$$
 TMPD=$DONEF.$$
 trap 'rm -f "$LIST" "$PREV" "$TMPD" 2>/dev/null; lock_release thunder-sync' 0
@@ -124,7 +124,7 @@ mark_done() { # $1=源路径 $2=大小 → 改名保留，不在本轮删
 }
 
 write_ledger() { # $1=相对路径 $2=文件名 $3=大小
-  [ -f /data/adb/nasbak/bin/lib-ledger.sh ] || return 0
+  [ -f $NASBAK_HOME/bin/lib-ledger.sh ] || return 0
   _id=$(printf '%s:%s' "Thunder/$1" "$3" | $BB sha256sum 2>/dev/null | cut -c1-16)
   printf '{"ts":%s,"t":"%s","id":"%s","name":"%s","size":%s,"act":"thunder","from":"%s","to":"%s","note":"%s"}\n' \
     "$(date +%s)" "$(date '+%Y-%m-%dT%H:%M:%S%z')" "$_id" \

@@ -1,4 +1,5 @@
 #!/system/bin/sh
+. "$(dirname "$0")/lib-path.sh"
 # vlm_classify.sh v9 - ModelBest 主力(MiniCPM-V-4.7-35B-A3B) + 智谱兜底
 #
 # 供应商优先级:
@@ -19,8 +20,8 @@ KMB=$(cat "$KEY_MB" 2>/dev/null)
 KZP=$(cat "$KEY_ZP" 2>/dev/null)
 [ -z "$KMB" ] && [ -z "$KZP" ] && { echo "other|无可用Key"; exit 1; }
 
-B64F=/data/local/tmp/_v9.b64
-REQF=/data/local/tmp/_v9.json
+B64F=$NASBAK_TMP/_v9.b64
+REQF=$NASBAK_TMP/_v9.json
 base64 -w0 "$F" > "$B64F" 2>/dev/null || { echo "other|b64失败"; exit 1; }
 
 # ---------- ModelBest 调用 ----------

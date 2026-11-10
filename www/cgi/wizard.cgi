@@ -1,4 +1,5 @@
 #!/system/bin/sh
+. "$(dirname "$0")/../../bin/lib-path.sh"
 # wizard.cgi — 首次使用向导后端
 #
 # GET   op=state     当前是否已初始化（老设备自动补配置，升级无感）
@@ -7,12 +8,12 @@
 # POST  op=save      建目录骨架 + 写配置
 # POST  op=verify    校验管理员 PIN
 #
-# 配置位置固定为机器级 /data/media/0/nasbak/state/config.json，
+# 配置位置固定为机器级 $NASBAK_ROOT/state/config.json，
 # 库房根路径写在配置里（root）。外置卡迁移需同时改 bin/ 脚本的 DATA，属 P3 后续。
 
-STATE=/data/media/0/nasbak/state
+STATE=$NASBAK_ROOT/state
 CFG=$STATE/config.json
-DEFROOT=/data/media/0/nasbak
+DEFROOT=$NASBAK_ROOT
 
 printf 'Content-Type: application/json\r\nCache-Control: no-store\r\n\r\n'
 mkdir -p "$STATE" 2>/dev/null
@@ -134,7 +135,7 @@ save)
   TSIP=$(pval ts)
   case "$TSIP" in *[!0-9.]*) TSIP="" ;; esac
   case "$ROOT" in
-    /data/media/0/nasbak|/storage/*|/data/media/0/*) ;;
+    $NASBAK_ROOT|/storage/*|/data/media/0/*) ;;
     *) echo '{"ok":false,"err":"库房路径不合法"}'; exit 0 ;;
   esac
   case "$ROOT" in *..*) echo '{"ok":false,"err":"库房路径不合法"}'; exit 0 ;; esac

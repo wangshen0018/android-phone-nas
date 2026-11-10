@@ -1,4 +1,5 @@
 #!/system/bin/sh
+. "$(dirname "$0")/../../bin/lib-path.sh"
 # archive.cgi — 已存档管理接口
 #
 # 动作（POST 或 GET 均可，通过 action 参数区分）：
@@ -11,12 +12,11 @@
 #
 # 所有移动/重命名都写台账 state/ledger.jsonl
 
-DATA=/data/media/0/nasbak/state
-ARC=/data/media/0/nasbak/archive
-TRASH=/data/media/0/nasbak/_待删
-BB=/data/adb/magisk/busybox
+DATA=$NASBAK_ROOT/state
+ARC=$NASBAK_ROOT/archive
+TRASH=$NASBAK_ROOT/_待删
 
-. /data/adb/nasbak/bin/lib-ledger.sh 2>/dev/null
+. $NASBAK_HOME/bin/lib-ledger.sh 2>/dev/null
 
 printf 'Content-Type: application/json\r\nCache-Control: no-store\r\n\r\n'
 
@@ -83,7 +83,7 @@ jesc() { printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g' | tr -d '\r\n\t'; }
 #
 # 同一文件可能有多条记录（先归档、后移动），取 ts 最大的一条，即「最后一次进入当前位置的时间」。
 # 这一步用 awk 一次聚合，避免逐条 grep（87 个文件 × N 条记录会拖慢接口）。
-ARCTSV=/data/local/tmp/_arcts_$$.tsv
+ARCTSV=$NASBAK_TMP/_arcts_$$.tsv
 build_arcidx() {
   : > "$ARCTSV" 2>/dev/null
   {
@@ -169,7 +169,7 @@ list)
         CS=$(stat -c %s "$CFP" 2>/dev/null); [ -z "$CS" ] && CS=0
         CVMID=$(printf '%s:%s' "$YM/$F/$CN" "$CS" | $BB sha256sum 2>/dev/null | cut -c1-16)
         CVEXT="$CEX"
-        WWMDIR=/data/media/0/nasbak/state/media   # 实体目录与照片同挂载，ln 必成（旧版在 /data/adb 下必失败）
+        WWMDIR=$NASBAK_ROOT/state/media   # 实体目录与照片同挂载，ln 必成（旧版在 /data/adb 下必失败）
         mkdir -p "$WWMDIR" 2>/dev/null
         [ -f "$WWMDIR/$CVMID.$CVEXT" ] || {
           ln -f "$CFP" "$WWMDIR/$CVMID.$CVEXT" 2>/dev/null || cp -f "$CFP" "$WWMDIR/$CVMID.$CVEXT" 2>/dev/null
@@ -204,12 +204,12 @@ files)
   D="$ARC/$YM/$F"
   [ -d "$D" ] || { echo '{"ok":false,"err":"folder not exists"}'; exit 0; }
   build_arcidx
-  WWMDIR=/data/media/0/nasbak/state/media   # 实体目录与照片同挂载，ln 必成（旧版在 /data/adb 下必失败）
-  THUMBDIR=/data/media/0/nasbak/state/thumb
+  WWMDIR=$NASBAK_ROOT/state/media   # 实体目录与照片同挂载，ln 必成（旧版在 /data/adb 下必失败）
+  THUMBDIR=$NASBAK_ROOT/state/thumb
   mkdir -p "$WWMDIR" "$THUMBDIR" 2>/dev/null
   # 先收到临时表再排序：按拍摄时间正序（mt），同一时刻按文件名，观感与手机相册一致。
   # 直接边遍历边输出会得到 glob 顺序（jpg/mp4 混杂），看不出时间线。
-  TMPF=/data/local/tmp/_files_$$.tsv
+  TMPF=$NASBAK_TMP/_files_$$.tsv
   : > "$TMPF"
   for fp in "$D"/*; do
     [ -f "$fp" ] || continue
@@ -325,7 +325,7 @@ delete)
     case "$n" in */*) continue ;; esac
     if [ -f "$D/$n" ] && mv -f "$D/$n" "$TD/$n" 2>/dev/null; then
       S=$(stat -c %s "$TD/$n" 2>/dev/null)
-      ledger_add "" "$n" "$S" "arc-trash" "archive/$YM/$F/$n" "$(printf '%s' "$TD/$n" | sed 's|/data/media/0/nasbak/||')" "归档内删除，移入回收区" 2>/dev/null
+      ledger_add "" "$n" "$S" "arc-trash" "archive/$YM/$F/$n" "$(printf '%s' "$TD/$n" | sed 's|$NASBAK_ROOT/||')" "归档内删除，移入回收区" 2>/dev/null
     fi
   done
   # 统计剩余
@@ -345,7 +345,7 @@ move)
   D1="$ARC/$YM1/$FROM"; D2="$ARC/$YM2/$TO"
   [ -d "$D2" ] || { echo '{"ok":false,"err":"to folder missing"}'; exit 0; }
   M=0; SK=0; ER=0
-  printf '%s\n' "$FILES" | tr ',' '\n' > /data/local/tmp/_mv.list
+  printf '%s\n' "$FILES" | tr ',' '\n' > $NASBAK_TMP/_mv.list
   while IFS= read -r n; do
     [ -z "$n" ] && continue
     case "$n" in */*) continue ;; esac
@@ -355,8 +355,8 @@ move)
       M=$((M+1))
       ledger_add "" "$n" 0 "arc-move" "archive/$YM1/$FROM/$n" "archive/$YM2/$TO/$n" "跨事件移动" 2>/dev/null
     else ER=$((ER+1)); fi
-  done < /data/local/tmp/_mv.list
-  rm -f /data/local/tmp/_mv.list
+  done < $NASBAK_TMP/_mv.list
+  rm -f $NASBAK_TMP/_mv.list
   printf '{"ok":true,"moved":%s,"skip":%s,"err":%s}\n' "$M" "$SK" "$ER"
   ;;
 

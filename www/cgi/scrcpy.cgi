@@ -1,4 +1,5 @@
 #!/system/bin/sh
+. "$(dirname "$0")/../../bin/lib-path.sh"
 # scrcpy.cgi — 投屏服务按需启停
 #
 # 动作：
@@ -17,7 +18,7 @@
 
 printf 'Content-Type: application/json\r\nCache-Control: no-store\r\n\r\n'
 
-BIN=/data/adb/nasbak/bin/scrcpy-serve.sh
+BIN=$NASBAK_HOME/bin/scrcpy-serve.sh
 
 # 解析 a=（只认白名单，防止把任意参数透传成命令）
 A=$(printf '%s' "${QUERY_STRING:-}" | tr '&' '\n' | sed -n 's/^a=//p' | head -1)

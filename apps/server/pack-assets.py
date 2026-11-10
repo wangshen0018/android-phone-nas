@@ -1,46 +1,48 @@
-"""把服务端运行时打成 assets/runtime.zip。
+"""把服务端运行时（脚本 / 页面 / 配置）打成 assets/runtime.zip。
 
-App 第一次启动会把这个 zip 解压到自己的私有目录，然后起 httpd。
+App 首次启动解压到私有目录，之后由 Java 写的 HTTP 服务 + /system/bin/sh 跑起来。
 
-用法（在仓库根执行）：
-    python apps/server/pack-assets.py                # 只打脚本/页面/配置
-    python apps/server/pack-assets.py --adb IP:5555  # 顺带从设备拉 busybox / ffmpeg
+这个版本不需要任何外部二进制：
+  · HTTP 服务在 App 里实现，替代 busybox httpd
+  · 命令用 Android 自带 toybox（lib-path.sh 的 BB 会自动回退到 /system/bin/toybox）
+  · 缩略图由 App 用 BitmapFactory / MediaMetadataRetriever 生成，不需要 ffmpeg
+  · 定时归位由 Service 的 Handler 调度，不需要 crond
 
-**这一版只是骨架，打出来的包还不能直接跑。** 差两件事，见文件末尾的 TODO。
-脚本会如实列出来，别把"能构建"当成"能服务"。
+用法：
+    python apps/server/pack-assets.py
 
-zip 不入库（体积大、可能含二进制），由本机生成后再构建 APK。
+CI 里由 .github/workflows/build-apk.yml 自动执行这一步，产物不入库。
 """
 
-import argparse
 import os
-import subprocess
 import zipfile
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 OUT_DIR = os.path.join(ROOT, "apps", "server", "src", "main", "assets")
 OUT = os.path.join(OUT_DIR, "runtime.zip")
 
-# 进包的内容。service.d 是 Magisk 专用，App 版用自己的前台服务，不带。
+# 进包的内容。service.d 和 cron 是 Magisk 专用，App 版用自己的前台服务和 Handler。
 DIRS = ["www", "bin", "etc"]
 FILES = ["httpd.conf"]
 
 SKIP_SUFFIX = (".bak", "~", ".pyc")
 SKIP_NAME = (".DS_Store", "Thumbs.db")
 
-# App 私有目录里的路径。写进 etc/nasbak.conf，lib-path.sh 会读它。
-APP_FILES = "/data/data/com.pantry.server/files/runtime"
+# App 里的实际路径由 Env.writeConf() 每次启动重写，这里只是首次解压时的兜底：
+# 就算配置没写成功，脚本也不会去读 /data/adb 那个不存在的地方。
+APP_HOME = "/data/data/com.pantry.server/files/runtime"
 APP_STORE = "/storage/emulated/0/Pantry"
+APP_LOG = "/data/data/com.pantry.server/files/runtime/logs"
+APP_TMP = "/data/data/com.pantry.server/files/tmp"
 
-CONF = """# 由 pack-assets.py 生成：服务端 App 版路径配置。
-# 设备原版在 /data/adb/nasbak，这里全部指向 App 私有目录和共享存储。
+CONF = """# 由 pack-assets.py 生成的兜底配置。
+# 服务端 App 启动时用 Env.writeConf() 按真实路径重写，手改会被覆盖。
 NASBAK_HOME={home}
 NASBAK_ROOT={store}
-NASBAK_WWW={home}/www
-NASBAK_BIN={home}/bin
-NASBAK_DATA={store}/state
-NASBAK_LOGD={store}/state/log
-# busybox / ffmpeg 由 App 放到 nativeLibraryDir，不在 zip 里
+NASBAK_PORT=8083
+NASBAK_LOGD={logd}
+NASBAK_TMP={tmp}
+NASBAK_BB=/system/bin/toybox
 """
 
 
@@ -51,63 +53,58 @@ def should_skip(path):
     return any(name.endswith(s) or ".bak-" in name for s in SKIP_SUFFIX)
 
 
-def add_tree(z, src, prefix):
-    for base, dirs, files in os.walk(src):
-        dirs[:] = [d for d in dirs if not d.startswith(".")]
-        for fn in files:
-            full = os.path.join(base, fn)
-            if should_skip(full):
-                continue
-            rel = os.path.relpath(full, src).replace("\\", "/")
-            z.write(full, prefix + "/" + rel)
-
-
 def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--adb", help="设备地址，如 100.64.180.121:5555；给了就拉二进制")
-    args = ap.parse_args()
-
     os.makedirs(OUT_DIR, exist_ok=True)
     n = 0
+    leftovers = []
     with zipfile.ZipFile(OUT, "w", zipfile.ZIP_DEFLATED) as z:
         for d in DIRS:
             src = os.path.join(ROOT, d)
-            if os.path.isdir(src):
-                add_tree(z, src, d)
-                n += sum(len(f) for _, _, f in os.walk(src))
+            if not os.path.isdir(src):
+                continue
+            for base, dirs, files in os.walk(src):
+                dirs[:] = [x for x in dirs if not x.startswith(".")]
+                for fn in files:
+                    full = os.path.join(base, fn)
+                    if should_skip(full):
+                        continue
+                    rel = os.path.relpath(full, src).replace("\\", "/")
+                    arc = d + "/" + rel
+                    # App 版配置下面单独写，别把仓库里的设备版配置一起打进去（会重名）
+                    if arc == "etc/nasbak.conf":
+                        continue
+                    z.write(full, arc)
+                    n += 1
+                    # lib-path.sh 里的默认值是有意保留的设备版兜底，不算残留；
+                    # 磁力/迅雷靠 aria2 和外部二进制，App 版不支持，单独列出来
+                    if (arc.endswith((".sh", ".cgi"))
+                            and arc != "bin/lib-path.sh"
+                            and not arc.startswith("www/magnet/")):
+                        with open(full, "r", encoding="utf-8", errors="replace") as f:
+                            txt = f.read()
+                        if "/data/adb/nasbak" in txt or "/data/media/0/nasbak" in txt:
+                            leftovers.append(arc)
         for f in FILES:
             src = os.path.join(ROOT, f)
             if os.path.isfile(src):
                 z.write(src, f)
                 n += 1
-        # 覆盖仓库里的设备版配置，换成 App 版
-        z.writestr("etc/nasbak.conf", CONF.format(home=APP_FILES, store=APP_STORE))
-
-        if args.adb:
-            for remote, local in [
-                ("/data/adb/magisk/busybox", "bin/busybox"),
-                ("/data/adb/nasbak/bin/ffmpeg", "bin/ffmpeg"),
-            ]:
-                tmp = os.path.join(OUT_DIR, os.path.basename(local))
-                try:
-                    subprocess.run(["adb", "-s", args.adb, "pull", remote, tmp],
-                                   check=True, capture_output=True)
-                    z.write(tmp, local)
-                    os.remove(tmp)
-                    print("  拉到 " + local)
-                except Exception as e:
-                    print("  拉不到 " + remote + "：" + str(e)[:80])
+        z.writestr("etc/nasbak.conf",
+                   CONF.format(home=APP_HOME, store=APP_STORE,
+                               logd=APP_LOG, tmp=APP_TMP))
 
     size = os.path.getsize(OUT)
-    print("生成 {}（{:.1f} KB，约 {} 个文件）".format(OUT, size / 1024, n))
-    print()
-    print("=== 这个包还不能直接跑，差两件事 ===")
-    print("1. 脚本里有约 48 处 /data/adb/nasbak 内联路径，")
-    print("   要靠 bin/lib-path.sh 全部收进变量才跑得动。这是路径抽象那一轮的工作。")
-    print("2. Android 10 起不能直接 exec filesDir 里的二进制。")
-    print("   busybox / ffmpeg 要以 libbusybox.so、libffmpeg.so 放进")
-    print("   src/main/jniLibs/<abi>/，让系统装到 nativeLibraryDir 再执行。")
-    print("   本脚本 --adb 拉下来的 bin/busybox 只是占位，正式版不能这么用。")
+    print("生成 {}（{:.1f} KB，{} 个文件）".format(OUT, size / 1024, n))
+    if leftovers:
+        print("")
+        print("!! 以下脚本还在用写死的旧路径，App 版会读不到数据：")
+        for x in leftovers:
+            print("   " + x)
+    else:
+        print("路径检查：没有写死的 /data/adb/nasbak 或 /data/media/0/nasbak")
+    print("")
+    print("说明：磁力搜索 / 迅雷 / 投屏 / 云盘同步依赖 aria2、alist、scrcpy 这些外部二进制，")
+    print("      服务端 App 版不带也不支持；要这些功能请按 README 用 Magisk 版部署。")
 
 
 if __name__ == "__main__":

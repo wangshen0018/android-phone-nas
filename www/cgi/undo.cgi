@@ -1,4 +1,5 @@
 #!/system/bin/sh
+. "$(dirname "$0")/../../bin/lib-path.sh"
 # undo.cgi — 撤销判定页的上一次操作
 #
 # 设计依据（2026-11-06）：
@@ -17,8 +18,7 @@
 #   · 那是审计轨迹，删了就看不出"曾经判过又撤回"
 #   · 并发写时删行要重写整个文件，容易写坏；追加永远是原子的
 
-DATA=/data/media/0/nasbak/state
-BB=/data/adb/magisk/busybox
+DATA=$NASBAK_ROOT/state
 printf 'Content-Type: application/json\r\nCache-Control: no-store\r\n\r\n'
 
 QS="${QUERY_STRING:-}"
@@ -173,9 +173,9 @@ case "$A" in
     [ -z "$IDS" ] && IDS="$ID"
     [ -z "$IDS" ] && { echo '{"ok":false,"err":"缺少 id"}'; exit 0; }
 
-    STG=/data/media/0/nasbak/inbox
-    ARC=/data/media/0/nasbak/archive
-    MEDIA_DIR=/data/media/0/nasbak/state/media
+    STG=$NASBAK_ROOT/inbox
+    ARC=$NASBAK_ROOT/archive
+    MEDIA_DIR=$NASBAK_ROOT/state/media
 
     NOW=$(date +%s)
     OKN=0; SKIPN=0; FIRSTACT=""
@@ -264,8 +264,8 @@ case "$A" in
               fi
             fi
             RL=$(printf '%s' "$DST" | sed "s#^$STG/##")
-            if [ -f /data/adb/nasbak/bin/lib-ledger.sh ]; then
-              . /data/adb/nasbak/bin/lib-ledger.sh 2>/dev/null
+            if [ -f $NASBAK_HOME/bin/lib-ledger.sh ]; then
+              . $NASBAK_HOME/bin/lib-ledger.sh 2>/dev/null
               ledger_add "$ID" "$BN" "0" "unarc" "archive/$RPATH" "inbox/$RL" "撤销归档，文件搬回原位置" 2>/dev/null
             fi
           else
@@ -322,8 +322,8 @@ case "$A" in
             TDIR=$(dirname "$TFILE")
             rmdir "$TDIR" 2>/dev/null
             RL=$(printf '%s' "$DST" | sed "s#^$STG/##")
-            if [ -f /data/adb/nasbak/bin/lib-ledger.sh ]; then
-              . /data/adb/nasbak/bin/lib-ledger.sh 2>/dev/null
+            if [ -f $NASBAK_HOME/bin/lib-ledger.sh ]; then
+              . $NASBAK_HOME/bin/lib-ledger.sh 2>/dev/null
               ledger_add "$ID" "$ORIG" "0" "undel" "trash" "inbox/$RL" "撤销删除，从回收站找回" 2>/dev/null
             fi
           else
@@ -340,8 +340,8 @@ case "$A" in
       OKN=$((OKN+1))
 
       # 回执也追加一条，台账可追溯"谁撤的"
-      if [ -f /data/adb/nasbak/bin/lib-ledger.sh ]; then
-        . /data/adb/nasbak/bin/lib-ledger.sh 2>/dev/null
+      if [ -f $NASBAK_HOME/bin/lib-ledger.sh ]; then
+        . $NASBAK_HOME/bin/lib-ledger.sh 2>/dev/null
         ledger_add "$ID" "" "0" "undo" "decisions.jsonl" "decisions.jsonl" "撤销判定(原动作:$CURACT)" 2>/dev/null
       fi
       IFS=','

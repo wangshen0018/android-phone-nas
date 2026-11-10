@@ -1,4 +1,5 @@
 #!/system/bin/sh
+. "$(dirname "$0")/../../bin/lib-path.sh"
 # upload.cgi — 用户端 App 把本机照片/视频推进库房
 #
 # 参数走 HTTP 头，不用 query：busybox httpd 在 POST 下取不到 QUERY_STRING。
@@ -18,7 +19,7 @@
 # 归位脚本会把文件从 inbox/Pantry/ 搬进 inbox/<日期>/，只看文件会误判为没传过，
 # 清一次 App 数据就把整批照片重传一遍。跨相册同名文件也靠这个键区分开。
 
-BASE=/data/media/0/nasbak
+BASE=$NASBAK_ROOT
 DEST=$BASE/inbox/Pantry
 LOG=$BASE/state/upload.log
 IDX=$BASE/state/upload.idx
@@ -62,7 +63,7 @@ case "$BKB" in ''|.*) BKB="album" ;; esac
 BKH=$(printf '%s' "$BK" | cksum 2>/dev/null | cut -d' ' -f1)
 # 极少数系统没把 cksum 放进 PATH，退回 Magisk busybox；再不行就固定 0，
 # 目录名前缀仍不同，不会把文件写错地方
-[ -n "$BKH" ] || BKH=$(printf '%s' "$BK" | /data/adb/magisk/busybox cksum 2>/dev/null | cut -d' ' -f1)
+[ -n "$BKH" ] || BKH=$(printf '%s' "$BK" | $BB cksum 2>/dev/null | cut -d' ' -f1)
 [ -n "$BKH" ] || BKH="0"
 DIR="${BKB}_${BKH}"
 

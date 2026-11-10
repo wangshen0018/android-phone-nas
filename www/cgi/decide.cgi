@@ -1,8 +1,9 @@
 #!/system/bin/sh
+. "$(dirname "$0")/../../bin/lib-path.sh"
 # decide.cgi — 接收一条人工判定，追加写 decisions.jsonl
 # 若判定为「存档」且选择新建事件，则**当场登记事件**，后续存档可直接在下拉里选到
-DATA=/data/media/0/nasbak/state
-ARC=/data/media/0/nasbak/archive
+DATA=$NASBAK_ROOT/state
+ARC=$NASBAK_ROOT/archive
 printf 'Content-Type: application/json\r\nCache-Control: no-store\r\n\r\n'
 
 if [ "$REQUEST_METHOD" != "POST" ]; then
@@ -75,8 +76,6 @@ touch "$DATA/decisions.jsonl" "$DATA/events.jsonl" 2>/dev/null
 #   前端并发也救不了（请求只能排队）。唯一有效的办法是减少请求数：
 #   一次请求内批量写，公共开销只付一次。
 #   实测 20 条一批时，摊到每条约 10~20 ms。
-BB=/data/adb/magisk/busybox
-[ -x "$BB" ] || BB=busybox
 
 if [ -n "$BIDS" ]; then
   case "$ACT" in del|keep|hold|arc) ;; *) echo '{"ok":false,"err":"bad action"}'; exit 0 ;; esac
@@ -145,7 +144,7 @@ if [ -n "$BIDS" ]; then
   #  · 前端带了逐条分类（cats，逗号分隔、与 ids 同序）→ 纯内存拼装，不读任何文件
   #  · 没带 → 退回扫 analysis.jsonl 查 AI 分类（一次扫完，不是每条 grep 一次）
   # 前端拿的 cats 就是从 state.cgi 显示的那份，和这里查出来的一致，所以优先用它。
-  TMPB=/data/local/tmp/_bdec_$$.jsonl
+  TMPB=$NASBAK_TMP/_bdec_$$.jsonl
   CATS=$(printf '%s' "$BODY" | tr -d '\r\n' | sed -n 's/.*"cats":"\([^"]*\)".*/\1/p')
   if [ -n "$CATS" ]; then
     $BB awk -v IDS="$CLEAN" -v CATS="$CATS" -v ACT="$ACT" -v EV="$EV" \

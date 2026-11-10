@@ -1,6 +1,7 @@
 #!/system/bin/sh
+. "$(dirname "$0")/../../bin/lib-path.sh"
 # 诊断结果上报：接收 diag.html POST 的 JSON，追加写入 jsonl
-OUT=/data/local/tmp/diag-report.jsonl
+OUT=$NASBAK_TMP/diag-report.jsonl
 printf 'Content-Type: application/json\r\n'
 printf 'Access-Control-Allow-Origin: *\r\n'
 printf '\r\n'

@@ -1,6 +1,9 @@
 #!/system/bin/sh
+# 注意：本文件是被 source 的库，不自己定位 lib-path.sh。
+# $0 在 source 场景里指向调用者而不是这里，而且 POSIX 下 "." 找不到
+# 文件会让整个脚本直接退出，所以路径库由调用者负责 source。
 # lib-ledger.sh — 统一台账库（静默版，可安全被 CGI source）
-# 台账文件: /data/media/0/nasbak/state/ledger.jsonl
+# 台账文件: $NASBAK_ROOT/state/ledger.jsonl
 #
 # 动作类型:
 #   recv     K80 -> K40 inbox 来源目录
@@ -10,9 +13,8 @@
 #
 # 字段: ts / t / id / name / size / act / from / to / note
 
-LEDGER=/data/media/0/nasbak/state/ledger.jsonl
-BB=/data/adb/magisk/busybox
-mkdir -p /data/media/0/nasbak/state 2>/dev/null
+LEDGER=$NASBAK_ROOT/state/ledger.jsonl
+mkdir -p $NASBAK_ROOT/state 2>/dev/null
 touch "$LEDGER" 2>/dev/null
 
 _ljesc() { printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g' | tr -d '\r\n\t'; }
@@ -46,7 +48,7 @@ ledger_rotate() {
   [ -z "$_sz" ] && return 0
   [ "$_sz" -lt 5242880 ] && return 0
   _cut=$(date -d '30 days ago' +%s 2>/dev/null) || return 0
-  _dir=/data/media/0/nasbak/state/ledger-arch
+  _dir=$NASBAK_ROOT/state/ledger-arch
   mkdir -p "$_dir" 2>/dev/null
   : > /tmp/_led_old; : > /tmp/_led_new
   while IFS= read -r ln; do

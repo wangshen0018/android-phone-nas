@@ -1,4 +1,5 @@
 #!/system/bin/sh
+. "$(dirname "$0")/lib-path.sh"
 # daemon.sh — 常驻调度：每 30 分钟归位 + 登记新文件，归位成功后只判这一批
 #
 # 单实例：靠 pid 文件 + kill -0 双重校验，重复启动直接退出
@@ -18,10 +19,10 @@
 #   · 夜间全量判读整块删除，判读不再是独立定时任务，而是归位的后续动作。
 #   · 失败件仍留队（judge.sh 的原有行为），下一批归位时会顺带重判。
 
-BASE=/data/media/0/nasbak
-BIN=/data/adb/nasbak/bin
-LOGD=/data/adb/nasbak/logs
-PIDF=/data/adb/nasbak/daemon.pid
+BASE=$NASBAK_ROOT
+BIN=$NASBAK_HOME/bin
+LOGD=$NASBAK_HOME/logs
+PIDF=$NASBAK_HOME/daemon.pid
 LOG=$LOGD/daemon.log
 QUEUE=$BASE/state/pending.queue
 

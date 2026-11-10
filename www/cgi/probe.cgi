@@ -1,8 +1,9 @@
 #!/system/bin/sh
+. "$(dirname "$0")/../../bin/lib-path.sh"
 # probe.cgi — 探测视频编码，供页面决定"能否就地播放"
 # 用法: /cgi/probe.cgi?id=<16位hex>&ext=mp4
 printf 'Content-Type: application/json\r\nCache-Control: no-store\r\n\r\n'
-MEDIA=/data/adb/nasbak/www/media
+MEDIA=$NASBAK_HOME/www/media
 
 Q=${QUERY_STRING:-}
 ID=$(printf '%s' "$Q" | sed -n 's/.*id=\([0-9a-f]\{16\}\).*/\1/p')

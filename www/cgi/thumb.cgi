@@ -1,4 +1,5 @@
 #!/system/bin/sh
+. "$(dirname "$0")/../../bin/lib-path.sh"
 # thumb.cgi — 按需生成「缩略图」，图片和视频共用一套
 #
 # 用法：/cgi/thumb.cgi?mid=<16位hex>
@@ -16,9 +17,8 @@
 # 输出：state/thumb/<mid>.jpg（长边 320，q=5）
 # 幂等：已存在直接吐图，不重复解码
 
-MEDIA=/data/media/0/nasbak/state/media
-THUMB=/data/media/0/nasbak/state/thumb
-FF=/data/adb/nasbak/bin/ffmpeg
+MEDIA=$NASBAK_ROOT/state/media
+THUMB=$NASBAK_ROOT/state/thumb
 MAXPX=320
 Q=5
 

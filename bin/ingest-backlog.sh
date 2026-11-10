@@ -1,4 +1,5 @@
 #!/system/bin/sh
+. "$(dirname "$0")/lib-path.sh"
 # ingest-backlog.sh — 把 K80 备份来的历史照片搬进 nasbak/inbox（按年份分目录）
 # ---------------------------------------------------------------
 # 与 judge.sh 的关系：
@@ -18,12 +19,11 @@
 #   ingest-backlog.sh --recent N     只搬最近 N 天
 #   年 可省略；给 2026 则只搬 2026 年的
 
-BASE=/data/media/0/nasbak
+BASE=$NASBAK_ROOT
 INBOX=$BASE/inbox
 ST=$BASE/state
-LOGD=/data/adb/nasbak/logs
+LOGD=$NASBAK_HOME/logs
 LOG=$LOGD/backlog.log
-BB=/data/adb/magisk/busybox
 
 DRY=0; YEAR=""; RECENT=""
 while [ $# -gt 0 ]; do

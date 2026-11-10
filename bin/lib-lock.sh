@@ -1,4 +1,7 @@
 #!/system/bin/sh
+# 注意：本文件是被 source 的库，不自己定位 lib-path.sh。
+# $0 在 source 场景里指向调用者而不是这里，而且 POSIX 下 "." 找不到
+# 文件会让整个脚本直接退出，所以路径库由调用者负责 source。
 # lib-lock.sh — 单实例互斥锁（供 bin/*.sh source）
 #
 # 为什么需要（2026-11-03 实际踩到）：
@@ -17,12 +20,12 @@
 #   · 拿不到锁 → 返回失败，由调用方决定退出（不阻塞、不等待）
 #   · 陈旧锁三种判定：pid 文件缺失且目录够老 / pid 已不存在 / 锁目录年龄超限
 #
-# 锁目录为什么放 /data/local/tmp 而不是 state/：
+# 锁目录为什么放 $NASBAK_TMP 而不是 state/：
 #   /data/media/0 是 FUSE 挂载层，mkdir 原子性没有保证（实测踩过 ls 重定向 rc=1）；
-#   /data/local/tmp 是真实文件系统，mkdir 原子可靠，且不在 media-gc 的扫描范围内。
+#   $NASBAK_TMP 是真实文件系统，mkdir 原子可靠，且不在 media-gc 的扫描范围内。
 #
 # 用法：
-#   . /data/adb/nasbak/bin/lib-lock.sh
+#   . $NASBAK_HOME/bin/lib-lock.sh
 #   if ! lock_acquire judge; then
 #       echo "已有实例在运行，本次退出" >&2
 #       exit 0
@@ -31,9 +34,8 @@
 #   ...主体...
 #   lock_release judge          # 可省略，trap 会兜底
 
-LOCKDIR=/data/local/tmp/nasbak-locks
+LOCKDIR=$NASBAK_TMP/nasbak-locks
 LOCK_MAXAGE=21600            # 锁目录年龄上限（秒），超过即视为陈旧锁
-BB=/data/adb/magisk/busybox   # 统一走 busybox：crond 的 PATH 与交互 shell 不同，
                               # /system/bin 的 toybox 未必支持 stat -c 之类的写法
 
 # lock_acquire <名字> [最大尝试次数，默认3]

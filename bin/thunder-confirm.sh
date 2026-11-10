@@ -1,4 +1,5 @@
 #!/system/bin/sh
+. "$(dirname "$0")/lib-path.sh"
 # thunder-confirm.sh — 点掉迅雷「添加链接任务」面板上的「立即下载」
 #
 # 为什么单独成文件（2026-11-05）：
@@ -9,7 +10,7 @@
 #   本脚本用 setsid + nohup 完全脱离 httpd 的进程组，独立跑完。
 #
 # 触发方式（thunder.cgi 投递成功后，带 rid）：
-#   setsid nohup sh /data/adb/nasbak/bin/thunder-confirm.sh "$RID" >/dev/null 2>&1 < /dev/null &
+#   setsid nohup sh $NASBAK_HOME/bin/thunder-confirm.sh "$RID" >/dev/null 2>&1 < /dev/null &
 #
 # 2026-11-06 改进：
 #   · 单实例锁 thunder-confirm：两个实例抢同一个 uiautomator dump 会互相踩
@@ -23,12 +24,11 @@
 #   确认按钮  text="立即下载"  resource-id=.../link_hub_after_cta  clickable=false
 #   按钮容器可点，按 cta 的 bounds 取中心 tap 必中（两者重叠）
 
-BB=/data/adb/magisk/busybox
-ST=/data/media/0/nasbak/state
+ST=$NASBAK_ROOT/state
 LASTF=$ST/thunder-last.json
 LOG=$ST/thunder-confirm.log
-TMPU=/data/local/tmp/_xl_confirm.$$.xml
-LOCKLIB=/data/adb/nasbak/bin/lib-lock.sh
+TMPU=$NASBAK_TMP/_xl_confirm.$$.xml
+LOCKLIB=$NASBAK_HOME/bin/lib-lock.sh
 RID="${1:-}"
 
 # 多候选文案：App 改版或不同入口时不必立刻改代码

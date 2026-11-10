@@ -2,13 +2,19 @@ package com.pantry.server;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -18,18 +24,23 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 /**
- * 库房端界面。只有三件事能点：开文件权限、起服务、停服务。
+ * 库房端界面：开权限、起服务、看地址。
  *
- * 之所以用代码拼布局而不写 XML：这个 App 一共就一屏，
- * 少一个资源文件，也少一处和构建工具版本较劲的地方。
+ * 有意保持「一屏能看完」：装到旧手机上插电就不再动它，
+ * 需要操作的只有第一次的权限和启动。
  */
 public class MainActivity extends Activity {
 
+    private static final String PREF = "pantry";
+    private static final String KEY_AUTO = "autoStarted";
+
     private TextView stateText;
-    private Button btnPerm;
-    private Button btnStart;
-    private Button btnStop;
+    private Button btnPerm, btnStart, btnStop, btnOpen, btnCopy;
     private final Handler ui = new Handler(Looper.getMainLooper());
     private final Runnable refresh = new Runnable() {
         @Override
@@ -57,7 +68,7 @@ public class MainActivity extends Activity {
         box.addView(title);
 
         TextView sub = new TextView(this);
-        sub.setText("这台手机当库房，照片存在这里。保持插电，别清后台。");
+        sub.setText("这台手机当库房，照片存在共享存储里。保持插电、连 WiFi，别清后台。");
         sub.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
         sub.setTextColor(Color.parseColor("#6B7280"));
         sub.setPadding(0, dp(6), 0, dp(20));
@@ -80,7 +91,8 @@ public class MainActivity extends Activity {
                 try {
                     startActivity(Env.allFilesSettingsIntent(MainActivity.this));
                 } catch (Exception e) {
-                    Toast.makeText(MainActivity.this, "打不开设置页，请手动到 设置 → 应用 → 特殊权限 → 所有文件访问 里开启",
+                    Toast.makeText(MainActivity.this,
+                            "打不开设置页，请手动到 设置 → 应用 → 特殊权限 → 所有文件访问 里开启",
                             Toast.LENGTH_LONG).show();
                 }
             }
@@ -95,9 +107,8 @@ public class MainActivity extends Activity {
                     Toast.makeText(MainActivity.this, "先开文件权限", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Intent i = new Intent(MainActivity.this, ServerService.class);
-                if (Build.VERSION.SDK_INT >= 26) startForegroundService(i);
-                else startService(i);
+                startServiceCompat(new Intent(MainActivity.this, ServerService.class));
+                Toast.makeText(MainActivity.this, "正在启动，几秒后状态会变", Toast.LENGTH_SHORT).show();
             }
         });
         box.addView(btnStart, buttonParams(dp(10)));
@@ -108,16 +119,47 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, ServerService.class);
                 i.setAction(ServerService.ACTION_STOP);
-                startService(i);
+                startServiceCompat(i);
             }
         });
         box.addView(btnStop, buttonParams(dp(10)));
 
+        btnOpen = makeButton("打开面板", "#0F766E");
+        btnOpen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("http://127.0.0.1:" + Env.PORT + "/index.html")));
+                } catch (Exception e) {
+                    Toast.makeText(MainActivity.this, "没有可用的浏览器", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        box.addView(btnOpen, buttonParams(dp(10)));
+
+        btnCopy = makeButton("复制局域网地址", "#334155");
+        btnCopy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String ip = Env.lanIp();
+                if (ip == null) {
+                    Toast.makeText(MainActivity.this, "没连上 WiFi", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                String addr = ip + ":" + Env.PORT;
+                ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                cm.setPrimaryClip(ClipData.newPlainText("Pantry 地址", addr));
+                Toast.makeText(MainActivity.this, "已复制 " + addr, Toast.LENGTH_SHORT).show();
+            }
+        });
+        box.addView(btnCopy, buttonParams(dp(10)));
+
         TextView note = new TextView(this);
-        note.setText("面板端口 8083。家人手机上装的是另一个 App（Pantry），"
-                + "首次打开会自动搜到这台设备。\n\n"
-                + "第一版骨架只负责把服务和运行时跑起来，"
-                + "业务脚本的打包方式见 apps/server/pack-assets.py。");
+        note.setText("家人手机上装另一个 App（Pantry 用户端），首次打开会自动搜到这台设备。\n\n"
+                + "照片和账本都在 共享存储/Pantry 下，卸载这个 App 不会删。\n"
+                + "重装或升级后运行时脚本会自动换成新版本，不用手工清目录。\n\n"
+                + "8083 没有鉴权，只在自己家 WiFi 里用，别做端口映射到公网。");
         note.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
         note.setTextColor(Color.parseColor("#9AA1AB"));
         note.setLineSpacing(dp(3), 1f);
@@ -139,6 +181,14 @@ public class MainActivity extends Activity {
                 != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1);
         }
+        // 首次进来且已经有权限，直接起服务，省得用户以为装完就完事
+        SharedPreferences sp = getSharedPreferences(PREF, MODE_PRIVATE);
+        if (!sp.getBoolean(KEY_AUTO, false)) {
+            sp.edit().putBoolean(KEY_AUTO, true).apply();
+            if (Env.allFilesAccess(this) && !ServerService.RUNNING) {
+                startServiceCompat(new Intent(this, ServerService.class));
+            }
+        }
     }
 
     @Override
@@ -153,17 +203,38 @@ public class MainActivity extends Activity {
         btnPerm.setText(perm ? "文件权限：已开启" : "1  开启文件访问权限");
         btnPerm.setAlpha(perm ? 0.5f : 1f);
 
+        boolean running = ServerService.RUNNING;
+        btnOpen.setEnabled(running);
+        btnOpen.setAlpha(running ? 1f : 0.5f);
+        btnStop.setEnabled(running);
+        btnStop.setAlpha(running ? 1f : 0.5f);
+
         String ip = Env.lanIp();
         StringBuilder sb = new StringBuilder();
         sb.append("状态：").append(ServerService.STATE).append('\n');
-        if (!ServerService.DETAIL.isEmpty()) {
+        if (!TextUtils.isEmpty(ServerService.DETAIL)) {
             sb.append(ServerService.DETAIL).append('\n');
         }
         sb.append('\n');
         sb.append("文件权限：").append(perm ? "已开启" : "未开启").append('\n');
-        sb.append("局域网地址：")
-                .append(ip == null ? "没连上 WiFi" : ip + ":8083");
+        sb.append("局域网地址：").append(ip == null ? "没连上 WiFi" : ip + ":" + Env.PORT).append('\n');
+        sb.append("存储位置：").append(Env.storeDir().getAbsolutePath()).append('\n');
+        long last = ServerService.LAST_TICK_AT;
+        if (last > 0) {
+            sb.append("上次归位：")
+                    .append(new SimpleDateFormat("HH:mm", Locale.US).format(new Date(last)));
+            if (!TextUtils.isEmpty(ServerService.LAST_TICK_RESULT)) {
+                sb.append(" · ").append(ServerService.LAST_TICK_RESULT);
+            }
+        } else {
+            sb.append("上次归位：还没跑过");
+        }
         stateText.setText(sb.toString());
+    }
+
+    private void startServiceCompat(Intent i) {
+        if (Build.VERSION.SDK_INT >= 26) startForegroundService(i);
+        else startService(i);
     }
 
     private Button makeButton(String text, String color) {

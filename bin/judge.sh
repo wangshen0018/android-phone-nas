@@ -1,4 +1,5 @@
 #!/system/bin/sh
+. "$(dirname "$0")/lib-path.sh"
 # judge.sh — 照片判读：登记新文件 → 只判新增 → 重建页面数据
 #
 # 用法:
@@ -25,22 +26,21 @@
 #   这种假报错；两次 --judge 并发还会让同一批照片调两遍 VLM，等于双倍花钱。
 #   现在整段流程用 mkdir 原子锁（bin/lib-lock.sh）保护，拿不到锁直接退出。
 
-BASE=/data/media/0/nasbak
+BASE=$NASBAK_ROOT
 # 锁库必须存在，否则宁可整个脚本不跑（并发下的假报错比不跑更难排查）
-if [ -r /data/adb/nasbak/bin/lib-lock.sh ]; then
-  . /data/adb/nasbak/bin/lib-lock.sh
+if [ -r $NASBAK_HOME/bin/lib-lock.sh ]; then
+  . $NASBAK_HOME/bin/lib-lock.sh
 else
-  echo "缺少 /data/adb/nasbak/bin/lib-lock.sh，无法保证单实例，本次退出" >&2
+  echo "缺少 $NASBAK_HOME/bin/lib-lock.sh，无法保证单实例，本次退出" >&2
   exit 1
 fi
 INBOX=$BASE/inbox
 ST=$BASE/state
 ARC=$BASE/archive
-WWW=/data/adb/nasbak/www
-LOGD=/data/adb/nasbak/logs
-BB=/data/adb/magisk/busybox
-VLMSRC=/data/adb/nasbak/bin/vlm_classify.sh
-VLM=/data/adb/nasbak/bin/vlm_run.sh
+WWW=$NASBAK_HOME/www
+LOGD=$NASBAK_HOME/logs
+VLMSRC=$NASBAK_HOME/bin/vlm_classify.sh
+VLM=$NASBAK_HOME/bin/vlm_run.sh
 LOG=$LOGD/judge.log
 QUEUE=$ST/pending.queue
 # ---------- 媒体副本目录（2026-11-03 迁移） ----------

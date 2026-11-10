@@ -1,24 +1,24 @@
 #!/system/bin/sh
+. "$(dirname "$0")/lib-path.sh"
 # notify.sh — 备份完成后的微信推送（PushPlus）
 #
 # 用法：
 #   notify.sh --backup N SIZE SECONDS   daemon.sh 每轮归位后调用
 #   notify.sh "标题" "正文"              手工推送 / 测试
 #
-# 配置：/data/adb/nasbak/notify.conf（chmod 600，含 token，不要提交 Git）
+# 配置：$NASBAK_HOME/notify.conf（chmod 600，含 token，不要提交 Git）
 #   PUSHPLUS_TOKEN=xxxxxxxx
 #   没有 token 时静默退出，不影响备份主流程。
 #
 # 为什么单独一个文件：daemon.sh 是每 30 分钟一轮的主循环，通知逻辑塞进去
 # 会让主流程难读；token 属于敏感信息，单独配置文件方便换渠道。
 
-CONF=/data/adb/nasbak/notify.conf
+CONF=$NASBAK_HOME/notify.conf
 [ -f "$CONF" ] && . "$CONF" 2>/dev/null
 
-BB=/data/adb/magisk/busybox
-STATE=/data/media/0/nasbak/state
-BASE=/data/media/0/nasbak
-LOGD=/data/adb/nasbak/logs
+STATE=$NASBAK_ROOT/state
+BASE=$NASBAK_ROOT
+LOGD=$NASBAK_HOME/logs
 
 [ -z "$PUSHPLUS_TOKEN" ] && exit 0
 

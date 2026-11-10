@@ -1,4 +1,5 @@
 #!/system/bin/sh
+. "$(dirname "$0")/lib-path.sh"
 # trash-gc.sh — 回收站（_media_gc_trash）自动清理，保留 30 天
 #
 # 背景（2026-11-06 用户决定）：
@@ -14,11 +15,10 @@
 #   <YYYYMMDDHHMMSS>      media-gc.sh 的孤儿副本回收
 # 老代码还产生过 applied-YYYYMMDD 格式，一并兼容。
 
-DATA=/data/media/0/nasbak/state
+DATA=$NASBAK_ROOT/state
 TRASH="$DATA/_media_gc_trash"
 KEEP_DAYS=30
-LOG=/data/adb/nasbak/logs/trash-gc.log
-BB=/data/adb/magisk/busybox
+LOG=$NASBAK_HOME/logs/trash-gc.log
 APPLY=0
 [ "${1:-}" = "--apply" ] && APPLY=1
 

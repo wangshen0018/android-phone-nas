@@ -1,4 +1,5 @@
 #!/system/bin/sh
+. "$(dirname "$0")/lib-path.sh"
 # make-thumb.sh — 给 state/media 里的图片和视频批量生成缩略图
 #
 # 背景（2026-11-07 实测）：
@@ -19,9 +20,8 @@
 #   sh make-thumb.sh -f       全部重做
 #   sh make-thumb.sh --dry    只统计缺多少，不生成
 
-MEDIA=/data/media/0/nasbak/state/media
-THUMB=/data/media/0/nasbak/state/thumb
-FF=/data/adb/nasbak/bin/ffmpeg
+MEDIA=$NASBAK_ROOT/state/media
+THUMB=$NASBAK_ROOT/state/thumb
 MAXPX=320
 Q=5
 
@@ -37,7 +37,7 @@ mkdir -p "$THUMB" 2>/dev/null
 [ -x "$FF" ] || { echo '{"ok":false,"err":"ffmpeg 未安装"}'; exit 1; }
 
 # 同一时间只允许一个实例（一次性预热和 daemon 轮次可能撞上）
-LOCK=/data/local/tmp/nasbak.make-thumb.lock
+LOCK=$NASBAK_TMP/nasbak.make-thumb.lock
 if ! mkdir "$LOCK" 2>/dev/null; then
   echo '{"ok":true,"skipped":"locked"}'
   exit 0

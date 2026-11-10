@@ -49,6 +49,11 @@ jobs:
           fi
           ls -la apps/keystore/
 
+      # 服务端 APK 里要带脚本和页面，否则装上去只有个空壳。
+      # 这个 zip 不入库，每次构建现打，保证 APK 里的脚本就是当次提交的版本。
+      - name: Build server runtime zip
+        run: python3 apps/server/pack-assets.py
+
       - name: Build both APKs
         working-directory: apps
         run: gradle :client:assembleDebug :server:assembleDebug --no-daemon --stacktrace

@@ -1,4 +1,7 @@
 #!/system/bin/sh
+# 注意：本文件是被 source 的库，不自己定位 lib-path.sh。
+# $0 在 source 场景里指向调用者而不是这里，而且 POSIX 下 "." 找不到
+# 文件会让整个脚本直接退出，所以路径库由调用者负责 source。
 # lib-sidecar.sh — 判读结果随归档文件落地
 #
 # 设计参照 PhotoPrism：originals 只读，元数据放在旁挂文件里，应用删了照片和名字都还在。
@@ -12,7 +15,7 @@
 #   · 单一隐藏文件，不在照片目录里制造大量碎文件
 #
 # 由 apply.cgi 在 RES="archived" 分支调用，要求调用方已就绪以下变量：
-#   ARC    归档根 /data/media/0/nasbak/archive
+#   ARC    归档根 $NASBAK_ROOT/archive
 #   YM     YYYY-MM
 #   FOLDER 事件夹名
 #   AL     analysis.jsonl 中该 id 的完整 JSON 行（可能为空）

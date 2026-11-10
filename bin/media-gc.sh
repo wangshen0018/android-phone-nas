@@ -1,4 +1,5 @@
 #!/system/bin/sh
+. "$(dirname "$0")/lib-path.sh"
 # media-gc.sh — 回收 www/media 里失去引用的副本
 #
 # 背景：ingest 会给每个文件在 $WWW/media/ 建一份副本供 httpd 直出。实测 media 下
@@ -42,23 +43,22 @@
 #   · 加 mkdir 原子锁（bin/lib-lock.sh），两个实例不再抢同一批中间文件
 #   · 中间文件名加 $$ 后缀，即使锁失效也不会互相删除
 
-BASE=/data/media/0/nasbak
+BASE=$NASBAK_ROOT
 # 锁库必须存在，否则宁可整个脚本不跑（并发下的假统计比不跑更难排查）
-if [ -r /data/adb/nasbak/bin/lib-lock.sh ]; then
-  . /data/adb/nasbak/bin/lib-lock.sh
+if [ -r $NASBAK_HOME/bin/lib-lock.sh ]; then
+  . $NASBAK_HOME/bin/lib-lock.sh
 else
-  echo "缺少 /data/adb/nasbak/bin/lib-lock.sh，无法保证单实例，本次退出" >&2
+  echo "缺少 $NASBAK_HOME/bin/lib-lock.sh，无法保证单实例，本次退出" >&2
   exit 1
 fi
 INBOX=$BASE/inbox
 ARC=$BASE/archive
 ST=$BASE/state
-WWW=/data/adb/nasbak/www
+WWW=$NASBAK_HOME/www
 MEDIA=$ST/media    # 实体目录（2026-11-03 迁移：与照片同挂载走硬链接；www/media 只是 httpd 用的 symlink）
 QUEUE=$ST/pending.queue
 LOCT=$ST/_loc_old
 LOG=$ST/media-gc.log
-BB=/data/adb/magisk/busybox
 TS=$(date +%Y%m%d%H%M%S)
 TRASH=$ST/_media_gc_trash/$TS
 

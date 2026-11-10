@@ -1,6 +1,7 @@
 #!/system/bin/sh
+. "$(dirname "$0")/../../bin/lib-path.sh"
 # state.cgi — 输出当前判定状态（已判 id → action 映射 + 事件列表）
-DATA=/data/media/0/nasbak/state
+DATA=$NASBAK_ROOT/state
 printf 'Content-Type: application/json\r\nCache-Control: no-store\r\n\r\n'
 
 touch "$DATA/decisions.jsonl" 2>/dev/null

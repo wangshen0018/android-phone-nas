@@ -1,14 +1,14 @@
 #!/system/bin/sh
+. "$(dirname "$0")/lib-path.sh"
 # 小批量判读：只判最近 N 个待判项（默认 10 个）
 # 不跑完整 judge.sh（那会判 540 个），这里逐条判断
 
-BASE=/data/media/0/nasbak
+BASE=$NASBAK_ROOT
 INBOX=$BASE/inbox
 ST=$BASE/state
-WWW=/data/adb/nasbak/www
-LOGD=/data/adb/nasbak/logs
-BB=/data/adb/magisk/busybox
-VLM=/data/adb/nasbak/bin/vlm_run.sh
+WWW=$NASBAK_HOME/www
+LOGD=$NASBAK_HOME/logs
+VLM=$NASBAK_HOME/bin/vlm_run.sh
 LOG=$LOGD/judge.log
 LIMIT=${1:-10}
 
@@ -34,7 +34,7 @@ fdate() {
 jesc() { printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g' | tr -d '\r\n\t'; }
 
 # 取最近的 N 个待判项（按文件 mtime 倒序）
-LIST=/data/local/tmp/_todo.txt
+LIST=$NASBAK_TMP/_todo.txt
 : > "$LIST"
 for L in "$ST"/loc-*.tsv; do
   [ -s "$L" ] || continue

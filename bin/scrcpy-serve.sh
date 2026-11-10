@@ -1,4 +1,5 @@
 #!/system/bin/sh
+. "$(dirname "$0")/lib-path.sh"
 # scrcpy-serve.sh — K40 本机投屏服务（scrcpy-server 1.19-ws8）启停与看护
 #
 # 作用：给 www/screen.html 提供 ws://<K40>:8886 的视频 + 控制通道。
@@ -10,14 +11,13 @@
 # 为什么不再依赖 PC：scrcpy 1.19-ws8 内核自带 Java-WebSocket 服务（监听 8886），
 # 浏览器可直连，node 桥那一层可以完全去掉（2026-11-06 实机验证）。
 #
-# jar 位置：/data/adb/nasbak/srv/scrcpy-server.jar（不放 /data/local/tmp，避免被清理）
-# 日志：    /data/adb/nasbak/logs/scrcpy-serve.log
+# jar 位置：$NASBAK_HOME/srv/scrcpy-server.jar（不放 $NASBAK_TMP，避免被清理）
+# 日志：    $NASBAK_HOME/logs/scrcpy-serve.log
 
-BB=/data/adb/magisk/busybox
-JAR=/data/adb/nasbak/srv/scrcpy-server.jar
+JAR=$NASBAK_HOME/srv/scrcpy-server.jar
 VER=1.19-ws8
 PORT=8886
-LOGD=/data/adb/nasbak/logs
+LOGD=$NASBAK_HOME/logs
 LOG=$LOGD/scrcpy-serve.log
 
 mkdir -p "$LOGD" 2>/dev/null
