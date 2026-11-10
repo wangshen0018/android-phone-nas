@@ -160,8 +160,11 @@ public class ServerService extends Service {
         }
         notifyState();
 
-        // 首轮延迟 20 秒：让面板先能打开，别一进来就抢 CPU
-        lastIngestAt = System.currentTimeMillis() - PERIOD_MS + 20000;
+        // 首轮延迟 20 秒：让面板先能打开，别一进来就抢 CPU。
+        // 这里要写成「已经满一个周期」，20 秒后的 tick(false) 才能通过周期判断；
+        // 若写成 now - PERIOD + 20000，20 秒时只过了 20 秒，会被直接 return，
+        // 首轮归位要等满 30 分钟才跑。
+        lastIngestAt = System.currentTimeMillis() - PERIOD_MS;
         if (ui != null) {
             ui.removeCallbacks(tickRun);
             ui.postDelayed(tickRun, 20000);
