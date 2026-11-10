@@ -21,6 +21,10 @@ body{background:var(--bg);color:var(--tx);font:14px/1.55 -apple-system,"Segoe UI
 #nav .brand{padding:16px 18px 14px;border-bottom:1px solid rgba(255,255,255,.08)}
 #nav .brand b{color:#fff;font-size:15px;display:block;line-height:1.35}
 #nav .brand small{color:#8a93a3;font-size:11.5px;display:block;margin-top:3px}
+#rolePill{display:none}
+#nav .it.roleit{display:none}
+#nav .it.roleit::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#22c55e;margin-right:6px;vertical-align:1px}
+#nav .it.roleit.vw::before{background:#9ca3af}
 #nav .items{padding:10px 0;flex:1;overflow:auto}
 #nav .it{
   display:flex;align-items:center;gap:10px;padding:10px 18px;cursor:pointer;
@@ -38,22 +42,64 @@ body{background:var(--bg);color:var(--tx);font:14px/1.55 -apple-system,"Segoe UI
 #nav .foot span{display:block}
 #nav .foot b{color:#c3c9d4;font-weight:600;font-variant-numeric:tabular-nums}
 
+/* 角色栏 */
+#rolebar{
+  display:flex;align-items:center;gap:8px;padding:9px 18px;font-size:11.5px;
+  border-top:1px solid rgba(255,255,255,.08);color:#8a93a3;cursor:pointer;user-select:none;
+}
+#rolebar:hover{background:rgba(255,255,255,.05)}
+#rolebar .rd{width:6px;height:6px;border-radius:50%;background:#22c55e;flex-shrink:0}
+#rolebar.vw .rd{background:#9ca3af}
+#rolebar .sw{margin-left:auto;color:#6b7d99;text-decoration:underline;text-underline-offset:2px}
+#rolebar:hover .sw{color:#c3c9d4}
+
+/* PIN 弹层 */
+#mask{
+  position:fixed;inset:0;background:rgba(15,20,30,.45);z-index:100;
+  display:none;align-items:center;justify-content:center;padding:20px;
+}
+#mask.on{display:flex}
+#pinBox{
+  background:#fff;border-radius:12px;padding:20px;width:100%;max-width:320px;
+  box-shadow:0 12px 32px rgba(0,0,0,.18);
+}
+#pinBox h3{margin:0 0 4px;font-size:15px;color:var(--tx)}
+#pinBox p{margin:0 0 14px;font-size:12.5px;color:var(--mu)}
+#pinBox input{
+  width:100%;padding:10px 12px;border:1.5px solid var(--bd);border-radius:8px;
+  font-size:16px;letter-spacing:3px;outline:none;color:var(--tx);
+}
+#pinBox input:focus{border-color:var(--pr)}
+#pinBox .e{color:var(--dn);font-size:12px;min-height:17px;margin:7px 0 0}
+#pinBox .b{display:flex;gap:8px;justify-content:flex-end;margin-top:6px}
+#pinBox button{
+  font:inherit;font-size:13.5px;font-weight:600;border-radius:8px;padding:8px 16px;
+  border:1.5px solid var(--bd);background:#fff;color:var(--tx);cursor:pointer;
+}
+#pinBox button.pri{background:var(--pr);border-color:var(--pr);color:#fff}
+
 /* 内容区 */
 #main{margin-left:208px;height:100%;display:flex;flex-direction:column}
 #frame{flex:1;width:100%;border:0;background:var(--bg)}
 
 /* 移动端：横条导航 */
 @media(max-width:760px){
-  #nav{position:static;width:100%;height:auto;flex-direction:row;flex-wrap:wrap}
+  #nav{position:relative;width:100%;height:auto;flex-direction:row;flex-wrap:wrap}
   #nav .brand{width:100%;padding:11px 15px 9px;border-bottom:1px solid rgba(255,255,255,.08)}
-  #nav .items{display:flex;padding:0;flex:1;overflow-x:auto}
-  #nav .it{padding:9px 13px;border-left:0;border-bottom:3px solid transparent;white-space:nowrap;font-size:13px}
+  #nav .items{display:flex;padding:0;flex:1 1 auto;min-width:0;overflow-x:auto;min-height:38px}
+  #nav .it{padding:9px 13px;border-left:0;border-bottom:3px solid transparent;white-space:nowrap;font-size:13px;height:38px;box-sizing:border-box}
   #nav .it.act{border-left:0;border-bottom-color:var(--pr)}
   #nav .it .ic{display:none}
   #nav .foot{display:none}
+  /* 手机上：底部角色栏隐藏，角色做成菜单行第一项 */
+  #rolebar{display:none}
+  #nav .it.roleit{
+    display:flex;order:-1;margin-left:0;margin-right:4px;padding:9px 13px;height:38px;
+    color:#8a93a3;font-size:11.5px;cursor:pointer;border-left:0;
+  }
   #main{margin-left:0}
   html,body{overflow:auto}
-  #main{height:calc(100vh - 108px)}
+  #main{height:calc(100vh - 84px)}
 }
 </style>
 </head>
@@ -63,13 +109,32 @@ body{background:var(--bg);color:var(--tx);font:14px/1.55 -apple-system,"Segoe UI
   <div class="brand">
     <b>家庭文件储存管理</b>
     <small>K40 · <K40_LAN_IP></small>
+    <span id="rolePill"></span>
   </div>
   <div class="items" id="items"></div>
   <div class="foot">
     <span>待判 <b id="fPending">—</b> · 已存档 <b id="fArchive">—</b></span>
     <span>剩余空间 <b id="fDisk">—</b></span>
   </div>
+  <div id="rolebar" title="点击切换模式">
+    <span class="rd"></span>
+    <span id="roleLabel">管理员模式</span>
+    <span class="sw" id="roleSw">切到浏览</span>
+  </div>
 </nav>
+
+<div id="mask">
+  <div id="pinBox">
+    <h3>进入管理员模式</h3>
+    <p>输入这台设备的管理员 PIN。</p>
+    <input id="pinIn" type="password" inputmode="numeric" maxlength="6" placeholder="4-6 位数字" autocomplete="off">
+    <div class="e" id="pinErr"></div>
+    <div class="b">
+      <button id="pinCancel">取消</button>
+      <button class="pri" id="pinOk">确定</button>
+    </div>
+  </div>
+</div>
 
 <div id="main">
   <iframe id="frame" src="/judge.html" allow="fullscreen; autoplay; clipboard-read; clipboard-write"></iframe>
@@ -77,7 +142,7 @@ body{background:var(--bg);color:var(--tx);font:14px/1.55 -apple-system,"Segoe UI
 
 <script>
 const PAGES=[
-  {id:'judge',   name:'文件判定',    icon:'🖼',  url:'/judge.html',   badge:'pending'},
+  {id:'judge',   name:'文件判定',    icon:'🖼',  url:'/judge.html',   badge:'pending', ownerOnly:true},
   {id:'archive', name:'存档管理',    icon:'📦',  url:'/archive.html'},
   {id:'magnet',  name:'磁力搜索',    icon:'🧲',  url:'/magnet/index.html'},
   {id:'down',    name:'下载管理',    icon:'⬇',  url:'/ariang-setup.html'},
@@ -85,22 +150,32 @@ const PAGES=[
   {id:'screen',  name:'手机屏幕',    icon:'📱',  url:'/screen.html'},
   {id:'files',   name:'文件管理',    icon:'📁',  url:'//'+location.hostname+':5244/', noBust:true},
   {id:'stats',   name:'统计',        icon:'📊',  url:'/stats.html'},
+  {id:'setup',   name:'设置',        icon:'⚙',  url:'/wizard.html?force=1', ownerOnly:true, external:true},
 ];
 
 let cur=null;
+let ROLE='owner', PIN_SET=false;
 const itemsEl=document.getElementById('items');
 const frame=document.getElementById('frame');
 
+/* 浏览模式看不到判定入口；直接访问 URL 仍能打开，接口层校验见架构文档待定问题 4 */
+const visible=()=>PAGES.filter(p=>!(p.ownerOnly && ROLE!=='owner'));
+
 function renderNav(){
-  itemsEl.innerHTML=PAGES.map(p=>`
+  const chip = `<div class="it roleit${ROLE!=='owner'?' vw':''}" id="roleChip">
+      <span>${ROLE==='owner'?'管理员':'浏览'}</span>
+    </div>`;
+  itemsEl.innerHTML=visible().map(p=>`
     <div class="it${p.id===cur?' act':''}" data-id="${p.id}" data-url="${p.url}">
       <span class="ic">${p.icon}</span>
       <span>${p.name}</span>
       ${p.badge?'<span class="bdg" id="bdg-'+p.id+'"></span>':''}
-    </div>`).join('');
-  itemsEl.querySelectorAll('.it').forEach(el=>{
+    </div>`).join('') + chip;
+  itemsEl.querySelectorAll('.it:not(.roleit)').forEach(el=>{
     el.onclick=()=>go(el.dataset.id, el.dataset.url);
   });
+  const c=document.getElementById('roleChip');
+  if(c) c.onclick=toggleRole;
 }
 
 /* busybox httpd 对 .html 不发 Cache-Control，浏览器走启发式缓存，
@@ -111,6 +186,8 @@ function renderNav(){
 const bust=(u,p)=>(p&&p.noBust)?u:u+(u.includes('?')?'&':'?')+'_='+Date.now();
 
 function go(id,url){
+  const p=PAGES.find(x=>x.id===id);
+  if(p && p.external){ location.href=url; return; }
   if(cur===id) return;
   cur=id;
   renderNav();
@@ -145,12 +222,85 @@ window.addEventListener('message',e=>{
   if(d.type==='refreshSummary') pullSummary();
 });
 
+/* ---------- 角色 ---------- */
+function renderRole(){
+  const bar=document.getElementById('rolebar');
+  bar.classList.toggle('vw', ROLE!=='owner');
+  document.getElementById('roleLabel').textContent = (ROLE==='owner'?'管理员模式':'浏览模式');
+  const pill=document.getElementById('rolePill');
+  if(pill){ pill.textContent = (ROLE==='owner'?'管理员':'浏览'); pill.classList.toggle('vw', ROLE!=='owner'); }
+  document.getElementById('roleSw').textContent = (ROLE==='owner'?'切到浏览':'切到管理员');
+}
+
+function setRole(r){
+  ROLE=r;
+  renderRole();
+  if(cur && !visible().some(p=>p.id===cur)) go('archive','/archive.html');
+  else renderNav();
+  pullSummary();
+}
+
+const mask=document.getElementById('mask');
+function openPin(){
+  document.getElementById('pinErr').textContent='';
+  const inp=document.getElementById('pinIn');
+  inp.value='';
+  mask.classList.add('on');
+  setTimeout(()=>{ try{ inp.focus(); }catch(e){} },60);
+}
+function closePin(){ mask.classList.remove('on'); }
+
+async function doPin(){
+  const pin=document.getElementById('pinIn').value.trim();
+  const err=document.getElementById('pinErr');
+  if(!/^[0-9]{4,6}$/.test(pin)){ err.textContent='请输入 4-6 位数字'; return; }
+  const btn=document.getElementById('pinOk');
+  btn.disabled=true;
+  try{
+    const r=await fetch('/cgi/wizard.cgi',{
+      method:'POST',
+      headers:{'Content-Type':'application/x-www-form-urlencoded'},
+      body:'op=verify&pin='+pin, cache:'no-store'
+    });
+    const j=await r.json();
+    if(j.ok){ closePin(); setRole('owner'); }
+    else err.textContent=(j.err||'PIN 不对');
+  }catch(e){ err.textContent='校验失败，稍后再试'; }
+  btn.disabled=false;
+}
+
+function toggleRole(){
+  if(ROLE==='owner'){ setRole('viewer'); return; }
+  if(!PIN_SET){ setRole('owner'); return; }
+  openPin();
+}
+document.getElementById('rolebar').onclick=toggleRole;
+document.getElementById('pinCancel').onclick=closePin;
+document.getElementById('pinOk').onclick=doPin;
+document.getElementById('pinIn').addEventListener('keydown',e=>{ if(e.key==='Enter') doPin(); });
+mask.addEventListener('click',e=>{ if(e.target===mask) closePin(); });
+
 // 初始化
-const hash=(location.hash||'').replace('#','');
-const init=PAGES.find(p=>p.id===hash)||PAGES[0];
-cur=init.id; renderNav(); frame.src=bust(init.url,init);
-pullSummary();
-setInterval(pullSummary,30000);
+(async function boot(){
+  let st=null;
+  try{
+    const r=await fetch('/cgi/wizard.cgi?op=state',{cache:'no-store'});
+    st=await r.json();
+  }catch(e){}
+  // 完全没初始化过 → 去向导；接口不可用（老版本部署）→ 按管理员正常进来
+  if(st && st.inited===false){ location.replace('/wizard.html'); return; }
+  const cfg=(st&&st.cfg)||{};
+  PIN_SET = (cfg.pinSet===true);
+  // 设了 PIN 就默认浏览模式，每次刷新都要重新解锁；没设 PIN 则等同管理员
+  ROLE = PIN_SET ? 'viewer' : 'owner';
+
+  const hash=(location.hash||'').replace('#','');
+  const list=visible();
+  const init=list.find(p=>p.id===hash)||list[0];
+  cur=init.id; renderNav(); renderRole(); frame.src=bust(init.url,init);
+  pullSummary();
+  setInterval(pullSummary,30000);
+})();
 </script>
 </body>
 </html>

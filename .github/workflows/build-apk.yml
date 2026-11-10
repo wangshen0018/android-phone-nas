@@ -51,7 +51,7 @@ jobs:
 
       - name: Build debug APK
         working-directory: app
-        run: gradle assembleDebug --no-daemon --stacktrace
+        run: gradle :app:assembleDebug --no-daemon --stacktrace
 
       - name: Show output
         working-directory: app
@@ -60,7 +60,7 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: nasbak-apk
+          name: nasbak-apk-${{ github.run_number }}
           path: app/app/build/outputs/apk/debug/*.apk
           retention-days: 30
 

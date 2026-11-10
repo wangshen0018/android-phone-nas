@@ -1,8 +1,15 @@
-# Android 旧手机改造成家庭 NAS
+# Pantry
 
-用一台淘汰的 Android 手机（Magisk root）当 7×24 常驻家庭文件服务器：
-自动备份手机照片、按拍摄日期归位、AI 判读画面内容、人审后归档、同步到云盘，
-带一个 Web 管理面板。
+**Pantry** 是家里那间储藏柜——粮食、腌菜、旧相册都往里放，每样东西贴在标签上，
+十年后翻出来还知道当初装的是什么。
+
+这个项目做的是同一件事：把一台淘汰的 Android 手机变成家庭照片的储藏柜。
+自动备份手机照片、按拍摄日期归位、AI 判读画面内容、**人审后归档并留一句说明**、
+同步到云盘，带一个 Web 管理面板和一个配套 App（自动发现库房，不用记 IP）。
+
+> 跟 Immich / PhotoPrism 那类相册软件不是一回事。它们解决"怎么找到照片"，
+> 这里解决"记住为什么拍"——人脸和 GPS 答不上来"这张是为什么按的快门"，
+> 所以每次归档由人确认一次，结论固定写在目录名和 `_event.json` 里。
 
 > 本项目从一台真实在跑的生产设备上整理而来。**代码不含任何凭据与真实地址**，
 > 所有 IP / 密钥 / 个人目录名都是占位符。
@@ -72,6 +79,16 @@
 | 手机屏幕 | 网页里实时看屏幕并反向操作（详见附录，按需启停） |
 | 文件管理 | 直嵌 alist（5244），浏览/上传/下载/在线预览/分享，WebDAV 同端口 `/dav` |
 
+**首启与角色**
+
+第一次打开会进 `/wizard.html` 走三步：选库房（内部存储 / 外置卡，显示剩余容量）→
+组网（可跳过，纯局域网也能用）→ 定管理员 PIN。配置落 `state/config.json`，
+删掉它就回到向导。
+
+角色只有两个：**管理员**（判定/归档/改名/删除/设置）与**浏览**（看照片、看视频、上传）。
+设了 PIN 则每次打开默认进浏览模式，切回管理员要输 PIN。
+**不设分享功能**——这套系统不生成任何对外 URL，外网只能通过组网地址进来。
+
 ---
 
 ## 部署
@@ -108,7 +125,7 @@ $env:ADB_DEVICE = "<NAS_LAN_IP>:5555"
 
 ---
 
-## 三十五个坑
+## 四十五个坑
 
 这部分是真正花时间的地方。
 
@@ -496,6 +513,71 @@ fetch('cgi/decide.cgi', {method:'POST', body: JSON.stringify({
   批量参数得放 body 里；`grep -E '{16}'` 这类区间量词各版本支持不一致，
   id 校验用 shell 的 `case` 更稳。
 
+### 首启向导与角色
+
+**36. CGI 取 POST 参数不能用贪婪 sed**
+
+`s/.*root=\([^&]*\).*/\1/p` 在值含 `/` 时**在设备上**拿不到值，保存恒报「库房路径不合法」，
+本地跑同样的命令却是对的。改成按 `&` 切行再匹配键：
+
+```sh
+pval() {
+  printf '%s' "$BODY" | tr -d '\r' | tr '&' '\n' | sed -n 's/^'"$1"'=//p' | head -1
+}
+```
+
+**37. 安卓把 VPN 网卡放在独立网络命名空间**
+
+root 也读不到 100.64 段，`ip addr` 里压根没有这块网卡。
+所以组网状态只能探测「装没装」，地址让用户从组网应用首页抄一次填进来。
+
+**38. `flex-wrap` + `flex:1` 的导航行在窄屏算出 0 高**
+
+DOM 里节点都在，Inspector 看得到，就是整行不见。给容器 `min-height:38px`、
+给每一项 `height:38px` 才稳。
+
+**39. busybox httpd 不对 `.html` 发 `Cache-Control`**
+
+手机浏览器会拿旧页，截图恒为上一帧。验证一律带 `?v=<时间戳>`，
+否则你会以为改动没生效。
+
+**40. 固定底栏会盖住表单**
+
+向导页 `padding-bottom` 必须大于底栏高度，不然最后一个勾选框永远看不见。
+**首屏放不下的内容等于不存在**——把它移到输入框之前，而不是指望用户往下滚。
+
+### 局域网自动发现
+
+**41. 不能用 `"nasbak"` 当读取结束标志**
+
+探针返回的 JSON 里 `"nasbak"` 在最前面，HTTP 响应头和 body 会分包，
+边界常常正好切在 `name` 之前。结果就是设备名读成默认值，而连接判定是对的，
+很难一眼看出哪里错。要认 JSON 的 `}`。
+
+**42. `StringBuilder.indexOf` 没有 char 重载**
+
+`sb.indexOf('}')` 编译报 `incompatible types: char cannot be converted to String`。
+`String` 有 char 版，`StringBuilder` 只有 `String` 版。
+
+**43. 扫描必须跳过 Tailscale 段**
+
+100.64/10 在安卓里是独立 netns，扫这一段只会白等超时：耗时从 1 秒涨到十几秒，
+而且一个也扫不到。按网卡名筛（`wlan*` / `eth*` / `ap*`）比按地址段筛更省事。
+
+**44. 为什么不用 UDP 广播或 mDNS**
+
+- busybox httpd 不监听 UDP，发广播等于设备上多一个常驻进程，旧手机不稳；
+- mDNS 要 avahi，这套 toybox + busybox 环境没有。
+
+纯 TCP 扫描**不需要任何权限**，也不用改设备侧，是最省事的路径。254 个地址、
+48 线程、320 ms 超时，实测 1 秒扫完整段。
+
+**45. 掉线要能自愈**
+
+库房重启后路由器可能把它换到别的 IP。App 打不开时静默重扫一次，
+发现和当前不同的地址就切过去并提示，否则用户只能卸载重装。
+同一地址仍失败说明服务真没起来，这时才报错——不然会在"服务挂了"的场景里反复扫网段。
+
 ---
 
 ## 附：做成手机 App（本机零安装构建）
@@ -513,8 +595,31 @@ app/                          Java WebView 壳（无 AndroidX、无第三方依�
 本机只做两件事：`git push`，然后从 Actions artifact 取 APK。
 改一行代码到手机上能打开，约 2–3 分钟，全程不装任何安卓开发工具。
 
-壳的能力：加载 `127.0.0.1:8083`、全屏、返回键回退、连不上时给「设置地址」入口、
-alist 上传（`onShowFileChooser`）、下载走系统下载管理器、前端报错写 logcat。
+壳的能力：全屏、返回键回退、alist 上传（`onShowFileChooser`）、
+下载走系统下载管理器、前端报错写 console 到 logcat。
+
+### 局域网自动发现
+
+装到家人手机上，让它**自己找到库房**，这是可用性上最重要的一步——
+让亲戚去记 `192.168.x.x:8083` 是不现实的。
+
+做法：服务端加一个探针，App 扫网段。
+
+```
+www/cgi/ping.cgi        GET 即回 {"nasbak":1,"name":"<型号>","ip":"<Host>","port":8083}
+app/…/Discovery.java    取 wlan/eth 的 /24 段，48 线程探 8083，认探针标记
+```
+
+首次打开时给三个入口：**自动查找（推荐）/ 手动填 / 本机就是库房**。
+扫描页显示进度，结果页列出设备型号与 IP，点一下进面板。
+254 个地址实测 1 秒扫完。
+
+地址存进 `SharedPreferences`，之后直接进面板。库房重启换了 IP 时，
+主文档加载失败会触发一次静默重扫，找到不同地址就切过去并 Toast 提示——
+**没有这一步，路由器一换 IP 用户就只能卸载重装**。
+
+`ping.cgi` 只回固定字段，不读账本、不碰文件，被反复打也不拖慢系统；
+它同时是"这台是不是本系统"的判据，不会误认成别的服务。
 
 **三个坑**（详见 `docs/APP-构建方案.md`）：
 
@@ -523,9 +628,16 @@ alist 上传（`onShowFileChooser`）、下载走系统下载管理器、前端�
 - runner 每次是干净环境，AGP 会现场随机生成 debug keystore，
   于是**每次构建签名都不同，第二版无法覆盖安装**；必须把 keystore 固定进仓库
 - 手机访问**自己的** Tailscale IP 不通（Android VPN 不回环），壳里只能用 `127.0.0.1`
+- WebView 里 `loadDataWithBaseURL` 的页面，容器写 `width:100%` 又加 `padding`
+  必须补 `box-sizing:border-box`，否则卡片右侧被裁出屏幕
+- 引导页用 flex 垂直居中，在长屏上看起来像白屏。改成顶部对齐 + `padding-top`
 
-**已知局限**：页面没做移动端适配，WebView 里左侧 208 px 固定导航占掉一半宽度，
-判读卡片右侧会被裁。这是页面问题，加媒体查询即可解决。
+**已知局限**：APK 只是壳，不含服务端。装到别的手机上只能"看"，
+照片仍在跑服务的那台设备上。要让那台手机自己当库房，得另外把服务端部署上去
+（见 `docs/NAS-服务端方案.md`，同一套 shell 脚本改路径即可跑在 Linux/NAS 上）。
+
+**图标**：`app/make-icon.py` 生成，Pillow 画的储物柜，输出 mipmap 各密度 +
+Android 8+ 自适应图标（前景/背景分离），改色改形状都在这一个脚本里。
 
 ---
 
@@ -611,7 +723,8 @@ adb shell su -c 'sh /data/adb/nasbak/bin/scrcpy-serve.sh start'
     ├── events.jsonl           事件夹登记
     ├── ledger.jsonl           操作台账 recv/mvdate/arc/dup
     ├── thumb/<id>.jpg         缩略图（图片和视频，长边 320，约 9 KB —— 页面网格只加载这个）
-    └── status-cache.json      状态缓存（CGI 只读这个）
+    ├── status-cache.json      状态缓存（CGI 只读这个）
+    └── config.json            机器级配置：库房根路径、PIN 的 md5、组网地址
 ```
 
 **台账的意义**：每个文件的来龙去脉记一行。
@@ -635,12 +748,15 @@ adb shell su -c 'sh /data/adb/nasbak/bin/scrcpy-serve.sh start'
 | `bin/vlm_classify.sh` | VLM 调用（多模型降级链） |
 | `service.d/zzz-nasbak.sh` | 开机自启 httpd + daemon |
 | `service.d/srv.sh` | aria2 / alist / AdGuard 自启 + adb 自愈 |
-| `www/index.html` | 左侧导航壳 |
+| `www/index.html` | 导航壳；首启检测跳向导，角色项在菜单行首位 |
+| `www/wizard.html` | 首次使用三步向导（选库房 / 组网 / 定 PIN） |
 | `www/judge.html` | 文件判定页 |
 | `www/archive.html` | 存档管理页（类型-年份折叠、存入/拍摄两种分批方式可切换、全屏预览/播放） |
 | `www/cgi/archive.cgi` | 存档接口：`list` 事件汇总、`files` 文件清单（带拍摄/存入时间）、改名/移动/删除 |
 | `www/cgi/thumb.cgi` | 按 `mid` 出 320px 缩略图（图片缩放 / 视频抽帧），页面网格都走它 |
 | `www/cgi/*.cgi` | 判定 / 存档 / 状态接口 |
+| `www/cgi/wizard.cgi` | 向导接口：`state/volumes/net`（GET）、`save/verify`（POST） |
+| `www/cgi/ping.cgi` | 局域网发现探针，App 靠它认出库房 |
 | `www/cgi/apply.cgi` | 执行判定：`?a=preview` 只统计不动文件，`ids=` 限定范围（裸调会执行整个队列） |
 | `www/cgi/undo.cgi` | 操作记录与撤销（`a=last` 取最近 N 条，倒序，60 秒内同类动作合并） |
 | `www/cgi/scrcpy.cgi` | 投屏服务按需启停（`a=status/start/stop`） |
@@ -649,6 +765,8 @@ adb shell su -c 'sh /data/adb/nasbak/bin/scrcpy-serve.sh start'
 | `bin/trash-gc.sh` | 回收站 30 天清理（crond 每天 4:50，默认干跑） |
 | `bin/media-gc.sh` | 媒体副本回收（默认干跑，`--apply` 才删） |
 | `app/` | Android WebView 壳工程（Java，无 AndroidX），由云端 CI 构建 APK |
+| `app/app/…/Discovery.java` | 局域网扫描：取 /24 段、48 线程探 8083、认探针 |
+| `app/make-icon.py` | 生成应用图标（各密度 + 自适应图标） |
 | `.github/workflows/build-apk.yml` | APK 云端构建流水线（push 或手动触发） |
 | `docs/APP-构建方案.md` | 不装安卓开发工具做 APK 的四条路径、实测与坑 |
 | `bin/lib-sidecar.sh` | 副本目录与硬链接辅助 |
@@ -662,6 +780,9 @@ adb shell su -c 'sh /data/adb/nasbak/bin/scrcpy-serve.sh start'
 | `www/screen.html` | 「手机屏幕」页，同源 iframe 直嵌 `/remote/` |
 | `www/remote/` | ws-scrcpy 客户端静态资源（约 682 KB） |
 | `www/pinyin.js` | 拼音首字母搜索 |
+| `etc/nasbak.conf` | 路径配置（把硬编码路径收成一份，为移植到 Linux/NAS 铺路） |
+| `bin/lib-path.sh` | 读配置并导出 `DATA/ARC/WWW/BB/FF` 等变量，脚本只 source 它 |
+| `docs/NAS-服务端方案.md` | 从手机迁到闲置电脑 / NAS 的分阶段方案与验收清单 |
 | `deploy/deploy.ps1` | 一键部署 |
 
 ---

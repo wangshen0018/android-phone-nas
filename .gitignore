@@ -10,3 +10,9 @@ app/local.properties
 *.apk
 *.keystore
 *.jks
+
+# 过程目录（截图、临时脚本、浏览器 profile）
+.tmp/
+
+# 构建产物（APK 不入库，交付放仓库外）
+dist/

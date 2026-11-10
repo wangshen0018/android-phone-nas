@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>首次设置 · 家庭文件储存</title>
+<style>
+:root{
+  --bg:#f6f7f8;--card:#fff;--tx:#1a1d21;--mu:#6b7280;--bd:#dcdfe3;
+  --pr:#2563eb;--pr2:#eff4ff;--ok:#15803d;--ok2:#ecfdf3;--wn:#b45309;--wn2:#fffbeb;--dn:#dc2626;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:var(--bg);color:var(--tx);
+  font:15px/1.6 -apple-system,"Segoe UI","Microsoft YaHei",sans-serif;
+  -webkit-text-size-adjust:100%;
+}
+.wrap{max-width:660px;margin:0 auto;padding:26px 18px 168px}
+
+/* 头部 */
+.hd{margin-bottom:18px}
+.hd h1{font-size:20px;font-weight:600;margin:0 0 6px;letter-spacing:.2px}
+.hd p{margin:0;color:var(--mu);font-size:13px}
+
+/* 步骤条 */
+.steps{display:flex;align-items:center;gap:0;margin:0 0 16px;user-select:none}
+.st{display:flex;align-items:center;gap:8px;color:var(--mu);font-size:13px;white-space:nowrap}
+.st i{
+  width:24px;height:24px;border-radius:50%;border:1.5px solid var(--bd);background:#fff;
+  display:flex;align-items:center;justify-content:center;font-style:normal;
+  font-size:12px;font-weight:600;color:var(--mu);flex-shrink:0;
+}
+.st.on{color:var(--pr);font-weight:600}
+.st.on i{border-color:var(--pr);background:var(--pr);color:#fff}
+.st.done i{border-color:var(--ok);background:var(--ok);color:#fff}
+.st.done{color:var(--ok)}
+.ln{flex:1;height:1.5px;background:var(--bd);margin:0 10px;min-width:12px}
+
+/* 面板 */
+.panel{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:18px 16px}
+.panel h2{font-size:15px;font-weight:600;margin:0 0 4px}
+.panel .hint{color:var(--mu);font-size:13px;margin:0 0 16px}
+
+/* 卷 */
+.vol{
+  display:flex;align-items:flex-start;gap:12px;padding:14px;border:1.5px solid var(--bd);
+  border-radius:10px;margin-bottom:10px;cursor:pointer;transition:border-color .12s,background .12s;
+}
+.vol:hover{border-color:#b9c6dd}
+.vol.on{border-color:var(--pr);background:var(--pr2)}
+.vol .rd{
+  width:18px;height:18px;border-radius:50%;border:1.5px solid #b9c2d0;flex-shrink:0;margin-top:2px;
+  display:flex;align-items:center;justify-content:center;
+}
+.vol.on .rd{border-color:var(--pr)}
+.vol.on .rd::after{content:"";width:9px;height:9px;border-radius:50%;background:var(--pr)}
+.vol .bd2{flex:1;min-width:0}
+.vol .nm{font-weight:600;font-size:14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.vol .pt{color:var(--mu);font-size:12px;font-family:ui-monospace,Consolas,monospace;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin:2px 0 8px}
+.tag{font-size:11px;padding:1px 7px;border-radius:9px;font-weight:500;white-space:nowrap}
+.tag.lib{background:var(--ok2);color:var(--ok)}
+.tag.cur{background:var(--pr2);color:var(--pr)}
+.bar{height:6px;background:#eef0f3;border-radius:3px;overflow:hidden}
+.bar>b{display:block;height:100%;background:var(--pr);border-radius:3px}
+.vol .cap{display:flex;justify-content:space-between;font-size:12px;color:var(--mu);margin-top:5px}
+.vol .cap b{color:var(--tx);font-weight:600;font-variant-numeric:tabular-nums}
+
+/* 提示条 */
+.note{border-radius:9px;padding:11px 13px;font-size:13px;line-height:1.65;margin:14px 0 0}
+.note.i{background:var(--pr2);color:#1e40af}
+.note.w{background:var(--wn2);color:var(--wn)}
+.note.s{background:var(--ok2);color:var(--ok)}
+.note code{font-family:ui-monospace,Consolas,monospace;font-size:12.5px;background:rgba(0,0,0,.05);
+  padding:1px 4px;border-radius:4px}
+
+/* 网络 */
+.row{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid #f0f1f3;font-size:13.5px}
+.row:last-child{border-bottom:0}
+.row .k{color:var(--mu)}
+.row .v{font-family:ui-monospace,Consolas,monospace;font-weight:600;font-variant-numeric:tabular-nums}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;vertical-align:1px}
+.dot.g{background:#22c55e}.dot.r{background:#d1d5db}
+
+.guide{counter-reset:g;margin:14px 0 0}
+.guide li{list-style:none;display:flex;gap:10px;font-size:13px;line-height:1.65;margin-bottom:10px}
+.guide li::before{
+  counter-increment:g;content:counter(g);flex-shrink:0;width:19px;height:19px;border-radius:50%;
+  background:#eef0f3;color:var(--mu);font-size:11.5px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;margin-top:2px;
+}
+.guide b{font-weight:600}
+
+/* 角色表 */
+.role{display:flex;gap:10px;margin:0 0 16px}
+.role>div{flex:1;border:1px solid var(--bd);border-radius:9px;padding:11px 12px}
+.role h3{margin:0 0 6px;font-size:13px;font-weight:600}
+.role p{margin:0;font-size:12px;color:var(--mu);line-height:1.6}
+.role .b{color:var(--tx)}
+
+/* 输入 */
+label.fl{display:block;font-size:13px;font-weight:600;margin:0 0 6px}
+input[type=password],input[type=tel]{
+  width:100%;padding:10px 12px;border:1.5px solid var(--bd);border-radius:9px;
+  font-size:15px;font-family:inherit;color:var(--tx);background:#fff;outline:none;
+  letter-spacing:2px;
+}
+input:focus{border-color:var(--pr)}
+.fg{margin-bottom:14px}
+.sw{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--mu);cursor:pointer;user-select:none}
+.sw input{width:16px;height:16px;accent-color:var(--pr);margin:0}
+.err{color:var(--dn);font-size:12.5px;margin:8px 0 0;min-height:18px}
+
+/* 底部按钮 */
+.bar2{
+  position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.94);
+  border-top:1px solid var(--bd);padding:12px 18px;backdrop-filter:blur(6px);
+  display:flex;gap:10px;justify-content:space-between;align-items:center;
+}
+.bar2 .inner{max-width:660px;margin:0 auto;width:100%;display:flex;gap:10px;justify-content:flex-end}
+button{
+  font:inherit;font-size:14px;font-weight:600;border-radius:9px;padding:10px 20px;
+  border:1.5px solid var(--bd);background:#fff;color:var(--tx);cursor:pointer;
+}
+button:hover{background:#f7f8fa}
+button.pri{background:var(--pr);border-color:var(--pr);color:#fff}
+button.pri:hover{background:#1d4ed8}
+button:disabled{opacity:.45;cursor:not-allowed}
+button.txt{border:0;background:transparent;color:var(--mu);font-weight:500;padding:10px 8px}
+button.txt:hover{color:var(--tx);background:transparent}
+.loading{color:var(--mu);font-size:13px;padding:24px 0;text-align:center}
+@media(max-width:520px){
+  .steps .st span{display:none}
+  .steps .st.on span{display:inline}
+  .role{flex-direction:column}
+  .wrap{padding-bottom:184px}
+  .bar2{padding:10px 14px}
+  button{padding:10px 16px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hd">
+    <h1 id="title">首次设置</h1>
+    <p id="sub">三步之后就能用。以后再看照片，不用再动这里。</p>
+  </div>
+
+  <div class="steps">
+    <div class="st on" id="st1"><i>1</i><span>选库房</span></div>
+    <div class="ln"></div>
+    <div class="st" id="st2"><i>2</i><span>连起来</span></div>
+    <div class="ln"></div>
+    <div class="st" id="st3"><i>3</i><span>定管理员</span></div>
+  </div>
+
+  <!-- 第一步 -->
+  <div class="panel" id="p1">
+    <h2>照片存在哪</h2>
+    <p class="hint">库房就是一个普通文件夹。将来把它拷到电脑上，里面的东西照样能打开。</p>
+    <div id="vols"><div class="loading">正在读存储…</div></div>
+    <div class="note w" id="volWarn" style="display:none"></div>
+  </div>
+
+  <!-- 第二步 -->
+  <div class="panel" id="p2" style="display:none">
+    <h2>在外面也能看</h2>
+    <p class="hint">同一 WiFi 下本来就能用。装个组网软件，出门在外也能打开。</p>
+    <div class="row"><span class="k">局域网地址</span><span class="v" id="netLan"><span class="dot r"></span>检测中</span></div>
+    <div class="row"><span class="k">组网地址</span><span class="v" id="netTs"><span class="dot r"></span>检测中</span></div>
+    <div id="netBox"></div>
+    <div class="note i">
+      这一步可以跳过。跳过之后，只有在同一个 WiFi 下才能看照片；以后想开了，
+      在这台设备上重新打开本页面即可。
+    </div>
+  </div>
+
+  <!-- 第三步 -->
+  <div class="panel" id="p3" style="display:none">
+    <h2>谁能改里面的东西</h2>
+    <p class="hint">一台设备两种模式。平时给家人用浏览模式，你自己要整理时切管理员。</p>
+    <div style="border:1px solid var(--bd);border-radius:9px;padding:2px 13px;margin:0 0 12px">
+      <div class="row"><span class="k">管理员</span><span class="v" style="font-family:inherit;font-weight:500">判定、归档、改名、删除</span></div>
+      <div class="row"><span class="k">浏览</span><span class="v" style="font-family:inherit;font-weight:500">看照片、看视频、上传</span></div>
+    </div>
+    <p class="hint" style="margin:-2px 0 14px">浏览是默认入口，碰不到归档和删除。要整理时在面板左下角切到管理员。</p>
+    <label class="sw"><input type="checkbox" id="noPin"> 暂时不设 PIN（谁拿到这台设备都能判定和删除）</label>
+    <div class="fg" style="margin-top:14px">
+      <label class="fl" for="pin1">管理员 PIN（4-6 位数字）</label>
+      <input id="pin1" type="password" inputmode="numeric" maxlength="6" placeholder="例如 2580" autocomplete="new-password">
+    </div>
+    <div class="fg" id="pin2Wrap">
+      <label class="fl" for="pin2">再输一次</label>
+      <input id="pin2" type="password" inputmode="numeric" maxlength="6" placeholder="确认同一组数字" autocomplete="new-password">
+    </div>
+    <p class="err" id="err3"></p>
+  </div>
+
+  <div class="bar2">
+    <div class="inner">
+      <button class="txt" id="btnCancel" style="display:none">取消</button>
+      <button id="btnBack" style="display:none">上一步</button>
+      <button class="pri" id="btnNext" disabled>下一步</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const QS=new URLSearchParams(location.search);
+const FORCE=QS.has('force');
+
+let STEP=1, VOLS=[], SEL='', NET=null, STARTED=0, CFG={};
+
+const gb=k=>{ const n=Number(k||0)*1024; return (n/1073741824).toFixed(n<1073741824*10?1:0)+' GB'; };
+const api=u=>fetch(u,{cache:'no-store'}).then(r=>r.json());
+
+/* ---------- 步骤切换 ---------- */
+function render(){
+  [1,2,3].forEach(i=>{
+    $('#p'+i).style.display = (i===STEP)?'block':'none';
+    const st=$('#st'+i);
+    st.className='st'+(i===STEP?' on':(i<STEP?' done':''));
+    st.querySelector('i').textContent = i<STEP?'✓':i;
+  });
+  $('#btnBack').style.display = STEP>1?'inline-block':'none';
+  $('#btnCancel').style.display = (FORCE && STEP===1)?'inline-block':'none';
+  const nb=$('#btnNext');
+  nb.textContent = STEP===3?'开始使用':'下一步';
+  if(STEP===1) nb.disabled=!SEL;
+  else if(STEP===3) nb.disabled=false;
+  else nb.disabled=false;
+  window.scrollTo(0,0);
+}
+
+/* ---------- 第一步：卷 ---------- */
+async function loadVols(){
+  try{
+    const j=await api('/cgi/wizard.cgi?op=volumes');
+    VOLS=j.vols||[];
+  }catch(e){ VOLS=[]; }
+  if(!VOLS.length){
+    $('#vols').innerHTML='<div class="loading">没读到可写的存储位置。</div>';
+    return;
+  }
+  // 默认选：已有库房 > 当前配置 > 第一个
+  const pick = VOLS.find(v=>v.cur) || VOLS.find(v=>v.hasLib) || VOLS[0];
+  SEL = pick.path+'/nasbak';
+  $('#vols').innerHTML = VOLS.map(v=>{
+    const tot=Number(v.totalKB)||0, av=Number(v.availKB)||0;
+    const used = tot>0 ? Math.min(100,Math.round((tot-av)/tot*100)) : 0;
+    const on = (v.path+'/nasbak')===SEL ? ' on':'';
+    return `<div class="vol${on}" data-p="${v.path}">
+      <span class="rd"></span>
+      <div class="bd2">
+        <div class="nm">${v.name}
+          ${v.hasLib==1?'<span class="tag lib">已有存档</span>':''}
+          ${v.cur==1?'<span class="tag cur">当前使用中</span>':''}
+        </div>
+        <div class="pt">${v.path}/nasbak</div>
+        <div class="bar"><b style="width:${used}%"></b></div>
+        <div class="cap"><span>已用 <b>${gb(tot-av)}</b> / 共 ${gb(tot)}</span><span>可用 <b>${gb(av)}</b></span></div>
+      </div>
+    </div>`;
+  }).join('');
+  document.querySelectorAll('.vol').forEach(el=>{
+    el.onclick=()=>{
+      SEL=el.dataset.p+'/nasbak';
+      document.querySelectorAll('.vol').forEach(x=>x.classList.toggle('on',x===el));
+      $('#btnNext').disabled=false;
+    };
+  });
+  // 没有外置卡时给提示
+  const hasOut = VOLS.some(v=>v.path.indexOf('/data/media')!==0);
+  if(!hasOut){
+    $('#volWarn').style.display='block';
+    $('#volWarn').innerHTML='现在只有内部存储。插一张存储卡再回来，能多出几十上百 GB，照片就不会挤占手机空间。';
+  }
+  render();
+}
+
+/* ---------- 第二步：网络 ---------- */
+async function loadNet(){
+  try{ NET=await api('/cgi/wizard.cgi?op=net'); }catch(e){ NET={ok:false}; }
+  const lan=(NET&&NET.lan)||'';
+  // 安卓把 VPN 网卡隔离在独立网络命名空间，root 也读不到组网地址；
+  // 若当前页面本身就是从 100.x 打开的，直接采用它。
+  const ts=(NET&&NET.ts)||(/^100\./.test(location.hostname)?location.hostname:'')||CFG.tsip||'';
+  $('#netLan').innerHTML = lan
+    ? '<span class="dot g"></span>'+lan+':8083'
+    : '<span class="dot r"></span>没连上 WiFi';
+  $('#netTs').innerHTML = ts
+    ? '<span class="dot g"></span>'+ts+':8083'
+    : (NET&&NET.tsInstalled
+        ? '<span class="dot r"></span>已装，地址待填'
+        : '<span class="dot r"></span>未启用');
+
+  if(ts){
+    $('#netBox').innerHTML = '<div class="note s">组网已就绪。出门在外用手机浏览器打开 <b>'+ts+':8083</b> 就能看。</div>';
+  }else if(NET && NET.tsInstalled){
+    $('#netBox').innerHTML = `
+      <div class="note w">组网软件已安装，但地址读不出来——安卓把组网网卡隔离了，程序看不到它。
+      打开那个应用，首页会显示这台设备的地址，形如 <b>100.x.y.z</b>，填在下面即可。也可以先跳过。</div>
+      <div class="fg" style="margin-top:14px">
+        <label class="fl" for="tsIn">组网地址（可不填）</label>
+        <input id="tsIn" type="tel" placeholder="100.x.y.z" value="${CFG.tsip||''}">
+      </div>
+      <div style="margin-top:4px"><button id="btnRecheck">重新检测</button></div>`;
+  }else{
+    $('#netBox').innerHTML = `
+      <div class="note w">还没装组网软件。</div>
+      <ol class="guide">
+        <li>在应用商店搜索 <b>Tailscale</b>（或 <b>ZeroTier</b>），装到<b>这台</b>设备上。</li>
+        <li>用邮箱或微软、谷歌账号登录一次。同一账号下所有设备会自动连在一起。</li>
+        <li>回到这里点「重新检测」，装好后会自动读出组网地址。</li>
+      </ol>
+      <div style="margin-top:12px"><button id="btnRecheck">我已装好，重新检测</button></div>`;
+  }
+  const r=$('#btnRecheck');
+  if(r) r.onclick=()=>{ r.disabled=true; r.textContent='检测中…'; loadNet(); };
+}
+
+/* ---------- 第三步：PIN ---------- */
+function syncPin(){
+  const noPin=$('#noPin').checked;
+  $('#pin1').disabled=noPin; $('#pin2').disabled=noPin;
+  $('#pin1').value=''; $('#pin2').value='';
+  $('#pin1').closest('.fg').style.opacity=noPin?.45:1;
+  $('#pin2Wrap').style.opacity=noPin?.45:1;
+}
+
+function checkPin(){
+  if($('#noPin').checked) return '';
+  const a=$('#pin1').value.trim(), b=$('#pin2').value.trim();
+  if(!a) return '可以填一组 4-6 位数字，或勾选下面「暂时不设 PIN」。';
+  if(!/^[0-9]{4,6}$/.test(a)) return 'PIN 只能是 4-6 位数字。';
+  if(a!==b) return '两次输入不一致。';
+  return '';
+}
+
+/* ---------- 提交 ---------- */
+async function submit(){
+  const e=checkPin();
+  $('#err3').textContent=e;
+  if(e) return;
+  const pin=$('#noPin').checked?'':$('#pin1').value.trim();
+  $('#btnNext').disabled=true; $('#btnNext').textContent='正在创建…';
+  try{
+    // 路径只含 / 字母 数字 - _，直接拼进 body（CGI 侧不做 URL 解码）
+    const tsEl=document.getElementById('tsIn');
+    const ts=(tsEl?tsEl.value.trim():'');
+    const body='op=save&root='+SEL+'&pin='+pin+'&ts='+ts;
+    const r=await fetch('/cgi/wizard.cgi',{
+      method:'POST',
+      headers:{'Content-Type':'application/x-www-form-urlencoded'},
+      body:body,cache:'no-store'
+    });
+    const j=await r.json();
+    if(!j.ok){ $('#err3').textContent=j.err||'保存失败'; $('#btnNext').disabled=false; $('#btnNext').textContent='开始使用'; return; }
+    location.replace('/index.html');
+  }catch(err){
+    $('#err3').textContent='保存失败，检查这台设备的存储是否可写。';
+    $('#btnNext').disabled=false; $('#btnNext').textContent='开始使用';
+  }
+}
+
+/* ---------- 初始化 ---------- */
+$('#btnNext').onclick=()=>{
+  if(STEP===1){
+    if(!SEL) return;
+    STEP=2; render();
+    if(!STARTED){ STARTED=1; }
+    loadNet();
+  }else if(STEP===2){
+    STEP=3; render();
+  }else{
+    submit();
+  }
+};
+$('#btnBack').onclick=()=>{ if(STEP>1){ STEP--; render(); } };
+$('#btnCancel').onclick=()=>{ location.href='/index.html'; };
+$('#noPin').onchange=syncPin;
+
+(async function boot(){
+  try{
+    const st=await api('/cgi/wizard.cgi?op=state');
+    CFG=(st&&st.cfg)||{};
+    if(!FORCE && st && st.inited){ location.replace('/index.html'); return; }
+  }catch(e){}
+  if(FORCE){
+    $('#title').textContent='设置';
+    $('#sub').textContent='改完点「开始使用」回到面板，已存的照片不受影响。';
+    if(CFG.pinSet===true){
+      $('#pin1').placeholder='已设 PIN，留空保存会清除';
+      $('#pin2').placeholder='再输一次以修改';
+    }
+  }
+  await loadVols();
+  syncPin();
+  // 深链接：?force=1&step=2 可直达某一步（设置页排障用）
+  const s0=parseInt(QS.get('step')||'',10);
+  if(s0>=2 && s0<=3){ STEP=s0; render(); loadNet(); }
+})();
+</script>
+</body>
+</html>
