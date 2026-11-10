@@ -50,8 +50,11 @@ MOVED=0; DUPN=0; FAILN=0; SKIPN=0
 # 所以在搬运的当下就累积，最后把 "相机 9 · 扫描 2" 这样的串交给 notify.sh。
 N_CAM=0; N_SCAN=0; N_SON=0; N_ID=0
 
-for SRC in Camera CamScanner scanner family-kid id-card; do
+# Pantry = 用户端 App 传上来的目录（2026-11-10 加），和相机导入分开便于看来源
+for SRC in Camera CamScanner scanner family-kid id-card Pantry; do
   D="$INBOX/$SRC"
+  DEVTAG=K80
+  [ "$SRC" = "Pantry" ] && DEVTAG=PantryApp
   [ -d "$D" ] || continue
   SRC_CNT=0
   for F in "$D"/*; do
@@ -68,10 +71,10 @@ for SRC in Camera CamScanner scanner family-kid id-card; do
     # ---- 补 recv 记录：K80 上传到 inbox/<来源> ----
     if [ "$APPLY" = "1" ]; then
       RELSRC="inbox/$SRC/$B"
-      ID=$(printf '%s:%s' "K80:$SRC/$B" "$S" | "$BB" sha256sum | cut -c1-16)
+      ID=$(printf '%s:%s' "$DEVTAG:$SRC/$B" "$S" | "$BB" sha256sum | cut -c1-16)
       # 同 id 已有 recv 记录就跳过，避免重复膨胀
       if ! grep -Fq "\"id\":\"$ID\"" "$LEDGER" 2>/dev/null; then
-        ledger_add "$ID" "$B" "$S" "recv" "K80/$SRC" "$RELSRC" "K80 回家备份上传"
+        ledger_add "$ID" "$B" "$S" "recv" "$DEVTAG/$SRC" "$RELSRC" "$DEVTAG 上传"
       fi
     fi
 
@@ -85,7 +88,7 @@ for SRC in Camera CamScanner scanner family-kid id-card; do
           if [ "$APPLY" = "1" ]; then
             mkdir -p "$DUPBK/$SRC" 2>/dev/null
             mv -f "$F" "$DUPBK/$SRC/$B" 2>/dev/null
-            ID=$(printf '%s:%s' "K80:$SRC/$B" "$S" | "$BB" sha256sum | cut -c1-16)
+            ID=$(printf '%s:%s' "$DEVTAG:$SRC/$B" "$S" | "$BB" sha256sum | cut -c1-16)
             ledger_add "$ID" "$B" "$S" "dup" "inbox/$SRC/$B" "inbox/_dup_backup/$SRC/$B" "与 $DD/ 内同文件重复，md5 一致"
           fi
           DUPN=$((DUPN+1)); continue
@@ -100,7 +103,7 @@ for SRC in Camera CamScanner scanner family-kid id-card; do
       mkdir -p "$INBOX/$DD" 2>/dev/null
       if mv -f "$F" "$DST" 2>/dev/null; then
         RELDST=$(printf '%s' "$DST" | sed "s#^$INBOX/##")
-        ID=$(printf '%s:%s' "K80:$SRC/$B" "$S" | "$BB" sha256sum | cut -c1-16)
+        ID=$(printf '%s:%s' "$DEVTAG:$SRC/$B" "$S" | "$BB" sha256sum | cut -c1-16)
         ledger_add "$ID" "$B" "$S" "mvdate" "inbox/$SRC/$B" "$RELDST" "按拍摄日期 $DD 归位"
         log "MOVED $SRC/$B -> $RELDST"
         MOVED=$((MOVED+1))
@@ -116,7 +119,7 @@ for SRC in Camera CamScanner scanner family-kid id-card; do
   # CamScanner 与 scanner 都叫「扫描」，用统一计数器累加，避免出现两条「扫描」。
   if [ "$SRC_CNT" -gt 0 ]; then
     case "$SRC" in
-      Camera)             N_CAM=$((N_CAM + SRC_CNT)) ;;
+      Camera|Pantry)      N_CAM=$((N_CAM + SRC_CNT)) ;;
       CamScanner|scanner) N_SCAN=$((N_SCAN + SRC_CNT)) ;;
       family-kid)               N_SON=$((N_SON + SRC_CNT)) ;;
       id-card)             N_ID=$((N_ID + SRC_CNT)) ;;

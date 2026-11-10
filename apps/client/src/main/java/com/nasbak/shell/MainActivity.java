@@ -50,11 +50,14 @@ public class MainActivity extends Activity {
     // 实测 Android 的 VPN 不回环到自身，请求直接超时。
     private static final String DEFAULT_URL = "http://127.0.0.1:8083/index.html";
     private static final int REQ_FILE = 1001;
+    private static final int REQ_PERM = 1002;
 
     private WebView web;
     private ProgressBar bar;
     private String curUrl;
     private ValueCallback<Uri[]> filePathCb;
+    /** 同步进行中，防重入 */
+    private boolean syncing;
 
     /** 正在扫描，防重入 */
     private boolean scanning;
@@ -181,6 +184,16 @@ public class MainActivity extends Activity {
             curUrl = DEFAULT_URL;
             showWelcome();
         }
+
+        // 开了备份的手机，每次打开静默增量传一轮。本机就是库房时没必要传。
+        if (sp.getBoolean(Backup.KEY_ON, false)
+                && Backup.hasPermission(this)
+                && !"127.0.0.1".equals(hostOf(curUrl))) {
+            web.postDelayed(new Runnable() {
+                @Override
+                public void run() { startBackup(true); }
+            }, 2500);
+        }
     }
 
     // ───────────────────────── 首次引导 ─────────────────────────
@@ -284,7 +297,7 @@ public class MainActivity extends Activity {
                                 if (!h.ip.equals(curIp)) {
                                     Toast.makeText(MainActivity.this,
                                             "库房地址已更新为 " + h.ip, Toast.LENGTH_LONG).show();
-                                    saveAndLoad(h.url());
+                                    saveAndLoad(h.url(), true);
                                     return;
                                 }
                             }
@@ -355,9 +368,113 @@ public class MainActivity extends Activity {
     // ───────────────────────── 页面与地址 ─────────────────────────
 
     private void saveAndLoad(String u) {
+        saveAndLoad(u, false);
+    }
+
+    private void saveAndLoad(String u, boolean silent) {
         curUrl = u;
-        getSharedPreferences(PREF, MODE_PRIVATE).edit().putString(KEY_URL, u).apply();
+        SharedPreferences sp = getSharedPreferences(PREF, MODE_PRIVATE);
+        sp.edit().putString(KEY_URL, u).apply();
         web.loadUrl(u);
+        // 第一次连上库房的手机才问；自动重连不弹，弹过一次也不再弹
+        if (!silent && !sp.contains(Backup.KEY_ON)) {
+            web.postDelayed(new Runnable() {
+                @Override
+                public void run() { askBackupOnce(); }
+            }, 900);
+        }
+    }
+
+    /** 备份默认关。装到家人手机上只是看照片，不能悄悄把人家相册搬走。 */
+    private void askBackupOnce() {
+        new AlertDialog.Builder(this)
+                .setTitle("把这台手机的照片也存进去？")
+                .setMessage("开启后，每次打开 Pantry 会把本机相册里新增的照片和视频传到库房，"
+                        + "只传一次，以后增量。只是看家里照片的话选「不用」，"
+                        + "以后按返回键随时能改。")
+                .setPositiveButton("开启备份", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface d, int w) {
+                        getSharedPreferences(PREF, MODE_PRIVATE)
+                                .edit().putBoolean(Backup.KEY_ON, true).apply();
+                        startBackup(false);
+                    }
+                })
+                .setNegativeButton("只是看看", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface d, int w) {
+                        getSharedPreferences(PREF, MODE_PRIVATE)
+                                .edit().putBoolean(Backup.KEY_ON, false).apply();
+                    }
+                })
+                .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface d) {
+                        getSharedPreferences(PREF, MODE_PRIVATE)
+                                .edit().putBoolean(Backup.KEY_ON, false).apply();
+                    }
+                })
+                .show();
+    }
+
+    private void startBackup(final boolean quiet) {
+        if (syncing) {
+            if (!quiet) toast("正在同步，稍等一下");
+            return;
+        }
+        if (!Backup.hasPermission(this)) {
+            requestPermissions(Backup.permissions(), REQ_PERM);
+            return;
+        }
+        if (Backup.originOf(curUrl) == null) {
+            toast("还没找到库房");
+            return;
+        }
+        syncing = true;
+        if (!quiet) toast("开始传本机照片…");
+        Backup.run(this, curUrl, new Backup.Cb() {
+            @Override
+            public void onProgress(int done, int total, int uploaded) {
+                // 不逐张刷 Toast，太吵；结束时一次汇总
+            }
+
+            @Override
+            public void onDone(final int up, final int skip, final int fail, final String err) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        syncing = false;
+                        if (fail > 0) {
+                            toast("传了 " + up + " 张，" + fail + " 张失败"
+                                    + (err == null ? "" : "：" + err));
+                        } else if (up > 0) {
+                            toast("已传 " + up + " 张，其余 " + skip + " 张之前传过");
+                        } else if (!quiet) {
+                            toast("没有新照片要传（已传 " + skip + " 张）");
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    private void toast(String s) {
+        Toast.makeText(this, s, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int req, String[] perms, int[] res) {
+        if (req == REQ_PERM) {
+            if (Backup.hasPermission(this)) {
+                startBackup(false);
+            } else {
+                getSharedPreferences(PREF, MODE_PRIVATE)
+                        .edit().putBoolean(Backup.KEY_ON, false).apply();
+                toast("没给相册权限，备份没开");
+            }
+            return;
+        }
+        super.onRequestPermissionsResult(req, perms, res);
     }
 
     /** 拦截自定义 scheme；http/https 一律留在 WebView 内 */
@@ -522,13 +639,29 @@ public class MainActivity extends Activity {
                 return true;
             }
             // 面板首页按返回：给一个换库房的出口，否则地址填错后没地方改
+            final boolean on = getSharedPreferences(PREF, MODE_PRIVATE)
+                    .getBoolean(Backup.KEY_ON, false);
             new AlertDialog.Builder(this)
                     .setTitle("Pantry")
-                    .setItems(new String[]{"重新查找库房", "手动填地址", "退出"}, new DialogInterface.OnClickListener() {
+                    .setItems(new String[]{
+                            "重新查找库房",
+                            "手动填地址",
+                            on ? "关闭本机照片备份（当前开）" : "开启本机照片备份（当前关）",
+                            "立即同步一次",
+                            "退出"
+                    }, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface d, int i) {
                             if (i == 0) startFind(false);
                             else if (i == 1) askUrl();
+                            else if (i == 2) {
+                                boolean next = !on;
+                                getSharedPreferences(PREF, MODE_PRIVATE)
+                                        .edit().putBoolean(Backup.KEY_ON, next).apply();
+                                if (next) startBackup(false);
+                                else toast("已关闭本机照片备份");
+                            }
+                            else if (i == 3) startBackup(false);
                             else finish();
                         }
                     })

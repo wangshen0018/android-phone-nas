@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 备份本机照片到库房：Android 13+ 用细分权限，13 以下用旧的读存储 -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
     <!-- 下载归档文件到公共下载目录；Android 10+ 走 MediaStore，不需要此权限 -->
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
