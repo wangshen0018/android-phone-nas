@@ -16,3 +16,6 @@ app/local.properties
 
 # 构建产物（APK 不入库，交付放仓库外）
 dist/
+
+# 运行时打包产物（脚本/页面/二进制，不入库）
+apps/server/src/main/assets/runtime.zip

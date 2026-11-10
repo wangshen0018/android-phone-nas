@@ -1,12 +1,12 @@
 name: build-apk
 
 # 本机不装 Android SDK / JDK / gradle，全部构建在 GitHub 托管的 runner 上完成。
-# 手动触发，或 app/ 目录有改动时自动跑。
+# 两个模块各出一个 APK：client（看照片）、server（当库房）。
 on:
   workflow_dispatch:
   push:
     paths:
-      - 'app/**'
+      - 'apps/**'
       - '.github/workflows/build-apk.yml'
 
 jobs:
@@ -39,35 +39,42 @@ jobs:
       - name: Ensure signing keystore
         run: |
           # 仓库里还没有就生成一个（首次运行），随后作为产物导出、回填仓库固定下来。
-          if [ ! -f app/keystore/nasbak.p12 ]; then
-            mkdir -p app/keystore
+          if [ ! -f apps/keystore/nasbak.p12 ]; then
+            mkdir -p apps/keystore
             keytool -genkeypair -v \
-              -keystore app/keystore/nasbak.p12 -storetype PKCS12 \
+              -keystore apps/keystore/nasbak.p12 -storetype PKCS12 \
               -alias nasbak -keyalg RSA -keysize 2048 -validity 10950 \
               -storepass nasbak123 -keypass nasbak123 \
-              -dname "CN=NasBak, OU=Home, O=NasBak, L=Feicheng, ST=Shandong, C=CN"
+              -dname "CN=Pantry, OU=Home, O=Pantry, L=Feicheng, ST=Shandong, C=CN"
           fi
-          ls -la app/keystore/
+          ls -la apps/keystore/
 
-      - name: Build debug APK
-        working-directory: app
-        run: gradle :app:assembleDebug --no-daemon --stacktrace
+      - name: Build both APKs
+        working-directory: apps
+        run: gradle :client:assembleDebug :server:assembleDebug --no-daemon --stacktrace
 
       - name: Show output
-        working-directory: app
-        run: ls -la app/build/outputs/apk/debug/
+        run: |
+          ls -la apps/client/build/outputs/apk/debug/
+          ls -la apps/server/build/outputs/apk/debug/
 
-      - name: Upload APK
+      - name: Upload client APK
         uses: actions/upload-artifact@v4
         with:
-          name: nasbak-apk-${{ github.run_number }}
-          path: app/app/build/outputs/apk/debug/*.apk
+          name: pantry-client-${{ github.run_number }}
+          path: apps/client/build/outputs/apk/debug/*.apk
           retention-days: 30
 
-      # 把 CI 生成的密钥库导出，回填进仓库后签名就固定了。
-      # 这一步只为首次初始化服务，回填后可以删掉。
+      - name: Upload server APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: pantry-server-${{ github.run_number }}
+          path: apps/server/build/outputs/apk/debug/*.apk
+          retention-days: 30
+
+      # 首次初始化用：把 CI 生成的密钥库导出，回填进仓库后签名就固定了。
       - name: Export signing keystore
-        run: cp app/keystore/nasbak.p12 "$GITHUB_WORKSPACE/signing-keystore.p12"
+        run: cp apps/keystore/nasbak.p12 "$GITHUB_WORKSPACE/signing-keystore.p12"
 
       - name: Upload keystore
         uses: actions/upload-artifact@v4

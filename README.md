@@ -37,8 +37,10 @@ archive/2024-05/
 这两边得是两个 app，不能合并。服务端要常驻、要读写存储、要开机自启；
 用户端只是个浏览器壳，装上填个地址就完事。塞进同一个包里，权限和界面都要迁就两头。
 
-服务端现在还不是 app，是一堆脚本。要把它做成 app，得先把 httpd、定时调度、
-Magisk 依赖这些包进去，是接下来主要的工作。
+服务端 App 的架子已经搭起来了（`apps/server/`）：申请文件权限、前台服务、
+解压运行时、起 httpd 的入口都有。但还不能直接当库房用——脚本里 48 处硬编码路径
+没收干净，busybox 和 ffmpeg 也还没按 Android 10+ 的规矩装进 nativeLibraryDir。
+这两件做完才能脱掉 Magisk。
 
 ## 目录长什么样
 
@@ -72,8 +74,8 @@ Magisk 依赖这些包进去，是接下来主要的工作。
 自动判读要配多模态模型的 key，写在 `bin/vlm_classify.sh` 里。不配也能用，
 只是照片进不了待判定列表，得自己建事件夹往里放。
 
-用户端 APK 在 `app/`。改完 `git push`，GitHub Actions 构建，从 artifact 取包。
-本机不用装 JDK、SDK 或 Gradle。
+两个 APK 在 `apps/client/`（看照片）和 `apps/server/`（当库房）。改完 `git push`，
+GitHub Actions 会各出一个包，从 artifact 取。本机不用装 JDK、SDK 或 Gradle。
 
 ## 现在有什么
 
@@ -91,6 +93,7 @@ Magisk 依赖这些包进去，是接下来主要的工作。
 - [`docs/APP-架构设计.md`](docs/APP-架构设计.md) — 目录约定、账本字段、CGI 接口
 - [`docs/NAS-服务端方案.md`](docs/NAS-服务端方案.md) — 想从手机搬到闲置电脑或 NAS 时看这份
 - [`docs/APP-构建方案.md`](docs/APP-构建方案.md) — 不装安卓开发工具怎么做 APK
+- [`apps/README.md`](apps/README.md) — 两个模块的构建方式与服务端骨架还差什么
 
 ## 许可
 

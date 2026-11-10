@@ -49,19 +49,30 @@ APK 的构建需要 JDK + Android SDK + Gradle，这三样都在 GitHub 的托�
 ### 工程结构
 
 ```
-app/
-├── settings.gradle.kts          仓库源 + 根项目名
+apps/
+├── settings.gradle.kts          根项目名 + include :client / :server
 ├── build.gradle.kts             AGP 8.5.2
-├── keystore/nasbak.p12          固定签名（首次由 CI 生成后回填）
-└── app/
-    ├── build.gradle.kts         minSdk 24 / targetSdk 34，零第三方依赖
-    └── src/main/
-        ├── AndroidManifest.xml
-        └── java/com/nasbak/shell/MainActivity.java
-.github/workflows/build-apk.yml  手动触发或 app/ 变更时自动构建
+├── keystore/nasbak.p12          两个 APK 共用的固定签名
+├── client/                      Pantry：看照片的 WebView 壳，已完成
+│   └── src/main/
+│       ├── AndroidManifest.xml
+│       └── java/com/nasbak/shell/   MainActivity / Discovery
+├── server/                      Pantry 库房：常驻服务，骨架
+│   └── src/main/java/com/pantry/server/
+│       MainActivity / ServerService / Env
+└── hub/                         早期草案，不参与构建
+.github/workflows/build-apk.yml   apps/ 变更时构建两个 APK
 ```
 
-**刻意不引入 AndroidX**：这个壳只需要系统的 `Activity` + `WebView`，
+一条命令出两个包：
+
+```
+cd apps && gradle :client:assembleDebug :server:assembleDebug
+```
+
+产物分别是 `pantry-client-*` 和 `pantry-server-*` 两个 artifact。
+
+**刻意不引入 AndroidX**：两个模块都只用系统 API（Activity / WebView / Service），
 依赖为 0，构建最快，也不会因版本冲突失败。
 
 ### 完整流程（实测耗时）
